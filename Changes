@@ -1,0 +1,38 @@
+==================== Changes in man-pages-?.?? ====================
+
+Released: ????-??-??, ??Location??
+
+
+Contributors
+------------
+
+The following people contributed patches/fixes, reports, notes,
+ideas, and discussions that have been incorporated in changes in
+this release:
+
+
+Apologies if I missed anyone!
+
+
+New and rewritten pages
+-----------------------
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+
+New and changed links
+---------------------
+
+
+Global changes
+--------------
+
+
+Changes to individual pages
+---------------------------
+
+The manual pages (and other files in the repository) have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, use git(1).
