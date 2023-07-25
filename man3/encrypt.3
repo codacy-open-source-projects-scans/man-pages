@@ -13,8 +13,8 @@
 .SH NAME
 encrypt, setkey, encrypt_r, setkey_r \- encrypt 64-bit messages
 .SH LIBRARY
-Encryption and decryption library
-.RI ( libcrypto ", " \-lcrypto )
+Password hashing library
+.RI ( libcrypt ", " \-lcrypt )
 .SH SYNOPSIS
 .nf
 .BR "#define _XOPEN_SOURCE" "       /* See feature_test_macros(7) */"
@@ -107,24 +107,24 @@ The function is not provided.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
-.ad l
-.nh
 .TS
 allbox;
 lbx lb lb
 l l l.
 Interface	Attribute	Value
 T{
+.na
+.nh
 .BR encrypt (),
 .BR setkey ()
 T}	Thread safety	MT-Unsafe race:crypt
 T{
+.na
+.nh
 .BR encrypt_r (),
 .BR setkey_r ()
 T}	Thread safety	MT-Safe
 .TE
-.hy
-.ad
 .sp 1
 .SH STANDARDS
 .TP
