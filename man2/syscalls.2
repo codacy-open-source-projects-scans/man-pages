@@ -136,8 +136,6 @@ The list of system calls that are available as at Linux 5.14
 .\" Looking at scripts/checksyscalls.sh in the kernel source is
 .\" instructive about x86 specifics.
 .\"
-.nh
-.ad l
 .TS
 l2 le l
 ---
@@ -596,7 +594,8 @@ T}
 \fBs390_sthyi\fP(2)	4.15	s390 only
 \fBs390_guarded_storage\fP(2)	4.12	s390 only
 \fBsched_get_affinity\fP(2)	2.6	T{
-Name of \fBsched_getaffinity\fP(2)
+Name of
+.BR \%sched_getaffinity (2)
 on SPARC and SPARC64
 T}
 \fBsched_get_priority_max\fP(2)	2.0
@@ -607,7 +606,8 @@ T}
 \fBsched_getscheduler\fP(2)	2.0
 \fBsched_rr_get_interval\fP(2)	2.0
 \fBsched_set_affinity\fP(2)	2.6	T{
-Name of \fBsched_setaffinity\fP(2)
+Name of
+.BR \%sched_setaffinity (2)
 on SPARC and SPARC64
 T}
 \fBsched_setaffinity\fP(2)	2.6
@@ -832,8 +832,6 @@ T}
 .\" 5a0015d62668e64c8b6e02e360fbbea121bfd5e6
 \fBxtensa\fP(2)	2.6.13	Xtensa only
 .TE
-.ad
-.hy
 .PP
 On many platforms, including x86-32, socket calls are all multiplexed
 (via glibc wrapper functions) through
