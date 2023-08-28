@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright 2021-2022, Alejandro Colomar <alx@kernel.org>
+# Copyright 2021-2023, Alejandro Colomar <alx@kernel.org>
 # SPDX-License-Identifier: GPL-3.0-or-later
 ########################################################################
 # Conventions:
@@ -103,18 +103,7 @@ help:
 	$(info	[un]install		Alias for "[un]install-man")
 	$(info	[un]install-man		Wrapper for [un]install-man* targets)
 	$(info	[un]install-manintro	[Un]install intro(*) man pages)
-	$(info	[un]install-man1	[Un]install man pages in section 1)
-	$(info	[un]install-man2	[Un]install man pages in section 2)
-	$(info	[un]install-man2type	[Un]install man pages in section 2type)
-	$(info	[un]install-man3	[Un]install man pages in section 3)
-	$(info	[un]install-man3const	[Un]install man pages in section 3const)
-	$(info	[un]install-man3head	[Un]install man pages in section 3head)
-	$(info	[un]install-man3type	[Un]install man pages in section 3type)
-	$(info	[un]install-man4	[Un]install man pages in section 4)
-	$(info	[un]install-man5	[Un]install man pages in section 5)
-	$(info	[un]install-man6	[Un]install man pages in section 6)
-	$(info	[un]install-man7	[Un]install man pages in section 7)
-	$(info	[un]install-man8	[Un]install man pages in section 8)
+	$(info	[un]install-man{1,...}	[Un]install man pages in the corresponding section)
 	$(info	)
 	$(info	[un]install-html	[Un]install HTML manual pages)
 	$(info	)
@@ -128,13 +117,15 @@ help:
 	$(info	help			Print this help)
 	$(info	help-variables		Print all variables available, and their default values)
 	$(info	)
+	$(info	nothing			Make nothing.  It's useful for debug purposes)
+	$(info	)
 
 
 .SECONDEXPANSION:
 
 
 MK := \
-	$(srcdir)/Makefile \
+	$(srcdir)/GNUmakefile \
 	$(wildcard $(addprefix $(MAKEFILEDIR)/, *.mk */*.mk */*/*.mk))
 include $(MK)
 $(MK):: ;
@@ -142,13 +133,13 @@ $(MK):: ;
 
 .PHONY: help-variables
 help-variables:
-	$(info	V		Define to non-empty string for verbose output)
-	$(info	)
 	$(info	LINK_PAGES	How to install link pages.  [".so", "symlink"])
 	$(info	Z		Install pages compressed.  ["", ".bz2", ".gz", ".lz", ".xz"])
 	$(info	)
 	$(info	DISTNAME	$$(git describe))
 	$(info	DISTVERSION	/$$DISTNAME/s/man-pages-//)
+	$(info	)
+	$(info	HIDE_ERR	Define to empty string to debug some errors)
 	$(info	)
 	$(info	# Directory variables:)
 	$(info	)
@@ -158,18 +149,8 @@ help-variables:
 	$(info	mandir		$$(datarootdir)/man)
 	$(info	docdir		$$(datarootdir)/doc)
 	$(info	)
-	$(info	man1dir		$$(mandir)/man1)
-	$(info	man2dir		$$(mandir)/man2)
-	$(info	man2typedir	$$(mandir)/man2type)
-	$(info	man3dir		$$(mandir)/man3)
-	$(info	man3constdir	$$(mandir)/man3const)
-	$(info	man3headdir	$$(mandir)/man3head)
-	$(info	man3typedir	$$(mandir)/man3type)
-	$(info	man4dir		$$(mandir)/man4)
-	$(info	man5dir		$$(mandir)/man5)
-	$(info	man6dir		$$(mandir)/man6)
-	$(info	man7dir		$$(mandir)/man7)
-	$(info	man8dir		$$(mandir)/man8)
+	$(info	man{1,...}dir	$$(mandir)/man{1,...})
+	$(info	man{1,...}ext	.{1,...})
 	$(info	)
 	$(info	htmldir		$$(docdir))
 	$(info	htmlext		.html)
@@ -227,6 +208,10 @@ help-variables:
 	$(info	CPPLINT		{EXTRA_,}CPPLINTFLAGS)
 	$(info	IWYU		{EXTRA_,}IWYUFLAGS)
 	$(info	)
+
+
+.PHONY: nothing
+nothing:;
 
 
 .DELETE_ON_ERROR:
