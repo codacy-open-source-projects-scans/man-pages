@@ -21,7 +21,8 @@
 ########################################################################
 
 
-SHELL := /usr/bin/env bash -Eeuo pipefail
+SHELL := /usr/bin/env
+.SHELLFLAGS := -S bash -Eeuo pipefail -c
 
 
 MAKEFLAGS += --no-builtin-rules
@@ -120,9 +121,10 @@ help:
 .SECONDEXPANSION:
 
 
-MK := $(wildcard $(addprefix $(MAKEFILEDIR)/, *.mk */*.mk */*/*.mk))
-include $(MK)
-$(srcdir)/GNUMakefile $(MK):: ;
+MK_ := $(wildcard $(addprefix $(MAKEFILEDIR)/, *.mk */*.mk */*/*.mk))
+MK  := $(srcdir)/GNUmakefile $(MK_)
+include $(MK_)
+$(MK):: ;
 
 
 .PHONY: help-variables

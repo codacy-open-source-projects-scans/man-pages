@@ -234,6 +234,7 @@ is the default for the inherit scheduler attribute.
 #define handle_error_en(en, msg) \e
         do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
 \&
+[[noreturn]]
 static void
 usage(char *prog_name, char *msg)
 {
@@ -269,7 +270,7 @@ get_policy(char p, int *policy)
 }
 \&
 static void
-display_sched_attr(int policy, struct sched_param *param)
+display_sched_attr(int policy, const struct sched_param *param)
 {
     printf("    policy=%s, priority=%d\en",
            (policy == SCHED_FIFO)  ? "SCHED_FIFO" :

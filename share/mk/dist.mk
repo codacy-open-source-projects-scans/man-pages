@@ -44,19 +44,19 @@ $(builddir)/dist/%/:
 	+$(INSTALL_DIR) $@
 
 
-$(_DISTPAGES): $(_DISTDIR)/man%: $(srcdir)/man% | $$(@D)/
+$(_DISTPAGES): $(_DISTDIR)/man%: $(srcdir)/man% $(MK) | $$(@D)/
 	$(info INSTALL	$@)
 	<$< \
 	$(SED) "/^.TH/s/(date)/$$(git log --format=%cs -1 -- $< $(HIDE_ERR))/" \
 	| $(SED) '/^.TH/s/(unreleased)/$(DISTVERSION)/' \
 	| $(INSTALL_DATA) -T /dev/stdin $@
 
-$(_DISTOTHERS): $(_DISTDIR)/%: $(srcdir)/% | $$(@D)/
+$(_DISTOTHERS): $(_DISTDIR)/%: $(srcdir)/% $(MK) | $$(@D)/
 	$(info CP	$@)
 	$(CP) -T $< $@
 
 
-$(DISTFILE): $(_DISTFILES) | $$(@D)/
+$(DISTFILE): $(_DISTFILES) $(MK) | $$(@D)/
 	$(info TAR	$@)
 	$(TAR) $(TARFLAGS) -cf $@ -T /dev/null
 	$(GIT) ls-files \
@@ -64,23 +64,17 @@ $(DISTFILE): $(_DISTFILES) | $$(@D)/
 	| $(XARGS) $(TAR) $(TARFLAGS) -rf $@ -C $(srcdir) \
 		--transform 's,^$(_DISTDIR),$(DISTNAME),'
 
-$(DISTFILE).bz2: %.bz2: % | $$(@D)/
-	$(info BZIP2	$@)
-	$(BZIP2) $(BZIP2FLAGS) -kf $<
-	touch $@
+define DISTFILE_z_rule
+$(DISTFILE).$(2): %.$(2): % $(MK) | $$$$(@D)/
+	$$(info	$(1)	$$@)
+	$($(1)) $($(1)FLAGS) -kf $$<
+	touch $$@
+endef
 
-$(DISTFILE).gz: %.gz: % | $$(@D)/
-	$(info GZIP	$@)
-	$(GZIP) $(GZIPFLAGS) -knf $<
-
-$(DISTFILE).lz: %.lz: % | $$(@D)/
-	$(info LZIP	$@)
-	$(LZIP) $(LZIPFLAGS) -kf $<
-	touch $@
-
-$(DISTFILE).xz: %.xz: % | $$(@D)/
-	$(info XZ	$@)
-	$(XZ) $(XZFLAGS) -kf $<
+$(eval $(call DISTFILE_z_rule,BZIP2,bz2))
+$(eval $(call DISTFILE_z_rule,GZIP,gz))
+$(eval $(call DISTFILE_z_rule,LZIP,lz))
+$(eval $(call DISTFILE_z_rule,XZ,xz))
 
 
 .PHONY: dist-tar
