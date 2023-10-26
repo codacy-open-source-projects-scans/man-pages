@@ -56,7 +56,6 @@ Additional links to an existing file are created using
 .BR link (2).
 .TP
 User ID
-.I st_uid
 \fIstat.st_uid\fP; \fIstatx.stx_uid\fP
 .IP
 This field records the user ID of the owner of the file.
@@ -99,7 +98,7 @@ This field gives the "preferred" blocksize for efficient filesystem I/O.
 an inefficient read-modify-rewrite.)
 .TP
 Number of blocks allocated to the file
-\fIstat.st_blocks\fP; \fIstatx.stx_size\fP
+\fIstat.st_blocks\fP; \fIstatx.stx_blocks\fP
 .IP
 This field indicates the number of blocks allocated to the file,
 512-byte units,

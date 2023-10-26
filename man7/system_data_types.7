@@ -62,53 +62,6 @@ system_data_types \- overview of system data types
 .\"------------------------------------- regmatch_t -------------------/
 .\"------------------------------------- regoff_t ---------------------/
 .\"------------------------------------- sigevent ---------------------/
-.TP
-.I sigevent
-.RS
-.IR Include :
-.IR <signal.h> .
-Alternatively,
-.IR <aio.h> ,
-.IR <mqueue.h> ,
-or
-.IR <time.h> .
-.PP
-.EX
-struct sigevent {
-    int             sigev_notify; /* Notification type */
-    int             sigev_signo;  /* Signal number */
-    union sigval    sigev_value;  /* Signal value */
-    void          (*sigev_notify_function)(union sigval);
-                                  /* Notification function */
-    pthread_attr_t *sigev_notify_attributes;
-                                  /* Notification attributes */
-};
-.EE
-.PP
-For further details about this type, see
-.BR sigevent (7).
-.PP
-.IR Versions :
-.I <aio.h>
-and
-.I <time.h>
-define
-.I sigevent
-since POSIX.1-2008.
-.PP
-.IR "Conforming to" :
-POSIX.1-2001 and later.
-.PP
-.IR "See also" :
-.BR timer_create (2),
-.BR getaddrinfo_a (3),
-.BR lio_listio (3),
-.BR mq_notify (3)
-.PP
-See also the
-.I aiocb
-structure in this page.
-.RE
 .\"------------------------------------- siginfo_t --------------------/
 .TP
 .I siginfo_t
@@ -124,7 +77,7 @@ typedef struct {
     int      si_code;   /* Signal code */
     pid_t    si_pid;    /* Sending process ID */
     uid_t    si_uid;    /* Real user ID of sending process */
-    void    *si_addr;   /* Address of faulting instruction */
+    void    *si_addr;   /* Memory location which caused fault */
     int      si_status; /* Exit value or signal */
     union sigval si_value;  /* Signal value */
 } siginfo_t;
@@ -175,37 +128,6 @@ POSIX.1-2001 and later.
 .BR signal (7)
 .RE
 .\"------------------------------------- sigval -----------------------/
-.TP
-.I sigval
-.RS
-.IR Include :
-.IR <signal.h> .
-.PP
-.EX
-union sigval {
-    int     sival_int; /* Integer value */
-    void   *sival_ptr; /* Pointer value */
-};
-.EE
-.PP
-Data passed with a signal.
-.PP
-.IR "Conforming to" :
-POSIX.1-2001 and later.
-.PP
-.IR "See also" :
-.BR pthread_sigqueue (3),
-.BR sigqueue (3),
-.BR sigevent (7)
-.PP
-See also the
-.I sigevent
-structure
-and the
-.I siginfo_t
-type
-in this page.
-.RE
 .\"------------------------------------- size_t -----------------------/
 .\"------------------------------------- sockaddr ---------------------/
 .\"------------------------------------- socklen_t --------------------/
