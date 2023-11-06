@@ -22,7 +22,7 @@ reads from standard input.
 If no output file is given,
 .B iconv
 writes to standard output.
-.PP
+.P
 If no
 .I from-encoding
 is given, the default is derived
@@ -34,12 +34,16 @@ from the current locale's character
 encoding.
 .SH OPTIONS
 .TP
-.BI \-f " from-encoding" "\fR, \fP\-\-from\-code=" from-encoding
+.BI \-\-from\-code= from-encoding
+.TQ
+.BI \-f\~ from-encoding
 Use
 .I from-encoding
 for input characters.
 .TP
-.BI \-t " to-encoding" "\fR, \fP\-\-to\-code=" to-encoding
+.BI \-\-to\-code= to-encoding
+.TQ
+.BI \-t\~ to-encoding
 Use
 .I to-encoding
 for output characters.
@@ -62,42 +66,42 @@ looking characters.
 Characters that are outside of the target character set and cannot be
 transliterated are replaced with a question mark (?) in the output.
 .TP
-.B \-l
-.TQ
 .B \-\-list
+.TQ
+.B \-l
 List all known character set encodings.
 .TP
 .B \-c
 Silently discard characters that cannot be converted instead of
 terminating when encountering such characters.
 .TP
-.BI \-o\~ outputfile
-.TQ
 .BI \-\-output= outputfile
+.TQ
+.BI \-o\~ outputfile
 Use
 .I outputfile
 for output.
 .TP
-.B \-s
-.TQ
 .B \-\-silent
+.TQ
+.B \-s
 This option is ignored; it is provided only for compatibility.
 .TP
 .B \-\-verbose
 Print progress information on standard error when processing
 multiple files.
 .TP
-.B \-?
-.TQ
 .B \-\-help
+.TQ
+.B \-?
 Print a usage summary and exit.
 .TP
 .B \-\-usage
 Print a short usage summary and exit.
 .TP
-.B \-V
-.TQ
 .B \-\-version
+.TQ
+.B \-V
 Print the version number, license, and disclaimer of warranty for
 .BR iconv .
 .SH EXIT STATUS
@@ -165,7 +169,7 @@ Usual system default gconv module configuration file.
 .TP
 .I /usr/lib/gconv/gconv\-modules.cache
 Usual system gconv module configuration cache.
-.PP
+.P
 Depending on the architecture,
 the above files may instead be located at directories with the path prefix
 .IR /usr/lib64 .
@@ -175,16 +179,16 @@ POSIX.1-2008.
 POSIX.1-2001.
 .SH EXAMPLES
 Convert text from the ISO 8859-15 character encoding to UTF-8:
-.PP
+.P
 .in +4n
 .EX
 $ \fBiconv \-f ISO\-8859\-15 \-t UTF\-8 < input.txt > output.txt\fP
 .EE
 .in
-.PP
+.P
 The next example converts from UTF-8 to ASCII, transliterating when
 possible:
-.PP
+.P
 .in +4n
 .EX
 $ \fBecho abc ß α € àḃç | iconv \-f UTF\-8 \-t ASCII//TRANSLIT\fP

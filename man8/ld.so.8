@@ -15,7 +15,7 @@ to the dynamic linker can be passed and, in the ELF case, the dynamic linker
 which is stored in the
 .B .interp
 section of the program is executed) or directly by running:
-.PP
+.P
 .I /lib/ld\-linux.so.*
 [OPTIONS] [PROGRAM [ARGUMENTS]]
 .SH DESCRIPTION
@@ -25,14 +25,14 @@ and
 .B ld\-linux.so*
 find and load the shared objects (shared libraries) needed by a program,
 prepare the program to run, and then run it.
-.PP
+.P
 Linux binaries require dynamic linking (linking at run time)
 unless the
 .B \-static
 option was given to
 .BR ld (1)
 during compilation.
-.PP
+.P
 The program
 .B ld.so
 handles a.out binaries, a binary format used long ago.
@@ -46,7 +46,7 @@ support files and programs
 .BR ldconfig (8),
 and
 .IR /etc/ld.so.conf ).
-.PP
+.P
 When resolving shared object dependencies,
 the dynamic linker first inspects each dependency
 string to see if it contains a slash (this can occur if
@@ -54,7 +54,7 @@ a shared object pathname containing slashes was specified at link time).
 If a slash is found, then the dependency string is interpreted as
 a (relative or absolute) pathname,
 and the shared object is loaded using that pathname.
-.PP
+.P
 If a shared object dependency does not contain a slash,
 then it is searched for in the following order:
 .IP (1) 5
@@ -132,7 +132,7 @@ in the filename arguments to the
 and
 .BR dlmopen (3)
 functions.
-.PP
+.P
 The substituted tokens are as follows:
 .TP
 .IR $ORIGIN " (or equivalently " ${ORIGIN} )
@@ -187,7 +187,7 @@ value in the auxiliary vector (see
 .\"
 .\" ld.so lets names be abbreviated, so $O will work for $ORIGIN;
 .\" Don't do this!!
-.PP
+.P
 Note that the dynamic string tokens have to be quoted properly when
 set from a shell,
 to prevent their expansion as shell or environment variables.
@@ -207,6 +207,14 @@ as auditors.
 The objects in
 .I list
 are delimited by colons.
+.TP
+.BI \-\-glibc-hwcaps-mask " list"
+only search built-in subdirectories if in
+.IR list .
+.TP
+.BI \-\-glibc-hwcaps-prepend " list"
+Search glibc-hwcaps subdirectories in
+.IR list .
 .TP
 .B \-\-inhibit\-cache
 Do not use
@@ -310,7 +318,7 @@ Other environment variables treated in this way include:
 .BR TMPDIR ,
 and
 .BR TZDIR .
-.PP
+.P
 A binary is executed in secure-execution mode if the
 .B AT_SECURE
 entry in the auxiliary vector (see
@@ -478,7 +486,7 @@ If set (to any value), causes the program to list its dynamic
 dependencies, as if run by
 .BR ldd (1),
 instead of running normally.
-.PP
+.P
 Then there are lots of more or less obscure variables,
 many obsolete or only for internal use.
 .TP
@@ -808,7 +816,7 @@ as a temporary workaround to a library misconfiguration issue.)
 .I lib*.so*
 shared objects
 .SH NOTES
-.SS Hardware capabilities
+.SS Legacy Hardware capabilities (from glibc 2.5 to glibc 2.37)
 Some shared objects are compiled using hardware-specific instructions which do
 not exist on every CPU.
 Such objects should be installed in directories whose names define the
@@ -843,6 +851,65 @@ z900, z990, z9-109, z10, zarch
 .B x86 (32-bit only)
 acpi, apic, clflush, cmov, cx8, dts, fxsr, ht, i386, i486, i586, i686, mca, mmx,
 mtrr, pat, pbe, pge, pn, pse36, sep, ss, sse, sse2, tm
+.P
+The legacy hardware capabilities support has the drawback that
+each new feature added grows the search path exponentially,
+because it has to be added to
+every combination of the other existing features.
+.P
+For instance, on x86 32-bit,
+if the hardware supports
+.B i686
+and
+.BR sse2 ,
+the resulting search path will be
+.BR i686/sse2:i686:sse2:. .
+A new capability
+.B newcap
+will set the search path to
+.BR newcap/i686/sse2:newcap/i686:newcap/sse2:newcap:i686/sse2:i686:sse2: .
+.\"
+.SS glibc Hardware capabilities (from glibc 2.33)
+.TP
+.\" The initial discussion on various pitfalls of the old scheme is
+.\" <https://sourceware.org/pipermail/libc-alpha/2020-May/113757.html>
+.\" and the patchset that proposes the glibc-hwcap support is
+.\" <https://sourceware.org/pipermail/libc-alpha/2020-June/115250.html>
+glibc 2.33 added a new hardware capability scheme,
+where under each CPU architecture,
+certain levels can be defined,
+grouping support for certain features or special instructions.
+Each architecture level has
+a fixed set of paths that it adds to the dynamic linker search list,
+depending on the hardware of the machine.
+Since each new architecture level is
+not combined with previously existing ones,
+the new scheme does not have the drawback of
+growing the dynamic linker search list uncontrollably.
+.P
+For instance, on x86 64-bit,
+if the hardware supports
+.B x86_64-v3
+(for instance Intel Haswell or AMD Excavator),
+the resulting search path will be
+.BR glibc-hwcaps/x86-64-v3:glibc-hwcaps/x86-64-v2:.
+.\" The x86_64 architectures levels are defined the official ABI:
+.\" <https://gitlab.com/x86-psABIs/x86-64-ABI/-/blob/master/x86-64-ABI/low-level-sys-info.tex>
+.\" The PowerPC and s390x are glibc defined ones based on chip
+.\" support (which maps to ISA levels).
+The following paths are currently supported, in priority order.
+.TP
+.B PowerPC (64-bit little-endian only)
+power10, power9
+.TP
+.B s390 (64-bit only)
+z16, z15, z14, z13
+.TP
+.B x86 (64-bit only)
+x86-64-v4, x86-64-v3, x86-64-v2
+.P
+glibc 2.37 removed support for the legacy hardware capabilities.
+.\"
 .SH SEE ALSO
 .BR ld (1),
 .BR ldd (1),
