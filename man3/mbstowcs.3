@@ -20,23 +20,21 @@ Standard C library
 .nf
 .B #include <stdlib.h>
 .P
-.BI "size_t mbstowcs(wchar_t " dest "[restrict ." n "], \
+.BI "size_t mbstowcs(wchar_t " dest "[restrict ." dsize "], \
 const char *restrict " src ,
-.BI "                size_t " n );
+.BI "                size_t " dsize );
 .fi
 .SH DESCRIPTION
 If
 .I dest
 is not NULL,
-the
-.BR mbstowcs ()
-function converts the
+convert the
 multibyte string
 .I src
 to a wide-character string starting at
 .IR dest .
 At most
-.I n
+.I dsize
 wide characters are written to
 .IR dest .
 The sequence of characters in the string
@@ -49,7 +47,7 @@ In this case,
 .I (size_t)\ \-1
 is returned.
 .IP \[bu]
-.I n
+.I dsize
 non-L\[aq]\e0\[aq] wide characters have been stored at
 .IR dest .
 In this case, the number of wide characters written to
@@ -63,29 +61,27 @@ In this case, the number of wide characters written to
 .IR dest ,
 excluding the terminating null wide character, is returned.
 .P
-The programmer must ensure that there is room for at least
-.I n
-wide
-characters at
-.IR dest .
-.P
 If
 .I dest
 is NULL,
-.I n
+.I dsize
 is ignored, and the conversion proceeds as
 above, except that the converted wide characters are not written out to memory,
 and that no length limit exists.
 .P
 In order to avoid the case 2 above, the programmer should make sure
-.I n
+.I dsize
 is
 greater than or equal to
 .IR "mbstowcs(NULL,src,0)+1" .
+.P
+The programmer must ensure that there is room for at least
+.I dsize
+wide
+characters at
+.IR dest .
 .SH RETURN VALUE
-The
-.BR mbstowcs ()
-function returns the number of wide characters that make
+The number of wide characters that make
 up the converted part of the wide-character string, not including the
 terminating null wide character.
 If an invalid multibyte sequence was

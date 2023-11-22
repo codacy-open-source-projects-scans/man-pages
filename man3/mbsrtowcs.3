@@ -11,7 +11,7 @@
 .\"
 .TH mbsrtowcs 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-mbsrtowcs \- convert a multibyte string to a wide-character string
+mbsrtowcs \- convert a multibyte string to a wide-character string (restartable)
 .SH LIBRARY
 Standard C library
 .RI ( libc ", " \-lc )
@@ -19,21 +19,20 @@ Standard C library
 .nf
 .B #include <wchar.h>
 .P
-.BI "size_t mbsrtowcs(wchar_t " dest "[restrict ." len "], const char **restrict " src ,
-.BI "                 size_t " len ", mbstate_t *restrict " ps );
+.BI "size_t mbsrtowcs(wchar_t " dest "[restrict ." dsize "], const char **restrict " src ,
+.BI "                 size_t " dsize ", mbstate_t *restrict " ps );
 .fi
 .SH DESCRIPTION
 If
 .I dest
-is not NULL, the
-.BR mbsrtowcs ()
-function converts the
+is not NULL,
+convert the
 multibyte string
 .I *src
 to a wide-character string starting at
 .IR dest .
 At most
-.I len
+.I dsize
 wide characters are written to
 .IR dest .
 The shift state
@@ -63,7 +62,7 @@ and
 is set to
 .BR EILSEQ .
 .IP \[bu]
-.I len
+.I dsize
 non-L\[aq]\e0\[aq] wide characters have been stored at
 .IR dest .
 In this case,
@@ -90,7 +89,7 @@ excluding the terminating null wide character, is returned.
 If
 .I dest
 is NULL,
-.I len
+.I dsize
 is ignored,
 and the conversion proceeds as above,
 except that the converted wide characters are not written out to memory,
@@ -104,15 +103,22 @@ state known only to the
 .BR mbsrtowcs ()
 function is used instead.
 .P
+In order to avoid the case 2 above, the programmer should make sure
+.I dsize
+is
+greater than or equal to
+.IR "mbsrtowcs(NULL,src,0,ps)+1" .
+.P
 The programmer must ensure that there is room for at least
-.I len
+.I dsize
 wide
 characters at
 .IR dest .
+.P
+This function is a restartable version of
+.BR mbstowcs (3).
 .SH RETURN VALUE
-The
-.BR mbsrtowcs ()
-function returns the number of wide characters that make
+The number of wide characters that make
 up the converted part of the wide-character string, not including the
 terminating null wide character.
 If an invalid multibyte sequence was
