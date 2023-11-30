@@ -5,7 +5,10 @@
 .\"
 .TH strncat 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-strncat \- concatenate a null-padded character sequence into a string
+strncat
+\-
+append non-null bytes from a source array to a string,
+and null-terminate the result
 .SH LIBRARY
 Standard C library
 .RI ( libc ", " \-lc )
@@ -13,31 +16,31 @@ Standard C library
 .nf
 .B #include <string.h>
 .P
-.BI "char *strncat(char *restrict " dst ", const char " src "[restrict ." sz ],
-.BI "               size_t " sz );
+.BI "char *strncat(char *restrict " dst ", const char " src "[restrict ." ssize ],
+.BI "              size_t " ssize );
 .fi
 .SH DESCRIPTION
-This function catenates the input character sequence
-contained in a null-padded fixed-width buffer,
-into a string at the buffer pointed to by
+This function appends at most
+.I ssize
+non-null bytes from the array pointed to by
+.I src
+to the end of the string pointed to by
 .IR dst .
-The programmer is responsible for allocating a destination buffer large enough,
-that is,
-.IR "strlen(dst) + strnlen(src, sz) + 1" .
+.I dst
+must point to a string contained in a buffer that is large enough,
+that is, the buffer size must be at least
+.IR "strlen(dst) + strnlen(src, ssize) + 1" .
 .P
 An implementation of this function might be:
 .P
 .in +4n
 .EX
 char *
-strncat(char *restrict dst, const char *restrict src, size_t sz)
+strncat(char *restrict dst, const char *restrict src, size_t ssize)
 {
-    int   len;
     char  *p;
 \&
-    len = strnlen(src, sz);
-    p = dst + strlen(dst);
-    p = mempcpy(p, src, len);
+    p = mempcpy(dst + strlen(dst), src, strnlen(src, ssize));
     *p = \[aq]\e0\[aq];
 \&
     return dst;
@@ -67,11 +70,12 @@ C11, POSIX.1-2008.
 .SH HISTORY
 POSIX.1-2001, C89, SVr4, 4.3BSD.
 .SH CAVEATS
-The name of this function is confusing.
-This function has no relation to
+The name of this function is confusing;
+it has no relation to
 .BR strncpy (3).
 .P
-If the destination buffer is not large enough,
+If the destination buffer does not already contain a string,
+or is not large enough,
 the behavior is undefined.
 See
 .B _FORTIFY_SOURCE
@@ -96,9 +100,9 @@ Shlemiel the painter
 int
 main(void)
 {
-    size_t  maxsize;
+    size_t  n;
 \&
-    // Null-padded fixed-width character sequences
+    // Null-padded fixed-size character sequences
     char    pre[4] = "pre.";
     char    new_post[50] = ".foo.bar";
 \&
@@ -107,9 +111,8 @@ main(void)
     char    src[] = "some_long_body.post";
     char    *dest;
 \&
-    maxsize = nitems(pre) + strlen(src) \- strlen(post) +
-              nitems(new_post) + 1;
-    dest = malloc(sizeof(*dest) * maxsize);
+    n = nitems(pre) + strlen(src) \- strlen(post) + nitems(new_post) + 1;
+    dest = malloc(sizeof(*dest) * n);
     if (dest == NULL)
         err(EXIT_FAILURE, "malloc()");
 \&
@@ -127,4 +130,4 @@ main(void)
 .in
 .SH SEE ALSO
 .BR string (3),
-.BR string_copying (3)
+.BR string_copying (7)
