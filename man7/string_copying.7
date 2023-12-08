@@ -7,14 +7,12 @@
 .SH NAME
 stpcpy,
 strcpy, strcat,
-strtcpy,
 stpecpy,
+strtcpy,
 strlcpy, strlcat,
 stpncpy,
 strncpy,
-zustr2ustp, zustr2stp,
-strncat,
-ustpcpy, ustr2stp
+strncat
 \- copying strings and character sequences
 .\" ----- SYNOPSIS :: -------------------------------------------------/
 .SH SYNOPSIS
@@ -45,7 +43,7 @@ const char *restrict " src ,
 .\" ----- SYNOPSIS :: Null-padded character sequences --------/
 .SS Null-padded character sequences
 .nf
-// Fill a fixed-width buffer with characters from a string
+// Fill a fixed-size buffer with characters from a string
 // and pad with null bytes.
 .BI "char *strncpy(char " dst "[restrict ." dsize "], \
 const char *restrict " src ,
@@ -55,31 +53,25 @@ const char *restrict " src ,
 .BI "               size_t " dsize );
 .P
 // Chain-copy a null-padded character sequence into a character sequence.
-.BI "char *zustr2ustp(char *restrict " dst ", \
-const char " src "[restrict ." ssize ],
-.BI "               size_t " ssize );
+.I mempcpy(dst, src, strnlen(src, NITEMS(src)));
 .P
 // Chain-copy a null-padded character sequence into a string.
-.BI "char *zustr2stp(char *restrict " dst ", \
-const char " src "[restrict ." ssize ],
-.BI "               size_t " ssize );
+.I stpcpy(mempcpy(dst, src, strnlen(src, NITEMS(src))), \[dq]\[dq]);
 .P
 // Catenate a null-padded character sequence into a string.
 .BI "char *strncat(char *restrict " dst ", const char " src "[restrict ." ssize ],
 .BI "               size_t " ssize );
 .fi
-.\" ----- SYNOPSIS :: Measured character sequences --------------------/
-.SS Measured character sequences
+.\" ----- SYNOPSIS :: Known-length character sequences --------------------/
+.SS Known-length character sequences
 .nf
-// Chain-copy a measured character sequence.
-.BI "char *ustpcpy(char *restrict " dst ", \
-const char " src "[restrict ." len ],
+// Chain-copy a known-length character sequence.
+.BI "void *mempcpy(void " dst "[restrict ." len "], \
+const void " src "[restrict ." len ],
 .BI "               size_t " len );
 .P
-// Chain-copy a measured character sequence into a string.
-.BI "char *ustr2stp(char *restrict " dst ", \
-const char " src "[restrict ." len ],
-.BI "               size_t " len );
+// Chain-copy a known-length character sequence into a string.
+.I stpcpy(mempcpy(dst, src, len), \[dq]\[dq]);
 .fi
 .SH DESCRIPTION
 .\" ----- DESCRIPTION :: Terms (and abbreviations) :: -----------------/
@@ -87,7 +79,7 @@ const char " src "[restrict ." len ],
 .\" ----- DESCRIPTION :: Terms (and abbreviations) :: string (str) ----/
 .TP
 .IR "string " ( str )
-is a sequence of zero or more non-null characters followed by a null byte.
+is a sequence of zero or more non-null characters followed by a null character.
 .\" ----- DESCRIPTION :: Terms (and abbreviations) :: null-padded character seq
 .TP
 .I character sequence
@@ -97,25 +89,21 @@ However, with appropriate care,
 a string can be used in the place of a character sequence.
 .RS
 .TP
-.IR "null-padded character sequence " ( zustr )
-Character sequences can be contained in fixed-width buffers,
+.I null-padded character sequence
+Character sequences can be contained in fixed-size buffers,
 which contain padding null bytes after the character sequence,
 to fill the rest of the buffer
 without affecting the character sequence;
 however, those padding null bytes are not part of the character sequence.
-.I zustr
-stands for Zero-padded Unterminated STRing.
-Don't confuse zero-padded with null-terminated:
-zero-padded means 0 or more padding zeros (null characters),
+Don't confuse null-padded with null-terminated:
+null-padded means 0 or more padding null bytes,
 while null-terminated means exactly 1 terminating null character.
-.\" ----- DESCRIPTION :: Terms (and abbreviations) :: measured character sequence
+.\" ----- DESCRIPTION :: Terms (and abbreviations) :: known-length character sequence
 .TP
-.IR "measured character sequence " ( ustr )
+.I known-length character sequence
 Character sequence delimited by its length.
 It may be a slice of a larger character sequence,
 or even of a string.
-.I ustr
-stands for Unterminated STRing.
 .RE
 .\" ----- DESCRIPTION :: Terms (and abbreviations) :: length (len) ----/
 .TP
@@ -124,7 +112,7 @@ is the number of non-null characters in a string or character sequence.
 It is the return value of
 .I strlen(str)
 and of
-.IR "strnlen(ustr, size)" .
+.IR "strnlen(buf, size)" .
 .\" ----- DESCRIPTION :: Terms (and abbreviations) :: size ------------/
 .TP
 .I size
@@ -149,7 +137,7 @@ the writing starts at the first element pointed to by
 .TP
 .I catenate
 This term is used when
-a function first finds the terminating null byte in
+a function first finds the terminating null character in
 .IR dst ,
 and then starts writing at that position.
 .\" ----- DESCRIPTION :: Terms (and abbreviations) :: chain -----------/
@@ -157,12 +145,12 @@ and then starts writing at that position.
 .I chain
 This term is used when
 it's the programmer who provides
-a pointer to the terminating null byte in the string
+a pointer to the terminating null character in the string
 .I dst
 (or one after the last character in a character sequence),
 and the function starts writing at that location.
 The function returns
-a pointer to the new location of the terminating null byte
+a pointer to the new location of the terminating null character
 (or one after the last character in a character sequence)
 after the call,
 so that the programmer can use it to chain such calls.
@@ -174,7 +162,7 @@ However, newer functions that copy while allowing chaining
 cover both use cases with a single API.
 They are also algorithmically faster,
 since they don't need to search for
-the terminating null byte of the existing string.
+the terminating null character of the existing string.
 However, functions that catenate have a much simpler use,
 so if performance is not important,
 it can make sense to use them for improving readability.
@@ -227,9 +215,9 @@ it makes sense to truncate.
 .P
 Functions that truncate:
 .IP \[bu] 3
-.BR stpecpy (3)
+.BR stpecpy ()
 .IP \[bu]
-.BR strtcpy (3)
+.BR strtcpy ()
 .IP \[bu]
 .BR strlcpy (3bsd)
 and
@@ -249,7 +237,7 @@ such as
 .BR utmpx (5)
 and
 .BR tar (1),
-use null-padded character sequences in fixed-width buffers.
+use null-padded character sequences in fixed-size buffers.
 To interface with them,
 specialized functions need to be used.
 .P
@@ -258,20 +246,15 @@ To copy bytes from strings into these buffers, use
 or
 .BR stpncpy (3).
 .P
-To copy from an unterminated string within a fixed-width buffer into a string,
-ignoring any trailing null bytes in the source fixed-width buffer,
-you should use
-.BR zustr2stp (3)
-or
-.BR strncat (3).
-.P
-To copy from an unterminated string within a fixed-width buffer
-into a character sequence,
-ignoring any trailing null bytes in the source fixed-width buffer,
-you should use
-.BR zustr2ustp (3).
-.\" ----- DESCRIPTION :: Measured character sequences -----------------/
-.SS Measured character sequences
+To read a null-padded character sequence,
+use
+.IR "strnlen(src,\ NITEMS(src))" ,
+and then you can treat it as a known-length character sequence;
+or use
+.BR strncat (3)
+directly.
+.\" ----- DESCRIPTION :: Known-length character sequences -----------------/
+.SS Known-length character sequences
 The simplest character sequence copying function is
 .BR mempcpy (3).
 It requires always knowing the length of your character sequences,
@@ -281,15 +264,8 @@ since you always know the length of your character sequences,
 and can do the minimal copies and length measurements.
 .BR mempcpy (3)
 copies character sequences,
-so you need to explicitly set the terminating null byte if you need a string.
-.P
-However,
-for keeping type safety,
-it's good to add a wrapper that uses
-.I char\~*
-instead of
-.IR void\~* :
-.BR ustpcpy (3).
+so you need to explicitly set the terminating null character
+if you need a string.
 .P
 In programs that make considerable use of strings or character sequences,
 and need the best performance,
@@ -304,16 +280,18 @@ C library APIs use strings,
 so programs that use character sequences
 will have to take care of differentiating strings from character sequences.
 .P
-To copy a measured character sequence, use
-.BR ustpcpy (3).
+To copy a known-length character sequence, use
+.BR mempcpy (3).
 .P
-To copy a measured character sequence into a string, use
-.BR ustr2stp (3).
+To copy a known-length character sequence into a string, use
+.IR "\%stpcpy(mempcpy(dst,\ src,\ len),\ \[dq]\[dq])" .
 .P
 A string is also accepted as input,
-because these functions ask for the length,
+because
+.BR mempcpy (3)
+asks for the length,
 and a string is composed of a character sequence of the same length
-plus a terminating null byte.
+plus a terminating null character.
 .\" ----- DESCRIPTION :: String vs character sequence -----------------/
 .SS String vs character sequence
 Some functions only operate on strings.
@@ -334,9 +312,9 @@ List of functions:
 .BR strcpy (3),
 .BR strcat (3)
 .IP \[bu]
-.BR strtcpy (3)
+.BR stpecpy ()
 .IP \[bu]
-.BR stpecpy (3)
+.BR strtcpy ()
 .IP \[bu]
 .BR strlcpy (3bsd),
 .BR strlcat (3bsd)
@@ -364,23 +342,13 @@ holds a string before the call.
 has an even more misleading name than the functions above.
 List of functions:
 .IP \[bu] 3
-.PD 0
-.BR zustr2stp (3)
-.IP \[bu]
 .BR strncat (3)
-.IP \[bu]
-.BR ustr2stp (3)
-.PD
 .P
 Other functions operate on an input character sequence
 to create an output character sequence.
 List of functions:
 .IP \[bu] 3
-.PD 0
-.BR ustpcpy (3)
-.IP \[bu]
-.BR zustr2stp (3)
-.PD
+.BR mempcpy (3)
 .\" ----- DESCRIPTION :: Functions :: ---------------------------------/
 .SS Functions
 .\" ----- DESCRIPTION :: Functions :: stpcpy(3) -----------------------/
@@ -400,21 +368,9 @@ The return value is useless.
 .IP
 .BR stpcpy (3)
 is a faster alternative to these functions.
-.\" ----- DESCRIPTION :: Functions :: strtcpy(3) ----------------------/
+.\" ----- DESCRIPTION :: Functions :: stpecpy() -----------------------/
 .TP
-.BR strtcpy (3)
-Copy the input string into a destination string.
-If the destination buffer isn't large enough to hold the copy,
-the resulting string is truncated
-(but it is guaranteed to be null-terminated).
-It returns the length of the string,
-or \-1 if it truncated.
-.IP
-This function is not provided by any library;
-see EXAMPLES for a reference implementation.
-.\" ----- DESCRIPTION :: Functions :: stpecpy(3) ----------------------/
-.TP
-.BR stpecpy (3)
+.BR stpecpy ()
 Chain-copy the input string into a destination string.
 If the destination buffer,
 limited by a pointer to its end,
@@ -423,6 +379,18 @@ the resulting string is truncated
 (but it is guaranteed to be null-terminated).
 It returns a pointer suitable for chaining.
 Truncation needs to be detected only once after the last chained call.
+.IP
+This function is not provided by any library;
+see EXAMPLES for a reference implementation.
+.\" ----- DESCRIPTION :: Functions :: strtcpy() -----------------------/
+.TP
+.BR strtcpy ()
+Copy the input string into a destination string.
+If the destination buffer isn't large enough to hold the copy,
+the resulting string is truncated
+(but it is guaranteed to be null-terminated).
+It returns the length of the string,
+or \-1 if it truncated.
 .IP
 This function is not provided by any library;
 see EXAMPLES for a reference implementation.
@@ -441,21 +409,21 @@ They return the length of the total string they tried to create.
 .IP
 Check BUGS before using these functions.
 .IP
-.BR strtcpy (3)
+.BR strtcpy ()
 and
-.BR stpecpy (3)
+.BR stpecpy ()
 are better alternatives to these functions.
 .\" ----- DESCRIPTION :: Functions :: stpncpy(3) ----------------------/
 .TP
 .BR stpncpy (3)
 Copy the input string into
-a destination null-padded character sequence in a fixed-width buffer.
+a destination null-padded character sequence in a fixed-size buffer.
 If the destination buffer,
 limited by its size,
 isn't large enough to hold the copy,
 the resulting character sequence is truncated.
 Since it creates a character sequence,
-it doesn't need to write a terminating null byte.
+it doesn't need to write a terminating null character.
 It's impossible to distinguish truncation by the result of the call,
 from a character sequence that just fits the destination buffer;
 truncation should be detected by
@@ -470,41 +438,11 @@ except for the useless return value.
 .IP
 .BR stpncpy (3)
 is a more useful alternative to this function.
-.\" ----- DESCRIPTION :: Functions :: zustr2ustp(3) --------------------/
-.TP
-.BR zustr2ustp (3)
-Copy the input character sequence,
-contained in a null-padded fixed-width buffer,
-into a destination character sequence.
-The programmer is responsible for allocating a buffer large enough.
-It returns a pointer suitable for chaining.
-.IP
-A truncating version of this function doesn't exist,
-since the size of the original character sequence is always known,
-so it wouldn't be very useful.
-.IP
-This function is not provided by any library;
-see EXAMPLES for a reference implementation.
-.\" ----- DESCRIPTION :: Functions :: zustr2stp(3) --------------------/
-.TP
-.BR zustr2stp (3)
-Copy the input character sequence,
-contained in a null-padded fixed-width buffer,
-into a destination string.
-The programmer is responsible for allocating a buffer large enough.
-It returns a pointer suitable for chaining.
-.IP
-A truncating version of this function doesn't exist,
-since the size of the original character sequence is always known,
-so it wouldn't be very useful.
-.IP
-This function is not provided by any library;
-see EXAMPLES for a reference implementation.
 .\" ----- DESCRIPTION :: Functions :: strncat(3) ----------------------/
 .TP
 .BR strncat (3)
 Catenate the input character sequence,
-contained in a null-padded fixed-width buffer,
+contained in a null-padded fixed-size buffer,
 into a destination string.
 The programmer is responsible for allocating a buffer large enough.
 The return value is useless.
@@ -513,60 +451,35 @@ Do not confuse this function with
 .BR strncpy (3);
 they are not related at all.
 .IP
-.BR zustr2stp (3)
+.I \%stpcpy(mempcpy(dst,\ src,\ strnlen(src,\ NITEMS(src))),\ \[dq]\[dq])
 is a faster alternative to this function.
-.\" ----- DESCRIPTION :: Functions :: ustpcpy(3) ----------------------/
+.\" ----- DESCRIPTION :: Functions :: mempcpy(3) ----------------------/
 .TP
-.BR ustpcpy (3)
+.BR mempcpy (3)
 Copy the input character sequence,
 limited by its length,
 into a destination character sequence.
 The programmer is responsible for allocating a buffer large enough.
 It returns a pointer suitable for chaining.
-.IP
-This function is not provided by any library;
-see EXAMPLES for a reference implementation.
-.\" ----- DESCRIPTION :: Functions :: ustr2stp(3) ---------------------/
-.TP
-.BR ustr2stp (3)
-Copy the input character sequence,
-limited by its length,
-into a destination string.
-The programmer is responsible for allocating a buffer large enough.
-It returns a pointer suitable for chaining.
-.IP
-This function is not provided by any library;
-see EXAMPLES for a reference implementation.
 .\" ----- RETURN VALUE :: ---------------------------------------------/
 .SH RETURN VALUE
 .TP
 .BR stpcpy (3)
-.TQ
-.BR ustr2stp (3)
-.TQ
-.BR zustr2stp (3)
-A pointer to the terminating null byte in the destination string.
+A pointer to the terminating null character in the destination string.
 .TP
-.BR stpecpy (3)
-A pointer to the terminating null byte in the destination string,
+.BR stpecpy ()
+A pointer to the terminating null character in the destination string,
 except when truncation occurs;
 if truncation occurs,
 it returns a pointer to the end of the destination buffer.
 .TP
-.BR stpncpy (3)
-A pointer to one after the last character
-in the destination character sequence;
-if truncation occurs,
-that pointer is equivalent to
-a pointer to the end of the destination buffer.
-.TP
-.BR zustr2ustp (3)
+.BR mempcpy (3)
 .TQ
-.BR ustpcpy (3)
+.BR stpncpy (3)
 A pointer to one after the last character
 in the destination character sequence.
 .TP
-.BR strtcpy (3)
+.BR strtcpy ()
 The length of the string.
 When truncation occurs, it returns \-1.
 When
@@ -597,7 +510,7 @@ which is useless.
 The Linux kernel has an internal function for copying strings,
 .BR strscpy (9),
 which is identical to
-.BR strtcpy (3),
+.BR strtcpy (),
 except that it returns
 .B \-E2BIG
 instead of \-1.
@@ -662,18 +575,9 @@ strcat(buf, "!");
 len = strlen(buf);
 puts(buf);
 .EE
-.\" ----- EXAMPLES :: strtcpy(3) --------------------------------------/
+.\" ----- EXAMPLES :: stpecpy() ---------------------------------------/
 .TP
-.BR strtcpy (3)
-.EX
-len = strtcpy(buf, "Hello world!", sizeof(buf));
-if (len == \-1)
-    goto toolong;
-puts(buf);
-.EE
-.\" ----- EXAMPLES :: stpecpy(3) --------------------------------------/
-.TP
-.BR stpecpy (3)
+.BR stpecpy ()
 .EX
 end = buf + sizeof(buf);
 p = buf;
@@ -685,6 +589,15 @@ if (p == end) {
     goto toolong;
 }
 len = p \- buf;
+puts(buf);
+.EE
+.\" ----- EXAMPLES :: strtcpy() ---------------------------------------/
+.TP
+.BR strtcpy ()
+.EX
+len = strtcpy(buf, "Hello world!", sizeof(buf));
+if (len == \-1)
+    goto toolong;
 puts(buf);
 .EE
 .\" ----- EXAMPLES :: strlcpy(3bsd), strlcat(3bsd) --------------------/
@@ -706,43 +619,42 @@ puts(buf);
 .TP
 .BR stpncpy (3)
 .EX
-p = stpncpy(buf, "Hello world!", sizeof(buf));
-if (sizeof(buf) < strlen("Hello world!"))
+p = stpncpy(u->ut_user, "alx", sizeof(u->ut_user));
+if (sizeof(u->ut_user) < strlen("alx"))
     goto toolong;
-len = p \- buf;
-for (size_t i = 0; i < sizeof(buf); i++)
-    putchar(buf[i]);
+len = p \- u->ut_user;
+for (size_t i = 0; i < sizeof(u->ut_user); i++)
+    putchar(u->ut_user[i]);
 .EE
 .\" ----- EXAMPLES :: strncpy(3) --------------------------------------/
 .TP
 .BR strncpy (3)
 .EX
-strncpy(buf, "Hello world!", sizeof(buf));
-if (sizeof(buf) < strlen("Hello world!"))
+strncpy(u->ut_user, "alx", sizeof(u->ut_user));
+if (sizeof(u->ut_user) < strlen("alx"))
     goto toolong;
-len = strnlen(buf, sizeof(buf));
-for (size_t i = 0; i < sizeof(buf); i++)
-    putchar(buf[i]);
+len = strnlen(u->ut_user, sizeof(u->ut_user));
+for (size_t i = 0; i < sizeof(u->ut_user); i++)
+    putchar(u->ut_user[i]);
 .EE
-.\" ----- EXAMPLES :: zustr2ustp(3) -----------------------------------/
+.\" ----- EXAMPLES :: mempcpy(dst, src, strnlen(src, NITEMS(src))) ----/
 .TP
-.BR zustr2ustp (3)
+.I mempcpy(dst, src, strnlen(src, NITEMS(src)))
 .EX
+char  buf[NITEMS(u->ut_user)];
 p = buf;
-p = zustr2ustp(p, "Hello ", 6);
-p = zustr2ustp(p, "world", 42);  // Padding null bytes ignored.
-p = zustr2ustp(p, "!", 1);
+p = mempcpy(p, u->ut_user, strnlen(u->ut_user, NITEMS(u->ut_user)));
 len = p \- buf;
-printf("%.*s\en", (int) len, buf);
+fwrite(buf, 1, len, stdout);
 .EE
-.\" ----- EXAMPLES :: zustr2stp(3) ------------------------------------/
+.\" ----- EXAMPLES :: stpcpy(mempcpy(dst, src, strnlen(src, NITEMS(src))), "")
 .TP
-.BR zustr2stp (3)
+.I stpcpy(mempcpy(dst, src, strnlen(src, NITEMS(src))), \[dq]\[dq])
 .EX
+char  buf[NITEMS(u->ut_user) + 1];
 p = buf;
-p = zustr2stp(p, "Hello ", 6);
-p = zustr2stp(p, "world", 42);  // Padding null bytes ignored.
-p = zustr2stp(p, "!", 1);
+p = mempcpy(p, u->ut_user, strnlen(u->ut_user, NITEMS(u->ut_user)));
+p = stpcpy(p, "");
 len = p \- buf;
 puts(buf);
 .EE
@@ -750,32 +662,32 @@ puts(buf);
 .TP
 .BR strncat (3)
 .EX
-buf[0] = \[aq]\e0\[aq];  // There's no 'cpy' function to this 'cat'.
-strncat(buf, "Hello ", 6);
-strncat(buf, "world", 42);  // Padding null bytes ignored.
-strncat(buf, "!", 1);
+char  buf[NITEMS(u->ut_user) + 1];
+strcpy(buf, "");
+strncat(buf, u->ut_user, NITEMS(u->ut_user));
 len = strlen(buf);
 puts(buf);
 .EE
-.\" ----- EXAMPLES :: ustpcpy(3) --------------------------------------/
+.\" ----- EXAMPLES :: mempcpy(3) --------------------------------------/
 .TP
-.BR ustpcpy (3)
+.BR mempcpy (3)
 .EX
 p = buf;
-p = ustpcpy(p, "Hello ", 6);
-p = ustpcpy(p, "world", 5);
-p = ustpcpy(p, "!", 1);
+p = mempcpy(p, "Hello ", 6);
+p = mempcpy(p, "world", 5);
+p = mempcpy(p, "!", 1);
 len = p \- buf;
-printf("%.*s\en", (int) len, buf);
+fwrite(buf, 1, len, stdout);
 .EE
-.\" ----- EXAMPLES :: ustr2stp(3) -------------------------------------/
+.\" ----- EXAMPLES :: stpcpy(mempcpy(), "") ---------------------------/
 .TP
-.BR ustr2stp (3)
+.I stpcpy(mempcpy(dst, src, len), \[dq]\[dq])
 .EX
 p = buf;
-p = ustr2stp(p, "Hello ", 6);
-p = ustr2stp(p, "world", 5);
-p = ustr2stp(p, "!", 1);
+p = mempcpy(p, "Hello ", 6);
+p = mempcpy(p, "world", 5);
+p = mempcpy(p, "!", 1);
+p = stpcpy(p, "");
 len = p \- buf;
 puts(buf);
 .EE
@@ -787,12 +699,31 @@ Here are reference implementations for functions not provided by libc.
 .EX
 /* This code is in the public domain. */
 \&
-.\" ----- EXAMPLES :: Implementations :: strtcpy(3) -------------------/
+.\" ----- EXAMPLES :: Implementations :: stpecpy() --------------------/
+char *
+.IR stpecpy "(char *dst, char end[0], const char *restrict src)"
+{
+    bool    trunc;
+    size_t  dsize, dlen, slen;
+\&
+    if (dst == end)
+        return end;
+    if (dst == NULL)
+        return NULL;
+\&
+    dsize = end \- dst;
+    slen = strnlen(src, dsize);
+    trunc = (slen == dsize);
+    dlen = slen \- trunc;
+\&
+    return stpcpy(mempcpy(dst, src, dlen), "") + trunc;
+}
+\&
+.\" ----- EXAMPLES :: Implementations :: strtcpy() --------------------/
 ssize_t
 .IR strtcpy "(char *restrict dst, const char *restrict src, size_t dsize)"
 {
     bool    trunc;
-    char    *p;
     size_t  dlen, slen;
 \&
     if (dsize == 0)
@@ -802,71 +733,10 @@ ssize_t
     trunc = (slen == dsize);
     dlen = slen \- trunc;
 \&
-    p = mempcpy(dst, src, dlen);
-    *p = \[aq]\e0\[aq];
+    stpcpy(mempcpy(dst, src, dlen), "");
 
     return trunc ? \-1 : slen;
 }
-\&
-.\" ----- EXAMPLES :: Implementations :: stpecpy(3) -------------------/
-char *
-.IR stpecpy "(char *dst, char end[0], const char *restrict src)"
-{
-    char *p;
-\&
-    if (dst == NULL)
-        return NULL;
-    if (dst == end)
-        return end;
-\&
-    p = memccpy(dst, src, \[aq]\e0\[aq], end \- dst);
-    if (p != NULL)
-        return p \- 1;
-\&
-    /* truncation detected */
-    end[\-1] = \[aq]\e0\[aq];
-    return end;
-}
-\&
-.\" ----- EXAMPLES :: Implementations :: zustr2ustp(3) ----------------/
-char *
-.IR zustr2ustp "(char *restrict dst, const char *restrict src, size_t ssize)"
-{
-    return ustpcpy(dst, src, strnlen(src, ssize));
-}
-\&
-.\" ----- EXAMPLES :: Implementations :: zustr2stp(3) -----------------/
-char *
-.IR zustr2stp "(char *restrict dst, const char *restrict src, size_t ssize)"
-{
-    char  *p;
-\&
-    p = zustr2ustp(dst, src, ssize);
-    *p = \[aq]\e0\[aq];
-\&
-    return p;
-}
-\&
-.\" ----- EXAMPLES :: Implementations :: ustpcpy(3) -------------------/
-char *
-.IR ustpcpy "(char *restrict dst, const char *restrict src, size_t len)"
-{
-    return mempcpy(dst, src, len);
-}
-\&
-.\" ----- EXAMPLES :: Implementations :: ustr2stp(3) ------------------/
-char *
-.IR ustr2stp "(char *restrict dst, const char *restrict src, size_t len)"
-{
-    char  *p;
-\&
-    p = ustpcpy(dst, src, len);
-    *p = \[aq]\e0\[aq];
-\&
-    return p;
-}
-.EE
-.in
 .\" ----- SEE ALSO :: -------------------------------------------------/
 .SH SEE ALSO
 .BR bzero (3),

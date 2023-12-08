@@ -23,7 +23,8 @@ Standard C library
 This function appends at most
 .I ssize
 non-null bytes from the array pointed to by
-.I src
+.IR src ,
+followed by a null character,
 to the end of the string pointed to by
 .IR dst .
 .I dst
@@ -38,11 +39,9 @@ An implementation of this function might be:
 char *
 strncat(char *restrict dst, const char *restrict src, size_t ssize)
 {
-    char  *p;
+    #define strnul(s)  (s + strlen(s))
 \&
-    p = mempcpy(dst + strlen(dst), src, strnlen(src, ssize));
-    *p = \[aq]\e0\[aq];
-\&
+    stpcpy(mempcpy(strnul(dst), src, strnlen(src, ssize)), "");
     return dst;
 }
 .EE
