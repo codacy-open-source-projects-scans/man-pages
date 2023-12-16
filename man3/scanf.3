@@ -36,7 +36,7 @@ Feature Test Macro Requirements for glibc (see
 .SH DESCRIPTION
 The
 .BR scanf ()
-family of functions scans input like
+family of functions scans formatted input like
 .BR sscanf (3),
 but read from a
 .IR FILE .
@@ -136,6 +136,23 @@ T}	Thread safety	MT-Safe locale
 C11, POSIX.1-2008.
 .SH HISTORY
 C99, POSIX.1-2001.
+.SH CAVEATS
+These functions make it difficult to
+distinguish newlines from other white space,
+This is especially problematic with line-buffered input,
+like the standard input stream.
+.P
+These functions can't report errors after the last
+non-suppressed conversion specification.
+.SH BUGS
+It is impossible to accurately know
+how many characters these functions have consumed from the input stream,
+since they only report the number of successful conversions.
+For example,
+if the input is "123\en\ a",
+.I scanf(\[dq]%d\ %d\[dq], &a, &b)
+will consume the digits, the newline, and the space, but not the letter a.
+This makes it difficult to recover from invalid input.
 .SH SEE ALSO
 .BR fgets (3),
 .BR getline (3),
