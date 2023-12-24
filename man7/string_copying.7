@@ -469,9 +469,12 @@ A pointer to the terminating null character in the destination string.
 .TP
 .BR stpecpy ()
 A pointer to the terminating null character in the destination string,
-except when truncation occurs;
-if truncation occurs,
-it returns a pointer to the end of the destination buffer.
+on success.
+On error,
+NULL is returned,
+and
+.I errno
+is set to indicate the error.
 .TP
 .BR mempcpy (3)
 .TQ
@@ -480,13 +483,13 @@ A pointer to one after the last character
 in the destination character sequence.
 .TP
 .BR strtcpy ()
-The length of the string.
-When truncation occurs, it returns \-1.
-When
-.I dsize
-is
-.BR 0 ,
-it also returns \-1.
+The length of the string,
+on success.
+On error,
+\-1 is returned,
+and
+.I errno
+is set to indicate the error.
 .TP
 .BR strlcpy (3bsd)
 .TQ
@@ -505,6 +508,24 @@ The
 .I dst
 pointer,
 which is useless.
+.\" ----- ERRORS ------------------------------------------------------/
+.SH ERRORS
+Most of these functions don't set
+.IR errno .
+.TP
+.BR stpecpy ()
+.TQ
+.BR strtcpy ()
+.RS
+.TP
+.B ENOBUFS
+.I dsize
+was
+.BR 0 .
+.TP
+.B E2BIG
+The string has been truncated.
+.RE
 .\" ----- NOTES :: strscpy(9) -----------------------------------------/
 .SH NOTES
 The Linux kernel has an internal function for copying strings,
@@ -513,7 +534,9 @@ which is identical to
 .BR strtcpy (),
 except that it returns
 .B \-E2BIG
-instead of \-1.
+instead of \-1
+and it doesn't set
+.IR errno .
 .\" ----- CAVEATS :: --------------------------------------------------/
 .SH CAVEATS
 Don't mix chain calls to truncating and non-truncating functions.
@@ -579,13 +602,13 @@ puts(buf);
 .TP
 .BR stpecpy ()
 .EX
-end = buf + sizeof(buf);
+end = buf + NITEMS(buf);
 p = buf;
 p = stpecpy(p, end, "Hello ");
 p = stpecpy(p, end, "world");
 p = stpecpy(p, end, "!");
-if (p == end) {
-    p\-\-;
+if (p == NULL) {
+    len = NITEMS(buf) \- 1;
     goto toolong;
 }
 len = p \- buf;
@@ -595,7 +618,7 @@ puts(buf);
 .TP
 .BR strtcpy ()
 .EX
-len = strtcpy(buf, "Hello world!", sizeof(buf));
+len = strtcpy(buf, "Hello world!", NITEMS(buf));
 if (len == \-1)
     goto toolong;
 puts(buf);
@@ -606,12 +629,12 @@ puts(buf);
 .TQ
 .BR strlcat (3bsd)
 .EX
-if (strlcpy(buf, "Hello ", sizeof(buf)) >= sizeof(buf))
+if (strlcpy(buf, "Hello ", NITEMS(buf)) >= NITEMS(buf))
     goto toolong;
-if (strlcat(buf, "world", sizeof(buf)) >= sizeof(buf))
+if (strlcat(buf, "world", NITEMS(buf)) >= NITEMS(buf))
     goto toolong;
-len = strlcat(buf, "!", sizeof(buf));
-if (len >= sizeof(buf))
+len = strlcat(buf, "!", NITEMS(buf));
+if (len >= NITEMS(buf))
     goto toolong;
 puts(buf);
 .EE
@@ -619,23 +642,21 @@ puts(buf);
 .TP
 .BR stpncpy (3)
 .EX
-p = stpncpy(u->ut_user, "alx", sizeof(u->ut_user));
-if (sizeof(u->ut_user) < strlen("alx"))
+p = stpncpy(u->ut_user, "alx", NITEMS(u->ut_user));
+if (NITEMS(u->ut_user) < strlen("alx"))
     goto toolong;
 len = p \- u->ut_user;
-for (size_t i = 0; i < sizeof(u->ut_user); i++)
-    putchar(u->ut_user[i]);
+fwrite(u->ut_user, 1, len, stdout);
 .EE
 .\" ----- EXAMPLES :: strncpy(3) --------------------------------------/
 .TP
 .BR strncpy (3)
 .EX
-strncpy(u->ut_user, "alx", sizeof(u->ut_user));
-if (sizeof(u->ut_user) < strlen("alx"))
+strncpy(u->ut_user, "alx", NITEMS(u->ut_user));
+if (NITEMS(u->ut_user) < strlen("alx"))
     goto toolong;
-len = strnlen(u->ut_user, sizeof(u->ut_user));
-for (size_t i = 0; i < sizeof(u->ut_user); i++)
-    putchar(u->ut_user[i]);
+len = strnlen(u->ut_user, NITEMS(u->ut_user));
+fwrite(u->ut_user, 1, len, stdout);
 .EE
 .\" ----- EXAMPLES :: mempcpy(dst, src, strnlen(src, NITEMS(src))) ----/
 .TP
@@ -703,20 +724,13 @@ Here are reference implementations for functions not provided by libc.
 char *
 .IR stpecpy "(char *dst, char end[0], const char *restrict src)"
 {
-    bool    trunc;
-    size_t  dsize, dlen, slen;
+    size_t  dlen;
 \&
-    if (dst == end)
-        return end;
     if (dst == NULL)
         return NULL;
 \&
-    dsize = end \- dst;
-    slen = strnlen(src, dsize);
-    trunc = (slen == dsize);
-    dlen = slen \- trunc;
-\&
-    return stpcpy(mempcpy(dst, src, dlen), "") + trunc;
+    dlen = strtcpy(dst, src, end \- dst);
+    return (dlen == \-1) ? NULL : dst + dlen;
 }
 \&
 .\" ----- EXAMPLES :: Implementations :: strtcpy() --------------------/
@@ -726,15 +740,18 @@ ssize_t
     bool    trunc;
     size_t  dlen, slen;
 \&
-    if (dsize == 0)
+    if (dsize == 0) {
+        errno = ENOBUFS;
         return \-1;
+    }
 \&
     slen = strnlen(src, dsize);
     trunc = (slen == dsize);
     dlen = slen \- trunc;
 \&
     stpcpy(mempcpy(dst, src, dlen), "");
-
+    if (trunc)
+        errno = E2BIG;
     return trunc ? \-1 : slen;
 }
 .\" ----- SEE ALSO :: -------------------------------------------------/
