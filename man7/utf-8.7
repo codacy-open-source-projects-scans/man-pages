@@ -163,7 +163,8 @@ therefore all plaintext standard input and output, terminal
 communication, plaintext file content, filenames, and environment
 variables are encoded in UTF-8.
 .P
-Programmers accustomed to single-byte encodings such as US-ASCII or ISO 8859
+Programmers accustomed to single-byte encodings
+such as US-ASCII or ISO/IEC\~8859
 have to be aware that two assumptions made so far are no longer valid
 in UTF-8 locales.
 Firstly, a single byte does not necessarily correspond any
@@ -179,13 +180,13 @@ and
 .BR wcswidth (3)
 should be used today to count characters and cursor positions.
 .P
-The official ESC sequence to switch from an ISO 2022
+The official ESC sequence to switch from an ISO/IEC\~2022
 encoding scheme (as used for instance by VT100 terminals) to
 UTF-8 is ESC % G
 ("\ex1b%G").
 The corresponding return sequence from
-UTF-8 to ISO 2022 is ESC % @ ("\ex1b%@").
-Other ISO 2022 sequences (such as
+UTF-8 to ISO/IEC\~2022 is ESC % @ ("\ex1b%@").
+Other ISO/IEC\~2022 sequences (such as
 for switching the G0 and G1 sets) are not applicable in UTF-8 mode.
 .SS Security
 The Unicode and UCS standards require that producers of UTF-8

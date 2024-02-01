@@ -6,7 +6,7 @@
 .\" This is combined from many sources.
 .\" For Linux, the definitive source is of course console.c.
 .\" About vt100-like escape sequences in general there are
-.\" the ISO 6429 and ISO 2022 norms, the descriptions of
+.\" the ISO/IEC 6429 and ISO/IEC 2022 norms, the descriptions of
 .\" an actual vt100, and the xterm docs (ctlseqs.ms).
 .\" Substantial portions of this text are derived from a write-up
 .\" by Eric S. Raymond <esr@thyrsus.com>.
@@ -19,8 +19,9 @@
 .SH NAME
 console_codes \- Linux console escape and control sequences
 .SH DESCRIPTION
-The Linux console implements a large subset of the VT102 and ECMA-48/ISO
-6429/ANSI X3.64 terminal controls, plus certain private-mode sequences
+The Linux console implements a large subset of
+the VT102 and ECMA-48 / ISO/IEC\~6429 / ANSI X3.64 terminal controls,
+plus certain private-mode sequences
 for changing the color palette, character-set mapping, and so on.
 In the tabular descriptions below, the second column gives ECMA-48 or DEC
 mnemonics (the latter if prefixed with DEC) for the given function.
@@ -152,7 +153,7 @@ ESC 8	DECRC	T{
 Restore state most recently saved by ESC 7.
 T}
 ESC %		Start sequence selecting character set
-ESC % @		\0\0\0Select default (ISO 646 / ISO 8859-1)
+ESC % @		\0\0\0Select default (ISO/IEC\~646 / ISO/IEC\~8859-1)
 ESC % G		\0\0\0Select UTF-8
 ESC % 8		\0\0\0Select UTF-8 (obsolete)
 ESC # 8	DECALN	T{
@@ -163,7 +164,7 @@ Start sequence defining G0 character set
 (followed by one of B, 0, U, K, as below)
 T}
 ESC ( B		T{
-Select default (ISO 8859-1 mapping).
+Select default (ISO/IEC\~8859-1 mapping).
 T}
 ESC ( 0		T{
 Select VT100 graphics mapping.
