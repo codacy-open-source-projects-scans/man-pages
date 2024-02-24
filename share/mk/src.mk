@@ -1,17 +1,20 @@
-########################################################################
-# Copyright 2021-2023, Alejandro Colomar <alx@kernel.org>
-# SPDX-License-Identifier: GPL-3.0-or-later
-########################################################################
+# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
 ifndef MAKEFILE_SRC_INCLUDED
 MAKEFILE_SRC_INCLUDED := 1
 
 
-include $(MAKEFILEDIR)/cmd.mk
+include $(MAKEFILEDIR)/configure/build-depends/findutils.mk
+include $(MAKEFILEDIR)/configure/build-depends/grep.mk
+include $(MAKEFILEDIR)/configure/build-depends/sed.mk
+include $(MAKEFILEDIR)/configure/src.mk
 
 
-MANDIR := $(srcdir)
+SORTMAN := $(srcdir)/scripts/sortman
+
+
 MANEXT := \(\.[[:digit:]]\([[:alpha:]][[:alnum:]]*\)\?\>\|\.man\)\+\(\.man\|\.in\)*$
 
 
@@ -28,9 +31,6 @@ MANINTROPAGES := $(shell $(FIND) $(MANDIR)/* -type f \
 		| $(SED) 's,:,\\:,g')
 
 
-MANSECTIONS := $(patsubst $(MANDIR)/man%/, %, $(wildcard $(MANDIR)/man*/))
-
-
 $(foreach s, $(MANSECTIONS),                                                  \
 	$(eval MAN$(s)DIR := $(MANDIR)/man$(s)))
 
@@ -45,6 +45,18 @@ $(foreach s, $(MANSECTIONS),                                                  \
 		$(filter $(MANDIR)/man$(s)/%,                                 \
 			$(filter %.$(s),                                      \
 				$(MANINTROPAGES)))))
+
+
+NONSO_MAN := $(shell $(FIND) $(MANDIR)/* -type f \
+		| $(GREP) '$(MANEXT)' \
+		| $(XARGS) $(GREP) -l '^\.TH ' \
+		| $(SORTMAN) \
+		| $(SED) 's,:,\\:,g')
+NONSO_MDOC := $(shell $(FIND) $(MANDIR)/* -type f \
+		| $(GREP) '$(MANEXT)' \
+		| $(XARGS) $(GREP) -l '^\.Dt ' \
+		| $(SORTMAN) \
+		| $(SED) 's,:,\\:,g')
 
 
 endif  # include guard

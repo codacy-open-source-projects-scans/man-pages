@@ -108,10 +108,12 @@ help:
 	$(info	)
 	$(info	dist			Wrapper for dist-* targets)
 	$(info	dist-tar		Create a tarball of the repository)
-	$(info	dist-bz2		Create a compressed tarball (.tar.bz2))
-	$(info	dist-gz			Create a compressed tarball (.tar.gz))
-	$(info	dist-lz			Create a compressed tarball (.tar.lz))
-	$(info	dist-xz			Create a compressed tarball (.tar.xz))
+	$(info	dist-z			Wrapper for dist-z-* targets)
+	$(info	dist-z-bz2		Create a compressed tarball (.tar.bz2))
+	$(info	dist-z-gz		Create a compressed tarball (.tar.gz))
+	$(info	dist-z-lz		Create a compressed tarball (.tar.lz))
+	$(info	dist-z-xz		Create a compressed tarball (.tar.xz))
+	$(info	distcheck		Check the distribution tarball)
 	$(info	)
 	$(info	help			Print this help)
 	$(info	help-variables		Print all variables available, and their default values)
@@ -200,6 +202,7 @@ help-variables:
 	$(info	CC		{EXTRA_,}CFLAGS)
 	$(info	LD		{EXTRA_,}LDFLAGS	{EXTRA_,}LDLIBS)
 	$(info	)
+	$(info	-		{EXTRA_,}CLANGFLAGS)
 	$(info	CHECKPATCH	{EXTRA_,}CHECKPATCHFLAGS)
 	$(info	CLANG-TIDY	{EXTRA_,}CLANG-TIDYFLAGS)
 	$(info	CPPCHECK	{EXTRA_,}CPPCHECKFLAGS)
@@ -213,3 +216,4 @@ nothing:;
 
 
 .DELETE_ON_ERROR:
+.SILENT:

@@ -8,26 +8,19 @@ ifndef MAKEFILE_INSTALL_MAN_INCLUDED
 MAKEFILE_INSTALL_MAN_INCLUDED := 1
 
 
-include $(MAKEFILEDIR)/cmd.mk
-include $(MAKEFILEDIR)/compress.mk
+include $(MAKEFILEDIR)/configure/build-depends/bzip2.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils.mk
+include $(MAKEFILEDIR)/configure/build-depends/findutils.mk
+include $(MAKEFILEDIR)/configure/build-depends/grep.mk
+include $(MAKEFILEDIR)/configure/build-depends/gzip.mk
+include $(MAKEFILEDIR)/configure/build-depends/lzip.mk
+include $(MAKEFILEDIR)/configure/build-depends/moreutils.mk
+include $(MAKEFILEDIR)/configure/build-depends/sed.mk
+include $(MAKEFILEDIR)/configure/build-depends/xz-utils.mk
+include $(MAKEFILEDIR)/configure/directory_variables.mk
+include $(MAKEFILEDIR)/configure/z.mk
 include $(MAKEFILEDIR)/install/_.mk
 include $(MAKEFILEDIR)/src.mk
-
-
-LINK_PAGES := .so
-ifeq ($(LINK_PAGES),.so)
-else ifeq ($(LINK_PAGES),symlink)
-else
-$(warning "LINK_PAGES": "$(LINK_PAGES)")
-$(error Valid values for "LINK_PAGES": [".so", "symlink"])
-endif
-
-
-mandir := $(datarootdir)/man
-$(foreach s, $(MANSECTIONS),                                                  \
-	$(eval man$(s)dir := $(mandir)/man$(s)))
-$(foreach s, $(MANSECTIONS),                                                  \
-	$(eval man$(s)ext := .$(s)))
 
 
 _mandir := $(DESTDIR)$(mandir)
@@ -59,7 +52,7 @@ $(foreach s, $(MANSECTIONS),                                                  \
 
 
 $(_manpages):
-	$(info INSTALL	$@)
+	$(info	INSTALL		$@)
 	<$< \
 	$(SED) $(foreach s, $(MANSECTIONS), \
 		-e '/^\.so /s, man$(s)/\(.*\)\.$(s)$$, $(notdir $(man$(s)dir))/\1$(man$(s)ext)$(Z),') \
