@@ -14,14 +14,6 @@ include $(MAKEFILEDIR)/configure/version.mk
 include $(MAKEFILEDIR)/dist/_.mk
 
 
-DISTFILESCMD := \
-	$(FIND) $(srcdir) -not -type d \
-	| $(GREP) -v "^.git$$" \
-	| $(GREP) -v "^$(srcdir)/.tmp/" \
-	| $(GREP) -v "^$(srcdir)/.checkpatch-camelcase." \
-	| $(SORT)
-
-
 DISTFILES   := $(shell $(DISTFILESCMD) | $(SED) 's,:,\\:,g')
 _DISTFILES  := $(patsubst $(srcdir)/%,$(_DISTDIR)/%,$(DISTFILES))
 _DISTPAGES  := $(filter     $(_DISTDIR)/man%,$(_DISTFILES))
@@ -29,15 +21,32 @@ _DISTVERSION:= $(_DISTDIR)/share/mk/configure/version.mk
 _DISTOTHERS := $(filter-out $(_DISTPAGES) $(_DISTVERSION), $(_DISTFILES))
 
 
+FORCE_DISTVERSION := \
+	$(shell \
+		if $(TEST) -f $(_DISTVERSION); then \
+			<$(_DISTVERSION) \
+			$(GREP) \
+				-e '^DISTVERSION :=' \
+				-e '^DISTNAME :=' \
+				-e '^DISTDATE :=' \
+			| $(SED) '/^DISTVERSION := $(DISTVERSION)$$/d' \
+			| $(SED) '/^DISTNAME := $(DISTNAME)$$/d' \
+			| $(SED) '/^DISTDATE := $(DISTDATE)$$/d' \
+			| $(GREP) ^ $(HIDE_ERR) >&2 \
+			&& $(ECHO) FORCE; \
+		fi; \
+	)
+
+
 $(_DISTPAGES): $(_DISTDIR)/man%: $(srcdir)/man% $(MK) | $$(@D)/
-	$(info	INSTALL		$@)
+	$(info	$(INFO_)CP		$@)
 	<$< \
 	$(SED) "/^.TH/s/(date)/$$($(GIT) log --format=%cs -1 -- $< $(HIDE_ERR))/" \
 	| $(SED) '/^.TH/s/(unreleased)/$(DISTVERSION)/' \
 	| $(INSTALL_DATA) -T /dev/stdin $@
 
-$(_DISTVERSION): $(MAKEFILEDIR)/configure/version.mk $(DISTFILES) | $$(@D)/
-	$(info	SED		$@)
+$(_DISTVERSION): $(MAKEFILEDIR)/configure/version.mk $(MK) $(FORCE_DISTVERSION) | $$(@D)/
+	$(info	$(INFO_)SED		$@)
 	<$< \
 	$(SED) 's/^DISTVERSION *:=.*/DISTVERSION := $(DISTVERSION)/' \
 	| $(SED) 's/^DISTNAME *:=.*/DISTNAME := $(DISTNAME)/' \
@@ -45,8 +54,8 @@ $(_DISTVERSION): $(MAKEFILEDIR)/configure/version.mk $(DISTFILES) | $$(@D)/
 	| $(INSTALL_DATA) -T /dev/stdin $@
 
 $(_DISTOTHERS): $(_DISTDIR)/%: $(srcdir)/% $(MK) | $$(@D)/
-	$(info	CP		$@)
-	$(CP) -T $< $@
+	$(info	$(INFO_)CP		$@)
+	$(CP) -dT $< $@
 
 
 endif  # include guard

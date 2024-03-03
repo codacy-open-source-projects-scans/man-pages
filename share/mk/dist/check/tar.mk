@@ -9,22 +9,24 @@ MAKEFILE_DIST_CHECK_TAR_INCLUDED := 1
 include $(MAKEFILEDIR)/configure/build-depends/coreutils.mk
 include $(MAKEFILEDIR)/configure/build-depends/tar.mk
 include $(MAKEFILEDIR)/configure/version.mk
+include $(MAKEFILEDIR)/dist/check/_.mk
 include $(MAKEFILEDIR)/dist/tar.mk
 
 
-TMPDIR1 := $(shell $(MKTEMP) -d)
-TMPDIR2 := $(shell $(MKTEMP) -d)
+$(_DISTCHECKDIR)/$(DISTNAME).tar: $(DISTFILE) $(MK) | $$(@D)/
+	$(info	$(INFO_)CP		$@)
+	$(CP) -T $< $@
 
-
-$(TMPDIR1)/$(DISTNAME).tar: $(DISTFILE) | $$(@D)/
-	$(info	CP		$@)
-	$(CP) $< $@
-
-$(TMPDIR1)/$(DISTNAME): %: %.tar | $$(@D)/
-	$(info	TAR xf		$<)
+$(_DISTCHECKSRCDIR): %: %.tar $(MK) | $$(@D)/
+	$(info	$(INFO_)TAR xf		$<)
+	$(RM) -rf $@
 	cd $(dir $<) \
-	&& $(TAR) xf $<
+	&& $(TAR) xf $(notdir $<)
 	$(TOUCH) $@
+
+
+.PHONY: distcheck-tar
+distcheck-tar: $(_DISTCHECKSRCDIR);
 
 
 endif  # include guard

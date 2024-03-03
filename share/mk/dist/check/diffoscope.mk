@@ -14,9 +14,13 @@ include $(MAKEFILEDIR)/dist/tar.mk
 
 
 $(builddir)/distcheck.diffoscope.touch: $(DISTFILE) $(REDIST) | $$(@D)/
-	$(info	DIFFOSCOPE	$^)
+	$(info	$(INFO_)DIFFOSCOPE	$^)
 	$(DIFFOSCOPE) $^
 	$(TOUCH) $@
+
+
+.PHONY: distcheck-diffoscope
+distcheck-diffoscope: $(builddir)/distcheck.diffoscope.touch;
 
 
 endif  # include guard

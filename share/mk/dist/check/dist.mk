@@ -8,16 +8,21 @@ MAKEFILE_DIST_CHECK_DIST_INCLUDED := 1
 
 include $(MAKEFILEDIR)/configure/build-depends/sed.mk
 include $(MAKEFILEDIR)/configure/version.mk
+include $(MAKEFILEDIR)/dist/check/_.mk
 include $(MAKEFILEDIR)/dist/check/tar.mk
 
 
-REDIST  := $(TMPDIR1)/$(DISTNAME)/.tmp/$(DISTNAME).tar
+REDIST := $(_DISTCHECKBUILDDIR)/$(DISTNAME).tar
 
 
-$(REDIST): %/.tmp/$(DISTNAME).tar: % | $$(@D)/
-	$(info	MAKE		dist)
-	$(MAKE) -C $< dist \
-	| $(SED)   's,^,MAKE dist:		,'
+$(REDIST): $(_DISTCHECKSRCDIR) $(MK) | $$(@D)/
+	$(info	$(INFO_)MAKE		dist-tar)
+	$(MAKE) $(_MAKE_OPTS) dist-tar \
+		'INFO_= dist-tar:	'
+
+
+.PHONY: distcheck-dist-tar
+distcheck-dist-tar: $(REDIST);
 
 
 endif  # include guard

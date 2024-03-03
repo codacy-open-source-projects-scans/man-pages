@@ -13,23 +13,12 @@ Standard C library
 .RI ( libc ", " \-lc )
 .SH SYNOPSIS
 .nf
-.BR "#include <sys/mman.h>" "      /* Definition of " MADV_* " constants */"
-.BR "#include <sys/syscall.h>" "   /* Definition of " SYS_* " constants */"
-.BR "#include <sys/uio.h>" "       /* Definition of " "struct iovec" " type */"
-.B #include <unistd.h>
+.B #include <sys/mman.h>
 .P
-.BI "ssize_t syscall(SYS_process_madvise, int " pidfd ,
-.BI "                const struct iovec *" iovec ", size_t " vlen \
-", int " advice ,
-.BI "                unsigned int " flags ");"
+.BI "ssize_t process_madvise(int " pidfd ", const struct iovec " iovec [. n ],
+.BI "                        size_t " n ", int " advice \
+", unsigned int " flags );
 .fi
-.P
-.IR Note :
-glibc provides no wrapper for
-.BR process_madvise (),
-necessitating the use of
-.BR syscall (2).
-.\" FIXME: See <https://sourceware.org/bugzilla/show_bug.cgi?id=27380>
 .SH DESCRIPTION
 The
 .BR process_madvise ()
@@ -38,7 +27,7 @@ address ranges of another process or of the calling process.
 It provides the advice for the address ranges described by
 .I iovec
 and
-.IR vlen .
+.IR n .
 The goal of such advice is to improve system or application performance.
 .P
 The
@@ -54,7 +43,7 @@ points to an array of
 structures, described in
 .BR iovec (3type).
 .P
-.I vlen
+.I n
 specifies the number of elements in the array of
 .I iovec
 structures.
@@ -91,12 +80,12 @@ argument is reserved for future use; currently, this argument must be
 specified as 0.
 .P
 The
-.I vlen
+.I n
 and
 .I iovec
 arguments are checked before applying any advice.
 If
-.I vlen
+.I n
 is too big, or
 .I iovec
 is invalid,
@@ -163,7 +152,7 @@ overflows a
 value.
 .TP
 .B EINVAL
-.I vlen
+.I n
 is too large.
 .TP
 .B ENOMEM
@@ -187,7 +176,9 @@ errors.
 Linux.
 .SH HISTORY
 Linux 5.10.
-.\" commit ecb8ac8b1f146915aa6b96449b66dd48984caacc
+.\" Linux commit ecb8ac8b1f146915aa6b96449b66dd48984caacc
+glibc 2.36.
+.\" glibc commit d19ee3473d68ca0e794f3a8b7677a0983ae1342e
 .P
 Support for this system call is optional,
 depending on the setting of the

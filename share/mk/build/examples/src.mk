@@ -7,6 +7,7 @@ MAKEFILE_BUILD_EX_SRC_INCLUDED := 1
 
 
 include $(MAKEFILEDIR)/build/_.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils.mk
 include $(MAKEFILEDIR)/configure/build-depends/findutils.mk
 include $(MAKEFILEDIR)/configure/build-depends/grep.mk
 include $(MAKEFILEDIR)/configure/build-depends/mandoc.mk
@@ -34,13 +35,14 @@ _UNITS_ex_c := $(filter %.c,$(_UNITS_ex_src))
 $(_UNITS_ex_src): $$(patsubst $(_MANDIR)/%.d,$(MANDIR)/%,$$(@D)) $(MK) | $$(@D)/
 $(_UNITS_ex_c):   $$(filter $$(@D)/%.h,$(_UNITS_ex_h))
 $(_UNITS_ex_src):
-	$(info	SED		$@)
+	$(info	$(INFO_)SED		$@)
 	<$< \
 	$(SED) -n \
 		-e '/^\.TH/,/^\.SH/{/^\.SH/!p}' \
 		-e '/^\.SH EXAMPLES/p' \
 		-e "/^\... SRC BEGIN ($(@F))$$/,/^\... SRC END$$/p" \
 	| $(MANDOC) -Tutf8 \
+	| $(HEAD) -n-2 \
 	| $(SED) '/^[^ ]/d' \
 	| $(SED) 's/^       //' \
 	>$@
