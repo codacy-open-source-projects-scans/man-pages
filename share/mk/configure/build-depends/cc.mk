@@ -1,4 +1,4 @@
-# Copyright 2024 Alejandro Colomar <alx@kernel.org>
+# Copyright 2024, Alejandro Colomar <alx@kernel.org>
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -43,7 +43,9 @@ COMMON_CFLAGS := \
 GCC_CFLAGS := -fanalyzer
 
 
-CLANG_CFLAGS := -Weverything
+CLANG_CFLAGS := \
+	-Weverything \
+	-Wno-unsafe-buffer-usage
 
 
 DEFAULT_CFLAGS := $(COMMON_CFLAGS)

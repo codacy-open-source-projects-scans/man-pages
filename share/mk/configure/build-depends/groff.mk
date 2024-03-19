@@ -1,4 +1,4 @@
-# Copyright 2024 Alejandro Colomar <alx@kernel.org>
+# Copyright 2024, Alejandro Colomar <alx@kernel.org>
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -10,6 +10,12 @@ DEFAULT_GROPDFFLAGS :=
 EXTRA_GROPDFFLAGS   :=
 GROPDFFLAGS         := $(DEFAULT_GROPDFFLAGS) $(EXTRA_GROPDFFLAGS)
 GROPDF              := gropdf
+
+
+DEFAULT_POST_GROHTMLFLAGS :=
+EXTRA_POST_GROHTMLFLAGS   :=
+POST_GROHTMLFLAGS         := $(DEFAULT_POST_GROHTMLFLAGS) $(EXTRA_POST_GROHTMLFLAGS)
+POST_GROHTML              := post-grohtml
 
 
 endif  # include guard
