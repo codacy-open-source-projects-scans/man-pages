@@ -6,15 +6,25 @@ ifndef MAKEFILE_CONFIGURE_VERSION_INCLUDED
 MAKEFILE_CONFIGURE_VERSION_INCLUDED := 1
 
 
-include $(MAKEFILEDIR)/configure/build-depends/coreutils.mk
-include $(MAKEFILEDIR)/configure/build-depends/findutils.mk
-include $(MAKEFILEDIR)/configure/build-depends/git.mk
-include $(MAKEFILEDIR)/configure/build-depends/grep.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/echo.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/sort.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/stat.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/tail.mk
+include $(MAKEFILEDIR)/configure/build-depends/findutils/find.mk
+include $(MAKEFILEDIR)/configure/build-depends/findutils/xargs.mk
+include $(MAKEFILEDIR)/configure/build-depends/git/git.mk
+include $(MAKEFILEDIR)/configure/build-depends/grep/grep.mk
+include $(MAKEFILEDIR)/configure/build-depends/sed/sed.mk
 include $(MAKEFILEDIR)/configure/verbose.mk
 
 
-DISTNAME    := $(shell $(GIT) describe --dirty)
-DISTVERSION := $(patsubst man-pages-%,%,$(DISTNAME))
+projname      := man-pages
+VERSION       := $(shell $(GIT) describe --dirty | $(SED) 's/$(projname)-//')
+EXTRAVERSION  :=
+
+
+DISTVERSION   := $(VERSION)$(EXTRAVERSION)
+DISTNAME      := $(projname)-$(DISTVERSION)
 
 
 DISTFILESCMD := \
@@ -38,6 +48,9 @@ DISTDATECMD := \
 
 
 DISTDATE := $(shell $(DISTDATECMD))
+
+
+MANPAGEDATECMD = $(GIT) log --format=%cs -1 -- $< $(HIDE_ERR)
 
 
 endif  # include guard

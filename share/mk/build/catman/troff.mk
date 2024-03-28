@@ -7,12 +7,13 @@ MAKEFILE_BUILD_CATMAN_TROFF_INCLUDED := 1
 
 
 include $(MAKEFILEDIR)/build/_.mk
-include $(MAKEFILEDIR)/configure/build-depends/coreutils.mk
-include $(MAKEFILEDIR)/configure/build-depends/grep.mk
-include $(MAKEFILEDIR)/configure/build-depends/groff-base.mk
-include $(MAKEFILEDIR)/configure/src.mk
+include $(MAKEFILEDIR)/build/man/man.mk
+include $(MAKEFILEDIR)/build/man/mdoc.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/true.mk
+include $(MAKEFILEDIR)/configure/build-depends/grep/grep.mk
+include $(MAKEFILEDIR)/configure/build-depends/groff-base/nroff.mk
+include $(MAKEFILEDIR)/configure/build-depends/groff-base/troff.mk
 include $(MAKEFILEDIR)/configure/xfail.mk
-include $(MAKEFILEDIR)/src.mk
 
 
 _XFAIL_CATMAN_MAN_set := \
@@ -45,12 +46,11 @@ _XFAIL_CATMAN_MAN_set := \
 	$(_MANDIR)/man8/zic.8.cat.set
 
 
+troff_catman_ignore_grep := $(MAKEFILEDIR)/build/catman/troff.ignore.grep
 
-groff_man_ignore_grep := $(DATAROOTDIR)/lint/groff/man.ignore.grep
 
-
-_CATMAN_MAN_set  := $(patsubst $(MANDIR)/%,$(_MANDIR)/%.cat.set,$(NONSO_MAN))
-_CATMAN_MDOC_set := $(patsubst $(MANDIR)/%,$(_MANDIR)/%.cat.set,$(NONSO_MDOC))
+_CATMAN_MAN_set  := $(patsubst %, %.cat.set, $(_NONSO_MAN))
+_CATMAN_MDOC_set := $(patsubst %, %.cat.set, $(_NONSO_MDOC))
 
 
 ifeq ($(SKIP_XFAIL),yes)
@@ -58,10 +58,10 @@ _CATMAN_MAN_set := $(filter-out $(_XFAIL_CATMAN_MAN_set), $(_CATMAN_MAN_set))
 endif
 
 
-$(_CATMAN_MAN_set): %.cat.set: %.cat.troff $(groff_man_ignore_grep) $(MK) | $$(@D)/
+$(_CATMAN_MAN_set): %.cat.set: %.cat.troff $(troff_catman_ignore_grep) $(MK) | $$(@D)/
 	$(info	$(INFO_)TROFF		$@)
 	! ($(TROFF) -man $(TROFFFLAGS) $(NROFFFLAGS) <$< 2>&1 >$@ \
-	   | $(GREP) -v -f '$(groff_man_ignore_grep)' \
+	   | $(GREP) -v -f '$(troff_catman_ignore_grep)' \
 	   || $(TRUE); \
 	) \
 	| $(GREP) ^ >&2

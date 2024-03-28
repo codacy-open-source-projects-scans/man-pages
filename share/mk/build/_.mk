@@ -6,14 +6,20 @@ ifndef MAKEFILE_BUILD_INCLUDED
 MAKEFILE_BUILD_INCLUDED := 1
 
 
-include $(MAKEFILEDIR)/configure/directory_variables.mk
+include $(MAKEFILEDIR)/configure/directory_variables/build.mk
 
 
 _MANDIR := $(builddir)/man
 
 
 .PHONY: build
-build: build-book build-catman build-html build-pdf build-ps build-ex;
+build: \
+	build-catman \
+	build-html \
+	build-man \
+	build-pdf \
+	build-ps \
+	build-ex;
 
 
 endif  # include guard

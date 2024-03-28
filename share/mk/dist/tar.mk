@@ -6,20 +6,20 @@ ifndef MAKEFILE_DIST_TAR_INCLUDED
 MAKEFILE_DIST_TAR_INCLUDED := 1
 
 
-include $(MAKEFILEDIR)/configure/build-depends/coreutils.mk
-include $(MAKEFILEDIR)/configure/build-depends/findutils.mk
-include $(MAKEFILEDIR)/configure/build-depends/git.mk
-include $(MAKEFILEDIR)/configure/build-depends/sed.mk
-include $(MAKEFILEDIR)/configure/build-depends/tar.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/sort.mk
+include $(MAKEFILEDIR)/configure/build-depends/findutils/xargs.mk
+include $(MAKEFILEDIR)/configure/build-depends/sed/sed.mk
+include $(MAKEFILEDIR)/configure/build-depends/tar/tar.mk
 include $(MAKEFILEDIR)/configure/version.mk
 include $(MAKEFILEDIR)/dist/_.mk
 include $(MAKEFILEDIR)/dist/files.mk
 
 
-DISTFILE := $(builddir)/$(DISTNAME).tar
+DISTFILE  := $(DISTNAME).tar
+_DISTFILE := $(builddir)/$(DISTFILE)
 
 
-$(DISTFILE): $(_DISTFILES) $(MK) | $$(@D)/
+$(_DISTFILE): $(_DISTFILES) $(MK) | $$(@D)/
 	$(info	$(INFO_)TAR		$@)
 	$(TAR) $(TARFLAGS) -cf $@ -T /dev/null
 	$(DISTFILESCMD) \
@@ -30,7 +30,7 @@ $(DISTFILE): $(_DISTFILES) $(MK) | $$(@D)/
 
 
 .PHONY: dist-tar
-dist-tar: $(DISTFILE);
+dist-tar: $(_DISTFILE);
 
 
 endif  # include guard

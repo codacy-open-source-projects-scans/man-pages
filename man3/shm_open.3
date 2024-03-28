@@ -290,13 +290,13 @@ on the memory object that is shared between the two programs.
 .in +4n
 .\" SRC BEGIN (pshm_ucase.h)
 .EX
-#include <fcntl.h>
+#ifndef PSHM_UCASE_H
+#define PSHM_UCASE_H
+\&
 #include <semaphore.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <unistd.h>
 \&
 #define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \e
                         } while (0)
@@ -312,6 +312,8 @@ struct shmbuf {
     size_t cnt;             /* Number of bytes used in \[aq]buf\[aq] */
     char   buf[BUF_SIZE];   /* Data being transferred */
 };
+\&
+#endif  // include guard
 .EE
 .\" SRC END
 .in
@@ -338,6 +340,11 @@ to tell the "send" program that it may now access the shared memory.
    Licensed under GNU General Public License v2 or later.
 */
 #include <ctype.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <unistd.h>
 \&
 #include "pshm_ucase.h"
 \&
@@ -430,7 +437,13 @@ on standard output.
 \&
    Licensed under GNU General Public License v2 or later.
 */
+#include <fcntl.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/mman.h>
+#include <unistd.h>
 \&
 #include "pshm_ucase.h"
 \&
