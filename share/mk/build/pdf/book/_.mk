@@ -9,7 +9,7 @@ MAKEFILE_BUILD_PDF_BOOK_INCLUDED := 1
 include $(MAKEFILEDIR)/build/_.mk
 include $(MAKEFILEDIR)/build/man/_.mk
 include $(MAKEFILEDIR)/build/fonts/_.mk
-include $(MAKEFILEDIR)/build/fonts/tinos.mk
+include $(MAKEFILEDIR)/build/fonts/tinos/_.mk
 include $(MAKEFILEDIR)/configure/build-depends/coreutils/cat.mk
 include $(MAKEFILEDIR)/configure/build-depends/groff/gropdf.mk
 include $(MAKEFILEDIR)/configure/build-depends/groff-base/eqn.mk
@@ -30,15 +30,16 @@ _PDFDIR   := $(builddir)
 _PDF_BOOK := $(_PDFDIR)/$(PDF_BOOK)
 
 
-$(_PDF_BOOK): $(_MANPAGES) $(_TINOS) $(MKBOOK) $(MK) | $$(@D)/
+$(_PDF_BOOK): $(_MANPAGES) $(_DOWNLOAD) $(_TINOS) $(MKBOOK) $(MK) | $$(@D)/
 	$(info	$(INFO_)GROPDF		$@)
 	$(MKBOOKDIR)/prepare.pl $(_MANDIR) \
-	| $(CAT) $(MKBOOKDIR)/front.roff $(MKBOOKDIR)/an.tmac /dev/stdin \
+	| $(CAT) $(MKBOOKDIR)/front.roff /dev/stdin \
 	| $(PRECONV) \
 	| $(PIC) \
 	| $(TBL) \
 	| $(EQN) -Tpdf \
-	| $(TROFF) -Tpdf -F$(_FONTSDIR) -dpaper=a4 $(TROFFFLAGS) \
+	| $(TROFF) -mandoc -Tpdf -F$(_FONTSDIR) -dpaper=a4 -rC1 \
+		-ran*bookmark-base-level=1 $(TROFFFLAGS) \
 	| $(GROPDF) -F$(_FONTSDIR) -pa4 $(GROPDFFLAGS) \
 	| $(SPONGE) $@
 
