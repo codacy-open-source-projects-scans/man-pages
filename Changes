@@ -27,9 +27,9 @@ Global changes
 --------------
 
 
-Changes to individual pages
+Changes to individual files
 ---------------------------
 
-The manual pages (and other files in the repository) have been improved
+The manual pages and other files in the repository have been improved
 beyond what this changelog covers.  To learn more about changes applied
 to individual pages, or the authors of changes, use git(1).
