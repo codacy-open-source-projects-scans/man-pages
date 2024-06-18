@@ -58,6 +58,17 @@ Standard C library
 .BI "int prlimit(pid_t "  pid ", int " resource ,
 .BI "            const struct rlimit *_Nullable " new_limit ,
 .BI "            struct rlimit *_Nullable " old_limit );
+.P
+.fi
+.EX
+.B struct rlimit {
+.BR "    rlim_t  rlim_cur;" "  /* Soft limit */"
+.BR "    rlim_t  rlim_max;" "  /* Hard limit (ceiling for rlim_cur) */"
+.B };
+.EE
+.nf
+.P
+.BR typedef " /* ... */  " rlim_t; "  /* Unsigned integer type */"
 .fi
 .P
 .RS -4
@@ -77,16 +88,7 @@ and
 system calls get and set resource limits.
 Each resource has an associated soft and hard limit, as defined by the
 .I rlimit
-structure:
-.P
-.in +4n
-.EX
-struct rlimit {
-    rlim_t rlim_cur;  /* Soft limit */
-    rlim_t rlim_max;  /* Hard limit (ceiling for rlim_cur) */
-};
-.EE
-.in
+structure.
 .P
 The soft limit is the value that the kernel enforces for the
 corresponding resource.
@@ -799,7 +801,7 @@ main(int argc, char *argv[])
 \&
     if (!(argc == 2 || argc == 4)) {
         fprintf(stderr, "Usage: %s <pid> [<new\-soft\-limit> "
-                "<new\-hard\-limit>]\en", argv[0]);
+                "<new\-hard\-limit>]\[rs]n", argv[0]);
         exit(EXIT_FAILURE);
     }
 \&
@@ -817,14 +819,14 @@ main(int argc, char *argv[])
 \&
     if (prlimit(pid, RLIMIT_CPU, newp, &old) == \-1)
         err(EXIT_FAILURE, "prlimit\-1");
-    printf("Previous limits: soft=%jd; hard=%jd\en",
+    printf("Previous limits: soft=%jd; hard=%jd\[rs]n",
            (intmax_t) old.rlim_cur, (intmax_t) old.rlim_max);
 \&
     /* Retrieve and display new CPU time limit */
 \&
     if (prlimit(pid, RLIMIT_CPU, NULL, &old) == \-1)
         err(EXIT_FAILURE, "prlimit\-2");
-    printf("New limits: soft=%jd; hard=%jd\en",
+    printf("New limits: soft=%jd; hard=%jd\[rs]n",
            (intmax_t) old.rlim_cur, (intmax_t) old.rlim_max);
 \&
     exit(EXIT_SUCCESS);

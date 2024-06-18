@@ -59,7 +59,7 @@ structure that are mandated by POSIX.1 are
 and
 .IR d_ino .
 The other fields are unstandardized, and not present on all systems;
-see NOTES below for some further details.
+see VERSIONS.
 .P
 The fields of the
 .I dirent
@@ -85,7 +85,7 @@ making no assumptions about its contents; see also
 .I d_reclen
 This is the size (in bytes) of the returned record.
 This may not match the size of the structure definition shown above;
-see NOTES.
+see VERSIONS.
 .TP
 .I d_type
 This field contains a value indicating the file type,
@@ -137,8 +137,8 @@ All applications must properly handle a return of
 .BR DT_UNKNOWN .
 .TP
 .I d_name
-This field contains the null terminated filename.
-.IR "See NOTES" .
+This field contains the null terminated filename;
+see VERSIONS.
 .P
 The data returned by
 .BR readdir ()
@@ -243,7 +243,7 @@ POSIX defines it as
 .IR "char\ d_name[]",
 a character array of unspecified size, with at most
 .B NAME_MAX
-characters preceding the terminating null byte (\[aq]\e0\[aq]).
+characters preceding the terminating null byte (\[aq]\[rs]0\[aq]).
 .P
 POSIX.1 explicitly notes that this field should not be used as an lvalue.
 The standard also notes that the use of

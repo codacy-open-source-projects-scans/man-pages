@@ -21,9 +21,9 @@ Standard C library
 .B #include <stdlib.h>
 .P
 .BI "long strtol(const char *restrict " nptr ,
-.BI "            char **restrict " endptr ", int " base );
+.BI "            char **_Nullable restrict " endptr ", int " base );
 .BI "long long strtoll(const char *restrict " nptr ,
-.BI "            char **restrict " endptr ", int " base );
+.BI "            char **_Nullable restrict " endptr ", int " base );
 .fi
 .P
 .RS -4
@@ -88,9 +88,9 @@ in
 (and returns 0).
 In particular, if
 .I *nptr
-is not \[aq]\e0\[aq] but
+is not \[aq]\[rs]0\[aq] but
 .I **endptr
-is \[aq]\e0\[aq] on return, the entire string is valid.
+is \[aq]\[rs]0\[aq] on return, the entire string is valid.
 .P
 The
 .BR strtoll ()
@@ -162,34 +162,7 @@ T{
 .BR strtoq ()
 T}	Thread safety	MT-Safe locale
 .TE
-.SH STANDARDS
-C11, POSIX.1-2008.
-.SH HISTORY
-.TP
-.BR strtol ()
-POSIX.1-2001, C89, SVr4, 4.3BSD.
-.TP
-.BR strtoll ()
-POSIX.1-2001, C99.
-.SH NOTES
-Since
-.BR strtol ()
-can legitimately return 0,
-.BR LONG_MAX ,
-or
-.B LONG_MIN
-.RB ( LLONG_MAX
-or
-.B LLONG_MIN
-for
-.BR strtoll ())
-on both success and failure, the calling program should set
-.I errno
-to 0 before the call,
-and then determine if an error occurred by checking whether
-.I errno == ERANGE
-after the call.
-.P
+.SH VERSIONS
 According to POSIX.1,
 in locales other than "C" and "POSIX",
 these functions may accept other,
@@ -209,7 +182,34 @@ may be equivalent to
 .BR strtoll ()
 or to
 .BR strtol ().
+.SH STANDARDS
+C11, POSIX.1-2008.
+.SH HISTORY
+.TP
+.BR strtol ()
+POSIX.1-2001, C89, SVr4, 4.3BSD.
+.TP
+.BR strtoll ()
+POSIX.1-2001, C99.
 .SH CAVEATS
+Since
+.BR strtol ()
+can legitimately return 0,
+.BR LONG_MAX ,
+or
+.B LONG_MIN
+.RB ( LLONG_MAX
+or
+.B LLONG_MIN
+for
+.BR strtoll ())
+on both success and failure, the calling program should set
+.I errno
+to 0 before the call,
+and then determine if an error occurred by checking whether
+.I errno == ERANGE
+after the call.
+.P
 If the
 .I base
 needs to be tested,
@@ -272,7 +272,7 @@ main(int argc, char *argv[])
     long val;
 \&
     if (argc < 2) {
-        fprintf(stderr, "Usage: %s str [base]\en", argv[0]);
+        fprintf(stderr, "Usage: %s str [base]\[rs]n", argv[0]);
         exit(EXIT_FAILURE);
     }
 \&
@@ -297,16 +297,16 @@ main(int argc, char *argv[])
     }
 \&
     if (endptr == str) {
-        fprintf(stderr, "No digits were found\en");
+        fprintf(stderr, "No digits were found\[rs]n");
         exit(EXIT_FAILURE);
     }
 \&
     /* If we got here, strtol() successfully parsed a number. */
 \&
-    printf("strtol() returned %ld\en", val);
+    printf("strtol() returned %ld\[rs]n", val);
 \&
-    if (*endptr != \[aq]\e0\[aq])        /* Not necessarily an error... */
-        printf("Further characters after number: \e"%s\e"\en", endptr);
+    if (*endptr != \[aq]\[rs]0\[aq])        /* Not necessarily an error... */
+        printf("Further characters after number: \[rs]"%s\[rs]"\[rs]n", endptr);
 \&
     exit(EXIT_SUCCESS);
 }

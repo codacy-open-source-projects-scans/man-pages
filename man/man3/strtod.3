@@ -25,10 +25,12 @@ Standard C library
 .nf
 .B #include <stdlib.h>
 .P
-.BI "double strtod(const char *restrict " nptr ", char **restrict " endptr );
-.BI "float strtof(const char *restrict " nptr ", char **restrict " endptr );
-.BI "long double strtold(const char *restrict " nptr \
-", char **restrict " endptr );
+.BI "double strtod(const char *restrict " nptr ,
+.BI "              char **_Nullable restrict " endptr );
+.BI "float strtof(const char *restrict " nptr ,
+.BI "              char **_Nullable restrict " endptr );
+.BI "long double strtold(const char *restrict " nptr ,
+.BI "              char **_Nullable restrict " endptr );
 .fi
 .P
 .RS -4
@@ -94,7 +96,7 @@ is "NAN" (disregarding case) optionally followed by a string,
 where
 .I n-char-sequence
 specifies in an implementation-dependent
-way the type of NAN (see NOTES).
+way the type of NAN (see VERSIONS).
 .SH RETURN VALUE
 These functions return the converted value, if any.
 .P
@@ -179,7 +181,7 @@ C89, POSIX.1-2001.
 .TQ
 .BR strtold ()
 C99, POSIX.1-2001.
-.SH NOTES
+.SH CAVEATS
 Since
 0 can legitimately be returned
 on both success and failure, the calling program should set
