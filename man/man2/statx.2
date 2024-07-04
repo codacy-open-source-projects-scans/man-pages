@@ -68,6 +68,8 @@ struct statx {
     /* Direct I/O alignment restrictions */
     __u32 stx_dio_mem_align;
     __u32 stx_dio_offset_align;
+\&
+    __u64 stx_subvol;      /* Subvolume identifier */
 };
 .EE
 .in
@@ -84,8 +86,7 @@ struct statx_timestamp {
 .in
 .P
 (Note that reserved space and padding is omitted.)
-.SS
-Invoking \fBstatx\fR():
+.SS Invoking statx():
 To access a file's status, no permissions are required on the file itself,
 but in the case of
 .BR statx ()
@@ -234,7 +235,7 @@ is used to tell the kernel which fields the caller is interested in.
 .I mask
 is an ORed combination of the following constants:
 .P
-.in +4n
+.in +1n
 .TS
 lB l.
 STATX_TYPE	Want stx_mode & S_IFMT
@@ -255,6 +256,9 @@ STATX_ALL	The same as STATX_BASIC_STATS | STATX_BTIME.
 STATX_MNT_ID	Want stx_mnt_id (since Linux 5.8)
 STATX_DIOALIGN	Want stx_dio_mem_align and stx_dio_offset_align
 	(since Linux 6.1; support varies by filesystem)
+STATX_MNT_ID_UNIQUE	Want unique stx_mnt_id (since Linux 6.8)
+STATX_SUBVOL	Want stx_subvol
+	(since Linux 6.10; support varies by filesystem)
 .TE
 .in
 .P
@@ -279,8 +283,7 @@ to
 (all bits set),
 as one or more bits may, in the future, be used to specify an
 extension to the buffer.
-.SS
-The returned information
+.SS The returned information
 The status information for the target file is returned in the
 .I statx
 structure pointed to by
@@ -401,20 +404,33 @@ The file's last status change timestamp.
 .I stx_mtime
 The file's last modification timestamp.
 .TP
-.IR stx_dev_major " and "  stx_dev_minor
+.I stx_dev_major
+.TQ
+.I stx_dev_minor
 The device on which this file (inode) resides.
 .TP
-.IR stx_rdev_major " and "  stx_rdev_minor
+.I stx_rdev_major
+.TQ
+.I stx_rdev_minor
 The device that this file (inode) represents if the file is of block or
 character device type.
 .TP
 .I stx_mnt_id
 .\" commit fa2fcf4f1df1559a0a4ee0f46915b496cc2ebf60
-The mount ID of the mount containing the file.
+If using STATX_MNT_ID,
+this is the mount ID of the mount containing the file.
 This is the same number reported by
 .BR name_to_handle_at (2)
 and corresponds to the number in the first field in one of the records in
 .IR /proc/self/mountinfo .
+.IP
+If using STATX_MNT_ID_UNIQUE,
+this is the unique mount ID of the mount containing the file.
+This is the number reported by
+.BR listmount (2)
+and is the ID used to query the mount with
+.BR statmount (2) .
+It is guaranteed to not be reused while the system is running.
 .TP
 .I stx_dio_mem_align
 The alignment (in bytes) required for user memory buffers for direct I/O
@@ -439,6 +455,14 @@ or 0 if direct I/O is not supported on this file.
 This will only be nonzero if
 .I stx_dio_mem_align
 is nonzero, and vice versa.
+.TP
+.I stx_subvol
+Subvolume number of the current file.
+.IP
+Subvolumes are fancy directories,
+i.e. they form a tree structure that may be walked recursively.
+Support varies by filesystem;
+it is supported by bcachefs and btrfs since Linux 6.10.
 .P
 For further information on the above fields, see
 .BR inode (7).
