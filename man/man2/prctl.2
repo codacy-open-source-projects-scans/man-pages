@@ -18,7 +18,7 @@ prctl
 operations on a process or thread
 .SH LIBRARY
 Standard C library
-.RI ( libc ", " \-lc )
+.RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
 .BR "#include <linux/prctl.h>" "  /* Definition of " PR_* " constants */"
@@ -157,6 +157,8 @@ The first argument can be:
 .B PR_SET_MDWE
 .TQ
 .B PR_GET_MDWE
+.TQ
+.B PR_RISCV_SET_ICACHE_FLUSH_CTX
 .SH RETURN VALUE
 On success,
 a nonnegative value is returned.
@@ -268,4 +270,5 @@ so these operations should be used with care.
 .BR PR_GET_AUXV (2const),
 .BR PR_SET_MDWE (2const),
 .BR PR_GET_MDWE (2const),
+.BR PR_RISCV_SET_ICACHE_FLUSH_CTX (2const),
 .BR core (5)

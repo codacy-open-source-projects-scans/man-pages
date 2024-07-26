@@ -9,7 +9,7 @@
 landlock_add_rule \- add a new Landlock rule to a ruleset
 .SH LIBRARY
 Standard C library
-.RI ( libc ", " \-lc )
+.RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
 .BR "#include <linux/landlock.h>" "  /* Definition of " LANDLOCK_* " constants */"
@@ -60,7 +60,9 @@ struct landlock_path_beneath_attr {
 .in
 .IP
 .I allowed_access
-contains a bitmask of allowed filesystem actions for this file hierarchy
+contains a bitmask of allowed filesystem actions,
+which can be applied on the given
+.I parent_fd
 (see
 .B Filesystem actions
 in
@@ -92,9 +94,22 @@ Landlock is supported by the kernel but disabled at boot time.
 .TP
 .B EINVAL
 .I flags
-is not 0, or the rule accesses are inconsistent (i.e.,
+is not 0.
+.TP
+.B EINVAL
+The rule accesses are inconsistent (i.e.,
 .I rule_attr\->allowed_access
 is not a subset of the ruleset handled accesses).
+.TP
+.B EINVAL
+In
+.IR \%struct\~landlock_path_beneath_attr ,
+the rule accesses are not applicable to the file
+(i.e., some access rights in
+.I \%rule_attr\->allowed_access
+are only applicable to directories, but
+.I \%rule_attr\->parent_fd
+does not refer to a directory).
 .TP
 .B ENOMSG
 Empty accesses (i.e.,

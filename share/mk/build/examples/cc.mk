@@ -16,9 +16,11 @@ include $(MAKEFILEDIR)/configure/xfail.mk
 _XFAIL_EX_TU_o := \
 	$(_MANDIR)/man2/bpf.2.d/bpf.o \
 	$(_MANDIR)/man2/seccomp.2.d/seccomp.o \
+	$(_MANDIR)/man2/seccomp_unotify.2.d/seccomp_unotify.o \
 	$(_MANDIR)/man2/sigaction.2.d/sigaction.o \
 	$(_MANDIR)/man2/spu_run.2.d/spu_run.o \
 	$(_MANDIR)/man2/_syscall.2.d/_syscall.o \
+	$(_MANDIR)/man2const/PR_RISCV_SET_ICACHE_FLUSH_CTX.2const.d/cmodx.o \
 	$(_MANDIR)/man3/circleq.3.d/circleq.o \
 	$(_MANDIR)/man3/encrypt.3.d/encrypt.o \
 	$(_MANDIR)/man3/getsubopt.3.d/getsubopt.o \
@@ -31,6 +33,7 @@ _XFAIL_EX_TU_o := \
 	$(_MANDIR)/man3/__ppc_get_timebase.3.d/__ppc_get_timebase.o \
 	$(_MANDIR)/man3/pthread_getcpuclockid.3.d/pthread_getcpuclockid.o \
 	$(_MANDIR)/man3/rtime.3.d/rtime.o \
+	$(_MANDIR)/man3/sem_wait.3.d/sem_wait.o \
 	$(_MANDIR)/man3/setbuf.3.d/setbuf.o \
 	$(_MANDIR)/man3/stpncpy.3.d/stpncpy.o \
 	$(_MANDIR)/man3head/printf.h.3head.d/register_printf_specifier.o
@@ -44,7 +47,7 @@ endif
 
 $(_EX_TU_o): %.o: %.c $(MK)
 	$(info	$(INFO_)CC		$@)
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS_) $(CPPFLAGS_) -o $@ $<
 
 
 .PHONY: build-ex-cc

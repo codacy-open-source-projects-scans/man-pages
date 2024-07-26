@@ -16,7 +16,7 @@
 strsep \- extract token from string
 .SH LIBRARY
 Standard C library
-.RI ( libc ", " \-lc )
+.RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
 .B #include <string.h>
@@ -80,7 +80,7 @@ T{
 T}	Thread safety	MT-Safe
 .TE
 .SH STANDARDS
-None.
+BSD.
 .SH HISTORY
 4.4BSD.
 .P
@@ -89,10 +89,7 @@ The
 function was introduced as a replacement for
 .BR strtok (3),
 since the latter cannot handle empty fields.
-However,
-.BR strtok (3)
-conforms to C89/C99 and hence is more portable.
-.SH BUGS
+.SH CAVEATS
 Be cautious when using this function.
 If you do use it, note that:
 .IP \[bu] 3

@@ -77,6 +77,7 @@ _XFAIL_LINT_c_EX_clang_tidy := \
 	$(_MANDIR)/man2/unshare.2.d/unshare.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man2/userfaultfd.2.d/userfaultfd.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man2/wait.2.d/wait.c.lint-c.clang-tidy.touch \
+	$(_MANDIR)/man2const/PR_RISCV_SET_ICACHE_FLUSH_CTX.2const.d/cmodx.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man2const/TCSETS.2const.d/tcgets.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man3/atexit.3.d/atexit.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man3/backtrace.3.d/backtrace.c.lint-c.clang-tidy.touch \
@@ -132,6 +133,7 @@ _XFAIL_LINT_c_EX_clang_tidy := \
 	$(_MANDIR)/man3/mbstowcs.3.d/mbstowcs.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man3/mq_getattr.3.d/mq_getattr.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man3/mq_notify.3.d/mq_notify.c.lint-c.clang-tidy.touch \
+	$(_MANDIR)/man3/mtrace.3.d/t_mtrace.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man3/newlocale.3.d/newlocale.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man3/offsetof.3.d/offsetof.c.lint-c.clang-tidy.touch \
 	$(_MANDIR)/man3/posix_spawn.3.d/posix_spawn.c.lint-c.clang-tidy.touch \
@@ -182,7 +184,7 @@ $(_LINT_c_clang_tidy): $(CLANG_TIDY_CONF) $(MK) | $$(@D)/
 
 $(_LINT_c_clang_tidy):
 	$(info	$(INFO_)CLANG_TIDY	$@)
-	$(CLANG_TIDY) $(CLANG_TIDYFLAGS) $< -- $(CPPFLAGS) $(CLANGFLAGS) 2>&1 \
+	$(CLANG_TIDY) $(CLANG_TIDYFLAGS_) $< -- $(CLANGFLAGS_) $(CPPFLAGS_) 2>&1 \
 	| $(SED) '/generated\.$$/d' >&2
 	$(TOUCH) $@
 
