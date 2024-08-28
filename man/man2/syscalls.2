@@ -140,13 +140,15 @@ The list of system calls that are available as at Linux 5.14
 .\"
 .TS
 Lb Lb Lb
-L2 L  L.
+L2 L  Lx.
 System call	Kernel	Notes
 _
 \fB_llseek\fP(2)	1.2
 \fB_newselect\fP(2)	2.0
 \fB_sysctl\fP(2)	2.0	Removed in 5.5
-\fBaccept\fP(2)	2.0	T{
+T{
+.BR accept (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBaccept4\fP(2)	2.6.28
@@ -162,22 +164,31 @@ T}
 .\" 91e040a79df73d371f70792f30380d4e44805250
 \fBarc_usr_cmpxchg\fP(2)	4.9	ARC only
 .\" x86: 79170fda313ed5be2394f87aa2a00d597f8ed4a1
-\fBarch_prctl\fP(2)	2.6	T{
+T{
+.BR arch_prctl (2)
+T}	2.6	T{
 x86_64, x86 since 4.12
 T}
 .\" 9674cdc74d63f346870943ef966a034f8c71ee57
 \fBatomic_barrier\fP(2)	2.6.34	m68k only
 \fBatomic_cmpxchg_32\fP(2)	2.6.34	m68k only
-\fBbdflush\fP(2)	1.2	T{
+T{
+.BR bdflush (2)
+T}	1.2	T{
 Deprecated (does nothing)
-since 2.6
+since 2.6,
+removed in 5.15
 T}
-\fBbind\fP(2)	2.0	T{
+T{
+.BR bind (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBbpf\fP(2)	3.18
 \fBbrk\fP(2)	1.0
-\fBbreakpoint\fP(2)	2.2	T{
+T{
+.BR breakpoint (2)
+T}	2.2	T{
 ARM OABI only, defined with
 \fB__ARM_NR\fP prefix
 T}
@@ -186,8 +197,12 @@ T}
 \fBcapset\fP(2)	2.2
 \fBchdir\fP(2)	1.0
 \fBchmod\fP(2)	1.0
-\fBchown\fP(2)	2.2	T{
-See \fBchown\fP(2) for
+T{
+.BR chown (2)
+T}	2.2	T{
+See
+.BR chown (2)
+for
 version details
 T}
 \fBchown32\fP(2)	2.4
@@ -213,7 +228,9 @@ T}
 .\" T}
 .\" 867e359b97c970a60626d5d76bbe2a8fadbf38fb
 .\" bb9d812643d8a121df7d614a2b9c60193a92deb0
-\fBconnect\fP(2)	2.0	T{
+T{
+.BR connect (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBcopy_file_range\fP(2)	4.5
@@ -233,7 +250,9 @@ T}
 \fBepoll_wait\fP(2)	2.6
 \fBeventfd\fP(2)	2.6.22
 \fBeventfd2\fP(2)	2.6.27
-\fBexecv\fP(2)	2.0	T{
+T{
+.BR execv (2)
+T}	2.0	T{
 SPARC/SPARC64 only, for
 compatibility with SunOS
 T}
@@ -287,7 +306,9 @@ T}
 \fBget_robust_list\fP(2)	2.6.17
 \fBget_thread_area\fP(2)	2.6
 .\" 8fcd6c45f5a65621ec809b7866a3623e9a01d4ed
-\fBget_tls\fP(2)	4.15	T{
+T{
+.BR get_tls (2)
+T}	4.15	T{
 ARM OABI only, has
 \fB__ARM_NR\fP prefix
 T}
@@ -296,13 +317,17 @@ T}
 \fBgetdents\fP(2)	2.0
 \fBgetdents64\fP(2)	2.4
 .\" parisc: 863722e856e64dae0e252b6bb546737c6c5626ce
-\fBgetdomainname\fP(2)	2.2	T{
+T{
+.BR getdomainname (2)
+T}	2.2	T{
 SPARC, SPARC64; available
 as \fBosf_getdomainname\fP(2)
 on Alpha since Linux 2.0
 T}
 .\" ec98c6b9b47df6df1c1fa6cf3d427414f8c2cf16
-\fBgetdtablesize\fP(2)	2.0	T{
+T{
+.BR getdtablesize (2)
+T}	2.0	T{
 SPARC (removed in 2.6.26),
 available on Alpha as
 \fBosf_getdtablesize\fP(2)
@@ -316,15 +341,21 @@ T}
 \fBgetgroups\fP(2)	1.0
 \fBgetgroups32\fP(2)	2.4
 .\" SPARC removal: ec98c6b9b47df6df1c1fa6cf3d427414f8c2cf16
-\fBgethostname\fP(2)	2.0	T{
+T{
+.BR gethostname (2)
+T}	2.0	T{
 Alpha, was available on
 SPARC up to Linux 2.6.26
 T}
 \fBgetitimer\fP(2)	1.0
-\fBgetpeername\fP(2)	2.0	T{
+T{
+.BR getpeername (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
-\fBgetpagesize\fP(2)	2.0	T{
+T{
+.BR getpagesize (2)
+T}	2.0	T{
 Alpha, SPARC/SPARC64 only
 T}
 \fBgetpgid\fP(2)	1.0
@@ -340,27 +371,39 @@ T}
 \fBgetrlimit\fP(2)	1.0
 \fBgetrusage\fP(2)	1.0
 \fBgetsid\fP(2)	2.0
-\fBgetsockname\fP(2)	2.0	T{
+T{
+.BR getsockname (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
-\fBgetsockopt\fP(2)	2.0	T{
+T{
+.BR getsockopt (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBgettid\fP(2)	2.4.11
 \fBgettimeofday\fP(2)	1.0
 \fBgetuid\fP(2)	1.0
 \fBgetuid32\fP(2)	2.4
-\fBgetunwind\fP(2)	2.4.8	T{
+T{
+.BR getunwind (2)
+T}	2.4.8	T{
 IA-64 only; deprecated
 T}
 \fBgetxattr\fP(2)	2.6; 2.4.18
-\fBgetxgid\fP(2)	2.0	T{
+T{
+.BR getxgid (2)
+T}	2.0	T{
 Alpha only; see NOTES
 T}
-\fBgetxpid\fP(2)	2.0	T{
+T{
+.BR getxpid (2)
+T}	2.0	T{
 Alpha only; see NOTES
 T}
-\fBgetxuid\fP(2)	2.0	T{
+T{
+.BR getxuid (2)
+T}	2.0	T{
 Alpha only; see NOTES
 T}
 \fBinit_module\fP(2)	1.0
@@ -397,15 +440,21 @@ T}
 \fBlandlock_add_rule\fP(2)	5.13
 \fBlandlock_create_ruleset\fP(2)	5.13
 \fBlandlock_restrict_self\fP(2)	5.13
-\fBlchown\fP(2)	1.0	T{
-See \fBchown\fP(2) for
+T{
+.BR lchown (2)
+T}	1.0	T{
+See
+.BR chown (2)
+for
 version details
 T}
 \fBlchown32\fP(2)	2.4
 \fBlgetxattr\fP(2)	2.6; 2.4.18
 \fBlink\fP(2)	1.0
 \fBlinkat\fP(2)	2.6.16
-\fBlisten\fP(2)	2.0	T{
+T{
+.BR listen (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBlistxattr\fP(2)	2.6; 2.4.18
@@ -448,16 +497,24 @@ T}
 \fBmq_timedsend\fP(2)	2.6.6
 \fBmq_unlink\fP(2)	2.6.6
 \fBmremap\fP(2)	2.0
-\fBmsgctl\fP(2)	2.0	T{
+T{
+.BR msgctl (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBmsgget\fP(2)	2.0	T{
+T{
+.BR msgget (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBmsgrcv\fP(2)	2.0	T{
+T{
+.BR msgrcv (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBmsgsnd\fP(2)	2.0	T{
+T{
+.BR msgsnd (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
 \fBmsync\fP(2)	2.0
@@ -469,15 +526,21 @@ T}
 \fBname_to_handle_at\fP(2)	2.6.39
 \fBnanosleep\fP(2)	2.0
 .\" 5590ff0d5528b60153c0b4e7b771472b5a95e297
-\fBnewfstatat\fP(2)	2.6.16	T{
+T{
+.BR newfstatat (2)
+T}	2.6.16	T{
 See \fBstat\fP(2)
 T}
 \fBnfsservctl\fP(2)	2.2	Removed in 3.1
 \fBnice\fP(2)	1.0
-\fBold_adjtimex\fP(2)	2.0	T{
+T{
+.BR old_adjtimex (2)
+T}	2.0	T{
 Alpha only; see NOTES
 T}
-\fBold_getrlimit\fP(2)	2.4	T{
+T{
+.BR old_getrlimit (2)
+T}	2.4	T{
 Old variant of \fBgetrlimit\fP(2)
 that used a different value
 for \fBRLIM_INFINITY\fP
@@ -486,7 +549,9 @@ T}
 \fBoldlstat\fP(2)	1.0
 \fBoldolduname\fP(2)	1.0
 \fBoldstat\fP(2)	1.0
-\fBoldumount\fP(2)	2.4.116	T{
+T{
+.BR oldumount (2)
+T}	2.4.116	T{
 Name of the old \fBumount\fP(2)
 syscall on Alpha
 T}
@@ -497,7 +562,9 @@ T}
 \fBopenat\fP(2)	2.6.16
 \fBopenat2\fP(2)	5.6
 .\" 9d02a4283e9ce4e9ca11ff00615bdacdb0515a1a
-\fBor1k_atomic\fP(2)	3.1	T{
+T{
+.BR or1k_atomic (2)
+T}	3.1	T{
 OpenRISC 1000 only
 T}
 \fBpause\fP(2)	1.0
@@ -507,12 +574,16 @@ T}
 .\" , PowerPC, ARM; not x86
 \fBpciconfig_write\fP(2)	2.0.26; 2.2	Not on x86
 .\" , PowerPC, ARM; not x86
-\fBperf_event_open\fP(2)	2.6.31	T{
+T{
+.BR perf_event_open (2)
+T}	2.6.31	T{
 Was perf_counter_open() in
 2.6.31; renamed in 2.6.32
 T}
 \fBpersonality\fP(2)	1.2
-\fBperfctr\fP(2)	2.2	T{
+T{
+.BR perfctr (2)
+T}	2.2	T{
 SPARC only; removed in 2.6.34
 T}
 .\"	commit c7d5a0050773e98d1094eaa9f2a1a793fafac300 removed perfctr()
@@ -529,7 +600,9 @@ T}
 \fBpoll\fP(2)	2.0.36; 2.2
 \fBppoll\fP(2)	2.6.16
 \fBprctl\fP(2)	2.2
-\fBpread64\fP(2)		T{
+T{
+.BR pread64 (2)
+T}		T{
 Added as "pread" in 2.2;
 renamed "pread64" in 2.6
 T}
@@ -542,7 +615,9 @@ T}
 \fBpselect6\fP(2)	2.6.16
 .\" Implements \fBpselect\fP(2)
 \fBptrace\fP(2)	1.0
-\fBpwrite64\fP(2)		T{
+T{
+.BR pwrite64 (2)
+T}		T{
 Added as "pwrite" in 2.2;
 renamed "pwrite64" in 2.6
 T}
@@ -559,17 +634,25 @@ T}
 \fBreadlinkat\fP(2)	2.6.16
 \fBreadv\fP(2)	2.0
 \fBreboot\fP(2)	1.0
-\fBrecv\fP(2)	2.0	T{
+T{
+.BR recv (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
-\fBrecvfrom\fP(2)	2.0	T{
+T{
+.BR recvfrom (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
-\fBrecvmsg\fP(2)	2.0	T{
+T{
+.BR recvmsg (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBrecvmmsg\fP(2)	2.6.33
-\fBremap_file_pages\fP(2)	2.6	T{
+T{
+.BR remap_file_pages (2)
+T}	2.6	T{
 Deprecated since 3.16
 T}
 \fBremovexattr\fP(2)	2.6; 2.4.18
@@ -590,7 +673,9 @@ T}
 \fBrt_sigsuspend\fP(2)	2.2
 \fBrt_sigtimedwait\fP(2)	2.2
 \fBrt_tgsigqueueinfo\fP(2)	2.6.31
-\fBrtas\fP(2)	2.6.2	T{
+T{
+.BR rtas (2)
+T}	2.6.2	T{
 PowerPC/PowerPC64 only
 T}
 \fBs390_runtime_instr\fP(2)	3.7	s390 only
@@ -598,7 +683,9 @@ T}
 \fBs390_pci_mmio_write\fP(2)	3.19	s390 only
 \fBs390_sthyi\fP(2)	4.15	s390 only
 \fBs390_guarded_storage\fP(2)	4.12	s390 only
-\fBsched_get_affinity\fP(2)	2.6	T{
+T{
+.BR sched_get_affinity (2)
+T}	2.6	T{
 Name of
 .BR \%sched_getaffinity (2)
 on SPARC and SPARC64
@@ -610,7 +697,9 @@ T}
 \fBsched_getparam\fP(2)	2.0
 \fBsched_getscheduler\fP(2)	2.0
 \fBsched_rr_get_interval\fP(2)	2.0
-\fBsched_set_affinity\fP(2)	2.6	T{
+T{
+.BR sched_set_affinity (2)
+T}	2.6	T{
 Name of
 .BR \%sched_setaffinity (2)
 on SPARC and SPARC64
@@ -622,33 +711,47 @@ T}
 \fBsched_yield\fP(2)	2.0
 \fBseccomp\fP(2)	3.17
 \fBselect\fP(2)	1.0
-\fBsemctl\fP(2)	2.0	T{
+T{
+.BR semctl (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBsemget\fP(2)	2.0	T{
+T{
+.BR semget (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBsemop\fP(2)	2.0	T{
+T{
+.BR semop (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
 \fBsemtimedop\fP(2)	2.6; 2.4.22
-\fBsend\fP(2)	2.0	T{
+T{
+.BR send (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBsendfile\fP(2)	2.2
 \fBsendfile64\fP(2)	2.6; 2.4.19
 \fBsendmmsg\fP(2)	3.0
-\fBsendmsg\fP(2)	2.0	T{
+T{
+.BR sendmsg (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
-\fBsendto\fP(2)	2.0	T{
+T{
+.BR sendto (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBset_mempolicy\fP(2)	2.6.6
 \fBset_robust_list\fP(2)	2.6.17
 \fBset_thread_area\fP(2)	2.6
 \fBset_tid_address\fP(2)	2.6
-\fBset_tls\fP(2)	2.6.11	T{
+T{
+.BR set_tls (2)
+T}	2.6.11	T{
 ARM OABI/EABI only (constant
 has \fB__ARM_NR\fP prefix)
 T}
@@ -671,15 +774,21 @@ T}
 \fBsetgroups\fP(2)	1.0
 \fBsetgroups32\fP(2)	2.4
 .\" arch/alpha/include/asm/core_lca.h
-\fBsethae\fP(2)	2.0	T{
+T{
+.BR sethae (2)
+T}	2.0	T{
 Alpha only; see NOTES
 T}
 \fBsethostname\fP(2)	1.0
 \fBsetitimer\fP(2)	1.0
 \fBsetns\fP(2)	3.0
 \fBsetpgid\fP(2)	1.0
-\fBsetpgrp\fP(2)	2.0	T{
-Alternative name for \fBsetpgid\fP(2) on Alpha
+T{
+.BR setpgrp (2)
+T}	2.0	T{
+Alternative name for
+.BR setpgid (2)
+on Alpha
 T}
 \fBsetpriority\fP(2)	1.0
 \fBsetregid\fP(2)	1.0
@@ -692,7 +801,9 @@ T}
 \fBsetreuid32\fP(2)	2.4
 \fBsetrlimit\fP(2)	1.0
 \fBsetsid\fP(2)	1.0
-\fBsetsockopt\fP(2)	2.0	T{
+T{
+.BR setsockopt (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBsettimeofday\fP(2)	1.0
@@ -701,19 +812,29 @@ T}
 \fBsetup\fP(2)	1.0	Removed in 2.2
 \fBsetxattr\fP(2)	2.6; 2.4.18
 \fBsgetmask\fP(2)	1.0
-\fBshmat\fP(2)	2.0	T{
+T{
+.BR shmat (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBshmctl\fP(2)	2.0	T{
+T{
+.BR shmctl (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBshmdt\fP(2)	2.0	T{
+T{
+.BR shmdt (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBshmget\fP(2)	2.0	T{
+T{
+.BR shmget (2)
+T}	2.0	T{
 See notes on \fBipc\fP(2)
 T}
-\fBshutdown\fP(2)	2.0	T{
+T{
+.BR shutdown (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBsigaction\fP(2)	1.0
@@ -725,21 +846,29 @@ T}
 \fBsigprocmask\fP(2)	1.0
 \fBsigreturn\fP(2)	1.0
 \fBsigsuspend\fP(2)	1.0
-\fBsocket\fP(2)	2.0	T{
+T{
+.BR socket (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 \fBsocketcall\fP(2)	1.0
 .\" Implements BSD socket calls
-\fBsocketpair\fP(2)	2.0	T{
+T{
+.BR socketpair (2)
+T}	2.0	T{
 See notes on \fBsocketcall\fP(2)
 T}
 .\" 5a0015d62668e64c8b6e02e360fbbea121bfd5e6
 \fBspill\fP(2)	2.6.13	Xtensa only
 \fBsplice\fP(2)	2.6.17
-\fBspu_create\fP(2)	2.6.16	T{
+T{
+.BR spu_create (2)
+T}	2.6.16	T{
 PowerPC/PowerPC64 only
 T}
-\fBspu_run\fP(2)	2.6.16	T{
+T{
+.BR spu_run (2)
+T}	2.6.16	T{
 PowerPC/PowerPC64 only
 T}
 \fBssetmask\fP(2)	1.0
@@ -749,10 +878,14 @@ T}
 \fBstatfs64\fP(2)	2.6
 \fBstatx\fP(2)	4.11
 \fBstime\fP(2)	1.0
-\fBsubpage_prot\fP(2)	2.6.25	T{
+T{
+.BR subpage_prot (2)
+T}	2.6.25	T{
 PowerPC/PowerPC64 only
 T}
-\fBswapcontext\fP(2)	2.6.3	T{
+T{
+.BR swapcontext (2)
+T}	2.6.3	T{
 PowerPC/PowerPC64 only
 T}
 .\" 529d235a0e190ded1d21ccc80a73e625ebcad09b
@@ -769,7 +902,9 @@ T}
 .\" \fBsys_debug_setcontext\fP(2)	???	PowerPC if CONFIG_PPC32
 \fBsyncfs\fP(2)	2.6.39
 \fBsys_debug_setcontext\fP(2)	2.6.11	PowerPC only
-\fBsyscall\fP(2)	1.0	T{
+T{
+.BR syscall (2)
+T}	1.0	T{
 Still available on ARM OABI
 and MIPS O32 ABI
 T}
@@ -822,7 +957,9 @@ T}
 .\" There's a man page for Solaris 5.11
 \fBvfork\fP(2)	2.2
 \fBvhangup\fP(2)	1.0
-\fBvm86old\fP(2)	1.0	T{
+T{
+.BR vm86old (2)
+T}	1.0	T{
 Was "vm86"; renamed in
 2.0.28/2.2
 T}
