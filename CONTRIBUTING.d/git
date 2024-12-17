@@ -2,6 +2,12 @@ Name
        Git - instructions for configuring git(1)
 
 Description
+   git-am(1)
+       When applying a patch received via email, store the Message-ID
+       header field in the commit message.
+
+           $ git config --global am.messageid true;
+
    git-diff(1), gitattributes(5)
        To produce useful hunk contexts in manual pages, we need to hack
        git(1)'s idea of a function name, and also to tell git what is a
@@ -18,7 +24,12 @@ Description
 
        Generate patch sets as a thread.
 
-           $ git config --global format.thread true;
+           $ git config --global format.thread shallow;
+
+   git-merge(1)
+       We sign all commits.  You should verify the signatures on them.
+
+           $ git config --local merge.verifySignatures true;
 
    git-send-email(1)
        If mutt(1) or neomutt(1) are configured in the system,

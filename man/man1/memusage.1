@@ -6,12 +6,16 @@
 .SH NAME
 memusage \- profile memory usage of a program
 .SH SYNOPSIS
-.nf
-.BR memusage " [\fIoption\fR]... \fIprogram\fR [\fIprogramoption\fR]..."
-.fi
+.SY memusage
+.RI [ option \~.\|.\|.\&]
+.I program
+.RI [ programoption \~.\|.\|.]
+.YS
 .SH DESCRIPTION
 .B memusage
-is a bash script which profiles memory usage of the program,
+is a
+.BR bash (1)
+script which profiles memory usage of the program,
 .IR program .
 It preloads the
 .B libmemusage.so
@@ -52,7 +56,7 @@ contains three fields:
 Sum of \fIsize\fR arguments of all
 .BR malloc (3)
 calls,
-products of arguments (\fInmemb\fR*\fIsize\fR) of all
+products of arguments (\fIn\fR*\fIsize\fR) of all
 .BR calloc (3)
 calls,
 and sum of \fIlength\fR arguments of all
@@ -68,7 +72,7 @@ the sum of all such differences (new size minus old size) is added.
 .B "heap peak"
 Maximum of all \fIsize\fR arguments of
 .BR malloc (3),
-all products of \fInmemb\fR*\fIsize\fR of
+all products of \fIn\fR*\fIsize\fR of
 .BR calloc (3),
 all \fIsize\fR arguments of
 .BR realloc (3),

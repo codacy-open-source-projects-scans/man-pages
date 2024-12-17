@@ -8,8 +8,11 @@
 .SH NAME
 time \- time a simple command or give resource usage
 .SH SYNOPSIS
-.B time
-.RI [ option \~.\|.\|.\&] " command " [ argument \~.\|.\|.]
+.SY time
+.RI [ option \~.\|.\|.\&]
+.I command
+.RI [ argument \~.\|.\|.]
+.YS
 .SH DESCRIPTION
 The
 .B time
@@ -121,7 +124,9 @@ sys %S
 .in
 .\"
 .SS The format string
-The format is interpreted in the usual printf-like way.
+The format is interpreted in the usual
+.BR printf (3)-like
+way.
 Ordinary characters are directly copied, tab, newline,
 and backslash are escaped using \[rs]t, \[rs]n, and \[rs]\[rs],
 a percent sign is represented by %%, and otherwise %
@@ -273,7 +278,9 @@ so some of the values might be reported as zero.
 The present selection was mostly inspired by the data
 provided by 4.2 or 4.3BSD.
 .P
-GNU time version 1.7 is not yet localized.
+GNU
+.B time
+version 1.7 is not yet localized.
 Thus, it does not implement the POSIX requirements.
 .P
 The environment variable

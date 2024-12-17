@@ -38,39 +38,6 @@ sed_rm_ccomments()
 ########################################################################
 #	Linux man-pages
 
-#  man_section()  prints specific manual page sections (DESCRIPTION, SYNOPSIS,
-# ...) of all manual pages in a directory (or in a single manual page file).
-# Usage example:  .../man-pages$ man_section man2 SYNOPSIS 'SEE ALSO';
-
-man_section()
-{
-	if [ $# -lt 2 ]; then
-		>&2 echo "Usage: ${FUNCNAME[0]} <dir> <section>...";
-		return $EX_USAGE;
-	fi
-
-	local page="$1";
-	shift;
-	local sect="$*";
-
-	find "$page" -type f \
-	|xargs wc -l \
-	|grep -v -e '\b1 ' -e '\btotal\b' \
-	|awk '{ print $2 }' \
-	|sort \
-	|while read -r manpage; do
-		(sed -n '/^\.TH/,/^\.SH/{/^\.SH/!p}' <"$manpage";
-		 for s in $sect; do
-			<"$manpage" \
-			sed -n \
-				-e "/^\.SH $s/p" \
-				-e "/^\.SH $s/,/^\.SH/{/^\.SH/!p}";
-		 done;) \
-		|mandoc -Tutf8 2>/dev/null \
-		|col -pbx;
-	done;
-}
-
 #  man_lsfunc()  prints the name of all C functions declared in the SYNOPSIS
 # of all manual pages in a directory (or in a single manual page file).
 # Each name is printed in a separate line
@@ -83,11 +50,11 @@ man_lsfunc()
 		return $EX_USAGE;
 	fi
 
-	for arg in "$@"; do
-		man_section "$arg" 'SYNOPSIS';
-	done \
+	mansect 'SYNOPSIS' "$@" \
+	|mandoc -Tutf8 2>/dev/null \
+	|col -pbx \
 	|sed_rm_ccomments \
-	|pcregrep -Mn '(?s)^ [\w ]+ \**\w+\([\w\s(,)[\]*]*?(...)?\s*\); *$' \
+	|pcre2grep -Mn '(?s)^ [\w ]+ \**\w+\([\w\s(,)[\]*]*?(...)?\s*\); *$' \
 	|grep '^[0-9]' \
 	|sed -E 's/syscall\(SYS_(\w*),?/\1(/' \
 	|sed -E 's/^[^(]+ \**(\w+)\(.*/\1/' \
@@ -106,12 +73,12 @@ man_lsvar()
 		return $EX_USAGE;
 	fi
 
-	for arg in "$@"; do
-		man_section "$arg" 'SYNOPSIS';
-	done \
+	mansect 'SYNOPSIS' "$@" \
+	|mandoc -Tutf8 2>/dev/null \
+	|col -pbx \
 	|sed_rm_ccomments \
-	|pcregrep -Mv '(?s)^ [\w ]+ \**\w+\([\w\s(,)[\]*]+?(...)?\s*\); *$' \
-	|pcregrep -Mn \
+	|pcre2grep -Mv '(?s)^ [\w ]+ \**\w+\([\w\s(,)[\]*]+?(...)?\s*\); *$' \
+	|pcre2grep -Mn \
 	  -e '(?s)^ +extern [\w ]+ \**\(\*+[\w ]+\)\([\w\s(,)[\]*]+?\s*\); *$' \
 	  -e '^ +extern [\w ]+ \**[\w ]+; *$' \
 	|grep '^[0-9]' \
@@ -121,33 +88,35 @@ man_lsvar()
 	|uniq;
 }
 
-#  pdfman()  renders a manual page in PDF
-# Usage example:  .../man-pages$ pdfman man2/membarrier.2;
-
-pdfman()
-{
-	if [ $# -eq 0 ]; then
-		>&2 echo "Usage: ${FUNCNAME[0]} [man(1) options] [section] page";
-		return $EX_USAGE;
-	fi;
-
-	local tmp="$(mktemp -t "${!###*/}.XXXXXX")";
-
-	man -Tps "$@" \
-	|ps2pdf - - \
-	>"$tmp";
-	xdg-open "$tmp";
-}
-
-#  man_gitstaged  prints a list of all files with changes staged for commit
-# (basename only if the files are within <man?/>), separated by ", ".
+# Print a list of all files with changes staged for commit
+# (basename only if the files are within <man/>), separated by ", ".
 # Usage example:  .../man-pages$ git commit -m "$(man_gitstaged): msg";
 
 man_gitstaged()
 {
 	git diff --staged --name-only					\
 	|sed 's/$/, /'							\
-	|sed 's%.*/%%'							\
+	|sed '/^man\//s%.*/%%'						\
 	|tr -d '\n'							\
-	|sed 's/, $//'
+	|sed 's/, $//';
+}
+
+# diff all modified pages against the system ones.
+
+duffman()
+{
+	cd $(git rev-parse --show-toplevel);
+
+	git diff --name-only \
+	| grep -E \
+	   '(\.[[:digit:]]([[:alpha:]][[:alnum:]]*)?\>|\.man)+(\.man|\.in)*$' \
+	| sortman \
+	| while read f; do \
+		local sys="$(basename "$f")";
+
+		diffman "$@" "$sys" "$f";
+	done \
+	| less -R;
+
+	cd -;
 }
