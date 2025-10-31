@@ -1,0 +1,35 @@
+==================== Changes in man-pages-?.?? ====================
+
+Released: ????-??-??, ??Location??
+
+
+New and rewritten pages
+-----------------------
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+
+New and changed links
+---------------------
+
+
+Removed pages
+-------------
+
+
+Removed links
+-------------
+
+
+Global changes
+--------------
+
+
+Changes to individual files
+---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
