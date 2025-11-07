@@ -1,15 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
-.\" and Copyright (C) 2007, 2012 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's "POSIX Programmer's Guide" (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 19:30:29 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Fri Feb 14 21:47:50 1997 by Andries Brouwer (aeb@cwi.nl)
 .\"
 .TH getenv 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -44,7 +36,7 @@ and returns a pointer to the corresponding
 .I value
 string.
 .P
-The GNU-specific
+The
 .BR secure_getenv ()
 function is just like
 .BR getenv ()
@@ -57,7 +49,8 @@ the process's effective group ID did not match its real group ID
 (typically this is the result of executing a set-user-ID or
 set-group-ID program);
 .IP \[bu]
-the effective capability bit was set on the executable file; or
+the effective capability bit was set on the executable file;
+or
 .IP \[bu]
 the process has a nonempty permitted capability set.
 .P
@@ -96,16 +89,17 @@ T}	Thread safety	MT-Safe env
 C11, POSIX.1-2008.
 .TP
 .BR secure_getenv ()
-GNU.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR getenv ()
 POSIX.1-2001, C89, C99, SVr4, 4.3BSD.
 .TP
 .BR secure_getenv ()
-glibc 2.17.
+POSIX.1-2024, glibc 2.17.
 .SH NOTES
-The strings in the environment list are of the form \fIname=value\fP.
+The strings in the environment list are of the form
+.IR name=value .
 .P
 As typically implemented,
 .BR getenv ()

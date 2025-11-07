@@ -1,20 +1,13 @@
-.\" Copyright 1993 Rickard E. Faith (faith@cs.unc.edu)
-.\" Portions extracted from /usr/include/sys/socket.h, which does not have
-.\" any authorship information in it.  It is probably available under the GPL.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
 .\"
 .\" Other portions are from the 6.9 (Berkeley) 3/10/91 man page:
 .\"
-.\" Copyright (c) 1983 The Regents of the University of California.
-.\" All rights reserved.
+.\" Copyright 1983, The Regents of the University of California.
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\" Modified 1997-01-31 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 1998, 1999 by Andi Kleen
-.\" Modified 2004-06-23 by Michael Kerrisk <mtk.manpages@gmail.com>
 .\"
 .TH connect 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -187,7 +180,8 @@ is one of the usual error codes listed here,
 explaining the reason for the failure).
 .TP
 .B EINTR
-The system call was interrupted by a signal that was caught; see
+The system call was interrupted by a signal that was caught;
+see
 .BR signal (7).
 .\" For TCP, the connection will complete asynchronously.
 .\" See http://lkml.org/lkml/2005/7/12/254
@@ -214,12 +208,17 @@ The server may be too
 busy to accept new connections.
 Note that for IP sockets the timeout may
 be very long when syncookies are enabled on the server.
+.SH VERSIONS
+Portable programs must ensure that
+.I addr.sun_path
+is a null-terminated string
+for
+.B AF_UNIX
+sockets.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
-POSIX.1-2001, SVr4, 4.4BSD,
-.RB ( connect ()
-first appeared in 4.2BSD).
+POSIX.1-2001, SVr4, 4.2BSD.
 .\" SVr4 documents the additional
 .\" general error codes
 .\" .BR EADDRNOTAVAIL ,

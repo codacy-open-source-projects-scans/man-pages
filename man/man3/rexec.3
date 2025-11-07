@@ -1,15 +1,8 @@
 '\" t
-.\" Copyright (c) 1983, 1991, 1993
-.\"     The Regents of the University of California.  All rights reserved.
+.\" Copyright 1983-1993, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)rexec.3     8.1 (Berkeley) 6/4/93
-.\" $FreeBSD: src/lib/libcompat/4.3/rexec.3,v 1.12 2004/07/02 23:52:14 ru Exp $
-.\"
-.\" Taken from FreeBSD 5.4; not checked against Linux reality (mtk)
-.\"
-.\" 2013-06-21, mtk, Converted from mdoc to man macros
 .\"
 .TH rexec 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -56,18 +49,22 @@ returning \-1 if the host does not exist.
 Otherwise,
 .I *ahost
 is set to the standard name of the host.
-If a username and password are both specified, then these
-are used to authenticate to the foreign host; otherwise
+If a username and password are both specified,
+then these are used
+to authenticate to the foreign host;
+otherwise,
 the environment and then the
 .I .netrc
-file in user's
-home directory are searched for appropriate information.
-If all this fails, the user is prompted for the information.
+file in user's home directory
+are searched for appropriate information.
+If all this fails,
+the user is prompted for the information.
 .P
 The port
 .I inport
-specifies which well-known DARPA Internet port to use for
-the connection; the call
+specifies which well-known DARPA Internet port to use
+for the connection;
+the call
 .I "getservbyname(""exec"", ""tcp"")"
 (see
 .BR getservent (3))
@@ -152,8 +149,10 @@ The
 .BR rexec ()
 function sends the unencrypted password across the network.
 .P
-The underlying service is considered a big security hole and therefore
-not enabled on many sites; see
+The underlying service is considered a big security hole,
+and therefore,
+not enabled on many sites;
+see
 .BR rexecd (8)
 for explanations.
 .SH SEE ALSO

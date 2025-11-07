@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (c) 2003 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -40,7 +40,9 @@ the value that would have been returned in case of a synchronous
 or
 .BR fdatasync (2),
 call.
-On error, \-1 is returned, and \fIerrno\fP is set to indicate the error.
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
 .P
 If the asynchronous I/O operation has not yet completed,
 the return value and effect of

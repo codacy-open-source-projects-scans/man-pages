@@ -1,11 +1,9 @@
 '\" t
-.\" Copyright 2002 Walter Harms (walter.harms@informatik.uni-oldenburg.de)
+.\" Copyright, Free Software Foundation
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
 .\"
-.\" Heavily based on glibc infopages, copyright Free Software Foundation
-.\"
-.\" aeb, 2003, polished a little
 .TH mempcpy 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 mempcpy, wmempcpy  \- copy memory area
@@ -17,14 +15,15 @@ Standard C library
 .BR "#define _GNU_SOURCE" "         /* See feature_test_macros(7) */"
 .B #include <string.h>
 .P
-.BI "void *mempcpy(void " dest "[restrict ." n "], const void " src "[restrict ." n ],
+.BR "void *mempcpy(" "size_t n;"
+.BI "              void " dest "[restrict " n "], const void " src "[restrict " n ],
 .BI "              size_t " n );
 .P
 .BR "#define _GNU_SOURCE" "         /* See feature_test_macros(7) */"
 .B #include <wchar.h>
 .P
-.BI "wchar_t *wmempcpy(wchar_t " dest "[restrict ." n ],
-.BI "              const wchar_t " src "[restrict ." n ],
+.BR "wchar_t *wmempcpy(" "size_t n;"
+.BI "              wchar_t " dest "[restrict " n "], const wchar_t " src "[restrict " n ],
 .BI "              size_t " n );
 .fi
 .SH DESCRIPTION

@@ -1,8 +1,4 @@
-.\" Copyright 2016, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright 2016, Eugene Syromyatnikov <evgsyr@gmail.com>
-.\" A very few fragments remain from an earlier version of this page
-.\" written by David Howells (dhowells@redhat.com)
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -37,7 +33,7 @@ or
 .I setattr
 permission on the key.
 .\" Keys with the KEY_FLAG_KEEP bit set cause an EPERM
-.\" error for KEYCTL_REVOKE. Does this need to be documented?
+.\" error for KEYCTL_REVOKE.  Does this need to be documented?
 .\" David Howells: No significance for user space.
 .SH RETURN VALUE
 On success,

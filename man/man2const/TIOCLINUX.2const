@@ -1,8 +1,4 @@
-.\" Copyright 1995, Jim Van Zandt <jrv@vanzandt.mv.com> and aeb
-.\" Copyright 1995, <faith@cs.unc.edu>
-.\" Copyright 1995, <jrv@vanzandt.mv.com>
-.\" Copyright 1995, "H. Peter Anvin" <hpa@storm.net>
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -65,15 +61,76 @@ are the ending
 column and row.
 (Upper left corner is row=column=1.)
 .I sel_mode
-is 0 for character-by-character selection,
-1 for word-by-word selection,
-or 2 for line-by-line selection.
-The indicated screen characters are highlighted and saved
-in a kernel buffer.
+may be one of the following operations:
+.RS
+.TP
+.B TIOCL_SELCHAR
+Select character-by-character.
+The indicated screen characters are highlighted
+and saved in a kernel buffer.
 .IP
-Since Linux 6.7, using this subcode requires the
+Since Linux 6.7, using this selection mode requires the
 .B CAP_SYS_ADMIN
 capability.
+.TP
+.B TIOCL_SELWORD
+Select word-by-word,
+expanding the selection outwards to align with word boundaries.
+The indicated screen characters are highlighted
+and saved in a kernel buffer.
+.IP
+Since Linux 6.7, using this selection mode requires the
+.B CAP_SYS_ADMIN
+capability.
+.TP
+.B TIOCL_SELLINE
+Select line-by-line,
+expanding the selection outwards to select full lines.
+The indicated screen characters are highlighted
+and saved in a kernel buffer.
+.IP
+Since Linux 6.7, using this selection mode requires the
+.B CAP_SYS_ADMIN
+capability.
+.TP
+.B TIOCL_SELPOINTER
+Show the pointer at position
+.RI ( xs ,\~ ys )
+or
+.RI ( xe ,\~ ye ),
+whichever is later in text flow order.
+.TP
+.B TIOCL_SELCLEAR
+Remove the current selection highlight, if any,
+from the console holding the selection.
+.IP
+This does not affect the stored selected text.
+.TP
+.B TIOCL_SELMOUSEREPORT
+Make the terminal report
+.RI ( xs ,\~ ys )
+as the current mouse location
+using the
+.BR xterm (1)
+mouse tracking protocol
+(see
+.BR console_codes (4)).
+The lower 4 bits of
+.I sel_mode
+.RB ( TIOCL_SELBUTTONMASK )
+indicate the desired button press and
+modifier key information for the mouse event.
+.\" <https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Normal-tracking-mode>
+.IP
+If mouse reporting is not enabled for the terminal,
+this operation yields an
+.B EINVAL
+error.
+.IP
+Since Linux 6.7, using this selection mode requires the
+.B CAP_SYS_ADMIN
+capability.
+.RE
 .TP
 .BR subcode = TIOCL_PASTESEL
 Paste selection.
@@ -199,6 +256,14 @@ Never used.
 .BR subcode = TIOCL_GETKMSGREDIRECT
 Returns target of kernel messages.
 (Since Linux 2.6.17.)
+.TP
+.BR subcode = TIOCL_GETBRACKETEDPASTE
+Returns
+.B 1
+if the application advertised bracketed paste compatibility to the terminal,
+.B 0
+otherwise.
+(Since Linux 6.16.)
 .SH RETURN VALUE
 On success, 0 is returned (except where indicated).
 On failure, \-1 is returned, and

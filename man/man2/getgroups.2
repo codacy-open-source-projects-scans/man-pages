@@ -1,13 +1,6 @@
-.\" Copyright 1993 Rickard E. Faith (faith@cs.unc.edu)
-.\" and Copyright (C) 2008, 2010, 2015, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Thu Oct 31 12:04:29 1996 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified, 27 May 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added notes on capability requirements
-.\" 2008-05-03, mtk, expanded and rewrote parts of DESCRIPTION and RETURN
-.\"     VALUE, made style of page more consistent with man-pages style.
 .\"
 .TH getgroups 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -19,11 +12,11 @@ Standard C library
 .nf
 .B #include <unistd.h>
 .P
-.BI "int getgroups(int " size ", gid_t " list "[_Nullable ." size ]);
+.BI "int getgroups(int " size ", gid_t " list "[_Nullable " size ]);
 .P
 .B #include <grp.h>
 .P
-.BI "int setgroups(size_t " size ", const gid_t " list "[_Nullable ." size ]);
+.BI "int setgroups(size_t " size ", const gid_t " list [ size ]);
 .fi
 .P
 .RS -4
@@ -82,7 +75,7 @@ A process can drop all of its supplementary groups with the call:
 .P
 .in +4n
 .EX
-setgroups(0, NULL);
+setgroups(0, (gid_t [0]){});
 .EE
 .in
 .SH RETURN VALUE
@@ -119,7 +112,8 @@ can additionally fail with the following errors:
 .I size
 is greater than
 .B NGROUPS_MAX
-(32 before Linux 2.6.4; 65536 since Linux 2.6.4).
+(32 before Linux 2.6.4;
+65536 since Linux 2.6.4).
 .TP
 .B ENOMEM
 Out of memory.
@@ -156,7 +150,7 @@ For details, see
 .SH STANDARDS
 .TP
 .BR getgroups ()
-POSIX.1-2008.
+POSIX.1-2024.
 .TP
 .BR setgroups ()
 None.

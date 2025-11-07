@@ -1,12 +1,5 @@
 '\" t
-.\" @(#)des_crypt.3	2.1 88/08/11 4.0 RPCSRC; from 1.16 88/03/02 SMI;
-.\"
-.\" Taken from libc4 sources, which say:
-.\" Copyright (C) 1993 Eric Young - can be distributed under GPL.
-.\"
-.\" However, the above header line suggests that this file in fact is
-.\" Copyright Sun Microsystems, Inc (and is provided for unrestricted use,
-.\" see other Sun RPC sources).
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
 .\"
@@ -23,12 +16,12 @@ Standard C library
 .\" .B #include <des_crypt.h>
 .B #include <rpc/des_crypt.h>
 .P
-.BI "[[deprecated]] int ecb_crypt(char *" key ", char " data [. datalen ],
-.BI "                             unsigned int " datalen ", \
-unsigned int " mode );
-.BI "[[deprecated]] int cbc_crypt(char *" key ", char " data [. datalen ],
-.BI "                             unsigned int " datalen ", \
-unsigned int " mode ,
+.BR "[[deprecated]] int ecb_crypt(" "unsigned int datalen;"
+.BI "                             char *" key ", char " data [ datalen ],
+.BI "                             unsigned int " datalen ", unsigned int " mode );
+.BR "[[deprecated]] int cbc_crypt(" "unsigned int datalen;"
+.BI "                             char *" key ", char " data [ datalen ],
+.BI "                             unsigned int " datalen ", unsigned int " mode ,
 .BI "                             char *" ivec );
 .P
 .BI "[[deprecated]] void des_setparity(char *" key );

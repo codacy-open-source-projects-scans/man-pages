@@ -1,21 +1,7 @@
-.\" Copyright (c) 1983, 1991 Regents of the University of California.
-.\" and Copyright (C) 2007, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" All rights reserved.
+.\" Copyright 1983-1991, Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)getpgrp.2	6.4 (Berkeley) 3/10/91
-.\"
-.\" Modified 1993-07-24 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1995-04-15 by Michael Chastain <mec@shell.portal.com>:
-.\"   Added 'getpgid'.
-.\" Modified 1996-07-21 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 1996-11-06 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 1999-09-02 by Michael Haardt <michael@moria.de>
-.\" Modified 2002-01-18 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2003-01-20 by Andries Brouwer <aeb@cwi.nl>
-.\" 2007-07-25, mtk, fairly substantial rewrites and rearrangements
-.\" of text.
 .\"
 .TH setpgid 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -31,10 +17,10 @@ Standard C library
 .BI "pid_t getpgid(pid_t " pid );
 .P
 .BR "pid_t getpgrp(void);" "                            /* POSIX.1 version */"
-.BI "[[deprecated]] pid_t getpgrp(pid_t " pid ");\fR        /* BSD version */"
+.BI "[[deprecated]] pid_t getpgrp(pid_t " pid ");\f[R]        /* BSD version */\f[]"
 .P
 .BR "int setpgrp(void);" "                              /* System V version */"
-.BI "[[deprecated]] int setpgrp(pid_t " pid ", pid_t " pgid ");\fR  /* BSD version */"
+.BI "[[deprecated]] int setpgrp(pid_t " pid ", pid_t " pgid ");\f[R]  /* BSD version */\f[]"
 .fi
 .P
 .RS -4
@@ -71,7 +57,8 @@ and are used for getting and setting the
 process group ID (PGID) of a process.
 The preferred, POSIX.1-specified ways of doing this are:
 .BR getpgrp (void),
-for retrieving the calling process's PGID; and
+for retrieving the calling process's PGID;
+and
 .BR setpgid (),
 for setting a process's PGID.
 .P
@@ -97,7 +84,9 @@ both process groups must be part of the same session (see
 and
 .BR credentials (7)).
 In this case,
-the \fIpgid\fP specifies an existing process group to be joined and the
+the
+.I pgid
+specifies an existing process group to be joined and the
 session ID of that group must match the session ID of the joining process.
 .P
 The POSIX.1 version of
@@ -235,11 +224,9 @@ is not the calling process and not a child of the calling process.
 .BR setpgid ()
 .TQ
 .BR getpgrp "() (no args)"
-.TQ
-.BR setpgrp "() (no args)"
-POSIX.1-2008 (but see HISTORY).
+POSIX.1-2024.
 .TP
-.BR setpgrp "() (2 args)"
+.BR setpgrp ()
 .TQ
 .BR getpgrp "() (1 arg)"
 None.
@@ -254,7 +241,8 @@ POSIX.1-2001.
 .TP
 .BR setpgrp "() (no args)"
 POSIX.1-2001.
-POSIX.1-2008 marks it as obsolete.
+Obsoleted in POSIX.1-2008.
+Removed in POSIX.1-2024.
 .TP
 .BR setpgrp "() (2 args)"
 .TQ

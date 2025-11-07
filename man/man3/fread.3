@@ -1,20 +1,8 @@
 '\" t
-.\" Copyright (c) 1990, 1991 The Regents of the University of California.
-.\" and Copyright (c) 2020 Arkadiusz Drabczyk <arkadiusz@drabczyk.org>
-.\" All rights reserved.
-.\"
-.\" This code is derived from software contributed to Berkeley by
-.\" Chris Torek and the American National Standards Committee X3,
-.\" on Information Processing Systems.
+.\" Copyright 1990-1991, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)fread.3	6.6 (Berkeley) 6/29/91
-.\"
-.\" Converted for Linux, Mon Nov 29 15:37:33 1993, faith@cs.unc.edu
-.\" Sun Feb 19 21:26:54 1995 by faith, return values
-.\" Modified Thu Apr 20 20:43:53 1995 by Jim Van Zandt <jrv@vanzandt.mv.com>
-.\" Modified Fri May 17 10:21:51 1996 by Martin Schulze <joey@infodrom.north.de>
 .\"
 .TH fread 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -26,10 +14,12 @@ Standard C library
 .nf
 .B #include <stdio.h>
 .P
-.BI "size_t fread(void " ptr "[restrict ." size " * ." n ],
+.BR "size_t fread(" "size_t size, size_t n;"
+.BI "             void " ptr "[restrict " size " * " n ],
 .BI "             size_t " size ", size_t " n ,
 .BI "             FILE *restrict " stream );
-.BI "size_t fwrite(const void " ptr "[restrict ." size " * ." n ],
+.BR "size_t fwrite(" "size_t size, size_t n;"
+.BI "             const void " ptr "[restrict " size " * " n ],
 .BI "             size_t " size ", size_t " n ,
 .BI "             FILE *restrict " stream );
 .fi
@@ -106,7 +96,7 @@ magic and class:
 .P
 .in +4n
 .EX
-$ \fB./a.out\fP
+.RB $ " ./a.out" ;
 ELF magic: 0x7f454c46
 Class: 0x02
 .EE
@@ -118,7 +108,7 @@ Class: 0x02
 #include <stdio.h>
 #include <stdlib.h>
 \&
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+#define NITEMS(arr)  (sizeof(arr) / sizeof((arr)[0]))
 \&
 int
 main(void)
@@ -133,8 +123,8 @@ main(void)
         return EXIT_FAILURE;
     }
 \&
-    ret = fread(buffer, sizeof(*buffer), ARRAY_SIZE(buffer), fp);
-    if (ret != ARRAY_SIZE(buffer)) {
+    ret = fread(buffer, sizeof(*buffer), NITEMS(buffer), fp);
+    if (ret != NITEMS(buffer)) {
         fprintf(stderr, "fread() failed: %zu\[rs]n", ret);
         exit(EXIT_FAILURE);
     }

@@ -1,4 +1,4 @@
-.\" Copyright 2003 Andries E. Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -7,8 +7,9 @@
 alloc_hugepages, free_hugepages \- allocate or free huge pages
 .SH SYNOPSIS
 .nf
-.BI "void *syscall(SYS_alloc_hugepages, int " key ", void " addr [. size "], \
-size_t " size ,
+.BR "void *syscall(" "size_t size;"
+.BI "              SYS_alloc_hugepages, int " key ,
+.BI "              void " addr [ size "], size_t " size ,
 .BI "              int " prot ", int " flag );
 .\" asmlinkage unsigned long sys_alloc_hugepages(int key, unsigned long addr,
 .\" unsigned long size, int prot, int flag);

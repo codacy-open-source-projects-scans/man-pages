@@ -1,13 +1,6 @@
-.\" Copyright (C) 2007, 2010 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 18:34:44 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Merged readv.[23], 2002-10-17, aeb
-.\" 2007-04-30 mtk, A fairly major rewrite to fix errors and
-.\"     add more details.
-.\" 2010-11-16, mtk, Added documentation of preadv() and pwritev()
 .\"
 .TH readv 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -238,6 +231,29 @@ However, if the
 .I offset
 argument is \-1, the current file offset is updated.
 .TP
+.BR RWF_NOAPPEND " (since Linux 6.9)"
+Do not honor the
+.B O_APPEND
+.BR open (2)
+flag.
+This flag is meaningful only for
+.BR pwritev2 ().
+Historically,
+Linux honored
+.B O_APPEND
+flag if set and ignored the offset argument,
+which is a bug.
+For
+.BR pwritev2 (),
+the
+.I offset
+argument is honored as expected if
+.B RWF_NOAPPEND
+flag is set,
+the same as if
+.B O_APPEND
+flag were not set.
+.TP
 .BR RWF_ATOMIC " (since Linux 6.11)"
 Requires that
 writes to regular files in block-based filesystems
@@ -268,7 +284,8 @@ is given by the value in
 Torn-write protection only works with
 .B O_DIRECT
 flag,
-i.e. buffered writes are not supported.
+that is,
+buffered writes are not supported.
 To guarantee consistency from the write
 between a file's in-core state
 with the storage device,
@@ -285,6 +302,39 @@ or their equivalent flags and system calls are used
 .B RWF_SYNC
 is specified for
 .BR pwritev2 ()).
+.TP
+.BR RWF_DONTCACHE " (since Linux 6.14)"
+Reads or writes to a regular file
+will prune instantiated page cache content
+when the operation completes.
+This is different than normal buffered I/O,
+where the data usually remains in cache
+until such time that it gets reclaimed
+due to memory pressure.
+If ranges of the read or written I/O
+were already in cache before this read or write,
+then those ranges will not be pruned at I/O completion time.
+.IP
+Additionally,
+any range dirtied by a write operation with
+.B RWF_DONTCACHE
+set will get kicked off for writeback.
+This is similar to calling
+.BR sync_file_range (2)
+with
+.I SYNC_FILE_RANGE_WRITE
+to start writeback on the given range.
+.B RWF_DONTCACHE
+is a hint, or best effort,
+where no hard guarantees are given on the state of the page cache
+once the operation completes.
+.IP
+If used on a file system or block device
+that doesn't support it,
+it will return \-1, and
+.I errno
+will be set to
+.BR EOPNOTSUPP .
 .SH RETURN VALUE
 On success,
 .BR readv (),
@@ -304,7 +354,9 @@ than requested (see
 and
 .BR write (2)).
 .P
-On error, \-1 is returned, and \fIerrno\fP is set to indicate the error.
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
 .SH ERRORS
 The errors are as given for
 .BR read (2)
@@ -350,7 +402,14 @@ value from
 .I statx.
 .TP
 .B EOPNOTSUPP
-An unknown flag is specified in \fIflags\fP.
+.B RWF_DONTCACHE
+was set in
+.I flags
+and the file doesn't support it.
+.TP
+.B EOPNOTSUPP
+An unknown flag is specified in
+.IR flags .
 .SH VERSIONS
 .SS C library/kernel differences
 The raw
@@ -372,7 +431,7 @@ These arguments contain, respectively, the low order and high order 32 bits of
 .BR readv ()
 .TQ
 .BR writev ()
-POSIX.1-2008.
+POSIX.1-2024.
 .TP
 .BR preadv ()
 .TQ
@@ -390,8 +449,14 @@ Linux.
 .BR writev ()
 POSIX.1-2001,
 4.4BSD (first appeared in 4.2BSD).
-.\" Linux libc5 used \fIsize_t\fP as the type of the \fIiovcnt\fP argument,
-.\" and \fIint\fP as the return type.
+.\" Linux libc5 used
+.\" .I size_t
+.\" as the type of the
+.\" .I iovcnt
+.\" argument,
+.\" and
+.\" .I int
+.\" as the return type.
 .\" The readv/writev system calls were buggy before Linux 1.3.40.
 .\" (Says release.libc.)
 .P

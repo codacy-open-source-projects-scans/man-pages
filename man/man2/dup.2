@@ -1,18 +1,6 @@
-.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
-.\" and Copyright (C) 1993 Michael Haardt, Ian Jackson.
-.\" and Copyright (C) 2005, 2008 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (C) 2014 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1993-07-21, Rik Faith <faith@cs.unc.edu>
-.\" Modified 1994-08-21, Michael Chastain <mec@shell.portal.com>:
-.\"   Fixed typos.
-.\" Modified 1997-01-31, Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2002-09-28, aeb
-.\" 2009-01-12, mtk, reordered text in DESCRIPTION and added some
-.\"     details for dup2().
-.\" 2008-10-09, mtk: add description of dup3()
 .\"
 .TH dup 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -177,7 +165,8 @@ The
 .BR dup2 ()
 or
 .BR dup3 ()
-call was interrupted by a signal; see
+call was interrupted by a signal;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -201,14 +190,7 @@ in
 .B ENOMEM
 Insufficient kernel memory was available.
 .SH STANDARDS
-.TP
-.BR dup ()
-.TQ
-.BR dup2 ()
-POSIX.1-2008.
-.TP
-.BR dup3 ()
-Linux.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR dup ()
@@ -220,6 +202,7 @@ POSIX.1-2001, SVr4, 4.3BSD.
 .\" The EBUSY return is Linux-specific.
 .TP
 .BR dup3 ()
+POSIX.1-2024.
 Linux 2.6.27,
 glibc 2.9.
 .SH NOTES
@@ -257,25 +240,25 @@ Instead, code something like the following could be used:
 .EX
 /* Obtain a duplicate of \[aq]newfd\[aq] that can subsequently
    be used to check for close() errors; an EBADF error
-   means that \[aq]newfd\[aq] was not open. */
+   means that \[aq]newfd\[aq] was not open.  */
 \&
 tmpfd = dup(newfd);
 if (tmpfd == \-1 && errno != EBADF) {
-    /* Handle unexpected dup() error. */
+    /* Handle unexpected dup() error.  */
 }
 \&
-/* Atomically duplicate \[aq]oldfd\[aq] on \[aq]newfd\[aq]. */
+/* Atomically duplicate \[aq]oldfd\[aq] on \[aq]newfd\[aq].  */
 \&
 if (dup2(oldfd, newfd) == \-1) {
-    /* Handle dup2() error. */
+    /* Handle dup2() error.  */
 }
 \&
 /* Now check for close() errors on the file originally
-   referred to by \[aq]newfd\[aq]. */
+   referred to by \[aq]newfd\[aq].  */
 \&
 if (tmpfd != \-1) {
     if (close(tmpfd) == \-1) {
-        /* Handle errors from close. */
+        /* Handle errors from close.  */
     }
 }
 .EE

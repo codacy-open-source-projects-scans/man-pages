@@ -1,20 +1,6 @@
-.\" Copyright (C) 2006 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" A few fragments remain from an earlier (1992) page by
-.\" Drew Eckhardt (drew@cs.colorado.edu),
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt (michael@moria.de)
-.\" Modified Sat Jul 24 13:22:07 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 21 Aug 1994 by Michael Chastain (mec@shell.portal.com):
-.\"   Referenced 'clone(2)'.
-.\" Modified 1995-06-10, 1996-04-18, 1999-11-01, 2000-12-24
-.\"   by Andries Brouwer (aeb@cwi.nl)
-.\" Modified, 27 May 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added notes on capability requirements
-.\" 2006-09-04, Michael Kerrisk
-.\"     Greatly expanded, to describe all attributes that differ
-.\"	parent and child.
 .\"
 .TH fork 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -152,7 +138,8 @@ one that called
 .BR fork ().
 The entire virtual address space of the parent is replicated in the child,
 including the states of mutexes, condition variables,
-and other pthreads objects; the use of
+and other pthreads objects;
+the use of
 .BR pthread_atfork (3)
 may be helpful for dealing with problems that this can cause.
 .IP \[bu]
@@ -284,8 +271,12 @@ The glibc wrapper invokes any fork handlers that have been
 established using
 .BR pthread_atfork (3).
 .\" and does some magic to ensure that getpid(2) returns the right value.
+.SS Async-signal safety
+.BR _Fork (3)
+is an async-signal safe variant of
+.BR fork (2).
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4, 4.3BSD.
 .SH NOTES
@@ -326,7 +317,8 @@ main(void)
         exit(EXIT_FAILURE);
     case 0:
         puts("Child exiting.");
-        exit(EXIT_SUCCESS);
+        fflush(stdout);
+        _exit(EXIT_SUCCESS);
     default:
         printf("Child is PID %jd\[rs]n", (intmax_t) pid);
         puts("Parent exiting.");
@@ -339,11 +331,13 @@ main(void)
 .BR clone (2),
 .BR execve (2),
 .BR exit (2),
+.BR _exit (2),
 .BR setrlimit (2),
 .BR unshare (2),
 .BR vfork (2),
 .BR wait (2),
 .BR daemon (3),
+.BR _Fork (3),
 .BR pthread_atfork (3),
 .BR capabilities (7),
 .BR credentials (7)

@@ -1,14 +1,7 @@
-.\" Copyright (c) 1983, 1990, 1991 The Regents of the University of California.
-.\" All rights reserved.
+.\" Copyright 1983-1991, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\" Modified 1993-07-24 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1996-10-21 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 1998-2000 by Andi Kleen to match Linux 2.2 reality
-.\" Modified 2002-04-23 by Roger Luethi <rl@hellgate.ch>
-.\" Modified 2004-06-17 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 2008-12-04, mtk, Add documentation of accept4()
 .\"
 .TH accept 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -68,7 +61,8 @@ is determined by the socket's address family (see
 and the respective protocol man pages).
 When
 .I addr
-is NULL, nothing is filled in; in this case,
+is NULL, nothing is filled in;
+in this case,
 .I addrlen
 is not used, and should also be NULL.
 .P
@@ -109,7 +103,8 @@ may then call
 to get a socket for that connection.
 Alternatively, you can set the socket to deliver
 .B SIGIO
-when activity occurs on a socket; see
+when activity occurs on a socket;
+see
 .BR socket (7)
 for details.
 .P
@@ -203,7 +198,8 @@ argument is not in a writable part of the user address space.
 .TP
 .B EINTR
 The system call was interrupted by a signal that was caught
-before a valid connection arrived; see
+before a valid connection arrived;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -258,7 +254,9 @@ may be seen during a trace.
 .SH VERSIONS
 On Linux, the new socket returned by
 .BR accept ()
-does \fInot\fP inherit file status flags such as
+does
+.I not
+inherit file status flags such as
 .B O_NONBLOCK
 and
 .B O_ASYNC
@@ -271,12 +269,7 @@ of file status flags and always explicitly set all required flags on
 the socket returned from
 .BR accept ().
 .SH STANDARDS
-.TP
-.BR accept ()
-POSIX.1-2008.
-.TP
-.BR accept4 ()
-Linux.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR accept ()
@@ -291,6 +284,7 @@ first appeared in 4.2BSD).
 .\" In addition, SUSv2 documents EFAULT and ENOSR.
 .TP
 .BR accept4 ()
+POSIX.1-2024.
 Linux 2.6.28,
 glibc 2.10.
 .SH NOTES
@@ -331,9 +325,11 @@ In the original BSD sockets implementation (and on other older systems)
 .\" such as Linux libc4 and libc5, SunOS 4, SGI
 the third argument of
 .BR accept ()
-was declared as an \fIint\ *\fP.
+was declared as an
+.IR "int\ *" .
 A POSIX.1g draft
-standard wanted to change it into a \fIsize_t\ *\fPC;
+standard wanted to change it into a
+.IR "size_t\ *" ;
 .\" SunOS 5 has 'size_t *'
 later POSIX standards and glibc 2.x have
 .IR "socklen_t\ * ".

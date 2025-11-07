@@ -1,10 +1,6 @@
-.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
-.\"             and Copyright (C) 1993 Michael Haardt, Ian Jackson.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Wed Jul 21 23:02:38 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 2001-11-17, aeb
 .\"
 .TH _exit 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -62,15 +58,17 @@ These functions do not return.
 .SH STANDARDS
 .TP
 .BR _exit ()
-POSIX.1-2008.
+POSIX.1-2024.
 .TP
 .BR _Exit ()
-C11, POSIX.1-2008.
+C11, POSIX.1-2024.
 .SH HISTORY
+.TP
+.BR _exit ()
 POSIX.1-2001, SVr4, 4.3BSD.
-.P
+.TP
 .BR _Exit ()
-was introduced by C99.
+C99, POSIX.1-2001.
 .SH NOTES
 For a discussion on the effects of an exit, the transmission of
 exit status, zombie processes, signals sent, and so on, see

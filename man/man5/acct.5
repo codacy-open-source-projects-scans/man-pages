@@ -1,4 +1,4 @@
-.\" Copyright (C) 2008, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -54,7 +54,7 @@ struct acct {
     char      ac_comm[ACCT_COMM+1];
                             /* Command name (basename of last
                                executed command; null\-terminated) */
-    char      ac_pad[\fIX\fP];    /* padding bytes */
+    char      ac_pad[\f[I]X\f[]];    /* padding bytes */
 };
 \&
 enum {          /* Bits that may be set in ac_flag field */
@@ -83,7 +83,8 @@ The
 .IR ac_stime ,
 and
 .I ac_etime
-fields measure time in "clock ticks"; divide these values by
+fields measure time in "clock ticks";
+divide these values by
 .I sysconf(_SC_CLK_TCK)
 to convert them to seconds.
 .SS Version 3 accounting file format

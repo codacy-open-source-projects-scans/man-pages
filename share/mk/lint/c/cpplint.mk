@@ -1,4 +1,4 @@
-# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -11,22 +11,28 @@ include $(MAKEFILEDIR)/configure/build-depends/coreutils/touch.mk
 include $(MAKEFILEDIR)/configure/build-depends/cpplint/cpplint.mk
 
 
-_LINT_c_EX_cpplint   := $(patsubst %, %.lint-c.cpplint.touch, $(_EX_TU_src))
-_LINT_c_cpplint      := $(_LINT_c_EX_cpplint)
+ext := .lint-c.cpplint.touch
+tgts_EX := $(patsubst %, %$(ext), $(_EX_TU_src))
+tgts    := $(tgts_EX)
 
 
-$(_LINT_c_EX_cpplint): %.lint-c.cpplint.touch: %
-$(_LINT_c_cpplint): $(CPPLINT_CONF) $(MK) | $$(@D)/
+$(tgts_EX): %$(ext): %
+$(tgts): $(CPPLINT_CONF) $(MK) | $$(@D)/
 
 
-$(_LINT_c_cpplint):
+$(tgts):
 	$(info	$(INFO_)CPPLINT		$@)
 	$(CPPLINT) $(CPPLINTFLAGS_) $< >/dev/null
 	$(TOUCH) $@
 
 
 .PHONY: lint-c-cpplint
-lint-c-cpplint: $(_LINT_c_cpplint);
+lint-c-cpplint: $(tgts);
+
+
+undefine ext
+undefine tgts_EX
+undefine tgts
 
 
 endif  # include guard

@@ -1,15 +1,8 @@
 '\" t
-.\" Copyright (C), 1995, Graeme W. Wilford. (Wilf.)
-.\" Copyright 2023, Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
-.\" Copyright 2023, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" Wed Jun 14 16:10:28 BST 1995 Wilf. (G.Wilford@ee.surrey.ac.uk)
-.\" Tiny change in formatting - aeb, 950812
-.\" Modified 8 May 1998 by Joseph S. Myers (jsm28@cam.ac.uk)
-.\"
-.\" show the synopsis section nicely
 .TH regex 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 regcomp, regexec, regerror, regfree \- POSIX regex functions
@@ -22,14 +15,14 @@ Standard C library
 .P
 .BI "int regcomp(regex_t *restrict " preg ", const char *restrict " regex ,
 .BI "            int " cflags );
-.BI "int regexec(const regex_t *restrict " preg \
-", const char *restrict " string ,
-.BI "            size_t " nmatch ", \
-regmatch_t " pmatch "[_Nullable restrict ." nmatch ],
+.BI "int regexec(const regex_t *restrict " preg ,
+.BI "            const char *restrict " string ,
+.BI "            size_t " n ", regmatch_t " pmatch "[_Nullable restrict " n ],
 .BI "            int " eflags );
 .P
-.BI "size_t regerror(int " errcode ", const regex_t *_Nullable restrict " preg ,
-.BI "            char " errbuf "[_Nullable restrict ." errbuf_size ],
+.BR "size_t regerror(" "size_t errbuf_size;"
+.BI "            int " errcode ", const regex_t *_Nullable restrict " preg ,
+.BI "            char " errbuf "[_Nullable restrict " errbuf_size ],
 .BI "            size_t " errbuf_size );
 .BI "void regfree(regex_t *" preg );
 .P
@@ -70,7 +63,7 @@ Thus, a value of
 .I preg->re_nsub
 + 1
 passed as
-.I nmatch
+.I n
 to
 .BR regexec ()
 is sufficient to capture all matches.
@@ -103,7 +96,7 @@ will use only
 for
 .BR REG_STARTEND ,
 ignoring
-.IR nmatch .
+.IR n .
 .TP
 .B REG_NEWLINE
 Match-any-character operators don't match a newline.
@@ -171,7 +164,7 @@ If any matches are returned
 wasn't passed to
 .BR regcomp (),
 the match succeeded, and
-.I nmatch
+.I n
 > 0), they overwrite
 .I pmatch
 as usual, and the match offsets remain relative to
@@ -189,7 +182,7 @@ obtain the locations of matches within
 .IR string :
 .BR regexec ()
 fills
-.I nmatch
+.I n
 elements of
 .I pmatch
 with results:
@@ -198,7 +191,7 @@ corresponds to the entire match,
 .I pmatch[1]
 to the first subexpression, etc.
 If there were more matches than
-.IR nmatch ,
+.IR n ,
 they are discarded;
 if fewer,
 unused elements of
@@ -296,7 +289,9 @@ Trailing backslash.
 Un-matched parenthesis group operators.
 .TP
 .B REG_ERANGE
-Invalid use of the range operator; for example, the ending point of the range
+Invalid use of the range operator;
+for example,
+the ending point of the range
 occurs prior to the starting point.
 .TP
 .B REG_ESIZE
@@ -367,7 +362,7 @@ Always reference them by name.
 #include <stdlib.h>
 #include <regex.h>
 \&
-#define ARRAY_SIZE(arr) (sizeof((arr)) / sizeof((arr)[0]))
+#define NITEMS(arr)  (sizeof((arr)) / sizeof((arr)[0]))
 \&
 static const char *const str =
         "1) John Driverhacker;\[rs]n2) John Doe;\[rs]n3) John Foo;\[rs]n";
@@ -387,12 +382,12 @@ int main(void)
     printf("Matches:\[rs]n");
 \&
     for (unsigned int i = 0; ; i++) {
-        if (regexec(&regex, s, ARRAY_SIZE(pmatch), pmatch, 0))
+        if (regexec(&regex, s, NITEMS(pmatch), pmatch, 0))
             break;
 \&
         off = pmatch[0].rm_so + (s \- str);
         len = pmatch[0].rm_eo \- pmatch[0].rm_so;
-        printf("#%zu:\[rs]n", i);
+        printf("#%u:\[rs]n", i);
         printf("offset = %jd; length = %jd\[rs]n", (intmax_t) off,
                 (intmax_t) len);
         printf("substring = \[rs]"%.*s\[rs]"\[rs]n", len, s + pmatch[0].rm_so);

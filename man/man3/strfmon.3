@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (c) 2000 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -13,10 +13,11 @@ Standard C library
 .nf
 .B #include <monetary.h>
 .P
-.BI "ssize_t strfmon(char " s "[restrict ." max "], size_t " max ,
+.BR "ssize_t strfmon(" "size_t size;"
+.BI "                char " s "[restrict " size "], size_t " size ,
 .BI "                const char *restrict " format ", ...);"
-.BI "ssize_t strfmon_l(char " s "[restrict ." max "], size_t " max ", \
-locale_t " locale ,
+.BR "ssize_t strfmon_l(" "size_t size;"
+.BI "                char " s "[restrict " size "], size_t " size ", locale_t " l ,
 .BI "                const char *restrict " format ", ...);"
 .fi
 .SH DESCRIPTION
@@ -29,19 +30,20 @@ and format specification
 and places the
 result in the character array
 .I s
-of size
-.IR max .
+of
+.I size
+bytes.
 .P
 The
 .BR strfmon_l ()
 function performs the same task,
 but uses
 the locale specified by
-.IR locale .
+.IR l .
 The behavior of
 .BR strfmon_l ()
 is undefined if
-.I locale
+.I l
 is the special locale object
 .B LC_GLOBAL_LOCALE
 (see
@@ -197,7 +199,7 @@ locales yield
 .in +4n
 .EX
 [ **1234,57 €] [ **1.234,57 EUR]
-[ Fr. **1234.57] [ CHF **1\[aq]234.57]
+[ Fr.\& **1234.57] [ CHF **1\[aq]234.57]
 [ $**1234.57] [ AUD**1,234.57]
 [ £**1234.57] [ GBP**1,234.57]
 .EE

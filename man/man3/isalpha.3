@@ -1,12 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 19:10:00 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Sun Aug 21 17:51:50 1994 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Sat Sep  2 21:52:01 1995 by Jim Van Zandt <jrv@vanzandt.mv.com>
-.\" Modified Mon May 27 22:55:26 1996 by Martin Schulze (joey@linux.de)
 .\"
 .TH isalpha 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -128,25 +123,32 @@ the functions with the "_l" suffix differ only in using the locale object
 instead of the current locale.
 .TP
 .BR isalnum ()
-checks for an alphanumeric character; it is equivalent to
-.BI "(isalpha(" c ") || isdigit(" c "))" \fR.
+checks for an alphanumeric character;
+it is equivalent to
+.IR "(isalpha(c)\ ||\ isdigit(c))" .
 .TP
 .BR isalpha ()
-checks for an alphabetic character; in the standard \fB"C"\fP
-locale, it is equivalent to
-.BI "(isupper(" c ") || islower(" c "))" \fR.
+checks for an alphabetic character;
+in the standard
+.B \[dq]C\[dq]
+locale,
+it is equivalent to
+.IR "(isupper(c)\ ||\ islower(c))" .
 In some locales, there may be additional characters for which
 .BR isalpha ()
 is true\[em]letters which are neither uppercase nor lowercase.
 .TP
 .BR isascii ()
-checks whether \fIc\fP is a 7-bit
+checks whether
+.I c
+is a 7-bit
 .I unsigned char
 value that fits into
 the ASCII character set.
 .TP
 .BR isblank ()
-checks for a blank character; that is, a space or a tab.
+checks for a blank character;
+that is, a space or a tab.
 .TP
 .BR iscntrl ()
 checks for a control character.

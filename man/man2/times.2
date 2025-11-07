@@ -1,19 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt (michael@moria.de)
-.\" Modified Sat Jul 24 14:29:17 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 961203 and 001211 and 010326 by aeb@cwi.nl
-.\" Modified 001213 by Michael Haardt (michael@moria.de)
-.\" Modified 13 Jun 02, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Added note on nonstandard behavior when SIGCHLD is ignored.
-.\" Modified 2004-11-16, mtk, Noted that the nonconformance when
-.\"	SIGCHLD is being ignored is fixed in Linux 2.6.9; other minor changes
-.\" Modified 2004-12-08, mtk, in Linux 2.6 times() return value changed
-.\" 2005-04-13, mtk
-.\"	Added notes on nonstandard behavior: Linux allows 'buf' to
-.\"	be NULL, but POSIX.1 doesn't specify this and it's nonportable.
 .\"
 .TH times 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -92,7 +79,8 @@ an arbitrary point in the past.
 The return value may overflow the possible range of type
 .IR clock_t .
 On error,
-\fI(clock_t)\ \-1\fP is returned,
+.I (clock_t)\ \-1
+is returned,
 and
 .I errno
 is set to indicate the error.
@@ -115,13 +103,15 @@ and most
 other UNIX implementations require a non-NULL value for
 .IR buf .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001,
 SVr4,
 4.3BSD.
 .P
-In POSIX.1-1996 the symbol \fBCLK_TCK\fP (defined in
+In POSIX.1-1996 the symbol
+.B CLK_TCK
+(defined in
 .IR <time.h> )
 is mentioned as obsolescent.
 It is obsolete now.
@@ -143,7 +133,7 @@ only if the calling process
 on its children.
 This nonconformance is rectified in Linux 2.6.9 and later.
 .\" See the description of times() in XSH, which says:
-.\"	The times of a terminated child process are included... when wait()
+.\"	The times of a terminated child process are included [...] when wait()
 .\"	or waitpid() returns the process ID of this terminated child.
 .P
 On Linux,
@@ -154,7 +144,8 @@ is measured has varied across kernel versions.
 On Linux 2.4 and earlier,
 this point is the moment the system was booted.
 Since Linux 2.6,
-this point is \fI(2\[ha]32/HZ) \- 300\fP
+this point is
+.I (2\[ha]32/HZ)\ \-\ 300
 seconds before system boot time.
 This variability across kernel versions (and across UNIX implementations),
 combined with the fact that the returned value may overflow the range of

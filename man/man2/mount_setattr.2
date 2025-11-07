@@ -1,4 +1,4 @@
-.\" Copyright (c) 2021 by Christian Brauner <christian.brauner@ubuntu.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -10,28 +10,23 @@ Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
-.BR "#include <linux/fcntl.h>" " /* Definition of " AT_* " constants */"
-.BR "#include <linux/mount.h>" " /* Definition of " MOUNT_ATTR_* " constants */"
-.BR "#include <sys/syscall.h>" " /* Definition of " SYS_* " constants */"
-.B #include <unistd.h>
+.BR "#include <fcntl.h>" "       /* Definition of " AT_* " constants */"
+.B #include <sys/mount.h>
 .P
-.BI "int syscall(SYS_mount_setattr, int " dirfd ", const char *" pathname ,
-.BI "            unsigned int " flags ", struct mount_attr *" attr \
-", size_t " size );
+.BI "int mount_setattr(int " dirfd ", const char *" path ", unsigned int " flags ","
+.BI "                  struct mount_attr *" attr ", size_t " size );
 .fi
-.P
-.IR Note :
-glibc provides no wrapper for
-.BR mount_setattr (),
-necessitating the use of
-.BR syscall (2).
 .SH DESCRIPTION
 The
 .BR mount_setattr ()
-system call changes the mount properties of a mount or an entire mount tree.
+system call is part of
+the suite of file-descriptor-based mount facilities in Linux.
+.P
+.BR mount_setattr ()
+changes the mount properties of a mount or an entire mount tree.
 If
-.I pathname
-is a relative pathname,
+.I path
+is relative,
 then it is interpreted relative to
 the directory referred to by the file descriptor
 .IR dirfd .
@@ -40,11 +35,11 @@ If
 is the special value
 .BR AT_FDCWD ,
 then
-.I pathname
+.I path
 is interpreted relative to
 the current working directory of the calling process.
 If
-.I pathname
+.I path
 is the empty string and
 .B AT_EMPTY_PATH
 is specified in
@@ -104,7 +99,7 @@ The supported values are:
 .TP
 .B AT_EMPTY_PATH
 If
-.I pathname
+.I path
 is the empty string,
 change the mount properties on
 .I dirfd
@@ -123,18 +118,11 @@ The
 .I attr
 argument of
 .BR mount_setattr ()
-is a structure of the following form:
-.P
-.in +4n
-.EX
-struct mount_attr {
-    __u64 attr_set;     /* Mount properties to set */
-    __u64 attr_clr;     /* Mount properties to clear */
-    __u64 propagation;  /* Mount propagation type */
-    __u64 userns_fd;    /* User namespace file descriptor */
-};
-.EE
-.in
+is a pointer to a
+.I mount_attr
+structure,
+described in
+.BR mount_attr (2type).
 .P
 The
 .I attr_set
@@ -192,7 +180,9 @@ mnt\->mnt_flags = current_mnt_flags;
 .P
 As a result of this change, the mount or mount tree (a) is read-only;
 (b) blocks the execution of set-user-ID and set-group-ID programs;
-(c) allows execution of programs; and (d) allows access to devices.
+(c) allows execution of programs;
+and
+(d) allows access to devices.
 .P
 Multiple changes with the same set of flags requested
 in
@@ -394,7 +384,7 @@ is set to indicate the error.
 .SH ERRORS
 .TP
 .B EBADF
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -421,7 +411,7 @@ but the mount still holds files open for writing.
 The pathname specified via the
 .I dirfd
 and
-.I pathname
+.I path
 arguments to
 .BR mount_setattr ()
 isn't a mount point.
@@ -524,7 +514,7 @@ a new peer group ID needs to be allocated for all mounts without a peer group
 ID set.
 This allocation failed because
 the kernel has run out of IDs.
-.\" Christian Brauner: i.e. someone has somehow managed to
+.\" Christian Brauner: i.e., someone has somehow managed to
 .\" allocate so many peer groups and managed to keep the kernel running
 .\" (???) that the ida has ran out of ids
 .\" Note that technically further error codes are possible that are
@@ -586,6 +576,7 @@ Linux 5.12.
 .\" commit 7d6beb71da3cc033649d641e1e608713b8220290
 .\" commit 2a1867219c7b27f928e2545782b86daaf9ad50bd
 .\" commit 9caccd41541a6f7d6279928d9f971f6642c361af
+glibc 2.36.
 .SH NOTES
 .SS ID-mapped mounts
 Creating an ID-mapped mount makes it possible to
@@ -801,6 +792,45 @@ changing ownership via the
 .BR chown (2)
 system call changes the ownership globally and permanently.
 .\"
+.SS Mount attributes and filesystem parameters
+Some mount attributes
+(traditionally associated with
+.BR mount (8)-style
+options)
+have a sibling filesystem parameter
+with superficially similar user-facing behaviour.
+For example, the
+.I \-o\~ro
+option to
+.BR mount (8)
+can refer to the
+"read-only" filesystem parameter,
+or the "read-only" mount attribute.
+Both of these result in mount objects becoming read-only,
+but they do have different behaviour.
+.P
+The distinction between these two kinds of option is that
+mount object attributes are applied per-mount-object
+(allowing different mount objects
+derived from a given filesystem instance
+to have different attributes),
+while filesystem instance parameters
+("superblock flags" in kernel-developer parlance)
+apply to all mount objects
+derived from the same filesystem instance.
+.P
+When using
+.BR mount (2),
+the line between these two types of mount options was blurred.
+However, with
+.BR mount_setattr ()
+and
+.BR fsconfig (2),
+the distinction is made much clearer.
+Mount attributes are configured with
+.BR mount_setattr (),
+while filesystem parameters are configured using
+.BR fsconfig (2).
 .SS Extensibility
 In order to allow for future extensibility,
 .BR mount_setattr ()
@@ -914,36 +944,13 @@ with a structure which has every byte nonzero
 #include <err.h>
 #include <fcntl.h>
 #include <getopt.h>
-#include <linux/mount.h>
-#include <linux/types.h>
+#include <sys/mount.h>
+#include <sys/types.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/syscall.h>
 #include <unistd.h>
-\&
-static inline int
-mount_setattr(int dirfd, const char *pathname, unsigned int flags,
-              struct mount_attr *attr, size_t size)
-{
-    return syscall(SYS_mount_setattr, dirfd, pathname, flags,
-                   attr, size);
-}
-\&
-static inline int
-open_tree(int dirfd, const char *filename, unsigned int flags)
-{
-    return syscall(SYS_open_tree, dirfd, filename, flags);
-}
-\&
-static inline int
-move_mount(int from_dirfd, const char *from_pathname,
-           int to_dirfd, const char *to_pathname, unsigned int flags)
-{
-    return syscall(SYS_move_mount, from_dirfd, from_pathname,
-                   to_dirfd, to_pathname, flags);
-}
 \&
 static const struct option longopts[] = {
     {"map\-mount",       required_argument,  NULL,  \[aq]a\[aq]},
@@ -1007,15 +1014,15 @@ main(int argc, char *argv[])
     target = argv[optind + 1];
 \&
     /* In the following, \-1 as the \[aq]dirfd\[aq] argument ensures that
-       open_tree() fails if \[aq]source\[aq] is not an absolute pathname. */
+       open_tree() fails if \[aq]source\[aq] is not an absolute pathname.  */
 .\" Christian Brauner
 .\"     When writing programs I like to never use relative paths with AT_FDCWD
-.\"     because. Because making assumptions about the current working directory
+.\"     because.  Because making assumptions about the current working directory
 .\"     of the calling process is just too easy to get wrong; especially when
 .\"     pivot_root() or chroot() are in play.
 .\"     My absolut preference (joke intended) is to open a well-known starting
 .\"     point with an absolute path to get a dirfd and then scope all future
-.\"     operations beneath that dirfd. This already works with old-style
+.\"     operations beneath that dirfd.  This already works with old-style
 .\"     openat() and _very_ cautious programming but openat2() and its
 .\"     resolve-flag space have made this **chef's kiss**.
 .\"     If I can't operate based on a well-known dirfd I use absolute paths
@@ -1041,7 +1048,7 @@ main(int argc, char *argv[])
     close(fd_userns);
 \&
     /* In the following, \-1 as the \[aq]to_dirfd\[aq] argument ensures that
-       open_tree() fails if \[aq]target\[aq] is not an absolute pathname. */
+       open_tree() fails if \[aq]target\[aq] is not an absolute pathname.  */
 \&
     ret = move_mount(fd_tree, "", \-1, target,
                      MOVE_MOUNT_F_EMPTY_PATH);

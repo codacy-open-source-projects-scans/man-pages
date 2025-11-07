@@ -1,7 +1,7 @@
-.\" Copyright (C) 2013, Heinrich Schuchardt <xypron.glpk@gmx.de>
-.\" and Copyright (C) 2014, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
 .TH fanotify 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
 fanotify \- monitoring filesystem events
@@ -228,6 +228,24 @@ struct fanotify_event_info_pidfd {
 .EE
 .in
 .P
+In cases where an fanotify group is initialized with
+.BR FAN_REPORT_MNT ,
+event listeners should expect to receive
+the below information record object
+alongside the generic
+.I fanotify_event_metadata
+structure within the read buffer.
+This structure is defined as follows:
+.P
+.in +4n
+.EX
+struct fanotify_event_info_mnt {
+    struct fanotify_event_info_header hdr;
+    __u64 mnt_id;
+};
+.EE
+.in
+.P
 In case of a
 .B FAN_FS_ERROR
 event,
@@ -243,6 +261,26 @@ struct fanotify_event_info_error {
     struct fanotify_event_info_header hdr;
     __s32 error;
     __u32 error_count;
+};
+.EE
+.in
+.P
+In case of
+.B FAN_PRE_ACCESS
+events,
+an additional information record describing the access range
+is returned alongside the generic
+.I fanotify_event_metadata
+structure within the read buffer.
+This structure is defined as follows:
+.P
+.in +4n
+.EX
+struct fanotify_event_info_range {
+    struct fanotify_event_info_header hdr;
+    __u32 pad;
+    __u64 offset;
+    __u64 count;
 };
 .EE
 .in
@@ -335,6 +373,13 @@ file status flag is set on the open file description.
 This flag suppresses fanotify event generation.
 Hence, when the receiver of the fanotify event accesses the notified file or
 directory using this file descriptor, no additional events will be created.
+.IP
+When an fanotify group is initialized using
+.BR FAN_REPORT_FD_ERROR ,
+this field will contain a negative error value in case a file descriptor
+could not be opened and
+in case of a queue overflow, the value will be
+.BR \-EBADF .
 .TP
 .I pid
 If flag
@@ -388,9 +433,6 @@ A child file or directory was deleted in a watched parent.
 .B FAN_DELETE_SELF
 A watched file or directory was deleted.
 .TP
-.B FAN_FS_ERROR
-A filesystem error was detected.
-.TP
 .B FAN_RENAME
 A file or directory has been moved to or from a watched parent directory.
 .TP
@@ -417,6 +459,15 @@ was closed.
 A file or directory that was opened read-only
 .RB ( O_RDONLY )
 was closed.
+.TP
+.B FAN_MNT_ATTACH
+A mount was attached to mount namespace.
+.TP
+.B FAN_MNT_DETACH
+A mount was detached from mount namespace.
+.TP
+.B FAN_FS_ERROR
+A filesystem error was detected.
 .TP
 .B FAN_Q_OVERFLOW
 The event queue exceeded the limit on number of events.
@@ -499,12 +550,24 @@ are as follows:
 .I info_type
 A unique integer value representing
 the type of information record object received for an event.
-The value of this field can be set to one of the following:
-.BR FAN_EVENT_INFO_TYPE_FID ,
-.BR FAN_EVENT_INFO_TYPE_DFID ,
-.BR FAN_EVENT_INFO_TYPE_DFID_NAME ,
-or
-.BR FAN_EVENT_INFO_TYPE_PIDFD .
+The value of this field can be set to one of the following.
+.RS
+.TP
+.B FAN_EVENT_INFO_TYPE_FID
+.TQ
+.B FAN_EVENT_INFO_TYPE_DFID
+.TQ
+.B FAN_EVENT_INFO_TYPE_DFID_NAME
+.TQ
+.B FAN_EVENT_INFO_TYPE_PIDFD
+.TQ
+.B FAN_EVENT_INFO_TYPE_ERROR
+.TQ
+.B FAN_EVENT_INFO_TYPE_RANGE
+.TQ
+.B FAN_EVENT_INFO_TYPE_MNT
+.RE
+.IP
 The value set for this field
 is dependent on the flags that have been supplied to
 .BR fanotify_init (2).
@@ -679,6 +742,33 @@ Once the event listener has dealt with an event
 and the pidfd is no longer required,
 the pidfd should be closed via
 .BR close (2).
+.IP
+When an fanotify group is initialized using
+.BR FAN_REPORT_FD_ERROR ,
+this field will contain a negative error value
+in case a pidfd creation failure and
+in case of a terminated process, the value will be
+.BR \-ESRCH .
+.P
+The fields of the
+.I fanotify_event_info_mnt
+structure are as follows:
+.TP
+.I .hdr
+This is a structure of type
+.IR fanotify_event_info_header .
+The
+.I .info_type
+field is set to
+.BR FAN_EVENT_INFO_TYPE_MNT .
+.TP
+.I .mnt_id
+Identifies the mount associated with the event.
+It is a 64-bit unique mount id as the one returned by
+.BR statx (2)
+with the
+.B STATX_MNT_ID_UNIQUE
+flag.
 .P
 The fields of the
 .I fanotify_event_info_error
@@ -698,6 +788,24 @@ Identifies the type of error that occurred.
 .I error_count
 This is a counter of the number of errors suppressed
 since the last error was read.
+.P
+The fields of the
+.I fanotify_event_info_range
+structure are as follows:
+.TP
+.I hdr
+This is a structure of type
+.IR fanotify_event_info_header .
+The
+.I info_type
+field is set to
+.BR FAN_EVENT_INFO_TYPE_RANGE .
+.TP
+.I count
+The number of bytes being read or written to the file.
+.TP
+.I offset
+The offset from which bytes are read or written to the file.
 .P
 The following macros are provided to iterate over a buffer containing
 fanotify event metadata returned by a
@@ -769,7 +877,7 @@ This is the file descriptor from the structure
 .TP
 .I response
 This field indicates whether or not the permission is to be granted.
-Its value must be either
+Its value must contain either the flag
 .B FAN_ALLOW
 to allow the file operation or
 .B FAN_DENY
@@ -778,6 +886,28 @@ to deny the file operation.
 If access is denied, the requesting application call will receive an
 .B EPERM
 error.
+Since Linux 6.13,
+.\" commit b4b2ff4f61ded819bfa22e50fdec7693f51cbbee
+if a notification group is initialized with class
+.BR FAN_CLASS_PRE_CONTENT ,
+the file operation can be denied with errors other than
+.BR EPERM .
+For example, for the requesting application to get the
+.B EIO
+error, the event listener can write the response
+.BR FAN_DENY_ERRNO ( EIO ).
+At the time of writing,
+only the following error values could be returned to the application with
+.BR FAN_DENY_ERRNO (\f[I]e\f[])
+macro:
+.BR EPERM ,
+.BR EIO ,
+.BR EBUSY ,
+.BR ETXTBSY ,
+.BR EAGAIN ,
+.BR ENOSPC ,
+.BR EDQUOT .
+.P
 Additionally, if the notification group has been created with the
 .B FAN_ENABLE_AUDIT
 flag, then the
@@ -787,6 +917,47 @@ flag can be set in the
 field.
 In that case, the audit subsystem will log information about the access
 decision to the audit logs.
+.P
+Since Linux 6.3,
+.\" commit 70529a199574c15a40f46b14256633b02ba10ca2
+the
+.B FAN_INFO
+flag can be set in the
+.I .response
+field.
+It indicates that an extra variable-length response record follows the
+.I fanotify_response
+structure.
+Extra response records start with a common header:
+.P
+.in +4n
+.EX
+struct fanotify_response_info_header {
+    __u8 type;
+    __u8 pad;
+    __u16 len;
+};
+.EE
+.in
+.P
+The value of
+.I .type
+determines the format of the extra response record.
+.TP
+.B FAN_RESPONSE_INFO_AUDIT_RULE
+The following response record is expected
+with extra details for the audit log:
+.IP
+.in +4n
+.EX
+struct fanotify_response_info_audit_rule {
+    struct fanotify_response_info_header hdr;
+    __u32 rule_number;
+    __u32 subj_trust;
+    __u32 obj_trust;
+};
+.EE
+.in
 .\"
 .SS Monitoring filesystems for errors
 A single
@@ -806,7 +977,8 @@ are generic
 values,
 but not all kinds of error types are reported by all filesystems.
 .P
-Errors not directly related to a file (i.e. super block corruption)
+Errors not directly related to a file
+(i.e., super block corruption)
 are reported with an invalid
 .IR handle .
 For these errors, the
@@ -819,9 +991,11 @@ and the handle buffer size set to
 .BR 0 .
 .\"
 .SS Closing the fanotify file descriptor
-When all file descriptors referring to the fanotify notification group are
-closed, the fanotify group is released and its resources
-are freed for reuse by the kernel.
+When all file descriptors
+referring to the fanotify notification group
+are closed,
+the fanotify group is released
+and its resources are freed for reuse by the kernel.
 Upon
 .BR close (2),
 outstanding permission events will be set to allowed.
@@ -1037,7 +1211,7 @@ Execution of the program ends when the user presses the ENTER key.
 .P
 .in +4n
 .EX
-# \fB./fanotify_example /home\fP
+.RB # " ./fanotify_example /home" ;
 Press enter key to terminate.
 Listening for events.
 FAN_OPEN_PERM: File /home/user/temp/notes
@@ -1059,7 +1233,7 @@ Listening for events stopped.
 #include <sys/fanotify.h>
 #include <unistd.h>
 \&
-/* Read all available fanotify events from the file descriptor \[aq]fd\[aq]. */
+/* Read all available fanotify events from the file descriptor \[aq]fd\[aq].  */
 \&
 static void
 handle_events(int fd)
@@ -1072,11 +1246,11 @@ handle_events(int fd)
     char procfd_path[PATH_MAX];
     struct fanotify_response response;
 \&
-    /* Loop while events can be read from fanotify file descriptor. */
+    /* Loop while events can be read from fanotify file descriptor.  */
 \&
     for (;;) {
 \&
-        /* Read some events. */
+        /* Read some events.  */
 \&
         size = read(fd, buf, sizeof(buf));
         if (size == \-1 && errno != EAGAIN) {
@@ -1084,20 +1258,20 @@ handle_events(int fd)
             exit(EXIT_FAILURE);
         }
 \&
-        /* Check if end of available data reached. */
+        /* Check if end of available data reached.  */
 \&
         if (size <= 0)
             break;
 \&
-        /* Point to the first event in the buffer. */
+        /* Point to the first event in the buffer.  */
 \&
         metadata = buf;
 \&
-        /* Loop over all events in the buffer. */
+        /* Loop over all events in the buffer.  */
 \&
         while (FAN_EVENT_OK(metadata, size)) {
 \&
-            /* Check that run\-time and compile\-time structures match. */
+            /* Check that run\-time and compile\-time structures match.  */
 \&
             if (metadata\->vers != FANOTIFY_METADATA_VERSION) {
                 fprintf(stderr,
@@ -1107,28 +1281,28 @@ handle_events(int fd)
 \&
             /* metadata\->fd contains either FAN_NOFD, indicating a
                queue overflow, or a file descriptor (a nonnegative
-               integer). Here, we simply ignore queue overflow. */
+               integer).  Here, we simply ignore queue overflow.  */
 \&
             if (metadata\->fd >= 0) {
 \&
-                /* Handle open permission event. */
+                /* Handle open permission event.  */
 \&
                 if (metadata\->mask & FAN_OPEN_PERM) {
                     printf("FAN_OPEN_PERM: ");
 \&
-                    /* Allow file to be opened. */
+                    /* Allow file to be opened.  */
 \&
                     response.fd = metadata\->fd;
                     response.response = FAN_ALLOW;
                     write(fd, &response, sizeof(response));
                 }
 \&
-                /* Handle closing of writable file event. */
+                /* Handle closing of writable file event.  */
 \&
                 if (metadata\->mask & FAN_CLOSE_WRITE)
                     printf("FAN_CLOSE_WRITE: ");
 \&
-                /* Retrieve and print pathname of the accessed file. */
+                /* Retrieve and print pathname of the accessed file.  */
 \&
                 snprintf(procfd_path, sizeof(procfd_path),
                          "/proc/self/fd/%d", metadata\->fd);
@@ -1142,12 +1316,12 @@ handle_events(int fd)
                 path[path_len] = \[aq]\[rs]0\[aq];
                 printf("File %s\[rs]n", path);
 \&
-                /* Close the file descriptor of the event. */
+                /* Close the file descriptor of the event.  */
 \&
                 close(metadata\->fd);
             }
 \&
-            /* Advance to next event. */
+            /* Advance to next event.  */
 \&
             metadata = FAN_EVENT_NEXT(metadata, size);
         }
@@ -1162,7 +1336,7 @@ main(int argc, char *argv[])
     nfds_t nfds;
     struct pollfd fds[2];
 \&
-    /* Check mount point is supplied. */
+    /* Check mount point is supplied.  */
 \&
     if (argc != 2) {
         fprintf(stderr, "Usage: %s MOUNT\[rs]n", argv[0]);
@@ -1171,7 +1345,7 @@ main(int argc, char *argv[])
 \&
     printf("Press enter key to terminate.\[rs]n");
 \&
-    /* Create the file descriptor for accessing the fanotify API. */
+    /* Create the file descriptor for accessing the fanotify API.  */
 \&
     fd = fanotify_init(FAN_CLOEXEC | FAN_CLASS_CONTENT | FAN_NONBLOCK,
                        O_RDONLY | O_LARGEFILE);
@@ -1183,7 +1357,7 @@ main(int argc, char *argv[])
     /* Mark the mount for:
        \- permission events before opening files
        \- notification events after closing a write\-enabled
-         file descriptor. */
+         file descriptor.  */
 \&
     if (fanotify_mark(fd, FAN_MARK_ADD | FAN_MARK_MOUNT,
                       FAN_OPEN_PERM | FAN_CLOSE_WRITE, AT_FDCWD,
@@ -1192,7 +1366,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Prepare for polling. */
+    /* Prepare for polling.  */
 \&
     nfds = 2;
 \&
@@ -1202,7 +1376,7 @@ main(int argc, char *argv[])
     fds[1].fd = fd;                 /* Fanotify input */
     fds[1].events = POLLIN;
 \&
-    /* This is the loop to wait for incoming events. */
+    /* This is the loop to wait for incoming events.  */
 \&
     printf("Listening for events.\[rs]n");
 \&
@@ -1219,7 +1393,7 @@ main(int argc, char *argv[])
         if (poll_num > 0) {
             if (fds[0].revents & POLLIN) {
 \&
-                /* Console input is available: empty stdin and quit. */
+                /* Console input is available: empty stdin and quit.  */
 \&
                 while (read(STDIN_FILENO, &buf, 1) > 0 && buf != \[aq]\[rs]n\[aq])
                     continue;
@@ -1228,7 +1402,7 @@ main(int argc, char *argv[])
 \&
             if (fds[1].revents & POLLIN) {
 \&
-                /* Fanotify events are available. */
+                /* Fanotify events are available.  */
 \&
                 handle_events(fd);
             }
@@ -1269,14 +1443,14 @@ been processed.
 .P
 .in +4n
 .EX
-# \fB./fanotify_fid /home/user\fP
+.RB # " ./fanotify_fid /home/user" ;
 Listening for events.
 FAN_CREATE (file created):
         Directory /home/user has been modified.
         Entry \[aq]testfile.txt\[aq] is not a subdirectory.
-All events processed successfully. Program exiting.
+All events processed successfully.  Program exiting.
 \&
-$ \fBtouch /home/user/testfile.txt\fP              # In another terminal
+.RB $ " touch /home/user/testfile.txt" ";              # In another terminal"
 .EE
 .in
 .P
@@ -1292,14 +1466,14 @@ flag set and with the created directory name.
 .P
 .in +4n
 .EX
-# \fB./fanotify_fid /home/user\fP
+.RB # " ./fanotify_fid /home/user" ;
 Listening for events.
 FAN_CREATE | FAN_ONDIR (subdirectory created):
         Directory /home/user has been modified.
         Entry \[aq]testdir\[aq] is a subdirectory.
-All events processed successfully. Program exiting.
+All events processed successfully.  Program exiting.
 \&
-$ \fBmkdir \-p /home/user/testdir\fP          # In another terminal
+.RB $ " mkdir \-p /home/user/testdir" ";          # In another terminal"
 .EE
 .in
 .SS Program source: fanotify_fid.c
@@ -1345,7 +1519,7 @@ main(int argc, char *argv[])
 \&
     /* Create an fanotify file descriptor with FAN_REPORT_DFID_NAME as
        a flag so that program can receive fid events with directory
-       entry name. */
+       entry name.  */
 \&
     fd = fanotify_init(FAN_CLASS_NOTIF | FAN_REPORT_DFID_NAME, 0);
     if (fd == \-1) {
@@ -1353,7 +1527,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Place a mark on the filesystem object supplied in argv[1]. */
+    /* Place a mark on the filesystem object supplied in argv[1].  */
 \&
     ret = fanotify_mark(fd, FAN_MARK_ADD | FAN_MARK_ONLYDIR,
                         FAN_CREATE | FAN_ONDIR,
@@ -1365,7 +1539,7 @@ main(int argc, char *argv[])
 \&
     printf("Listening for events.\[rs]n");
 \&
-    /* Read events from the event queue into a buffer. */
+    /* Read events from the event queue into a buffer.  */
 \&
     size = read(fd, events_buf, sizeof(events_buf));
     if (size == \-1 && errno != EAGAIN) {
@@ -1373,7 +1547,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Process all events within the buffer. */
+    /* Process all events within the buffer.  */
 \&
     for (metadata = (struct fanotify_event_metadata *) events_buf;
             FAN_EVENT_OK(metadata, size);
@@ -1381,7 +1555,7 @@ main(int argc, char *argv[])
         fid = (struct fanotify_event_info_fid *) (metadata + 1);
         file_handle = (struct file_handle *) fid\->handle;
 \&
-        /* Ensure that the event info is of the correct type. */
+        /* Ensure that the event info is of the correct type.  */
 \&
         if (fid\->hdr.info_type == FAN_EVENT_INFO_TYPE_FID ||
             fid\->hdr.info_type == FAN_EVENT_INFO_TYPE_DFID) {
@@ -1407,12 +1581,12 @@ main(int argc, char *argv[])
 	   fanotify_event_info_fid in conjunction with the
 	   open_by_handle_at(2) system call.  A check for ESTALE is
 	   done to accommodate for the situation where the file handle
-	   for the object was deleted prior to this system call. */
+	   for the object was deleted prior to this system call.  */
 \&
         event_fd = open_by_handle_at(mount_fd, file_handle, O_RDONLY);
         if (event_fd == \-1) {
             if (errno == ESTALE) {
-                printf("File handle is no longer valid. "
+                printf("File handle is no longer valid.  "
                         "File has been deleted\[rs]n");
                 continue;
             } else {
@@ -1424,7 +1598,7 @@ main(int argc, char *argv[])
         snprintf(procfd_path, sizeof(procfd_path), "/proc/self/fd/%d",
                 event_fd);
 \&
-        /* Retrieve and print the path of the modified dentry. */
+        /* Retrieve and print the path of the modified dentry.  */
 \&
         path_len = readlink(procfd_path, path, sizeof(path) \- 1);
         if (path_len == \-1) {
@@ -1451,12 +1625,12 @@ main(int argc, char *argv[])
             }
         }
 \&
-        /* Close associated file descriptor for this event. */
+        /* Close associated file descriptor for this event.  */
 \&
         close(event_fd);
     }
 \&
-    printf("All events processed successfully. Program exiting.\[rs]n");
+    printf("All events processed successfully.  Program exiting.\[rs]n");
     exit(EXIT_SUCCESS);
 }
 .EE

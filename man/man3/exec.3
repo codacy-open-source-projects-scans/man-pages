@@ -1,15 +1,8 @@
 '\" t
-.\" Copyright (c) 1991 The Regents of the University of California.
-.\" All rights reserved.
+.\" Copyright 1991, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)exec.3	6.4 (Berkeley) 4/19/91
-.\"
-.\" Converted for Linux, Mon Nov 29 11:12:48 1993, faith@cs.unc.edu
-.\" Updated more for Linux, Tue Jul 15 11:54:18 1997, pacman@cqc.com
-.\" Modified, 24 Jun 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added note on casting NULL
 .\"
 .TH exec 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -23,13 +16,13 @@ Standard C library
 .P
 .B extern char **environ;
 .P
-.BI "int execl(const char *" pathname ", const char *" arg ", ..."
+.BI "int execl(const char *" path ", const char *" arg ", ..."
 .B  "                /*, (char *) NULL */);"
 .BI "int execlp(const char *" file ", const char *" arg ", ..."
 .B  "                /*, (char *) NULL */);"
-.BI "int execle(const char *" pathname ", const char *" arg ", ..."
+.BI "int execle(const char *" path ", const char *" arg ", ..."
 .BI "                /*, (char *) NULL, char *const " envp "[] */);"
-.BI "int execv(const char *" pathname ", char *const " argv "[]);"
+.BI "int execv(const char *" path ", char *const " argv "[]);"
 .BI "int execvp(const char *" file ", char *const " argv "[]);"
 .BI "int execvpe(const char *" file ", char *const " argv \
 "[], char *const " envp "[]);"
@@ -197,7 +190,8 @@ T}	Thread safety	MT-Safe env
 .TE
 .SH VERSIONS
 The default search path (used when the environment
-does not contain the variable \fBPATH\fR)
+does not contain the variable
+.BR PATH )
 shows some variation across systems.
 It generally includes
 .I /bin

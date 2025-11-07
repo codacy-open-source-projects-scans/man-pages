@@ -1,21 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt (michael@moria.de)
-.\" Modified 1993-07-23 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 1994-08-21 by Michael Chastain (mec@shell.portal.com):
-.\"   Fixed necessary '#include' lines.
-.\" Modified 1995-04-15 by Michael Chastain (mec@shell.portal.com):
-.\"   Added reference to adjtimex.
-.\" Removed some nonsense lines pointed out by Urs Thuermann,
-.\"   (urs@isnogud.escape.de), aeb, 950722.
-.\" Modified 1997-01-14 by Austin Donnelly (and1000@debian.org):
-.\"   Added return values section, and bit on EFAULT
-.\" Added clarification on timezone, aeb, 971210.
-.\" Removed "#include <unistd.h>", aeb, 010316.
-.\" Modified, 2004-05-27 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"   Added notes on capability requirement.
 .\"
 .TH gettimeofday 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -27,8 +12,10 @@ Standard C library
 .nf
 .B #include <sys/time.h>
 .P
+.B [[deprecated]]
 .BI "int gettimeofday(struct timeval *restrict " tv ,
 .BI "                 struct timezone *_Nullable restrict " tz );
+.B [[deprecated]]
 .BI "int settimeofday(const struct timeval *" tv ,
 .BI "                 const struct timezone *_Nullable " tz );
 .fi
@@ -102,7 +89,8 @@ is NULL.)
 .P
 The use of the
 .I timezone
-structure is obsolete; the
+structure is obsolete;
+the
 .I tz
 argument should normally be specified as NULL.
 See VERSIONS.
@@ -187,23 +175,24 @@ but Android does not update the kernel timezone
 based on the device timezone in Settings,
 so the kernel's timezone is typically UTC.
 .SH STANDARDS
-.TP
-.BR gettimeofday ()
-POSIX.1-2008 (obsolete).
-.TP
-.BR settimeofday ()
 None.
 .SH HISTORY
 SVr4, 4.3BSD.
-POSIX.1-2001 describes
+POSIX.1-2001 described
 .BR gettimeofday ()
 but not
 .BR settimeofday ().
-POSIX.1-2008 marks
+POSIX.1-2008 marked
 .BR gettimeofday ()
 as obsolete, recommending the use of
 .BR clock_gettime (2)
 instead.
+Likewise,
+.BR clock_settime (2)
+should be used instead of
+.BR settimeofday ().
+POSIX.1-2024 removed
+.BR gettimeofday ().
 .P
 Traditionally, the fields of
 .I struct timeval
@@ -248,25 +237,27 @@ The daylight saving time algorithms defined are as follows:
 .P
 .in +4n
 .EX
-\fBDST_NONE\fP     /* not on DST */
-\fBDST_USA\fP      /* USA style DST */
-\fBDST_AUST\fP     /* Australian style DST */
-\fBDST_WET\fP      /* Western European DST */
-\fBDST_MET\fP      /* Middle European DST */
-\fBDST_EET\fP      /* Eastern European DST */
-\fBDST_CAN\fP      /* Canada */
-\fBDST_GB\fP       /* Great Britain and Eire */
-\fBDST_RUM\fP      /* Romania */
-\fBDST_TUR\fP      /* Turkey */
-\fBDST_AUSTALT\fP  /* Australian style with shift in 1986 */
+\f[B]DST_NONE\f[]     /* not on DST */
+\f[B]DST_USA\f[]      /* USA style DST */
+\f[B]DST_AUST\f[]     /* Australian style DST */
+\f[B]DST_WET\f[]      /* Western European DST */
+\f[B]DST_MET\f[]      /* Middle European DST */
+\f[B]DST_EET\f[]      /* Eastern European DST */
+\f[B]DST_CAN\f[]      /* Canada */
+\f[B]DST_GB\f[]       /* Great Britain and Eire */
+\f[B]DST_RUM\f[]      /* Romania */
+\f[B]DST_TUR\f[]      /* Turkey */
+\f[B]DST_AUSTALT\f[]  /* Australian style with shift in 1986 */
 .EE
 .in
 .P
-Of course it turned out that the period in which
-Daylight Saving Time is in force cannot be given
-by a simple algorithm, one per country; indeed,
-this period is determined by unpredictable political
-decisions.
+Of course,
+it turned out that the period in which
+Daylight Saving Time is in force
+cannot be given by a simple algorithm,
+one per country;
+indeed,
+this period is determined by unpredictable political decisions.
 So this method of representing timezones
 has been abandoned.
 .SH NOTES

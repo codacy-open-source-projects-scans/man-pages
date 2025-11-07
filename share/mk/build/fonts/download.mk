@@ -1,4 +1,4 @@
-# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -8,8 +8,6 @@ MAKEFILE_BUILD_FONTS_DOWNLOAD_INCLUDED := 1
 
 include $(MAKEFILEDIR)/build/fonts/_.mk
 
-
-DOWNLOAD := $(MAKEFILEDIR)/build/fonts/devpdf/download
 
 _DOWNLOAD := $(_FONTSDIR)/devpdf/download
 

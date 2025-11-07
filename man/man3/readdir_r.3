@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (C) 2008, 2016 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (C) 2016 Florian Weimer <fweimer@redhat.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -30,7 +29,8 @@ Feature Test Macro Requirements for glibc (see
         || /* glibc <= 2.19: */ _BSD_SOURCE || _SVID_SOURCE
 .fi
 .SH DESCRIPTION
-This function is deprecated; use
+This function is deprecated;
+use
 .BR readdir (3)
 instead.
 .P
@@ -119,7 +119,8 @@ returns 0, and returns NULL in
 .SH ERRORS
 .TP
 .B EBADF
-Invalid directory stream descriptor \fIdirp\fP.
+Invalid directory stream descriptor
+.IR dirp .
 .TP
 .B ENAMETOOLONG
 A directory entry whose name was too long to be read was encountered.

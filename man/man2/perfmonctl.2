@@ -1,6 +1,4 @@
-.\" Copyright (C) 2006 Red Hat, Inc. All Rights Reserved.
-.\" and Copyright (C) 2013 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Written by Ivana Varekova <varekova@redhat.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -12,11 +10,13 @@ perfmonctl \- interface to IA-64 performance monitoring unit
 .B #include <syscall.h>
 .B #include <perfmon.h>
 .P
-.BI "long perfmonctl(int " fd ", int " cmd ", void " arg [. narg "], int " narg ");"
+.BR "long perfmonctl(" "int narg;"
+.BI "                int " fd ", int " cmd ", void " arg [ narg "], int " narg );
 .fi
 .P
 .IR Note :
-There is no glibc wrapper for this system call; see HISTORY.
+There is no glibc wrapper for this system call;
+see HISTORY.
 .SH DESCRIPTION
 The IA-64-specific
 .BR perfmonctl ()
@@ -31,7 +31,8 @@ applies the operation
 .I cmd
 to the input arguments specified by
 .IR arg .
-The number of arguments is defined by \fInarg\fR.
+The number of arguments is defined by
+.IR narg .
 The
 .I fd
 argument specifies the perfmon context to operate on.
@@ -51,7 +52,8 @@ The
 parameter is ignored.
 A new perfmon context is created as specified in
 .I ctxt
-and its file descriptor is returned in \fIctxt\->ctx_fd\fR.
+and its file descriptor is returned in
+.IR ctxt\->ctx_fd .
 .IP
 The file descriptor can be used in subsequent calls to
 .BR perfmonctl ()

@@ -1,11 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Copyright 2020-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: GPL-3.0-or-later
+
+set -Eefuo pipefail;
+
 
 if test $# -lt 1; then
 	>&2 printf '%s\n' "$(basename "$0"): error: Too few arguments."
-	return 1;
+	exit 1;
 fi;
 
 s="$1";

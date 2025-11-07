@@ -1,15 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\"
-.\" Modified Sat Jul 24 19:22:14 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Mon May 27 21:37:47 1996 by Martin Schulze (joey@linux.de)
 .\"
 .TH getpwent 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -51,8 +43,10 @@ the broken-out fields of a record from the password database
 NIS, and LDAP).
 The first time
 .BR getpwent ()
-is called, it returns the first entry; thereafter, it returns successive
-entries.
+is called,
+it returns the first entry;
+thereafter,
+it returns successive entries.
 .P
 The
 .BR setpwent ()
@@ -64,7 +58,11 @@ The
 function is used to close the password database
 after all processing has been performed.
 .P
-The \fIpasswd\fP structure is defined in \fI<pwd.h>\fP as follows:
+The
+.I passwd
+structure is defined in
+.I <pwd.h>
+as follows:
 .P
 .in +4n
 .EX
@@ -107,7 +105,8 @@ or
 .SH ERRORS
 .TP
 .B EINTR
-A signal was caught; see
+A signal was caught;
+see
 .BR signal (7).
 .TP
 .B EIO

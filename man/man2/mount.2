@@ -1,21 +1,6 @@
-.\" Copyright (C) 1993 Rickard E. Faith <faith@cs.unc.edu>
-.\" and Copyright (C) 1994 Andries E. Brouwer <aeb@cwi.nl>
-.\" and Copyright (C) 2002, 2005, 2016 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1996-11-04 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2001-10-13 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Added note on historical behavior of MS_NOSUID
-.\" Modified 2002-05-16 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Extensive changes and additions
-.\" Modified 2002-05-27 by aeb
-.\" Modified 2002-06-11 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Enhanced descriptions of MS_MOVE, MS_BIND, and MS_REMOUNT
-.\" Modified 2004-06-17 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 2005-05-18, mtk, Added MNT_EXPIRE, plus a few other tidy-ups.
-.\" 2008-10-06, mtk: move umount*() material into separate umount.2 page.
-.\" 2008-10-06, mtk: Add discussion of namespaces.
 .\"
 .TH mount 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -143,7 +128,8 @@ the application employs
 or
 .BR sync (2);
 .IP \[bu]
-an undeleted inode is evicted from memory; or
+an undeleted inode is evicted from memory;
+or
 .IP \[bu]
 more than 24 hours have passed since the inode was written to disk.
 .RE
@@ -326,7 +312,7 @@ Since Linux 2.6.16,
 can be set or cleared on a per-mount-point basis as well as on
 the underlying filesystem superblock.
 The mounted filesystem will be writable only if neither the filesystem
-nor the mountpoint are flagged as read-only.
+nor the mount point are flagged as read-only.
 .\"
 .SS Remounting an existing mount
 An existing mount may be remounted by specifying
@@ -419,8 +405,23 @@ flag can be used with
 .B MS_BIND
 to modify only the per-mount-point flags.
 .\" See https://lwn.net/Articles/281157/
-This is particularly useful for setting or clearing the "read-only"
-flag on a mount without changing the underlying filesystem.
+This is particularly useful
+for setting or clearing the "read-only" flag on a mount
+without changing the filesystem parameters of the underlying filesystem.
+The
+.I data
+argument is ignored.
+The existing per-mount-point flags of the mount point
+are cleared
+and replaced with those in
+.IR mountflags .
+This means that
+if you wish to preserve
+any existing per-mount-point flags,
+you need to include them in
+.IR mountflags ,
+along with the per-mount-point flags you wish to set
+(or with the flags you wish to clear missing).
 Specifying
 .I mountflags
 as:
@@ -431,8 +432,9 @@ MS_REMOUNT | MS_BIND | MS_RDONLY
 .EE
 .in
 .P
-will make access through this mountpoint read-only, without affecting
-other mounts.
+will make access through this mount point read-only
+(clearing all other per-mount-point flags),
+without affecting other mounts of this filesystem.
 .\"
 .SS Creating a bind mount
 If
@@ -821,7 +823,8 @@ flag, or one of the "atime" flags
 .RB ( MS_NOATIME ,
 .BR MS_NODIRATIME ,
 .BR MS_RELATIME )
-of an existing mount, but the mount is locked; see
+of an existing mount, but the mount is locked;
+see
 .BR mount_namespaces (7).
 .TP
 .B EROFS
@@ -855,7 +858,8 @@ on the same mount point.
 .P
 The
 .I mountflags
-argument may have the magic number 0xC0ED (\fBMS_MGC_VAL\fP)
+argument may have the magic number 0xC0ED
+.RB ( MS_MGC_VAL )
 in the top 16 bits.
 (All of the other flags discussed in DESCRIPTION
 occupy the low order 16 bits of
@@ -872,7 +876,8 @@ flag was renamed
 in 1.1.69
 when a different
 .B MS_SYNC
-was added to \fI<mman.h>\fP.
+was added to
+.IR <mman.h> .
 .P
 Before Linux 2.4 an attempt to execute a set-user-ID or set-group-ID program
 on a filesystem mounted with
@@ -941,7 +946,7 @@ The parental relationship between mounts can be discovered via the
 .IR /proc/ pid /mountinfo
 file (see below).
 .\"
-.SS \fI/proc/\fPpid\fI/mounts\fP and \fI/proc/\fPpid\fI/mountinfo\fP
+.SS \f[I]/proc/\f[]pid\f[I]/mounts\f[] and \f[I]/proc/\f[]pid\f[I]/mountinfo\f[]
 The Linux-specific
 .IR /proc/ pid /mounts
 file exposes the list of mounts in the mount

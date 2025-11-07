@@ -1,6 +1,4 @@
-.\" Copyright (C) 1994, 1995, Daniel Quinlan <quinlan@yggdrasil.com>
-.\" Copyright (C) 2002-2008, 2017, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright (C) 2023, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-3.0-or-later
 .\"
@@ -29,10 +27,10 @@ and in that shell we create some new mounts:
 .IP
 .in +4n
 .EX
-$ \fBPS1=\[aq]sh1# \[aq] unshare \-Urnm\fP
-sh1# \fBmount \-t tmpfs tmpfs /etc\fP  # Mount empty tmpfs at /etc
-sh1# \fBmount \-\-bind /usr /dev\fP     # Mount /usr at /dev
-sh1# \fBecho $$\fP
+.RB $ " PS1=\[aq]sh1# \[aq] unshare \-Urnm" ;
+.RB sh1# " mount \-t tmpfs tmpfs /etc" ";  # Mount empty tmpfs at /etc"
+.RB sh1# " mount \-\-bind /usr /dev" ";     # Mount /usr at /dev"
+.RB sh1# " echo $$" ;
 27123
 .EE
 .in
@@ -43,17 +41,17 @@ the initial and new namespaces:
 .IP
 .in +4n
 .EX
-$ \fBPS1=\[aq]sh2# \[aq] sudo sh\fP
-sh2# \fBls /etc | wc \-l\fP                  # In initial NS
+.RB $ " PS1=\[aq]sh2# \[aq] sudo sh" ;
+.RB sh2# " ls /etc | wc \-l" ";                  # In initial NS"
 309
-sh2# \fBls /proc/27123/root/etc | wc \-l\fP  # /etc in other NS
+.RB sh2# " ls /proc/27123/root/etc | wc \-l" ";  # /etc in other NS"
 0                                     # The empty tmpfs dir
-sh2# \fBls /dev | wc \-l\fP                  # In initial NS
+.RB sh2# " ls /dev | wc \-l" ";                  # In initial NS"
 205
-sh2# \fBls /proc/27123/root/dev | wc \-l\fP  # /dev in other NS
+.RB sh2# " ls /proc/27123/root/dev | wc \-l" ";  # /dev in other NS"
 11                                    # Actually bind
                                       # mounted to /usr
-sh2# \fBls /usr | wc \-l\fP                  # /usr in initial NS
+.RB sh2# " ls /usr | wc \-l" ";                  # /usr in initial NS"
 11
 .EE
 .in
@@ -69,7 +67,8 @@ Permission to dereference or read
 .RB ( readlink (2))
 this symbolic link is governed by a ptrace access mode
 .B PTRACE_MODE_READ_FSCREDS
-check; see
+check;
+see
 .BR ptrace (2).
 .SH SEE ALSO
 .BR proc (5)

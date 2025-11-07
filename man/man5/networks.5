@@ -1,8 +1,6 @@
-.\" Copyright (c) 2001 Martin Schulze <joey@infodrom.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" 2008-09-04, mtk, taken from Debian downstream, with a few light edits
 .\"
 .TH networks 5 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -20,7 +18,9 @@ Each line represents a network and has the following structure:
 .P
 where the fields are delimited by spaces or tabs.
 Empty lines are ignored.
-The hash character (\fB#\fP) indicates the start of a comment:
+The hash character
+.RB ( # )
+indicates the start of a comment:
 this character, and the remaining characters up to
 the end of the current line,
 are ignored by library functions that process the file.

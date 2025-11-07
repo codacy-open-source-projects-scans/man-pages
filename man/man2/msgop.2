@@ -1,21 +1,6 @@
-.\" Copyright 1993 Giorgio Ciucci <giorgio@crcc.it>
-.\" and Copyright 2015 Bill Pemberton <wfp5p@worldbroken.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Tue Oct 22 16:40:11 1996 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified Mon Jul 10 21:09:59 2000 by aeb
-.\" Modified 1 Jun 2002, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Language clean-ups.
-.\"	Enhanced and corrected information on msg_qbytes, MSGMNB and MSGMAX
-.\"	Added note on restart behavior of msgsnd() and msgrcv()
-.\"	Formatting clean-ups (argument and field names marked as .I
-.\"		instead of .B)
-.\" Modified, 27 May 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added notes on capability requirements
-.\" Modified, 11 Nov 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Language and formatting clean-ups
-.\"	Added notes on /proc files
 .\"
 .TH MSGOP 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -27,11 +12,13 @@ Standard C library
 .nf
 .B #include <sys/msg.h>
 .P
-.BI "int msgsnd(int " msqid ", const void " msgp [. msgsz "], size_t " msgsz ,
+.BR "ssize_t msgrcv(" "size_t msgsz;"
+.BI "               int " msqid ", void " msgp [ msgsz "], size_t " msgsz \
+", long " msgtyp ,
 .BI "               int " msgflg );
 .P
-.BI "ssize_t msgrcv(int " msqid ", void " msgp [. msgsz "], size_t " msgsz \
-", long " msgtyp ,
+.BR "int msgsnd(" "size_t msgsz;"
+.BI "               int " msqid ", const void " msgp [ msgsz "], size_t " msgsz ,
 .BI "               int " msgflg );
 .fi
 .SH DESCRIPTION
@@ -136,7 +123,8 @@ a signal is caught, in which case the system call fails
 with
 .I errno
 set to
-.BR EINTR ; see
+.BR EINTR ;
+see
 .BR signal (7).
 .RB ( msgsnd ()
 is never automatically restarted after being interrupted by a
@@ -181,7 +169,8 @@ If
 .B MSG_NOERROR
 is specified, then
 the message text will be truncated (and the truncated part will be
-lost); if
+lost);
+if
 .B MSG_NOERROR
 is not specified, then
 the message isn't removed from the queue and
@@ -401,7 +390,8 @@ the message queue was removed.
 .TP
 .B EINTR
 While the process was sleeping to receive a message,
-the process caught a signal; see
+the process caught a signal;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -436,7 +426,7 @@ and
 .B MSG_COPY
 were specified in
 .I msgflg
-and the queue contains less than
+and the queue contains fewer than
 .I msgtyp
 messages.
 .TP
@@ -450,7 +440,7 @@ were specified in
 and this kernel was configured without
 .BR CONFIG_CHECKPOINT_RESTORE .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .P
 The
 .B MSG_EXCEPT
@@ -466,9 +456,11 @@ POSIX.1-2001, SVr4.
 .P
 The
 .I msgp
-argument is declared as \fIstruct msgbuf\ *\fP in
-glibc 2.0 and 2.1.
-It is declared as \fIvoid\ *\fP
+argument is declared as
+.I struct\ msgbuf\ *
+in glibc 2.0 and 2.1.
+It is declared as
+.I void\ *
 in glibc 2.2 and later, as required by SUSv2 and SUSv3.
 .SH NOTES
 The following limits on message queue resources affect the
@@ -543,9 +535,12 @@ The program below demonstrates the use of
 and
 .BR msgrcv ().
 .P
-The example program is first run with the \fB\-s\fP option to send a
-message and then run again with the \fB\-r\fP option to receive a
-message.
+The example program is first run with the
+.B \-s
+option to send a message
+and then run again with the
+.B \-r
+option to receive a message.
 .P
 The following shell session shows a sample run of the program:
 .P

@@ -1,8 +1,4 @@
-.\" Copyright (C) 2014 Kees Cook <keescook@chromium.org>
-.\" and Copyright (C) 2012 Will Drewry <wad@chromium.org>
-.\" and Copyright (C) 2008, 2014,2017 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (C) 2017 Tyler Hicks <tyhicks@canonical.com>
-.\" and Copyright (C) 2020 Tycho Andersen <tycho@tycho.ws>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -320,7 +316,7 @@ system call information made available (i.e., use the
 addressing mode) as a (read-only)
 .\" Quoting Kees Cook:
 .\"     If BPF even allows changing the data, it's not copied back to
-.\"     the syscall when it runs. Anything wanting to do things like
+.\"     the syscall when it runs.  Anything wanting to do things like
 .\"     that would need to use ptrace to catch the call and directly
 .\"     modify the registers before continuing with the call.
 buffer of the following form:
@@ -453,7 +449,9 @@ the least significant 16-bits (defined by the constant
 .BR SECCOMP_RET_DATA )
 are "data" to be associated with this return value.
 .P
-If multiple filters exist, they are \fIall\fP executed,
+If multiple filters exist, they are
+.I all
+executed,
 in reverse order of their addition to the filter tree\[em]that is,
 the most recently installed filter is executed first.
 (Note that all filters will be called
@@ -469,8 +467,8 @@ avoiding a check for this uncommon case.)
 .\"     It's just because it would be an optimization that would only speed up
 .\"     the RET_KILL case, but it's the uncommon one and the one that doesn't
 .\"     benefit meaningfully from such a change (you need to kill the process
-.\"     really quickly?). We would speed up killing a program at the (albeit
-.\"     tiny) expense to all other filtered programs. Best to keep the filter
+.\"     really quickly?).  We would speed up killing a program at the (albeit
+.\"     tiny) expense to all other filtered programs.  Best to keep the filter
 .\"     execution logic clear, simple, and as fast as possible for all
 .\"     filters.
 The return value for the evaluation of a given system call is the first-seen
@@ -653,7 +651,7 @@ appear to return the value that the tracer puts in the return value register.
 .IP
 .\" This was changed in ce6526e8afa4.
 .\" A related hole, using PTRACE_SYSCALL instead of SECCOMP_RET_TRACE, was
-.\" changed in arch-specific commits, e.g. 93e35efb8de4 for X86 and
+.\" changed in arch-specific commits, e.g., 93e35efb8de4 for X86 and
 .\" 0f3912fd934c for ARM.
 Before Linux 4.8, the seccomp check will not be run again after the tracer is
 notified.
@@ -876,7 +874,8 @@ The
 .I Seccomp
 field of the
 .IR /proc/ pid /status
-file provides a method of viewing the seccomp mode of a process; see
+file provides a method of viewing the seccomp mode of a process;
+see
 .BR proc (5).
 .P
 .BR seccomp ()
@@ -894,7 +893,7 @@ operation can be used to dump a process's seccomp filters.
 .SS Architecture support for seccomp BPF
 Architecture support for seccomp BPF filtering
 .\" Check by grepping for HAVE_ARCH_SECCOMP_FILTER in Kconfig files in
-.\" kernel source. Last checked in Linux 4.16-rc source.
+.\" kernel source.  Last checked in Linux 4.16-rc source.
 is available on the following architectures:
 .IP \[bu] 3
 x86-64, i386, x32 (since Linux 3.5)
@@ -1035,12 +1034,12 @@ numbers on this architecture:
 .P
 .in +4n
 .EX
-$ \fBuname \-m\fP
+.RB $ " uname \-m" ;
 x86_64
-$ \fBsyscall_nr() {
+$ \f[B]syscall_nr() {
     cat /usr/src/linux/arch/x86/syscalls/syscall_64.tbl | \[rs]
-    awk \[aq]$2 != "x32" && $3 == "\[aq]$1\[aq]" { print $1 }\[aq]
-}\fP
+    awk \[aq]$2 != \[dq]x32\[dq] && $3 == \[dq]\[aq]$1\[aq]\[dq] { print $1 }\[aq]
+}\f[];
 .EE
 .in
 .P
@@ -1051,7 +1050,7 @@ In the experiments shown here, we'll use error number 99:
 .P
 .in +4n
 .EX
-$ \fBerrno 99\fP
+.RB $ " errno 99" ;
 EADDRNOTAVAIL 99 Cannot assign requested address
 .EE
 .in
@@ -1064,13 +1063,13 @@ system call, so that the command is not even executed:
 .P
 .in +4n
 .EX
-$ \fBsyscall_nr execve\fP
+.RB $ " syscall_nr execve" ;
 59
-$ \fB./a.out\fP
+.RB $ " ./a.out" ;
 Usage: ./a.out <syscall_nr> <arch> <errno> <prog> [<args>]
 Hint for <arch>: AUDIT_ARCH_I386: 0x40000003
                  AUDIT_ARCH_X86_64: 0xC000003E
-$ \fB./a.out 59 0xC000003E 99 /bin/whoami\fP
+.RB $ " ./a.out 59 0xC000003E 99 /bin/whoami" ;
 execv: Cannot assign requested address
 .EE
 .in
@@ -1083,9 +1082,9 @@ command is not able to write output:
 .P
 .in +4n
 .EX
-$ \fBsyscall_nr write\fP
+.RB $ " syscall_nr write" ;
 1
-$ \fB./a.out 1 0xC000003E 99 /bin/whoami\fP
+.RB $ " ./a.out 1 0xC000003E 99 /bin/whoami" ;
 .EE
 .in
 .P
@@ -1096,9 +1095,9 @@ command, so it is able to successfully execute and produce output:
 .P
 .in +4n
 .EX
-$ \fBsyscall_nr preadv\fP
+.RB $ " syscall_nr preadv" ;
 295
-$ \fB./a.out 295 0xC000003E 99 /bin/whoami\fP
+.RB $ " ./a.out 295 0xC000003E 99 /bin/whoami" ;
 cecilia
 .EE
 .in
@@ -1116,7 +1115,7 @@ cecilia
 #include <unistd.h>
 \&
 #define X32_SYSCALL_BIT 0x40000000
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+#define NITEMS(arr)  (sizeof(arr) / sizeof((arr)[0]))
 \&
 static int
 install_filter(int syscall_nr, unsigned int t_arch, int f_errno)
@@ -1125,49 +1124,49 @@ install_filter(int syscall_nr, unsigned int t_arch, int f_errno)
 \&
     /* Assume that AUDIT_ARCH_X86_64 means the normal x86\-64 ABI
        (in the x32 ABI, all system calls have bit 30 set in the
-       \[aq]nr\[aq] field, meaning the numbers are >= X32_SYSCALL_BIT). */
+       \[aq]nr\[aq] field, meaning the numbers are >= X32_SYSCALL_BIT).  */
     if (t_arch == AUDIT_ARCH_X86_64)
         upper_nr_limit = X32_SYSCALL_BIT \- 1;
 \&
     struct sock_filter filter[] = {
         /* [0] Load architecture from \[aq]seccomp_data\[aq] buffer into
-               accumulator. */
+               accumulator.  */
         BPF_STMT(BPF_LD | BPF_W | BPF_ABS,
                  (offsetof(struct seccomp_data, arch))),
 \&
         /* [1] Jump forward 5 instructions if architecture does not
-               match \[aq]t_arch\[aq]. */
+               match \[aq]t_arch\[aq].  */
         BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, t_arch, 0, 5),
 \&
         /* [2] Load system call number from \[aq]seccomp_data\[aq] buffer into
-               accumulator. */
+               accumulator.  */
         BPF_STMT(BPF_LD | BPF_W | BPF_ABS,
                  (offsetof(struct seccomp_data, nr))),
 \&
         /* [3] Check ABI \- only needed for x86\-64 in deny\-list use
                cases.  Use BPF_JGT instead of checking against the bit
-               mask to avoid having to reload the syscall number. */
+               mask to avoid having to reload the syscall number.  */
         BPF_JUMP(BPF_JMP | BPF_JGT | BPF_K, upper_nr_limit, 3, 0),
 \&
         /* [4] Jump forward 1 instruction if system call number
-               does not match \[aq]syscall_nr\[aq]. */
+               does not match \[aq]syscall_nr\[aq].  */
         BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, syscall_nr, 0, 1),
 \&
         /* [5] Matching architecture and system call: don\[aq]t execute
-           the system call, and return \[aq]f_errno\[aq] in \[aq]errno\[aq]. */
+           the system call, and return \[aq]f_errno\[aq] in \[aq]errno\[aq].  */
         BPF_STMT(BPF_RET | BPF_K,
                  SECCOMP_RET_ERRNO | (f_errno & SECCOMP_RET_DATA)),
 \&
         /* [6] Destination of system call number mismatch: allow other
-               system calls. */
+               system calls.  */
         BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_ALLOW),
 \&
-        /* [7] Destination of architecture mismatch: kill process. */
+        /* [7] Destination of architecture mismatch: kill process.  */
         BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_KILL_PROCESS),
     };
 \&
     struct sock_fprog prog = {
-        .len = ARRAY_SIZE(filter),
+        .len = NITEMS(filter),
         .filter = filter,
     };
 \&
@@ -1242,4 +1241,9 @@ McCanne, S.\& and Jacobson, V.\& (1992)
 .IR "The BSD Packet Filter: A New Architecture for User-level Packet Capture" ,
 Proceedings of the USENIX Winter 1993 Conference
 .UR http://www.tcpdump.org/papers/bpf\-usenix93.pdf
+.UE
+.P
+Terence Kelly and Edison Fuh (2025)
+Sandboxing: Foolproof Boundaries vs.\& Unbounded Foolishness
+.UR https://dl.acm.org/doi/pdf/10.1145/3733699
 .UE

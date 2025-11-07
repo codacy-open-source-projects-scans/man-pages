@@ -1,14 +1,7 @@
 '\" t
-.\" Copyright (C) 2005, 2013 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" a few fragments from an earlier (1996) version by
-.\" Andries Brouwer (aeb@cwi.nl) remain.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Rewritten old page, 960210, aeb@cwi.nl
-.\" Updated, added strtok_r. 2000-02-13 Nicolás Lichtmaier <nick@debian.org>
-.\" 2005-11-17, mtk: Substantial parts rewritten
-.\" 2013-05-19, mtk: added much further detail on the operation of strtok()
 .\"
 .TH strtok 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -108,11 +101,16 @@ delimiter bytes at the start or end of the string are ignored.
 Put another way: the tokens returned by
 .BR strtok ()
 are always nonempty strings.
-Thus, for example, given the string "\fIaaa;;bbb,\fP",
+Thus, for example, given the string
+.RI \[dq] aaa;;bbb, \[dq],
 successive calls to
 .BR strtok ()
-that specify the delimiter string "\fI;,\fP"
-would return the strings "\fIaaa\fP" and "\fIbbb\fP",
+that specify the delimiter string
+.RI \[dq] ;, \[dq]
+would return the strings
+.RI \[dq] aaa \[dq]
+and
+.RI \[dq] bbb \[dq],
 and then a null pointer.
 .P
 The

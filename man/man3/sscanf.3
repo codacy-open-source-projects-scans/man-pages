@@ -1,26 +1,8 @@
 '\" t
-.\" Copyright (c) 1990, 1991 The Regents of the University of California.
-.\" All rights reserved.
-.\"
-.\" This code is derived from software contributed to Berkeley by
-.\" Chris Torek and the American National Standards Committee X3,
-.\" on Information Processing Systems.
+.\" Copyright 1990-1991, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)scanf.3	6.14 (Berkeley) 1/8/93
-.\"
-.\" Converted for Linux, Mon Nov 29 15:22:01 1993, faith@cs.unc.edu
-.\" modified to resemble the GNU libio setup used in the Linux libc
-.\" used in versions 4.x (x>4) and 5   Helmut.Geyer@iwr.uni-heidelberg.de
-.\" Modified, aeb, 970121
-.\" 2005-07-14, mtk, added description of %n$ form; various text
-.\"	incorporated from the GNU C library documentation ((C) The
-.\"	Free Software Foundation); other parts substantially rewritten.
-.\"
-.\" 2008-06-23, mtk
-.\"     Add ERRORS section.
-.\"     Document the 'a' and 'm' modifiers for dynamic string allocation.
 .\"
 .TH sscanf 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -106,7 +88,9 @@ meaning that the input was inappropriate (see below).
 A directive is one of the following:
 .TP
 \[bu]
-A sequence of white-space characters (space, tab, newline, etc.; see
+A sequence of white-space characters
+(space, tab, newline, etc.;
+see
 .BR isspace (3)).
 This directive matches any amount of white space,
 including none, in the input.
@@ -131,7 +115,7 @@ Each
 in
 .I format
 begins with either the character \[aq]%\[aq] or the character sequence
-"\fB%\fP\fIn\fP\fB$\fP"
+.RB \[dq] % \f[I]n\f[] $ \[dq]
 (see below for the distinction) followed by:
 .TP
 \[bu]
@@ -168,7 +152,9 @@ need to allocate a corresponding buffer to hold the input: instead,
 allocates a buffer of sufficient size,
 and assigns the address of this buffer to the corresponding
 .I pointer
-argument, which should be a pointer to a
+argument,
+which should be
+a pointer to a
 .I "char\ *"
 variable (this variable does not need to be initialized before the call).
 The caller should subsequently
@@ -198,7 +184,8 @@ to specify that the corresponding
 .I pointer
 argument refers to a
 .I "long"
-rather than a pointer to an
+rather than
+a pointer to an
 .IR int .
 .TP
 \[bu]
@@ -209,11 +196,11 @@ that specifies the type of input conversion to be performed.
 The conversion specifications in
 .I format
 are of two forms, either beginning with \[aq]%\[aq] or beginning with
-"\fB%\fP\fIn\fP\fB$\fP".
+.RB \[dq] % \f[I]n\f[] $ \[dq].
 The two forms should not be mixed in the same
 .I format
 string, except that a string containing
-"\fB%\fP\fIn\fP\fB$\fP"
+.RB \[dq] % \f[I]n\f[] $ \[dq]
 specifications can include
 .B %%
 and
@@ -225,7 +212,7 @@ specifications, then these correspond in order with successive
 .I pointer
 arguments.
 In the
-"\fB%\fP\fIn\fP\fB$\fP"
+.RB \[dq] % \f[I]n\f[] $ \[dq]
 form (which is specified in POSIX.1-2001, but not C99),
 .I n
 is a decimal integer that specifies that the converted input should
@@ -241,8 +228,16 @@ can appear in a conversion specification:
 .TP
 .B h
 Indicates that the conversion will be one of
-\fBd\fP, \fBi\fP, \fBo\fP, \fBu\fP, \fBx\fP, \fBX\fP, or \fBn\fP
-and the next pointer is a pointer to a
+.BR d ,
+.BR i ,
+.BR o ,
+.BR u ,
+.BR x ,
+.BR X ,
+or
+.BR n ,
+and the next pointer is
+a pointer to a
 .I short
 or
 .I unsigned short
@@ -252,7 +247,8 @@ or
 .B hh
 As for
 .BR h ,
-but the next pointer is a pointer to a
+but the next pointer is
+a pointer to a
 .I signed char
 or
 .IR "unsigned char" .
@@ -260,7 +256,8 @@ or
 .B j
 As for
 .BR h ,
-but the next pointer is a pointer to an
+but the next pointer is
+a pointer to an
 .I intmax_t
 or a
 .IR uintmax_t .
@@ -268,16 +265,28 @@ This modifier was introduced in C99.
 .TP
 .B l
 Indicates either that the conversion will be one of
-\fBd\fP, \fBi\fP, \fBo\fP, \fBu\fP, \fBx\fP, \fBX\fP, or \fBn\fP
-and the next pointer is a pointer to a
+.BR d ,
+.BR i ,
+.BR o ,
+.BR u ,
+.BR x ,
+.BR X ,
+or
+.BR n ,
+and the next pointer is
+a pointer to a
 .I long
 or
 .I unsigned long
 (rather than
 .IR int ),
 or that the conversion will be one of
-\fBe\fP, \fBf\fP, or \fBg\fP
-and the next pointer is a pointer to
+.BR e ,
+.BR f ,
+or
+.BR g ,
+and the next pointer is
+a pointer to
 .I double
 (rather than
 .IR float ).
@@ -285,8 +294,8 @@ If used with
 .B %c
 or
 .BR %s ,
-the corresponding parameter is considered
-as a pointer to a wide character or wide-character string respectively.
+the corresponding parameter is considered as
+a pointer to a wide character or wide-character string respectively.
 .\" This use of l was introduced in Amendment 1 to ISO C90.
 .TP
 .B ll
@@ -300,8 +309,9 @@ Indicates that the conversion will be one of
 .BR x ,
 .BR X ,
 or
-.B n
-and the next pointer is a pointer to a
+.BR n ,
+and the next pointer is
+a pointer to a
 .I long long
 or
 .I unsigned long long
@@ -310,20 +320,30 @@ or
 .TP
 .B L
 Indicates that the conversion will be either
-\fBe\fP, \fBf\fP, or \fBg\fP
-and the next pointer is a pointer to
+.BR e ,
+.BR f ,
+or
+.BR g ,
+and the next pointer is
+a pointer to
 .I "long double"
 or
 (as a GNU extension)
 the conversion will be
-\fBd\fP, \fBi\fP, \fBo\fP, \fBu\fP, or \fBx\fP
-and the next pointer is a pointer to
+.BR d ,
+.BR i ,
+.BR o ,
+.BR u ,
+or
+.BR x ,
+and the next pointer is
+a pointer to
 .IR "long long" .
 .\" MTK, Jul 05: The following is no longer true for modern
 .\" ANSI C (i.e., C99):
 .\" (Note that long long is not an
 .\" ANSI C
-.\" type. Any program using this will not be portable to all
+.\" type.  Any program using this will not be portable to all
 .\" architectures).
 .TP
 .B q
@@ -334,14 +354,16 @@ This specifier does not exist in ANSI C.
 .B t
 As for
 .BR h ,
-but the next pointer is a pointer to a
+but the next pointer is
+a pointer to a
 .IR ptrdiff_t .
 This modifier was introduced in C99.
 .TP
 .B z
 As for
 .BR h ,
-but the next pointer is a pointer to a
+but the next pointer is
+a pointer to a
 .IR size_t .
 This modifier was introduced in C99.
 .P
@@ -360,7 +382,8 @@ and assignment does not occur.
 .TP
 .B d
 Matches an optionally signed decimal integer;
-the next pointer must be a pointer to
+the next pointer must be
+a pointer to
 .IR int .
 .\" .TP
 .\" .B D
@@ -373,7 +396,9 @@ the next pointer must be a pointer to
 .\" is silently ignored, causing old programs to fail mysteriously.)
 .TP
 .B i
-Matches an optionally signed integer; the next pointer must be a pointer to
+Matches an optionally signed integer;
+the next pointer must be
+a pointer to
 .IR int .
 The integer is read in base 16 if it begins with
 .I 0x
@@ -385,12 +410,15 @@ and in base 10 otherwise.
 Only characters that correspond to the base are used.
 .TP
 .B o
-Matches an unsigned octal integer; the next pointer must be a pointer to
+Matches an unsigned octal integer;
+the next pointer must be
+a pointer to
 .IR "unsigned int" .
 .TP
 .B u
-Matches an unsigned decimal integer; the next pointer must be a
-pointer to
+Matches an unsigned decimal integer;
+the next pointer must be
+a pointer to
 .IR "unsigned int" .
 .TP
 .B x
@@ -399,8 +427,9 @@ Matches an unsigned hexadecimal integer
 .I 0x
 or
 .IR 0X ,
-which is discarded); the next pointer must
-be a pointer to
+which is discarded);
+the next pointer must be
+a pointer to
 .IR "unsigned int" .
 .TP
 .B X
@@ -408,8 +437,9 @@ Equivalent to
 .BR x .
 .TP
 .B f
-Matches an optionally signed floating-point number; the next pointer must
-be a pointer to
+Matches an optionally signed floating-point number;
+the next pointer must be
+a pointer to
 .IR float .
 .TP
 .B e
@@ -430,16 +460,21 @@ Equivalent to
 .TP
 .B s
 Matches a sequence of non-white-space characters;
-the next pointer must be a pointer to the initial element of a
-character array that is long enough to hold the input sequence and
-the terminating null byte (\[aq]\[rs]0\[aq]), which is added automatically.
-The input string stops at white space or at the maximum field
-width, whichever occurs first.
+the next pointer must be
+a pointer to
+the initial element of a character array
+that is long enough to hold
+the input sequence and the terminating null byte (\[aq]\[rs]0\[aq]),
+which is added automatically.
+The input string stops at white space or at the maximum field width,
+whichever occurs first.
 .TP
 .B c
 Matches a sequence of characters whose length is specified by the
 .I maximum field width
-(default 1); the next pointer must be a pointer to
+(default 1);
+the next pointer must be
+a pointer to
 .IR char ,
 and there must be enough room for all the characters
 (no terminating null byte is added).
@@ -448,10 +483,12 @@ To skip white space first, use an explicit space in the format.
 .TP
 .B \&[
 Matches a nonempty sequence of characters from the specified set of
-accepted characters; the next pointer must be a pointer to
+accepted characters;
+the next pointer must be
+a pointer to
 .IR char ,
-and there must be enough room for all the characters in the string, plus a
-terminating null byte.
+and there must be enough room for all the characters in the string,
+plus a terminating null byte.
 The usual skip of leading white space is suppressed.
 The string is to be made up of characters in (or not in) a particular set;
 the set is defined by the characters between the open bracket
@@ -464,36 +501,44 @@ The set
 those characters if the first character after the open bracket is a
 circumflex
 .RB ( \[ha] ).
-To include a close bracket in the set, make it the first character after
-the open bracket or the circumflex; any other position will end the set.
+To include a close bracket in the set,
+make it the first character after the open bracket or the circumflex;
+any other position will end the set.
 The hyphen character
 .B \-
-is also special; when placed between two other characters, it adds all
-intervening characters to the set.
-To include a hyphen, make it the last
-character before the final close bracket.
+is also special;
+when placed between two other characters,
+it adds all intervening characters to the set.
+To include a hyphen,
+make it the last character before the final close bracket.
 For instance,
 .B [\[ha]]0\-9\-]
 means
 the set "everything except close bracket, zero through nine, and hyphen".
-The string ends with the appearance of a character not in the (or, with a
-circumflex, in) set or when the field width runs out.
+The string ends with the appearance of a character not in the
+(or, with a circumflex, in)
+set
+or when the field width runs out.
 .TP
 .B p
 Matches a pointer value (as printed by
 .B %p
 in
 .BR printf (3));
-the next pointer must be a pointer to a pointer to
+the next pointer must be
+a pointer to a pointer to
 .IR void .
 .TP
 .B n
-Nothing is expected; instead, the number of characters consumed thus far
-from the input is stored through the next pointer, which must be a pointer
-to
+Nothing is expected;
+instead,
+the number of characters consumed thus far from the input
+is stored through the next pointer,
+which must be
+a pointer to
 .IR int ,
-or variant whose size matches the (optionally)
-supplied integer length modifier.
+or variant whose size matches the
+(optionally) supplied integer length modifier.
 This is
 .I not
 a conversion and does
@@ -522,7 +567,8 @@ successful conversion or a matching failure occurs.
 Input byte sequence does not form a valid character.
 .TP
 .B EINVAL
-Not enough arguments; or
+Not enough arguments;
+or
 .I format
 is NULL.
 .TP
@@ -678,7 +724,13 @@ modifiers that are not defined by C99 at all, that is, use
 instead of
 .B L
 in combination with
-\fBd\fP, \fBi\fP, \fBo\fP, \fBu\fP, \fBx\fP, and \fBX\fP
+.BR d ,
+.BR i ,
+.BR o ,
+.BR u ,
+.BR x ,
+and
+.B X
 conversions or
 .BR ll .
 .P
@@ -693,7 +745,7 @@ To use the dynamic allocation conversion specifier, specify
 as a length modifier (thus
 .B %ms
 or
-\fB%m[\fP\fIrange\fP\fB]\fP).
+.BR %m[ \f[I]range\f[] ] ).
 The caller must
 .BR free (3)
 the returned string, as in the following example:

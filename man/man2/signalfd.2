@@ -1,5 +1,4 @@
-.\" Copyright (C) 2008 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" starting from a version by Davide Libenzi <davidel@xmailserver.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -140,7 +139,8 @@ The file descriptor is readable
 (the
 .BR select (2)
 .I readfds
-argument; the
+argument;
+the
 .BR poll (2)
 .B POLLIN
 flag)
@@ -191,7 +191,7 @@ struct signalfd_siginfo {
     uint16_t ssi_addr_lsb; /* Least significant bit of address
                               (SIGBUS; since Linux 2.6.37) */
 .\" ssi_addr_lsb: commit b8aeec34175fc8fe8b0d40efea4846dfc1ba663e
-    uint8_t  pad[\fIX\fP];       /* Pad size to 128 bytes (allow for
+    uint8_t  pad[\f[I]X\f[]];       /* Pad size to 128 bytes (allow for
                               additional fields in the future) */
 };
 .EE
@@ -214,7 +214,8 @@ field.
 This field is the analog of the
 .I siginfo_t
 .I si_code
-field; see
+field;
+see
 .BR sigaction (2)
 for details.
 .SS fork(2) semantics
@@ -455,7 +456,7 @@ The following shell session demonstrates the use of the program:
 Got SIGINT
 .B \[ha]C
 Got SIGINT
-\fB\[ha]\[rs]\fP                    # Control\-\[rs] generates SIGQUIT
+.BR "\[ha]\[rs]" "                    # Control\-\[rs] generates SIGQUIT"
 Got SIGQUIT
 $
 .EE
@@ -485,7 +486,7 @@ main(void)
     sigaddset(&mask, SIGQUIT);
 \&
     /* Block signals so that they aren\[aq]t handled
-       according to their default dispositions. */
+       according to their default dispositions.  */
 \&
     if (sigprocmask(SIG_BLOCK, &mask, NULL) == \-1)
         err(EXIT_FAILURE, "sigprocmask");

@@ -1,6 +1,4 @@
-.\" Copyright (C) Michael Kerrisk, 2004
-.\"	using some material drawn from earlier man pages
-.\"	written by Thomas Kuhn, Copyright 1996
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -14,10 +12,12 @@ Standard C library
 .nf
 .B #include <sys/mman.h>
 .P
-.BI "int mlock(const void " addr [. size "], size_t " size );
-.BI "int mlock2(const void " addr [. size "], size_t " size ", \
-unsigned int " flags );
-.BI "int munlock(const void " addr [. size "], size_t " size );
+.BR "int mlock(" "size_t size;"
+.BI "          const void " addr [ size "], size_t " size );
+.BR "int mlock2(" "size_t size;"
+.BI "          const void " addr [ size "], size_t " size ", unsigned int " flags );
+.BR "int munlock(" "size_t size;"
+.BI "          const void " addr [ size "], size_t " size );
 .P
 .BI "int mlockall(int " flags );
 .B int munlockall(void);
@@ -189,11 +189,15 @@ was less than
 .TP
 .B EINVAL
 .RB ( mlock2 ())
-Unknown \fIflags\fP were specified.
+Unknown
+.I flags
+were specified.
 .TP
 .B EINVAL
 .RB ( mlockall ())
-Unknown \fIflags\fP were specified or
+Unknown
+.I flags
+were specified or
 .B MCL_ONFAULT
 was specified without either
 .B MCL_FUTURE
@@ -295,7 +299,7 @@ and
 .BR mlockall ()
 .TQ
 .BR munlockall ()
-POSIX.1-2008.
+POSIX.1-2024.
 .TP
 .BR mlock2 ()
 Linux.
@@ -306,10 +310,14 @@ and
 .BR munlock ()
 are available,
 .B _POSIX_MEMLOCK_RANGE
-is defined in \fI<unistd.h>\fP and the number of bytes in a page
+is defined in
+.I <unistd.h>
+and the number of bytes in a page
 can be determined from the constant
 .B PAGESIZE
-(if defined) in \fI<limits.h>\fP or by calling
+(if defined) in
+.I <limits.h>
+or by calling
 .IR sysconf(_SC_PAGESIZE) .
 .P
 On POSIX systems on which
@@ -318,7 +326,9 @@ and
 .BR munlockall ()
 are available,
 .B _POSIX_MEMLOCK
-is defined in \fI<unistd.h>\fP to a value greater than 0.
+is defined in
+.I <unistd.h>
+to a value greater than 0.
 (See also
 .BR sysconf (3).)
 .\" POSIX.1-2001: It shall be defined to -1 or 0 or 200112L.

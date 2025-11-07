@@ -1,4 +1,4 @@
-.\" Copyright (C) 2005 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -21,7 +21,8 @@ which creates a new pipe and returns two file descriptors,
 one referring to the read end of the pipe,
 the other referring to the write end.
 Pipes can be used to create a communication channel between related
-processes; see
+processes;
+see
 .BR pipe (2)
 for an example.
 .P
@@ -33,7 +34,8 @@ and is opened using
 Any process may open a FIFO, assuming the file permissions allow it.
 The read end is opened using the
 .B O_RDONLY
-flag; the write end is opened using the
+flag;
+the write end is opened using the
 .B O_WRONLY
 flag.
 See
@@ -166,7 +168,8 @@ capability)
 can set for a pipe.
 .IP
 The default value for this limit is 16 times the default pipe capacity
-(see above); the lower limit is two pages.
+(see above);
+the lower limit is two pages.
 .IP
 This interface was removed in Linux 2.6.35, in favor of
 .IR /proc/sys/fs/pipe\-max\-size .
@@ -237,7 +240,8 @@ Before Linux 4.9, some bugs affected the handling of the
 .I pipe\-user\-pages\-soft
 and
 .I pipe\-user\-pages\-hard
-limits; see BUGS.
+limits;
+see BUGS.
 .\"
 .SS PIPE_BUF
 POSIX.1 says that writes of less than
@@ -260,7 +264,7 @@ whether there are multiple writers to the pipe, and on
 .IR n ,
 the number of bytes to be written:
 .TP
-\fBO_NONBLOCK\fP disabled, \fIn\fP <= \fBPIPE_BUF\fP
+.BR O_NONBLOCK " disabled, \f[I]n\f[] <= " PIPE_BUF
 All
 .I n
 bytes are written atomically;
@@ -269,21 +273,22 @@ may block if there is not room for
 .I n
 bytes to be written immediately
 .TP
-\fBO_NONBLOCK\fP enabled, \fIn\fP <= \fBPIPE_BUF\fP
+.BR O_NONBLOCK " enabled, \f[I]n\f[] <= " PIPE_BUF
 If there is room to write
 .I n
 bytes to the pipe, then
 .BR write (2)
 succeeds immediately, writing all
 .I n
-bytes; otherwise
+bytes;
+otherwise
 .BR write (2)
 fails, with
 .I errno
 set to
 .BR EAGAIN .
 .TP
-\fBO_NONBLOCK\fP disabled, \fIn\fP > \fBPIPE_BUF\fP
+.BR O_NONBLOCK " disabled, \f[I]n\f[] > " PIPE_BUF
 The write is nonatomic: the data given to
 .BR write (2)
 may be interleaved with
@@ -295,7 +300,7 @@ blocks until
 .I n
 bytes have been written.
 .TP
-\fBO_NONBLOCK\fP enabled, \fIn\fP > \fBPIPE_BUF\fP
+.BR O_NONBLOCK " enabled, \f[I]n\f[] > " PIPE_BUF
 If the pipe is full, then
 .BR write (2)
 fails, with

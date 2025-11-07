@@ -1,9 +1,7 @@
-.\" Copyright (c) 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Copyright 1990-1993, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"	@(#)dbopen.3	8.5 (Berkeley) 1/2/94
 .\"
 .TH dbopen 3 (date) "Linux man-pages (unreleased)"
 .UC 7
@@ -19,7 +17,7 @@ Standard C library
 .B #include <db.h>
 .B #include <fcntl.h>
 .P
-.BI "DB *dbopen(const char *" file ", int " flags ", int " mode \
+.BI "DB *dbopen(const char *" path ", int " flags ", int " mode \
 ", DBTYPE " type ,
 .BI "           const void *" openinfo );
 .fi
@@ -47,11 +45,11 @@ and
 .P
 .BR dbopen ()
 opens
-.I file
+.I path
 for reading and/or writing.
 Files never intended to be preserved on disk may be created by setting
 the
-.I file
+.I path
 argument to NULL.
 .P
 The
@@ -195,7 +193,7 @@ A file descriptor referencing the same file will be returned to all
 processes which call
 .BR dbopen ()
 with the same
-.I file
+.I path
 name.
 This file descriptor may be safely used as an argument to the
 .BR fcntl (2)

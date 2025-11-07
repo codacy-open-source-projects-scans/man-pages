@@ -1,12 +1,7 @@
 '\" t
-.\" Copyright 2002 Walter Harms (walter.harms@informatik.uni-oldenburg.de)
-.\" and Copyright 2008, Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
-.\"
-.\" Modified 2004-11-15, Added further text on FLT_ROUNDS
-.\" 	as suggested by AEB and Fabian Kreutz
 .\"
 .TH fma 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -112,8 +107,8 @@ when calling these functions.
 .P
 The following errors can occur:
 .TP
-Domain error: \fIx\fP * \fIy\fP + \fIz\fP, \
-or \fIx\fP * \fIy\fP is invalid and \fIz\fP is not a NaN
+Domain error: \f[I]x * y + z\f[] \
+or \f[I]x * y\f[] is invalid.
 .\" .I errno
 .\" is set to
 .\" .BR EDOM .

@@ -1,4 +1,4 @@
-# Copyright 2022-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -13,7 +13,9 @@ include $(MAKEFILEDIR)/configure/build-depends/pkgconf/pkgconf.mk
 include $(MAKEFILEDIR)/configure/verbose.mk
 
 
+ifndef LD
 LD := $(CC) $(CFLAGS_) $(CPPFLAGS_)
+endif
 
 
 LD_HAS_FUSE_LINKER_PLUGIN := \
@@ -37,15 +39,23 @@ ifeq ($(LD_HAS_FUSE_LINKER_PLUGIN),yes)
 DEFAULT_LDFLAGS += -fuse-linker-plugin
 endif
 
+ifndef LDFLAGS
 LDFLAGS         :=
+endif
+ifndef LDFLAGS_
 LDFLAGS_        := $(DEFAULT_LDFLAGS) $(LDFLAGS)
+endif
 
 
 DEFAULT_LDLIBS := \
 	-lc \
 	$(shell $(PKGCONF_CMD) --libs-only-l $(PKGCONF_LIBS) $(HIDE_ERR))
-LDLIBS         ?=
+ifndef LDLIBS
+LDLIBS         :=
+endif
+ifndef LDLIBS_
 LDLIBS_        := $(DEFAULT_LDLIBS) $(LDLIBS)
+endif
 
 
 endif  # include guard

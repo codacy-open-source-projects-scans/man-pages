@@ -1,17 +1,7 @@
-.\" Copyright (c) 1983, 1991 The Regents of the University of California.
-.\" And Copyright (C) 2011 Guillem Jover <guillem@hadrons.org>
-.\" And Copyright (C) 2006, 2014 Michael Kerrisk
-.\" All rights reserved.
+.\" Copyright 1983-1991, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)readlink.2	6.8 (Berkeley) 3/10/91
-.\"
-.\" Modified Sat Jul 24 00:10:21 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Tue Jul  9 23:55:17 1996 by aeb
-.\" Modified Fri Jan 24 00:26:00 1997 by aeb
-.\" 2011-09-20, Guillem Jover <guillem@hadrons.org>:
-.\"     Added text on dynamically allocating buffer + example program
 .\"
 .TH readlink 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -23,14 +13,16 @@ Standard C library
 .nf
 .B #include <unistd.h>
 .P
-.BI "ssize_t readlink(const char *restrict " pathname ,
-.BI "                 char " buf "[restrict ." bufsiz "], size_t " bufsiz );
+.BR "ssize_t readlink(" "size_t bufsiz;"
+.BI "                 const char *restrict " path ,
+.BI "                 char " buf "[restrict " bufsiz "], size_t " bufsiz );
 .P
 .BR "#include <fcntl.h>            " "/* Definition of " AT_* " constants */"
 .B #include <unistd.h>
 .P
-.BI "ssize_t readlinkat(int " dirfd ", const char *restrict " pathname ,
-.BI "                 char " buf "[restrict ." bufsiz "], size_t " bufsiz );
+.BR "ssize_t readlinkat(" "size_t bufsiz;"
+.BI "                 int " dirfd ", const char *restrict " path ,
+.BI "                 char " buf "[restrict " bufsiz "], size_t " bufsiz );
 .P
 .fi
 .RS -4
@@ -55,7 +47,7 @@ Feature Test Macro Requirements for glibc (see
 .SH DESCRIPTION
 .BR readlink ()
 places the contents of the symbolic link
-.I pathname
+.I path
 in the buffer
 .IR buf ,
 which has size
@@ -73,8 +65,8 @@ system call operates in exactly the same way as
 .BR readlink (),
 except for the differences described here.
 .P
-If the pathname given in
-.I pathname
+If
+.I path
 is relative, then it is interpreted relative to the directory
 referred to by the file descriptor
 .I dirfd
@@ -84,26 +76,26 @@ the calling process, as is done by
 for a relative pathname).
 .P
 If
-.I pathname
+.I path
 is relative and
 .I dirfd
 is the special value
 .BR AT_FDCWD ,
 then
-.I pathname
+.I path
 is interpreted relative to the current working
 directory of the calling process (like
 .BR readlink ()).
 .P
 If
-.I pathname
+.I path
 is absolute, then
 .I dirfd
 is ignored.
 .P
 Since Linux 2.6.39,
 .\" commit 65cfc6722361570bfe255698d9cd4dccaf47570d
-.I pathname
+.I path
 can be an empty string,
 in which case the call operates on the symbolic link referred to by
 .I dirfd
@@ -137,7 +129,7 @@ Search permission is denied for a component of the path prefix.
 .TP
 .B EBADF
 .RB ( readlinkat ())
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -159,7 +151,7 @@ is not positive.
 .TP
 .B EINVAL
 The named file (i.e., the final filename component of
-.IR pathname )
+.IR path )
 is not a symbolic link.
 .TP
 .B EIO
@@ -182,12 +174,12 @@ A component of the path prefix is not a directory.
 .TP
 .B ENOTDIR
 .RB ( readlinkat ())
-.I pathname
+.I path
 is relative and
 .I dirfd
 is a file descriptor referring to a file other than a directory.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR readlink ()
@@ -213,8 +205,8 @@ On older kernels where
 is unavailable, the glibc wrapper function falls back to the use of
 .BR readlink ().
 When
-.I pathname
-is a relative pathname,
+.I path
+is relative,
 glibc constructs a pathname based on the symbolic link in
 .I /proc/self/fd
 that corresponds to the
@@ -271,7 +263,7 @@ main(int argc, char *argv[])
     struct stat  sb;
 \&
     if (argc != 2) {
-        fprintf(stderr, "Usage: %s <pathname>\[rs]n", argv[0]);
+        fprintf(stderr, "Usage: %s <path>\[rs]n", argv[0]);
         exit(EXIT_FAILURE);
     }
 \&
@@ -281,13 +273,13 @@ main(int argc, char *argv[])
     }
 \&
     /* Add one to the link size, so that we can determine whether
-       the buffer returned by readlink() was truncated. */
+       the buffer returned by readlink() was truncated.  */
 \&
     bufsiz = sb.st_size + 1;
 \&
     /* Some magic symlinks under (for example) /proc and /sys
-       report \[aq]st_size\[aq] as zero. In that case, take PATH_MAX as
-       a "good enough" estimate. */
+       report \[aq]st_size\[aq] as zero.  In that case, take PATH_MAX as
+       a "good enough" estimate.  */
 \&
     if (sb.st_size == 0)
         bufsiz = PATH_MAX;
@@ -305,14 +297,14 @@ main(int argc, char *argv[])
     }
 \&
     /* Print only \[aq]nbytes\[aq] of \[aq]buf\[aq], as it doesn't contain a terminating
-       null byte (\[aq]\[rs]0\[aq]). */
+       null byte (\[aq]\[rs]0\[aq]).  */
     printf("\[aq]%s\[aq] points to \[aq]%.*s\[aq]\[rs]n", argv[1], (int) nbytes, buf);
 \&
     /* If the return value was equal to the buffer size, then
        the link target was larger than expected (perhaps because the
        target was changed between the call to lstat() and the call to
-       readlink()). Warn the user that the returned target may have
-       been truncated. */
+       readlink()).  Warn the user that the returned target may have
+       been truncated.  */
 \&
     if (nbytes == bufsiz)
         printf("(Returned buffer may have been truncated)\[rs]n");

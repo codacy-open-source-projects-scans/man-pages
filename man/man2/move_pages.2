@@ -1,7 +1,6 @@
-.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\" Copyright, the authors of the Linux man-pages project
 .\"
-.\" This manpage is Copyright (C) 2006 Silicon Graphics, Inc.
-.\"                               Christoph Lameter
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
 .\" FIXME Should programs normally be using move_pages() directly, or should
 .\" they rather be using interfaces in the numactl package?
@@ -18,10 +17,9 @@ NUMA (Non-Uniform Memory Access) policy library
 .nf
 .B #include <numaif.h>
 .P
-.BI "long move_pages(int " pid ", unsigned long " count ", \
-void *" pages [. count ],
-.BI "                const int " nodes [. count "], int " status [. count "], \
-int " flags );
+.BI "long move_pages(int " pid ", unsigned long " count ", void *" pages [ count ],
+.BI "                const int " nodes [ count "], int " status [ count ],
+.BI "                int " flags );
 .fi
 .SH DESCRIPTION
 .BR move_pages ()
@@ -62,7 +60,8 @@ Since Linux 4.13,
 .\" commit 197e7e521384a23b9e585178f3f11c9fa08274b9
 permission is governed by a ptrace access mode
 .B PTRACE_MODE_READ_REALCREDS
-check with respect to the target process; see
+check with respect to the target process;
+see
 .BR ptrace (2).
 .P
 .I count

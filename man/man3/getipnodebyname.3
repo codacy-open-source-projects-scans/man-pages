@@ -1,8 +1,9 @@
-.\" Copyright 2000 Sam Varshavchik <mrsam@courier-mta.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
 .\" References: RFC 2553
+.\"
 .TH getipnodebyname 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 getipnodebyname, getipnodebyaddr, freehostent \- get network
@@ -18,7 +19,8 @@ Standard C library
 .P
 .BI "[[deprecated]] struct hostent *getipnodebyname(const char *" name ", int " af ,
 .BI "                                            int " flags ", int *" error_num );
-.BI "[[deprecated]] struct hostent *getipnodebyaddr(const void " addr [. size ],
+.BR "[[deprecated]] struct hostent *getipnodebyaddr(" "size_t size;"
+.BI "                                            const void " addr [ size ],
 .BI "                                            size_t " size ", int " af ,
 .BI "                                            int *" "error_num" );
 .BI "[[deprecated]] void freehostent(struct hostent *" "ip" );
@@ -108,8 +110,9 @@ if no options are desired.
 .B AI_V4MAPPED
 This flag is used with
 .B AF_INET6
-to request a query for IPv4 addresses instead of
-IPv6 addresses; the IPv4 addresses will
+to request a query for IPv4 addresses
+instead of IPv6 addresses;
+the IPv4 addresses will
 be mapped to IPv6 addresses.
 .TP
 .B AI_ALL

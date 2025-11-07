@@ -1,16 +1,7 @@
 '\" t
-.\" Copyright (C) 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 18:48:06 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Fri Jun 23 01:26:34 1995 by Andries Brouwer (aeb@cwi.nl)
-.\" (prompted by Scott Burkett <scottb@IntNet.net>)
-.\" Modified Sun Mar 28 23:44:38 1999 by Andries Brouwer (aeb@cwi.nl)
 .\"
 .TH mktemp 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -47,9 +38,12 @@ see BUGS.
 The
 .BR mktemp ()
 function generates a unique temporary filename
-from \fItemplate\fP.
-The last six characters of \fItemplate\fP must
-be XXXXXX and these are replaced with a string that makes the
+from
+.IR template .
+The last six characters of
+.I template
+must be XXXXXX
+and these are replaced with a string that makes the
 filename unique.
 Since it will be modified,
 .I template
@@ -57,18 +51,23 @@ must not be a string constant, but should be declared as a character array.
 .SH RETURN VALUE
 The
 .BR mktemp ()
-function always returns \fItemplate\fP.
-If a unique name was created, the last six bytes of \fItemplate\fP will
-have been modified in such a way that the resulting name is unique
+function always returns
+.IR template .
+If a unique name was created, the last six bytes of
+.I template
+will have been modified in such a way that the resulting name is unique
 (i.e., does not exist already)
 If a unique name could not be created,
-\fItemplate\fP is made an empty string, and
+.I template
+is made an empty string, and
 .I errno
 is set to indicate the error.
 .SH ERRORS
 .TP
 .B EINVAL
-The last six characters of \fItemplate\fP were not XXXXXX.
+The last six characters of
+.I template
+were not XXXXXX.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).

@@ -1,7 +1,5 @@
 '\" t
-.\" Copyright 2002, Walter Harms <walter.harms@informatik.uni-oldenburg.de>
-.\" Copyright 2002, Andries Brouwer <aeb@cwi.nl>
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
 .\"
@@ -65,10 +63,12 @@ TIOCPKT_START	T{
 Output to the terminal is restarted.
 T}
 TIOCPKT_DOSTOP	T{
-The start and stop characters are \fB\[ha]S\fP/\fB\[ha]Q\fP.
+The start and stop characters are
+.BR \[ha]S / \[ha]Q .
 T}
 TIOCPKT_NOSTOP	T{
-The start and stop characters are not \fB\[ha]S\fP/\fB\[ha]Q\fP.
+The start and stop characters are not
+.BR \[ha]S / \[ha]Q .
 T}
 .TE
 .ad
@@ -88,7 +88,9 @@ This mode is used by
 and
 .BR rlogind (8)
 to implement a remote-echoed,
-locally \fB\[ha]S\fP/\fB\[ha]Q\fP flow-controlled remote login.
+locally
+.BR \[ha]S / \[ha]Q
+flow-controlled remote login.
 .TP
 .B TIOCGPKT
 Return the current packet mode setting in the integer pointed to by

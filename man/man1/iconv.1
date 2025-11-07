@@ -1,4 +1,4 @@
-.\" Copyright (C) 2014 Marko Myllynen <myllynen@redhat.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -55,6 +55,8 @@ is appended to
 .IR to-encoding ,
 characters that cannot be converted are discarded and an error is
 printed after conversion.
+(Characters that cannot be decoded are treated as an error
+with or without this flag.)
 .IP
 If the string
 .B //TRANSLIT
@@ -73,8 +75,11 @@ transliterated are replaced with a question mark (?) in the output.
 List all known character set encodings.
 .TP
 .B \-c
-Silently discard characters that cannot be converted instead of
+Discard characters that cannot be converted instead of
 terminating when encountering such characters.
+.\" glibc commit 6cbf845fcdc76131d0e674cee454fe738b69c69d
+POSIX requires that this option does not change
+the exit status of the program.
 .TP
 .BI \-\-output= outputfile
 .TQ
@@ -86,7 +91,8 @@ for output.
 .B \-\-silent
 .TQ
 .B \-s
-This option is ignored; it is provided only for compatibility.
+This option is ignored;
+it is provided only for compatibility.
 .TP
 .B \-\-verbose
 Print progress information on standard error when processing
@@ -183,7 +189,7 @@ Convert text from the ISO/IEC\~8859-15 character encoding to UTF-8:
 .P
 .in +4n
 .EX
-$ \fBiconv \-f ISO\-8859\-15 \-t UTF\-8 < input.txt > output.txt\fP
+.RB $ " iconv \-f ISO\-8859\-15 \-t UTF\-8 < input.txt > output.txt" ;
 .EE
 .in
 .P
@@ -192,7 +198,7 @@ possible:
 .P
 .in +4n
 .EX
-$ \fBecho abc ß α € àḃç | iconv \-f UTF\-8 \-t ASCII//TRANSLIT\fP
+.RB $ " echo abc ß α € àḃç | iconv \-f UTF\-8 \-t ASCII//TRANSLIT" ;
 abc ss ? EUR abc
 .EE
 .in

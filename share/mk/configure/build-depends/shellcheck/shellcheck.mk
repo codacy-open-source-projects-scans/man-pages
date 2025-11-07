@@ -1,4 +1,4 @@
-# Copyright 2022-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -10,10 +10,18 @@ include $(MAKEFILEDIR)/configure/directory_variables/src.mk
 
 
 SHELLCHECK_CONF         := $(SYSCONFDIR)/shellcheck/shellcheckrc
-DEFAULT_SHELLCHECKFLAGS := -o all
+DEFAULT_SHELLCHECKFLAGS := \
+	-o all \
+	-e SC2028
+ifndef SHELLCHECKFLAGS
 SHELLCHECKFLAGS         :=
+endif
+ifndef SHELLCHECKFLAGS_
 SHELLCHECKFLAGS_        := $(DEFAULT_SHELLCHECKFLAGS) $(SHELLCHECKFLAGS)
+endif
+ifndef SHELLCHECK
 SHELLCHECK              := shellcheck
+endif
 
 
 endif  # include guard

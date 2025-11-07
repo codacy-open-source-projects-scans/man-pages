@@ -1,19 +1,13 @@
 '\" t
-.\" Michael Haardt (michael@cantor.informatik.rwth.aachen.de)
-.\"     Sat Sep  3 22:00:30 MET DST 1994
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" Sun Feb 19 21:32:25 1995, faith@cs.unc.edu edited details away
 .\"
 .\" TO DO: This manual page should go more into detail how DES is perturbed,
 .\" which string will be encrypted, and what determines the repetition factor.
 .\" Is a simple repetition using ECB used, or something more advanced?  I hope
 .\" the presented explanations are at least better than nothing, but by no
 .\" means enough.
-.\"
-.\" added _XOPEN_SOURCE, aeb, 970705
-.\" added GNU MD5 stuff, aeb, 011223
 .\"
 .TH crypt 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -62,7 +56,7 @@ is a user's typed password.
 .P
 .I salt
 is a two-character string chosen from the set
-[\fBa\-zA\-Z0\-9./\fP].
+.RB [ a\-zA\-Z0\-9./ ].
 This string is used to
 perturb the algorithm in one of 4096 different ways.
 .P
@@ -126,8 +120,9 @@ has the wrong format.
 .B ENOSYS
 The
 .BR crypt ()
-function was not implemented, probably because of U.S.A. export restrictions.
-.\" This level of detail is not necessary in this man page. . .
+function was not implemented,
+probably because of U.S.A.\& export restrictions.
+.\" The following level of detail is not necessary in this man page.
 .\" .P
 .\" When encrypting a plain text P using DES with the key K results in the
 .\" encrypted text C, then the complementary plain text P' being encrypted
@@ -228,12 +223,13 @@ hashing algorithms.
 .P
 If
 .I salt
-is a character string starting with the characters "$\fIid\fP$"
+is a character string starting with the characters
+.RI \[dq]$ id $\[dq]
 followed by a string optionally terminated by "$",
 then the result has the form:
 .RS
 .P
-$\fIid\fP$\fIsalt\fP$\fIhashed\fP
+.RI $ id $ salt $ hashed
 .RE
 .P
 .I id
@@ -250,8 +246,9 @@ ID	Method
 _
 1	MD5
 2a	T{
-Blowfish (not in mainline glibc; added in some
-Linux distributions)
+Blowfish
+(not in mainline glibc;
+added in some Linux distributions)
 T}
 .\" openSUSE has Blowfish, but AFAICS, this option is not supported
 .\" natively by glibc -- mtk, Jul 08
@@ -264,13 +261,20 @@ T}
 .TE
 .RE
 .P
-Thus, $5$\fIsalt\fP$\fIhashed\fP and $6$\fIsalt\fP$\fIhashed\fP
+Thus,
+.RI $5$ salt $ hashed
+and
+.RI $6$ salt $ hashed
 contain the password hashed with, respectively, functions
 based on SHA-256 and SHA-512.
 .P
-"\fIsalt\fP" stands for the up to 16 characters
-following "$\fIid\fP$" in the salt.
-The "\fIhashed\fP"
+.RI \[dq] salt \[dq]
+stands for the up to 16 characters
+following
+.RI \[dq]$ id $\[dq]
+in the salt.
+The
+.RI \[dq] hashed \[dq]
 part of the password string is the actual computed password.
 The size of this string is fixed:
 .RS
@@ -282,8 +286,12 @@ SHA-512	86 characters
 .TE
 .RE
 .P
-The characters in "\fIsalt\fP" and "\fIhashed\fP" are drawn from the set
-[\fBa\-zA\-Z0\-9./\fP].
+The characters in
+.RI \[dq] salt \[dq]
+and
+.RI \[dq] hashed \[dq]
+are drawn from the set
+.RB [ a\-zA\-Z0\-9./ ].
 In the MD5 and SHA implementations the entire
 .I key
 is significant (instead of only the first
@@ -293,15 +301,22 @@ Since glibc 2.7,
 .\" glibc commit 9425cb9eea6a62fc21d99aafe8a60f752b934b05
 the SHA-256 and SHA-512 implementations support a user-supplied number of
 hashing rounds, defaulting to 5000.
-If the "$\fIid\fP$" characters in the salt are
-followed by "rounds=\fIxxx\fP$", where \fIxxx\fP is an integer, then the
+If the
+.RI \[dq]$ id $\[dq] characters in the salt are
+followed by
+.RI \[dq]rounds= xxx $\[dq],
+where
+.I xxx
+is an integer, then the
 result has the form
 .RS
 .P
-$\fIid\fP$\fIrounds=yyy\fP$\fIsalt\fP$\fIhashed\fP
+.RI $ id $ rounds=yyy $ salt $ hashed
 .RE
 .P
-where \fIyyy\fP is the number of hashing rounds actually used.
+where
+.I yyy
+is the number of hashing rounds actually used.
 The number of rounds actually used is 1000 if
 .I xxx
 is less than

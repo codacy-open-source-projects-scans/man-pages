@@ -1,4 +1,4 @@
-.\" Copyright (C) 2014 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -12,12 +12,14 @@ Resolver library
 .nf
 .B #include <arpa/inet.h>
 .P
-.BI "int inet_net_pton(int " af ", const char *" pres ,
-.BI "                  void " netp [. nsize "], size_t " nsize );
-.BI "char *inet_net_ntop(int " af ,
-.BI "                  const void " netp [(. bits " - CHAR_BIT + 1) / CHAR_BIT],"
+.BR "int inet_net_pton(" "size_t nsize;"
+.BI "                  int " af ", const char *" pres ,
+.BI "                  void " netp [ nsize "], size_t " nsize );
+.BR "char *inet_net_ntop(" "int bits, size_t psize;"
+.BI "                  int " af ,
+.BI "                  const void " netp [( bits " \- CHAR_BIT + 1) / CHAR_BIT],"
 .BI "                  int " bits ,
-.BI "                  char " pres [. psize "], size_t " psize );
+.BI "                  char " pres [ psize "], size_t " psize );
 .fi
 .P
 .RS -4
@@ -162,8 +164,8 @@ populates one byte of the resulting network number,
 going from left to right, in network-byte (big endian) order.
 Where a part is omitted, the resulting byte in the network number is zero.
 .\" Reading other man pages, some other implementations treat
-.\" 	'c' in a.b.c as a 16-bit number that populates right-most two bytes
-.\"     'b' in a.b as a 24-bit number that populates right-most three bytes
+.\"	'c' in a.b.c as a 16-bit number that populates right-most two bytes
+.\"	'b' in a.b as a 24-bit number that populates right-most three bytes
 .P
 For either hexadecimal or dotted-decimal format,
 the network number can optionally be followed by a slash
@@ -254,7 +256,7 @@ infers the number of bits in the network number:
 .P
 .in +4n
 .EX
-$ \fB./a.out 193.168\fP
+.RB $ " ./a.out 193.168" ;
 inet_net_pton() returned: 24
 inet_net_ntop() yielded:  193.168.0/24
 Raw address:              c1a80000
@@ -267,7 +269,7 @@ does not zero out unused bytes in its result buffer:
 .P
 .in +4n
 .EX
-$ \fB./a.out 193.168 0xffffffff\fP
+.RB $ " ./a.out 193.168 0xffffffff" ;
 inet_net_pton() returned: 24
 inet_net_ntop() yielded:  193.168.0/24
 Raw address:              c1a800ff
@@ -282,7 +284,7 @@ string exceeds the inferred value:
 .P
 .in +4n
 .EX
-$ \fB./a.out 193.168.1.128\fP
+.RB $ " ./a.out 193.168.1.128" ;
 inet_net_pton() returned: 32
 inet_net_ntop() yielded:  193.168.1.128/32
 Raw address:              c1a80180
@@ -297,7 +299,7 @@ to populate the result buffer):
 .P
 .in +4n
 .EX
-$ \fB./a.out 193.168.1.128/24\fP
+.RB $ " ./a.out 193.168.1.128/24" ;
 inet_net_pton() returned: 24
 inet_net_ntop() yielded:  193.168.1/24
 Raw address:              c1a80180
@@ -309,11 +311,9 @@ Raw address:              c1a80180
 /* Link with "\-lresolv" */
 \&
 #include <arpa/inet.h>
+#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
-\&
-#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \[rs]
-                        } while (0)
 \&
 int
 main(int argc, char *argv[])
@@ -332,31 +332,31 @@ main(int argc, char *argv[])
     /* If argv[2] is supplied (a numeric value), use it to initialize
        the output buffer given to inet_net_pton(), so that we can see
        that inet_net_pton() initializes only those bytes needed for
-       the network number. If argv[2] is not supplied, then initialize
-       the buffer to zero (as is recommended practice). */
+       the network number.  If argv[2] is not supplied, then initialize
+       the buffer to zero (as is recommended practice).  */
 \&
     addr.s_addr = (argc > 2) ? strtod(argv[2], NULL) : 0;
 \&
-    /* Convert presentation network number in argv[1] to binary. */
+    /* Convert presentation network number in argv[1] to binary.  */
 \&
     bits = inet_net_pton(AF_INET, argv[1], &addr, sizeof(addr));
     if (bits == \-1)
-        errExit("inet_net_ntop");
+        err(EXIT_FAILURE, "inet_net_ntop");
 \&
     printf("inet_net_pton() returned: %d\[rs]n", bits);
 \&
     /* Convert binary format back to presentation, using \[aq]bits\[aq]
-       returned by inet_net_pton(). */
+       returned by inet_net_pton().  */
 \&
     if (inet_net_ntop(AF_INET, &addr, bits, buf, sizeof(buf)) == NULL)
-        errExit("inet_net_ntop");
+        err(EXIT_FAILURE, "inet_net_ntop");
 \&
     printf("inet_net_ntop() yielded:  %s\[rs]n", buf);
 \&
     /* Display \[aq]addr\[aq] in raw form (in network byte order), so we can
        see bytes not displayed by inet_net_ntop(); some of those bytes
        may not have been touched by inet_net_ntop(), and so will still
-       have any initial value that was specified in argv[2]. */
+       have any initial value that was specified in argv[2].  */
 \&
     printf("Raw address:              %x\[rs]n", htonl(addr.s_addr));
 \&

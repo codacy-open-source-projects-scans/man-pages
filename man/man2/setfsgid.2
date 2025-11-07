@@ -1,13 +1,6 @@
-.\" Copyright (C) 1995, Thomas K. Dyas <tdyas@eden.rutgers.edu>
-.\" and Copyright (C) 2019, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Created   1995-08-06 Thomas K. Dyas <tdyas@eden.rutgers.edu>
-.\" Modified  2000-07-01 aeb
-.\" Modified  2002-07-23 aeb
-.\" Modified, 27 May 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added notes on capability requirements
 .\"
 .TH setfsgid 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -59,7 +52,9 @@ In glibc 2.15 and earlier,
 when the wrapper for this system call determines that the argument can't be
 passed to the kernel without integer truncation (because the kernel
 is old and does not support 32-bit group IDs),
-it will return \-1 and set \fIerrno\fP to
+it will return \-1 and set
+.I errno
+to
 .B EINVAL
 without attempting
 the system call.

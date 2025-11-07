@@ -1,13 +1,6 @@
-.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
-.\"             and Copyright (C) 1993 Michael Haardt, Ian Jackson.
-.\" and Copyright (C) 2006, 2014 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1993-07-23 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1994-08-21 by Michael Haardt
-.\" Modified 2004-06-23 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2005-04-04, as per suggestion by Michael Hardt for rename.2
 .\"
 .TH link 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -122,7 +115,8 @@ are an exception).
 The caller must have the
 .B CAP_DAC_READ_SEARCH
 capability in order to use this flag.
-This flag is Linux-specific; define
+This flag is Linux-specific;
+define
 .B _GNU_SOURCE
 .\" Before glibc 2.16, defining _ATFILE_SOURCE sufficed
 to obtain its definition.
@@ -204,7 +198,9 @@ For example, on an
 .BR ext4 (5)
 filesystem that does not employ the
 .I dir_index
-feature, the limit on the number of hard links to a file is 65,000; on
+feature,
+the limit on the number of hard links to a file is 65,000;
+on
 .BR btrfs (5),
 the limit is 65,535 links.
 .TP
@@ -242,7 +238,7 @@ The caller does not have permission to create a hard link to this file
 (see the description of
 .I /proc/sys/fs/protected_hardlinks
 in
-.BR proc (5)).
+.BR proc_sys_fs (5)).
 .TP
 .B EPERM
 .I oldpath
@@ -386,9 +382,7 @@ and
 .I newdirfd
 arguments.
 .SH STANDARDS
-.TP
-.BR link ()
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR link ()

@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH wcsncpy 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -19,8 +13,9 @@ Standard C library
 .nf
 .B #include <wchar.h>
 .P
-.BI "wchar_t *wcsncpy(wchar_t " dest "[restrict ." n ],
-.BI "                 const wchar_t " src "[restrict ." n ],
+.BR "wchar_t *wcsncpy(" "size_t n;"
+.BI "                 wchar_t " dest "[restrict " n ],
+.BI "                 const wchar_t *restrict " src ,
 .BI "                 size_t " n );
 .fi
 .SH DESCRIPTION
@@ -42,15 +37,18 @@ Exactly
 wide characters are
 written at
 .IR dest .
-If the length \fIwcslen(src)\fP is smaller than
+If the length
+.I wcslen(src)
+is smaller than
 .IR n ,
 the remaining wide characters in the array
 pointed to by
 .I dest
 are filled
 with null wide characters.
-If the length \fIwcslen(src)\fP is greater than or equal
-to
+If the length
+.I wcslen(src)
+is greater than or equal to
 .IR n ,
 the string pointed to by
 .I dest

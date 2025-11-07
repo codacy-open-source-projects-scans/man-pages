@@ -1,8 +1,6 @@
-.\" Copyright (C) 1995, Thomas K. Dyas <tdyas@eden.rutgers.edu>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Created   Wed Aug  9 1995     Thomas K. Dyas <tdyas@eden.rutgers.edu>
 .\"
 .TH sysfs 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -83,7 +81,8 @@ None.
 .SH HISTORY
 SVr4.
 .P
-This System-V derived system call is obsolete; don't use it.
+This System-V derived system call is obsolete;
+don't use it.
 On systems with
 .IR /proc ,
 the same information can be obtained via
@@ -91,7 +90,9 @@ the same information can be obtained via
 use that interface instead.
 .SH BUGS
 There is no libc or glibc support.
-There is no way to guess how large \fIbuf\fP should be.
+There is no way to guess how large
+.I buf
+should be.
 .SH SEE ALSO
 .BR proc (5),
 .BR sysfs (5)

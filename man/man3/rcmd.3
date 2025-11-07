@@ -1,17 +1,8 @@
 '\" t
-.\"	$NetBSD: rcmd.3,v 1.9 1996/05/28 02:07:39 mrg Exp $
-.\"
-.\" Copyright (c) 1983, 1991, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Copyright 1983-1993, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)rcmd.3	8.1 (Berkeley) 6/4/93
-.\"
-.\" Contributed as Linux man page by David A. Holland, 970908
-.\" I have not checked whether the Linux situation is exactly the same.
-.\"
-.\" 2007-12-08, mtk, Converted from mdoc to man macros
 .\"
 .TH rcmd 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -188,16 +179,20 @@ other than the user or the superuser, is writable by anyone other
 than the owner, or is hardlinked anywhere, the check automatically fails.
 Zero is returned if the machine name is listed in the
 .I hosts.equiv
-file, or the host and remote username are found in the
+file,
+or the host and remote username are found in the
 .I .rhosts
-file; otherwise
+file;
+otherwise,
 .BR iruserok ()
 and
 .BR ruserok ()
 return \-1.
-If the local domain (as obtained from
+If the local domain
+(as obtained from
 .BR gethostname (2))
-is the same as the remote domain, only the machine name need be specified.
+is the same as the remote domain,
+only the machine name need be specified.
 .P
 If the IP address of the remote host is known,
 .BR iruserok ()

@@ -1,4 +1,4 @@
-# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -14,7 +14,7 @@ include $(MAKEFILEDIR)/configure/directory_variables/src.mk
 
 
 BIN_sh := $(shell $(FIND) $(SRCBINDIR) -type f \
-		| $(XARGS) $(GREP) -l '^#!/bin/\(sh\|bash\)\>' \
+		| $(XARGS) $(GREP) -l '^'\#'!/bin/\(sh\|bash\)\>' \
 		| $(SORT))
 
 

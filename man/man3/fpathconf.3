@@ -1,10 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
-.\" and Copyright (C) 2017 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Wed Jul 28 11:12:26 1993 by Rik Faith (faith@cs.unc.edu)
 .\"
 .\" FIXME Probably all of the following should be documented:
 .\"     _PC_SYNC_IO,
@@ -48,8 +45,10 @@ for the filename
 .P
 The corresponding macros defined in
 .I <unistd.h>
-are minimum values; if an application wants to take advantage of values
-which may change, a call to
+are minimum values;
+if an application wants to take advantage of
+values which may change,
+a call to
 .BR fpathconf ()
 or
 .BR pathconf ()
@@ -115,7 +114,8 @@ should refer to a pipe or FIFO.
 For
 .BR fpathconf (),
 .I path
-should refer to a FIFO or a directory; in the latter case,
+should refer to a FIFO or a directory;
+in the latter case,
 the returned value corresponds to FIFOs created in that directory.
 The corresponding macro is
 .BR _POSIX_PIPE_BUF .
@@ -263,8 +263,8 @@ equal to
 .B _PC_NAME_MAX
 may exist in the given directory.
 .P
-Some returned values may be huge; they are not suitable for allocating
-memory.
+Some returned values may be huge;
+they are not suitable for allocating memory.
 .SH SEE ALSO
 .BR getconf (1),
 .BR open (2),

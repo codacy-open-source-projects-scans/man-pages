@@ -1,8 +1,6 @@
-.\" Copyright (c) 2020-2022 by Alejandro Colomar <alx@kernel.org>
-.\" and Copyright (c) 2020 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
 .\"
 .TH id_t 3type (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -40,7 +38,7 @@ It is an integer type that can be used to contain a
 or
 .IR gid_t .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .SH NOTES

@@ -1,15 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
-.\" and (C) Copyright 2015 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified 1993-07-25 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 2004-10-31 by aeb
 .\"
 .TH resolver 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -34,66 +26,84 @@ Resolver library
 .P
 .BI "void res_nclose(res_state " statep );
 .P
-.BI "int res_nquery(res_state " statep ,
-.BI "           const char *" dname ", int " class ", int " type ,
-.BI "           unsigned char " answer [. anslen "], int " anslen );
+.BR "int res_nquery(" "int anslen;"
+.BI "           res_state " statep ,
+.BI "           const char *" dname ,
+.BI "           int " class ", int " type ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .P
-.BI "int res_nsearch(res_state " statep ,
-.BI "           const char *" dname ", int " class ", int " type ,
-.BI "           unsigned char " answer [. anslen "], int " anslen );
+.BR "int res_nsearch(" "int anslen;"
+.BI "           res_state " statep ,
+.BI "           const char *" dname ,
+.BI "           int " class ", int " type ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .P
-.BI "int res_nquerydomain(res_state " statep ,
+.BR "int res_nquerydomain(" "int anslen;"
+.BI "           res_state " statep ,
 .BI "           const char *" name ", const char *" domain ,
-.BI "           int " class ", int " type ", unsigned char " answer [. anslen ],
-.BI "           int " anslen );
+.BI "           int " class ", int " type ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .P
-.BI "int res_nmkquery(res_state " statep ,
-.BI "           int " op ", const char *" dname ", int " class ,
-.BI "           int " type ", const unsigned char " data [. datalen "], \
-int " datalen ,
+.BR "int res_nmkquery(" "int datalen, int buflen;"
+.BI "           res_state " statep ", int " op ,
+.BI "           const char *" dname ,
+.BI "           int " class ", int " type ,
+.BI "           const unsigned char " data [ datalen "], int " datalen ,
 .BI "           const unsigned char *" newrr ,
-.BI "           unsigned char " buf [. buflen "], int " buflen );
+.BI "           unsigned char " buf [ buflen "], int " buflen );
 .P
-.BI "int res_nsend(res_state " statep ,
-.BI "           const unsigned char " msg [. msglen "], int " msglen ,
-.BI "           unsigned char " answer [. anslen "], int " anslen );
+.BR "int res_nsend(" "int msglen, int anslen;"
+.BI "           res_state " statep ,
+.BI "           const unsigned char " msg [ msglen "], int " msglen ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .P
-.BI "int dn_comp(const char *" exp_dn ", unsigned char " comp_dn [. length ],
-.BI "           int " length ", unsigned char **" dnptrs ,
+.BR "int dn_comp(" "int length;"
+.BI "           const char *" exp_dn ,
+.BI "           unsigned char " comp_dn [ length "], int " length ,
+.BI "           unsigned char **" dnptrs ,
 .BI "           unsigned char **" lastdnptr );
 .P
-.BI "int dn_expand(const unsigned char *" msg ,
+.BR "int dn_expand(" "int length;"
+.BI "           const unsigned char *" msg ,
 .BI "           const unsigned char *" eomorig ,
-.BI "           const unsigned char *" comp_dn ", char " exp_dn [. length ],
-.BI "           int " length );
+.BI "           const unsigned char *" comp_dn ,
+.BI "           char " exp_dn [ length "], int " length );
 .P
 .B [[deprecated]] extern struct __res_state _res;
 .P
 .B [[deprecated]] int res_init(void);
 .P
 .B [[deprecated]]
-.BI "int res_query(const char *" dname ", int " class ", int " type ,
-.BI "           unsigned char " answer [. anslen "], int " anslen );
+.BR "int res_query(" "int anslen;"
+.BI "           const char *" dname ,
+.BI "           int " class ", int " type ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .P
 .B [[deprecated]]
-.BI "int res_search(const char *" dname ", int " class ", int " type ,
-.BI "           unsigned char " answer [. anslen "], int " anslen );
+.BR "int res_search(" "int anslen;"
+.BI "           const char *" dname ,
+.BI "           int " class ", int " type ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .P
 .B [[deprecated]]
-.BI "int res_querydomain(const char *" name ", const char *" domain ,
-.BI "           int " class ", int " type ", unsigned char " answer [. anslen ],
-.BI "           int " anslen );
+.BR "int res_querydomain(" "int anslen;"
+.BI "           const char *" name ", const char *" domain ,
+.BI "           int " class ", int " type ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .P
 .B [[deprecated]]
-.BI "int res_mkquery(int " op ", const char *" dname ", int " class ,
-.BI "           int " type ", const unsigned char " data [. datalen "], \
-int " datalen ,
+.BR "int res_mkquery(" "int datalen, int buflen;"
+.BI "           int " op ,
+.BI "           const char *" dname ,
+.BI "           int " class ", int " type ,
+.BI "           const unsigned char " data [ datalen "], int " datalen ,
 .BI "           const unsigned char *" newrr ,
-.BI "           unsigned char " buf [. buflen "], int " buflen );
+.BI "           unsigned char " buf [ buflen "], int " buflen );
 .P
 .B [[deprecated]]
-.BI "int res_send(const unsigned char " msg [. msglen "], int " msglen ,
-.BI "           unsigned char " answer [. anslen "], int " anslen );
+.BR "int res_send(" "int msglen, int anslen;"
+.BI "           const unsigned char " msg [ msglen "], int " msglen ,
+.BI "           unsigned char " answer [ anslen "], int " anslen );
 .fi
 .SH DESCRIPTION
 .B Note:
@@ -150,10 +160,17 @@ The
 and
 .BR res_query ()
 functions query the name server for the
-fully qualified domain name \fIname\fP of specified \fItype\fP and
-\fIclass\fP.
-The reply is left in the buffer \fIanswer\fP of length
-\fIanslen\fP supplied by the caller.
+fully qualified domain name
+.I name
+of specified
+.I type
+and
+.IR class .
+The reply is left in the buffer
+.I answer
+of length
+.I anslen
+supplied by the caller.
 .P
 The
 .BR res_nsearch ()
@@ -169,7 +186,8 @@ rules controlled by
 and
 .B RES_DNSRCH
 (see description of
-\fI_res\fP options below).
+.I _res
+options below).
 .P
 The
 .BR res_nquerydomain ()
@@ -177,7 +195,10 @@ and
 .BR res_querydomain ()
 functions make a query using
 .BR res_nquery ()/ res_query ()
-on the concatenation of \fIname\fP and \fIdomain\fP.
+on the concatenation of
+.I name
+and
+.IR domain .
 .P
 The following functions are lower-level routines used by
 .BR res_nquery ()/ res_query ().
@@ -186,10 +207,15 @@ The
 .BR res_nmkquery ()
 and
 .BR res_mkquery ()
-functions construct a query message in \fIbuf\fP
-of length \fIbuflen\fP for the domain name \fIdname\fP.
+functions construct a query message in
+.I buf
+of length
+.I buflen
+for the domain name
+.IR dname .
 The query type
-\fIop\fP is one of the following (typically
+.I op
+is one of the following (typically
 .BR QUERY ):
 .TP
 .B QUERY
@@ -204,40 +230,63 @@ since it has not been supported by DNS servers for a very long time.
 .B NS_NOTIFY_OP
 Notify secondary of SOA (Start of Authority) change.
 .P
-\fInewrr\fP is currently unused.
+.I newrr
+is currently unused.
 .P
 The
 .BR res_nsend ()
 and
 .BR res_send ()
 function send a preformatted query given in
-\fImsg\fP of length \fImsglen\fP and returns the answer in \fIanswer\fP
-which is of length \fIanslen\fP.
+.I msg
+of length
+.I msglen
+and returns the answer in
+.I answer
+which is of length
+.IR anslen .
 They will call
 .BR res_ninit ()/ res_init ()
 if it has not already been called.
 .P
 The
 .BR dn_comp ()
-function compresses the domain name \fIexp_dn\fP
-and stores it in the buffer \fIcomp_dn\fP of length \fIlength\fP.
-The compression uses an array of pointers \fIdnptrs\fP to previously
-compressed names in the current message.
+function compresses the domain name
+.I exp_dn
+and stores it in the buffer
+.I comp_dn
+of length
+.IR length .
+The compression uses an array of pointers
+.I dnptrs
+to previously compressed names in the current message.
 The first pointer points
 to the beginning of the message and the list ends with NULL.
-The limit of the array is specified by \fIlastdnptr\fP.
-If \fIdnptr\fP is NULL, domain names are not compressed.
-If \fIlastdnptr\fP is NULL, the list
-of labels is not updated.
+The limit of the array is specified by
+.IR lastdnptr .
+If
+.I dnptr
+is NULL,
+domain names are not compressed.
+If
+.I lastdnptr
+is NULL,
+the list of labels is not updated.
 .P
 The
 .BR dn_expand ()
 function expands the compressed domain name
-\fIcomp_dn\fP to a full domain name, which is placed in the buffer
-\fIexp_dn\fP of size \fIlength\fP.
+.I comp_dn
+to a full domain name,
+which is placed in the buffer
+.I exp_dn
+of size
+.IR length .
 The compressed name is contained
-in a query or reply message, and \fImsg\fP points to the beginning of
-the message.
+in a query or reply message,
+and
+.I msg
+points to the beginning of the message.
 .P
 The resolver routines use configuration and state information
 contained in a

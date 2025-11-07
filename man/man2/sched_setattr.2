@@ -1,5 +1,4 @@
-.\" Copyright (C) 2014 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (C) 2014 Peter Zijlstra <peterz@infradead.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -49,7 +48,8 @@ the standard round-robin time-sharing policy;
 .\" SCHED_NORMAL.
 .TP
 .B SCHED_BATCH
-for "batch" style execution of processes; and
+for "batch" style execution of processes;
+and
 .TP
 .B SCHED_IDLE
 for running
@@ -66,7 +66,8 @@ The real-time policies that may be specified in
 are:
 .TP 14
 .B SCHED_FIFO
-a first-in, first-out policy; and
+a first-in, first-out policy;
+and
 .TP
 .B SCHED_RR
 a round-robin policy.
@@ -74,7 +75,8 @@ a round-robin policy.
 Linux also provides the following policy:
 .TP 14
 .B SCHED_DEADLINE
-a deadline scheduling policy; see
+a deadline scheduling policy;
+see
 .BR sched (7)
 for details.
 .P
@@ -217,7 +219,8 @@ as
 or
 .BR SCHED_BATCH .
 The nice value is a number in the range \-20 (high priority)
-to +19 (low priority); see
+to +19 (low priority);
+see
 .BR sched (7).
 .TP
 .I sched_priority
@@ -239,7 +242,9 @@ The value is expressed in nanoseconds.
 This field, and the next two fields,
 are used only for
 .B SCHED_DEADLINE
-scheduling; for further details, see
+scheduling;
+for further details,
+see
 .BR sched (7).
 .TP
 .I sched_deadline
@@ -354,9 +359,11 @@ can both fail for the following reasons:
 .TP
 .B EINVAL
 .I attr
-is NULL; or
+is NULL;
+or
 .I pid
-is negative; or
+is negative;
+or
 .I flags
 is not zero.
 .TP
@@ -378,7 +385,9 @@ is too small.
 .TP
 .B EINVAL
 .I size
-is invalid; that is, it is smaller than the initial version of the
+is invalid;
+that is,
+it is smaller than the initial version of the
 .I sched_attr
 structure (48 bytes) or larger than the system page size.
 .P
@@ -453,7 +462,8 @@ Linux.
 Linux 3.14.
 .\" FIXME . Add glibc version
 .SH NOTES
-glibc does not provide wrappers for these system calls; call them using
+glibc does not provide wrappers for these system calls;
+call them using
 .BR syscall (2).
 .P
 .BR sched_setattr ()

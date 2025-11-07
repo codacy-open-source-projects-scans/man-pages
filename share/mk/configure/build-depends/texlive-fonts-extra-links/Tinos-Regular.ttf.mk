@@ -1,4 +1,4 @@
-# Copyright 2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -6,7 +6,9 @@ ifndef MAKEFILE_CONFIGURE_BUILD_DEPENDS_TEXLIVE_FONTS_EXTRA_LINKS_TINOS_REGULAR_
 MAKEFILE_CONFIGURE_BUILD_DEPENDS_TEXLIVE_FONTS_EXTRA_LINKS_TINOS_REGULAR_TTF_INCLUDED := 1
 
 
+ifndef TINOSR_TTF
 TINOSR_TTF := /usr/share/texlive/texmf-dist/fonts/truetype/google/tinos/Tinos-Regular.ttf
+endif
 
 
 endif  # include guard

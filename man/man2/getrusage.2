@@ -1,21 +1,7 @@
 '\" t
-.\" Copyright (c) 1992 Drew Eckhardt, March 28, 1992
-.\" and Copyright (c) 2002 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2004-11-16 -- mtk: the getrlimit.2 page, which formerly included
-.\" coverage of getrusage(2), has been split, so that the latter is
-.\" now covered in its own getrusage.2.  For older details of change
-.\" history, etc., see getrlimit.2
-.\"
-.\" Modified 2004-11-16, mtk, Noted that the nonconformance
-.\"	when SIGCHLD is being ignored is fixed in Linux 2.6.9.
-.\" 2008-02-22, Sripathi Kodi <sripathik@in.ibm.com>: Document RUSAGE_THREAD
-.\" 2008-05-25, mtk, clarify RUSAGE_CHILDREN + other clean-ups.
-.\" 2010-05-24, Mark Hills <mark@pogo.org.uk>: Description of fields,
-.\"     document ru_maxrss
-.\" 2010-05-24, mtk, enhanced description of various fields
 .\"
 .TH getrusage 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -102,7 +88,7 @@ expressed in a
 structure (seconds plus microseconds).
 .TP
 .IR ru_maxrss " (since Linux 2.6.32)"
-This is the maximum resident set size used (in kilobytes).
+This is the maximum resident set size used (in KiB).
 For
 .BR RUSAGE_CHILDREN ,
 this is the resident set size of the largest child, not the maximum
@@ -125,7 +111,8 @@ This field is currently unused on Linux.
 .\" expressed in kilobyte-seconds.
 .TP
 .I ru_minflt
-The number of page faults serviced without any I/O activity; here
+The number of page faults serviced without any I/O activity;
+here,
 I/O activity is avoided by \*(lqreclaiming\*(rq a page frame from
 the list of pages awaiting reallocation.
 .TP
@@ -196,7 +183,7 @@ T{
 T}	Thread safety	MT-Safe
 .TE
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .P
 POSIX.1 specifies
 .BR getrusage (),

@@ -1,20 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
-.\" Parts Copyright (c) 1995 Nicolai Langfeldt (janl@ifi.uio.no), 1/1/95
-.\" and Copyright (c) 2006, 2007, 2014 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified 1993-07-24 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1995-05-18 by Todd Larason <jtl@molehill.org>
-.\" Modified 1997-01-31 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 1995-01-09 by Richard Kettlewell <richard@greenend.org.uk>
-.\" Modified 1998-05-13 by Michael Haardt <michael@cantor.informatik.rwth-aachen.de>
-.\" Modified 1999-07-06 by aeb & Albert Cahalan
-.\" Modified 2000-01-07 by aeb
-.\" Modified 2004-06-23 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 2007-06-08 mtk: Added example program
-.\" 2007-07-05 mtk: Added details on underlying system call interfaces
 .\"
 .TH stat 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -26,16 +12,16 @@ Standard C library
 .nf
 .B #include <sys/stat.h>
 .P
-.BI "int stat(const char *restrict " pathname ,
+.BI "int stat(const char *restrict " path ,
 .BI "         struct stat *restrict " statbuf );
 .BI "int fstat(int " fd ", struct stat *" statbuf );
-.BI "int lstat(const char *restrict " pathname ,
+.BI "int lstat(const char *restrict " path ,
 .BI "         struct stat *restrict " statbuf );
 .P
 .BR "#include <fcntl.h>           " "/* Definition of " AT_* " constants */"
 .B #include <sys/stat.h>
 .P
-.BI "int fstatat(int " dirfd ", const char *restrict " pathname ,
+.BI "int fstatat(int " dirfd ", const char *restrict " path ,
 .BI "         struct stat *restrict " statbuf ", int " flags );
 .fi
 .P
@@ -69,14 +55,14 @@ No permissions are required on the file itself, but\[em]in the case of
 and
 .BR lstat ()\[em]execute
 (search) permission is required on all of the directories in
-.I pathname
+.I path
 that lead to the file.
 .P
 .BR stat ()
 and
 .BR fstatat ()
 retrieve information about the file pointed to by
-.IR pathname ;
+.IR path ;
 the differences for
 .BR fstatat ()
 are described below.
@@ -85,7 +71,7 @@ are described below.
 is identical to
 .BR stat (),
 except that if
-.I pathname
+.I path
 is a symbolic link, then it returns information about the link itself,
 not the file that the link refers to.
 .P
@@ -136,8 +122,8 @@ which can still provide exactly the behavior of each of
 and
 .BR fstat ().
 .P
-If the pathname given in
-.I pathname
+If
+.I path
 is relative, then it is interpreted relative to the directory
 referred to by the file descriptor
 .I dirfd
@@ -149,13 +135,13 @@ and
 for a relative pathname).
 .P
 If
-.I pathname
+.I path
 is relative and
 .I dirfd
 is the special value
 .BR AT_FDCWD ,
 then
-.I pathname
+.I path
 is interpreted relative to the current working
 directory of the calling process (like
 .BR stat ()
@@ -163,7 +149,7 @@ and
 .BR lstat ()).
 .P
 If
-.I pathname
+.I path
 is absolute, then
 .I dirfd
 is ignored.
@@ -174,8 +160,10 @@ can either be 0, or include one or more of the following flags ORed:
 .BR AT_EMPTY_PATH " (since Linux 2.6.39)"
 .\" commit 65cfc6722361570bfe255698d9cd4dccaf47570d
 If
-.I pathname
-is an empty string, operate on the file referred to by
+.I path
+is an empty string
+(or NULL, since Linux 6.11)
+operate on the file referred to by
 .I dirfd
 (which may have been obtained using the
 .BR open (2)
@@ -193,20 +181,21 @@ If
 is
 .BR AT_FDCWD ,
 the call operates on the current working directory.
-This flag is Linux-specific; define
+This flag is Linux-specific;
+define
 .B _GNU_SOURCE
 .\" Before glibc 2.16, defining _ATFILE_SOURCE sufficed
 to obtain its definition.
 .TP
 .BR AT_NO_AUTOMOUNT " (since Linux 2.6.38)"
 Don't automount the terminal ("basename") component of
-.I pathname.
+.I path.
 Since Linux 3.1 this flag is ignored.
 Since Linux 4.11 this flag is implied.
 .TP
 .B AT_SYMLINK_NOFOLLOW
 If
-.I pathname
+.I path
 is a symbolic link, do not dereference it:
 instead return information about the link itself, like
 .BR lstat ().
@@ -229,7 +218,7 @@ is set to indicate the error.
 .B EACCES
 Search permission is denied for one of the directories
 in the path prefix of
-.IR pathname .
+.IR path .
 (See also
 .BR path_resolution (7).)
 .TP
@@ -239,7 +228,7 @@ is not a valid open file descriptor.
 .TP
 .B EBADF
 .RB ( fstatat ())
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -258,16 +247,16 @@ Invalid flag specified in
 Too many symbolic links encountered while traversing the path.
 .TP
 .B ENAMETOOLONG
-.I pathname
+.I path
 is too long.
 .TP
 .B ENOENT
 A component of
-.I pathname
+.I path
 does not exist or is a dangling symbolic link.
 .TP
 .B ENOENT
-.I pathname
+.I path
 is an empty string and
 .B AT_EMPTY_PATH
 was not specified in
@@ -278,18 +267,18 @@ Out of memory (i.e., kernel memory).
 .TP
 .B ENOTDIR
 A component of the path prefix of
-.I pathname
+.I path
 is not a directory.
 .TP
 .B ENOTDIR
 .RB ( fstatat ())
-.I pathname
+.I path
 is relative and
 .I dirfd
 is a file descriptor referring to a file other than a directory.
 .TP
 .B EOVERFLOW
-.I pathname
+.I path
 or
 .I fd
 refers to a file whose size, inode number,
@@ -307,7 +296,7 @@ on a file whose size exceeds
 .I (1<<31)\-1
 bytes.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR stat ()
@@ -416,7 +405,7 @@ and repacking the returned information if required for old binaries.
 .\" > Is the story not rather more complicated for some calls like
 .\" > stat(2)?
 .\"
-.\" Yes and no, mostly no. See /usr/include/sys/stat.h .
+.\" Yes and no, mostly no.  See "/usr/include/sys/stat.h".
 .\"
 .\" The idea is here not so much that syscalls change, but that
 .\" the definitions of struct stat and of the types dev_t and mode_t change.
@@ -426,7 +415,7 @@ and repacking the returned information if required for old binaries.
 .\" The communication between the application and libc goes via
 .\" the include file <sys/stat.h> that defines a _STAT_VER and
 .\" _MKNOD_VER describing the layout of the data that user space
-.\" uses. Each (almost each) occurrence of stat() is replaced by
+.\" uses.  Each (almost each) occurrence of stat() is replaced by
 .\" an occurrence of xstat() where the first parameter of xstat()
 .\" is this version number _STAT_VER.
 .\"
@@ -474,7 +463,7 @@ main(int argc, char *argv[])
     struct stat sb;
 \&
     if (argc != 2) {
-        fprintf(stderr, "Usage: %s <pathname>\[rs]n", argv[0]);
+        fprintf(stderr, "Usage: %s <path>\[rs]n", argv[0]);
         exit(EXIT_FAILURE);
     }
 \&

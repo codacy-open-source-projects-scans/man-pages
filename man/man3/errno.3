@@ -1,13 +1,6 @@
-.\" Copyright (c) 1996 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" 5 Oct 2002, Modified by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 	Updated for POSIX.1 2001
-.\" 2004-12-17 Martin Schulze <joey@infodrom.org>, mtk
-.\"	Removed errno declaration prototype, added notes
-.\" 2006-02-09 Kurt Wall, mtk
-.\"     Added non-POSIX errors
 .\"
 .TH errno 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -64,7 +57,8 @@ and must not be explicitly declared;
 .I errno
 may be a macro.
 .I errno
-is thread-local; setting it in one thread
+is thread-local;
+setting it in one thread
 does not affect its value in any other thread.
 .\"
 .SS Error numbers and names
@@ -105,7 +99,7 @@ package):
 .P
 .in +4n
 .EX
-$ \fBerrno \-l\fP
+.RB $ " errno \-l" ;
 EPERM 1 Operation not permitted
 ENOENT 2 No such file or directory
 ESRCH 3 No such process
@@ -123,18 +117,18 @@ as in the following examples:
 .P
 .in +4n
 .EX
-$ \fBerrno 2\fP
+.RB $ " errno 2" ;
 ENOENT 2 No such file or directory
-$ \fBerrno ESRCH\fP
+.RB $ " errno ESRCH" ;
 ESRCH 3 No such process
-$ \fBerrno \-s permission\fP
+.RB $ " errno \-s permission" ;
 EACCES 13 Permission denied
 .EE
 .in
 .\".P
 .\" POSIX.1 (2001 edition) lists the following symbolic error names.  Of
-.\" these, \fBEDOM\fP and \fBERANGE\fP are in the ISO C standard.  ISO C
-.\" Amendment 1 defines the additional error number \fBEILSEQ\fP for
+.\" these, \f[B]EDOM\f[] and \f[B]ERANGE\f[] are in the ISO C standard.  ISO C
+.\" Amendment 1 defines the additional error number \f[B]EILSEQ\f[] for
 .\" coding errors in multibyte or wide characters.
 .\"
 .SS List of error names
@@ -275,7 +269,8 @@ in POSIX.1, this error is described as "Illegal byte sequence".
 Operation in progress (POSIX.1-2001).
 .TP
 .B EINTR
-Interrupted function call (POSIX.1-2001); see
+Interrupted function call (POSIX.1-2001);
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -388,7 +383,8 @@ No buffer space available (POSIX.1 (XSI STREAMS option)).
 .TP
 .B ENODATA
 The named attribute does not exist,
-or the process has no access to this attribute; see
+or the process has no access to this attribute;
+see
 .BR xattr (7).
 .IP
 In POSIX.1-2001 (XSI STREAMS option),
@@ -600,7 +596,7 @@ A common mistake is to do
 .EX
 if (somecall() == \-1) {
     printf("somecall() failed\[rs]n");
-    if (errno == ...) { ... }
+    if (errno == ...) { ...; }
 }
 .EE
 .in
@@ -620,7 +616,7 @@ should be preserved across a library call, it must be saved:
 if (somecall() == \-1) {
     int errsv = errno;
     printf("somecall() failed\[rs]n");
-    if (errsv == ...) { ... }
+    if (errsv == ...) { ...; }
 }
 .EE
 .in

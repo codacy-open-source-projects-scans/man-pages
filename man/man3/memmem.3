@@ -1,13 +1,8 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 18:50:48 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Interchanged 'needle' and 'haystack'; added history, aeb, 980113.
 .TH memmem 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 memmem \- locate a substring
@@ -19,8 +14,9 @@ Standard C library
 .BR "#define _GNU_SOURCE" "         /* See feature_test_macros(7) */"
 .B #include <string.h>
 .P
-.BI "void *memmem(const void " haystack [. haystacklen "], size_t " haystacklen ,
-.BI "             const void " needle [. needlelen "], size_t " needlelen  );
+.BR "void *memmem(" "size_t hsize, size_t nsize;"
+.BI "             const void " haystack [ hsize "], size_t " hsize ,
+.BI "             const void " needle [ nsize "], size_t " nsize  );
 .fi
 .SH DESCRIPTION
 The
@@ -28,13 +24,13 @@ The
 function finds the start of the first occurrence
 of the substring
 .I needle
-of length
-.I needlelen
+of size
+.I nsize
 in the memory
 area
 .I haystack
-of length
-.IR haystacklen .
+of size
+.IR hsize .
 .SH RETURN VALUE
 The
 .BR memmem ()

@@ -1,15 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Mon Mar 29 22:39:41 1993, David Metcalfe
-.\" Modified Sat Jul 24 21:38:42 1993, Rik Faith (faith@cs.unc.edu)
-.\" Modified Sun Dec 17 18:35:06 2000, Joseph S. Myers
 .\"
 .TH atoi 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -40,7 +32,9 @@ Feature Test Macro Requirements for glibc (see
 The
 .BR atoi ()
 function converts the initial portion of the string
-pointed to by \fInptr\fP to
+pointed to by
+.I nptr
+to
 .IR int .
 The behavior is the same as
 .P
@@ -61,7 +55,10 @@ and
 functions behave the same as
 .BR atoi (),
 except that they convert the initial portion of the
-string to their return type of \fIlong\fP or \fIlong long\fP.
+string to their return type of
+.I long
+or
+.IR long\~long .
 .SH RETURN VALUE
 The converted value or 0 on error.
 .SH ATTRIBUTES

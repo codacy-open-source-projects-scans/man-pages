@@ -1,10 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 19:35:54 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Mon Oct 16 00:16:29 2000 following Joseph S. Myers
 .\"
 .TH fnmatch 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -30,7 +27,8 @@ argument, which is a shell wildcard pattern (see
 .P
 The
 .I flags
-argument modifies the behavior; it is the bitwise OR of zero or more
+argument modifies the behavior;
+it is the bitwise OR of zero or more
 of the following flags:
 .TP
 .B FNM_NOESCAPE
@@ -77,28 +75,44 @@ case-insensitively.
 .B FNM_EXTMATCH
 If this flag (a GNU extension) is set, extended patterns are
 supported, as introduced by \&'ksh' and now supported by other shells.
-The extended format is as follows, with \fIpattern\-list\fR
+The extended format is as follows, with
+.I pattern\-list
 being a \&'|' separated list of patterns.
 .TP
-\&'?(\fIpattern\-list\fR)'
+.RI \&'?( pattern\-list )'
 The pattern matches if zero or one occurrences of any of the
-patterns in the \fIpattern\-list\fR match the input \fIstring\fR.
+patterns in the
+.I pattern\-list
+match the input
+.IR string .
 .TP
-\&'*(\fIpattern\-list\fR)'
+.RI \&'*( pattern\-list )'
 The pattern matches if zero or more occurrences of any of the
-patterns in the \fIpattern\-list\fR match the input \fIstring\fR.
+patterns in the
+.I pattern\-list
+match the input
+.IR string .
 .TP
-\&'+(\fIpattern\-list\fR)'
+.RI \&'+( pattern\-list )'
 The pattern matches if one or more occurrences of any of the
-patterns in the \fIpattern\-list\fR match the input \fIstring\fR.
+patterns in the
+.I pattern\-list
+match the input
+.IR string .
 .TP
-\&'@(\fIpattern\-list\fR)'
+.RI \&'@( pattern\-list )'
 The pattern matches if exactly one occurrence of any of the
-patterns in the \fIpattern\-list\fR match the input \fIstring\fR.
+patterns in the
+.I pattern\-list
+match the input
+.IR string .
 .TP
-\&'!(\fIpattern\-list\fR)'
-The pattern matches if the input \fIstring\fR cannot be matched with
-any of the patterns in the \fIpattern\-list\fR.
+.RI \&'!( pattern\-list )'
+The pattern matches if the input
+.I string
+cannot be matched with
+any of the patterns in the
+.IR pattern\-list .
 .SH RETURN VALUE
 Zero if
 .I string

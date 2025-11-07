@@ -1,16 +1,6 @@
-.\" Copyright (C) 2001 Richard Braakman
-.\" Copyright (C) 2004 Alastair McKinstry
-.\" Copyright (C) 2005 Lars Wirzenius
-.\" Copyright (C) 2014 Marko Myllynen
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" This manual page was initially written by Richard Braakman
-.\" on behalf of the Debian GNU/Linux Project and anyone else
-.\" who wants it. It was amended by Alastair McKinstry to
-.\" explain new ISO/IEC 14652 elements, and amended further by
-.\" Lars Wirzenius to document new functionality (as of GNU
-.\" C library 2.3.5).
 .\"
 .TH localedef 1 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -146,7 +136,9 @@ that is,
 is not the same as
 .BR \-\-force .
 .TP
-.BI \-f " charmapfile" "\fR, \fP\-\-charmap=" charmapfile
+.BI \-f\~ charmapfile
+.TQ
+.BI \-\-charmap= charmapfile
 Specify the file that defines the character set
 that is used by the input file.
 If
@@ -166,7 +158,9 @@ are also searched after the current directory.
 The default directory for character maps is printed by
 .BR "localedef \-\-help" .
 .TP
-.BI \-i " inputfile" "\fR, \fP\-\-inputfile=" inputfile
+.BI \-i\~ inputfile
+.TQ
+.BI \-\-inputfile= inputfile
 Specify the locale definition file to compile.
 The file is sought in the current directory
 and the default directory for locale definition files.
@@ -180,7 +174,9 @@ are also searched after the current directory.
 The default directory for locale definition files is printed by
 .BR "localedef \-\-help" .
 .TP
-.BI \-u " repertoirefile" "\fR, \fP\-\-repertoire\-map=" repertoirefile
+.BI \-u\~ repertoirefile
+.TQ
+.BI \-\-repertoire\-map= repertoirefile
 Read mappings from symbolic names to Unicode code points from
 .IR repertoirefile .
 If
@@ -200,7 +196,9 @@ are also searched after the current directory.
 The default directory for repertoire maps is printed by
 .BR "localedef \-\-help" .
 .TP
-.BI \-A " aliasfile" "\fR, \fP\-\-alias\-file=" aliasfile
+.BI \-A\~ aliasfile
+.TQ
+.BI \-\-alias\-file= aliasfile
 Use
 .I aliasfile
 to look up aliases for locale names.

@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (c) 2008 Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -201,12 +200,14 @@ If the
 .B RLIMIT_STACK
 resource limit is set to "unlimited",
 a per-architecture value is used for the stack size:
-2 MB on most architectures; 4 MB on POWER and Sparc-64.
+2 MB on most architectures;
+4 MB on POWER and Sparc-64.
 .SH BUGS
 In the obsolete LinuxThreads implementation,
 each of the threads in a process has a different process ID.
 This is in violation of the POSIX threads specification,
-and is the source of many other nonconformances to the standard; see
+and is the source of many other nonconformances to the standard;
+see
 .BR pthreads (7).
 .SH EXAMPLES
 The program below demonstrates the use of
@@ -252,19 +253,13 @@ Joined with thread 3; returned value was SERVUS
 .\" SRC BEGIN (pthread_create.c)
 .EX
 #include <ctype.h>
-#include <errno.h>
+#include <err.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
-\&
-#define handle_error_en(en, msg) \[rs]
-        do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
-\&
-#define handle_error(msg) \[rs]
-        do { perror(msg); exit(EXIT_FAILURE); } while (0)
 \&
 struct thread_info {    /* Used as argument to thread_start() */
     pthread_t thread_id;        /* ID returned by pthread_create() */
@@ -273,7 +268,7 @@ struct thread_info {    /* Used as argument to thread_start() */
 };
 \&
 /* Thread start function: display address near top of our stack,
-   and return upper\-cased copy of argv_string. */
+   and return upper\-cased copy of argv_string.  */
 \&
 static void *
 thread_start(void *arg)
@@ -286,7 +281,7 @@ thread_start(void *arg)
 \&
     uargv = strdup(tinfo\->argv_string);
     if (uargv == NULL)
-        handle_error("strdup");
+        err(EXIT_FAILURE, "strdup");
 \&
     for (char *p = uargv; *p != \[aq]\[rs]0\[aq]; p++)
         *p = toupper(*p);
@@ -304,7 +299,7 @@ main(int argc, char *argv[])
     pthread_attr_t      attr;
     struct thread_info  *tinfo;
 \&
-    /* The "\-s" option specifies a stack size for our threads. */
+    /* The "\-s" option specifies a stack size for our threads.  */
 \&
     stack_size = \-1;
     while ((opt = getopt(argc, argv, "s:")) != \-1) {
@@ -322,52 +317,52 @@ main(int argc, char *argv[])
 \&
     num_threads = argc \- optind;
 \&
-    /* Initialize thread creation attributes. */
+    /* Initialize thread creation attributes.  */
 \&
     s = pthread_attr_init(&attr);
     if (s != 0)
-        handle_error_en(s, "pthread_attr_init");
+        errc(EXIT_FAILURE, s, "pthread_attr_init");
 \&
     if (stack_size > 0) {
         s = pthread_attr_setstacksize(&attr, stack_size);
         if (s != 0)
-            handle_error_en(s, "pthread_attr_setstacksize");
+            errc(EXIT_FAILURE, s, "pthread_attr_setstacksize");
     }
 \&
-    /* Allocate memory for pthread_create() arguments. */
+    /* Allocate memory for pthread_create() arguments.  */
 \&
     tinfo = calloc(num_threads, sizeof(*tinfo));
     if (tinfo == NULL)
-        handle_error("calloc");
+        err(EXIT_FAILURE, "calloc");
 \&
-    /* Create one thread for each command\-line argument. */
+    /* Create one thread for each command\-line argument.  */
 \&
     for (size_t tnum = 0; tnum < num_threads; tnum++) {
         tinfo[tnum].thread_num = tnum + 1;
         tinfo[tnum].argv_string = argv[optind + tnum];
 \&
         /* The pthread_create() call stores the thread ID into
-           corresponding element of tinfo[]. */
+           corresponding element of tinfo[].  */
 \&
         s = pthread_create(&tinfo[tnum].thread_id, &attr,
                            &thread_start, &tinfo[tnum]);
         if (s != 0)
-            handle_error_en(s, "pthread_create");
+            errc(EXIT_FAILURE, s, "pthread_create");
     }
 \&
     /* Destroy the thread attributes object, since it is no
-       longer needed. */
+       longer needed.  */
 \&
     s = pthread_attr_destroy(&attr);
     if (s != 0)
-        handle_error_en(s, "pthread_attr_destroy");
+        errc(EXIT_FAILURE, s, "pthread_attr_destroy");
 \&
-    /* Now join with each thread, and display its returned value. */
+    /* Now join with each thread, and display its returned value.  */
 \&
     for (size_t tnum = 0; tnum < num_threads; tnum++) {
         s = pthread_join(tinfo[tnum].thread_id, &res);
         if (s != 0)
-            handle_error_en(s, "pthread_join");
+            errc(EXIT_FAILURE, s, "pthread_join");
 \&
         printf("Joined with thread %d; returned value was %s\[rs]n",
                tinfo[tnum].thread_num, (char *) res);

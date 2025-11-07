@@ -1,21 +1,7 @@
 '\" t
-.\" Copyright (C) 1993 David Metcalfe (david@prism.demon.co.uk)
-.\" and Copyright (C) 2005, 2014, 2020 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 18:05:30 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Fri Feb 16 14:25:17 1996 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified Sun Jul 21 20:55:44 1996 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified Mon Oct 15 21:16:25 2001 by John Levon <moz@compsoc.man.ac.uk>
-.\" Modified Tue Oct 16 00:04:43 2001 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified Fri Jun 20 03:04:30 2003 by Andries Brouwer <aeb@cwi.nl>
-.\" 2005-12-13, mtk, Substantial rewrite of strerror_r() description
-.\"         Addition of extra material on portability and standards.
 .\"
 .TH strerror 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -32,10 +18,12 @@ Standard C library
 .BI "const char *strerrorname_np(int " errnum );
 .BI "const char *strerrordesc_np(int " errnum );
 .P
-.BI "int strerror_r(int " errnum ", char " buf [. buflen "], size_t " buflen );
+.BR "int strerror_r(" "size_t size;"
+.BI "               int " errnum ", char " buf [ size "], size_t " size );
                /* XSI-compliant */
 .P
-.BI "char *strerror_r(int " errnum ", char " buf [. buflen "], size_t " buflen );
+.BR "char *strerror_r(" "size_t size;"
+.BI "               int " errnum ", char " buf [ size "], size_t " size );
                /* GNU-specific */
 .P
 .BI "char *strerror_l(int " errnum ", locale_t " locale );
@@ -132,8 +120,8 @@ The XSI-compliant
 is preferred for portable applications.
 It returns the error string in the user-supplied buffer
 .I buf
-of length
-.IR buflen .
+of size
+.IR size .
 .P
 The GNU-specific
 .BR strerror_r ()
@@ -147,9 +135,9 @@ is unused).
 If the function stores a string in
 .IR buf ,
 then at most
-.I buflen
+.I size
 bytes are stored (the string may be truncated if
-.I buflen
+.I size
 is too small and
 .I errnum
 is unknown).

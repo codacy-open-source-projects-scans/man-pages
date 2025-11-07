@@ -1,14 +1,8 @@
 '\" t
-.\"	$NetBSD: fts.3,v 1.13.2.1 1997/11/14 02:09:32 mrg Exp $
-.\"
-.\" Copyright (c) 1989, 1991, 1993, 1994
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Copyright 1989-1994, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     @(#)fts.3	8.5 (Berkeley) 4/16/94
-.\"
-.\" 2007-12-08, mtk, Converted from mdoc to man macros
 .\"
 .TH fts 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -55,13 +49,18 @@ The function
 returns a pointer to a linked list of structures, each of which describes
 one of the files contained in a directory in the hierarchy.
 .P
-In general, directories are visited two distinguishable times; in preorder
-(before any of their descendants are visited) and in postorder (after all
-of their descendants have been visited).
+In general,
+directories are visited two distinguishable times;
+in preorder
+(before any of their descendants are visited)
+and in postorder
+(after all of their descendants have been visited).
 Files are visited once.
-It is possible to walk the hierarchy "logically" (visiting the files that
-symbolic links point to)
-or physically (visiting the symbolic links themselves),
+It is possible to walk the hierarchy
+"logically"
+(visiting the files that symbolic links point to)
+or physically
+(visiting the symbolic links themselves),
 order the walk of the hierarchy or
 prune and/or revisit portions of the hierarchy.
 .P
@@ -647,7 +646,8 @@ argument is either 0 (meaning "do nothing") or one of the following values:
 .\" .Bl -tag -width FTS_PHYSICAL
 .TP
 .B FTS_AGAIN
-Revisit the file; any file type may be revisited.
+Revisit the file;
+any file type may be revisited.
 The next call to
 .BR fts_read ()
 will return the referenced file.

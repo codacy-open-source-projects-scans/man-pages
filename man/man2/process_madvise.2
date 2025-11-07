@@ -1,5 +1,4 @@
-.\" Copyright (C) 2021 Suren Baghdasaryan <surenb@google.com>
-.\" and Copyright (C) 2021 Minchan Kim <minchan@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -15,7 +14,8 @@ Standard C library
 .nf
 .B #include <sys/mman.h>
 .P
-.BI "ssize_t process_madvise(int " pidfd ", const struct iovec " iovec [. n ],
+.BI "ssize_t process_madvise(size_t " n ;
+.BI "                        int " pidfd ", const struct iovec " iovec [ n ],
 .BI "                        size_t " n ", int " advice \
 ", unsigned int " flags );
 .fi
@@ -82,8 +82,9 @@ any advice flag is permitted.
 .P
 The
 .I flags
-argument is reserved for future use; currently, this argument must be
-specified as 0.
+argument is reserved for future use;
+currently,
+this argument must be specified as 0.
 .P
 The
 .I n

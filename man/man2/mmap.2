@@ -1,22 +1,7 @@
 '\" t
-.\" Copyright (C) 1996 Andries Brouwer <aeb@cwi.nl>
-.\" and Copyright (C) 2006, 2007 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1997-01-31 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2000-03-25 by Jim Van Zandt <jrv@vanzandt.mv.com>
-.\" Modified 2001-10-04 by John Levon <moz@compsoc.man.ac.uk>
-.\" Modified 2003-02-02 by Andi Kleen <ak@muc.de>
-.\" Modified 2003-05-21 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	MAP_LOCKED works from Linux 2.5.37
-.\" Modified 2004-06-17 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2004-09-11 by aeb
-.\" Modified 2004-12-08, from Eric Estievenart <eric.estievenart@free.fr>
-.\" Modified 2004-12-08, mtk, formatting tidy-ups
-.\" Modified 2006-12-04, mtk, various parts rewritten
-.\" 2007-07-10, mtk, Added an example program.
-.\" 2008-11-18, mtk, document MAP_STACK
 .\"
 .TH mmap 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -28,10 +13,12 @@ Standard C library
 .nf
 .B #include <sys/mman.h>
 .P
-.BI "void *mmap(void " addr [. length "], size_t " length \
+.BR "void *mmap(" "size_t length;"
+.BI "           void " addr [ length "], size_t " length \
 ", int " prot ", int " flags ,
 .BI "           int " fd ", off_t " offset );
-.BI "int munmap(void " addr [. length "], size_t " length );
+.BR "int munmap(" "size_t length;"
+.BI "           void " addr [ length "], size_t " length );
 .fi
 .P
 See VERSIONS for information on feature test macro requirements.
@@ -65,7 +52,8 @@ may or may not depend on the hint.
 .\" boundary; since Linux 2.6.24, it is rounded down!
 The address of the new mapping is returned as the result of the call.
 .P
-The contents of a file mapping (as opposed to an anonymous mapping; see
+The contents of a file mapping (as opposed to an anonymous mapping;
+see
 .B MAP_ANONYMOUS
 below), are initialized using
 .I length
@@ -215,7 +203,7 @@ But this was a source of denial-of-service attacks.)
 .TP
 .B MAP_EXECUTABLE
 This flag is ignored.
-.\" Introduced in 1.1.38, removed in 1.3.24. Flag tested in proc_follow_link.
+.\" Introduced in 1.1.38, removed in 1.3.24.  Flag tested in proc_follow_link.
 .\" (Long ago, it signaled that the underlying file is an executable.
 .\" However, that information was not really used anywhere.)
 .\" Linus talked about DOS related to MAP_EXECUTABLE, but he was thinking of
@@ -232,9 +220,10 @@ Don't interpret
 .I addr
 as a hint: place the mapping at exactly that address.
 .I addr
-must be suitably aligned: for most architectures a multiple of the page
-size is sufficient; however, some architectures may impose additional
-restrictions.
+must be suitably aligned:
+for most architectures a multiple of the page size is sufficient;
+however,
+some architectures may impose additional restrictions.
 If the memory region specified by
 .I addr
 and
@@ -266,8 +255,10 @@ If the requested range would collide with an existing mapping,
 then this call fails with the error
 .B EEXIST.
 This flag can therefore be used as a way to atomically
-(with respect to other threads) attempt to map an address range:
-one thread will succeed; all others will report failure.
+(with respect to other threads)
+attempt to map an address range:
+one thread will succeed;
+all others will report failure.
 .IP
 Note that older kernels which do not recognize the
 .B MAP_FIXED_NOREPLACE
@@ -378,7 +369,7 @@ if no physical memory is available.
 See also the discussion of the file
 .I /proc/sys/vm/overcommit_memory
 in
-.BR proc (5).
+.BR proc_sys_vm (5).
 Before Linux 2.6, this flag had effect only for
 private writable mappings.
 .TP
@@ -617,7 +608,8 @@ was mounted no-exec.
 .\" (Since Linux 2.4.25 / Linux 2.6.0.)
 .TP
 .B EPERM
-The operation was prevented by a file seal; see
+The operation was prevented by a file seal;
+see
 .BR fcntl (2).
 .TP
 .B EPERM
@@ -627,11 +619,12 @@ flag was specified, but the caller was not privileged (did not have the
 .B CAP_IPC_LOCK
 capability)
 and is not a member of the
-.I sysctl_hugetlb_shm_group
-group; see the description of
-.I /proc/sys/vm/sysctl_hugetlb_shm_group
+.I hugetlb_shm_group
+group;
+see the description of
+.I /proc/sys/vm/hugetlb_shm_group
 in
-.BR proc_sys (5).
+.BR proc_sys_vm (5).
 .TP
 .B ETXTBSY
 .B MAP_DENYWRITE
@@ -742,7 +735,7 @@ wrapper function invokes
 with a suitably adjusted value for
 .IR offset .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4, 4.4BSD.
 .\" SVr4 documents additional error codes ENXIO and ENODEV.
@@ -755,7 +748,9 @@ and
 .BR munmap ()
 are available,
 .B _POSIX_MAPPED_FILES
-is defined in \fI<unistd.h>\fP to a value greater than 0.
+is defined in
+.I <unistd.h>
+to a value greater than 0.
 (See also
 .BR sysconf (3).)
 .\" POSIX.1-2001: It shall be defined to -1 or 0 or 200112L.
@@ -805,8 +800,10 @@ When thread A subsequently employs
 .BR mmap(MAP_FIXED) ,
 it will effectively clobber the mapping that thread B created.
 In this scenario,
-thread B need not create a mapping directly; simply making a library call
-that, internally, uses
+thread B need not create a mapping directly;
+simply making a library call that,
+internally,
+uses
 .BR dlopen (3)
 to load some other shared library, will suffice.
 The
@@ -834,8 +831,9 @@ For file-backed mappings, the
 .I st_atime
 field for the mapped file may be updated at any time between the
 .BR mmap ()
-and the corresponding unmapping; the first reference to a mapped
-page will update the field if it has not been already.
+and the corresponding unmapping;
+the first reference to a mapped page
+will update the field if it has not been already.
 .P
 The
 .I st_ctime
@@ -876,6 +874,30 @@ For
 and
 .I length
 must both be a multiple of the underlying huge page size.
+.\"
+.SH CAVEATS
+Unlike typical
+.BR malloc (3)
+implementations,
+.BR mmap ()
+does not prevent creating objects larger than
+.BR PTRDIFF_MAX .
+Objects that are larger than
+.B PTRDIFF_MAX
+only work in limited ways in C
+(in particular,
+pointer subtraction results in undefined behavior
+if the result would be bigger than
+.BR PTRDIFF_MAX ).
+On top of that,
+GCC also assumes that no object is bigger than
+.BR PTRDIFF_MAX .
+.B PTRDIFF_MAX
+is usually half of the address space size;
+so for 32-bit processes,
+it is usually
+.B 0x7fffffff
+(almost 2 GiB).
 .\"
 .SH BUGS
 On Linux, there are no guarantees like those suggested above under
@@ -935,6 +957,7 @@ to output the desired bytes.
 .SS Program source
 .\" SRC BEGIN (mmap.c)
 .EX
+#include <err.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -942,9 +965,6 @@ to output the desired bytes.
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-\&
-#define handle_error(msg) \[rs]
-    do { perror(msg); exit(EXIT_FAILURE); } while (0)
 \&
 int
 main(int argc, char *argv[])
@@ -963,10 +983,10 @@ main(int argc, char *argv[])
 \&
     fd = open(argv[1], O_RDONLY);
     if (fd == \-1)
-        handle_error("open");
+        err(EXIT_FAILURE, "open");
 \&
     if (fstat(fd, &sb) == \-1)           /* To obtain file size */
-        handle_error("fstat");
+        err(EXIT_FAILURE, "fstat");
 \&
     offset = atoi(argv[2]);
     pa_offset = offset & \[ti](sysconf(_SC_PAGE_SIZE) \- 1);
@@ -990,12 +1010,12 @@ main(int argc, char *argv[])
     addr = mmap(NULL, length + offset \- pa_offset, PROT_READ,
                 MAP_PRIVATE, fd, pa_offset);
     if (addr == MAP_FAILED)
-        handle_error("mmap");
+        err(EXIT_FAILURE, "mmap");
 \&
     s = write(STDOUT_FILENO, addr + offset \- pa_offset, length);
     if (s != length) {
         if (s == \-1)
-            handle_error("write");
+            err(EXIT_FAILURE, "write");
 \&
         fprintf(stderr, "partial write");
         exit(EXIT_FAILURE);
@@ -1032,7 +1052,7 @@ The descriptions of the following files in
 and
 .IR /proc/ pid /smaps .
 .P
-B.O. Gallmeister, POSIX.4, O'Reilly, pp. 128\[en]129 and 389\[en]391.
+B.O.\& Gallmeister, POSIX.4, O'Reilly, pp.\& 128\[en]129 and 389\[en]391.
 .\"
 .\" Repeat after me: private read-only mappings are 100% equivalent to
-.\" shared read-only mappings. No ifs, buts, or maybes. -- Linus
+.\" shared read-only mappings.  No ifs, buts, or maybes.  -- Linus

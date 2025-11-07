@@ -1,9 +1,7 @@
-.\" Copyright (c) 1993
-.\"    The Regents of the University of California.  All rights reserved.
-.\" and Copyright (c) 2020 by Alejandro Colomar <alx@kernel.org>
+.\" Copyright 1993, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-3-Clause
-.\"
 .\"
 .TH SLIST 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -57,7 +55,7 @@ Standard C library
 .\" .BI "SLIST_FOREACH_FROM_SAFE(struct TYPE *" var ", SLIST_HEAD *" head ,
 .\" .BI "                        SLIST_ENTRY " NAME ", struct TYPE *" temp_var );
 .P
-.BI "void SLIST_REMOVE(SLIST_HEAD *" head ", struct TYPE *" elm ,
+.BI "void SLIST_REMOVE(SLIST_HEAD *" head ", struct TYPE *" elm ", TYPE,"
 .BI "                        SLIST_ENTRY " NAME );
 .BI "void SLIST_REMOVE_HEAD(SLIST_HEAD *" head ,
 .BI "                        SLIST_ENTRY " NAME );

@@ -1,6 +1,7 @@
-.\" Copyright (C) 2013, Heinrich Schuchardt <xypron.glpk@gmx.de>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
 .TH fanotify_init 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
 fanotify_init \- create and initialize fanotify group
@@ -57,8 +58,9 @@ Only one of the following notification classes may be specified in
 .B FAN_CLASS_PRE_CONTENT
 This value allows the receipt of events notifying that a file has been
 accessed and events for permission decisions if a file may be accessed.
-It is intended for event listeners that need to access files before they
-contain their final data.
+It is intended for event listeners
+that may need to write data to files
+before their final data can be accessed.
 This notification class might be used by hierarchical storage managers,
 for example.
 Use of this flag requires the
@@ -330,6 +332,26 @@ that the directory entry is referring to.
 This is a synonym for
 .RB ( FAN_REPORT_DFID_NAME | FAN_REPORT_FID | FAN_REPORT_TARGET_FID ).
 .TP
+.BR FAN_REPORT_MNT " (since Linux 6.14)"
+.\" commit 0f46d81f2bce970b1c562aa3c944a271bbec2729
+This value allows the receipt of events which contain additional information
+about the underlying mount correlated to an event.
+An additional record of type
+.B FAN_EVENT_INFO_TYPE_MNT
+encapsulates the information about the mount
+and is included alongside the generic event metadata structure.
+The use of
+.BR FAN_CLASS_CONTENT ,
+.BR FAN_CLASS_PRE_CONTENT ,
+or any of the
+.B FAN_REPORT_DFID_NAME_TARGET
+flags along with this flag is not permitted
+and will result in the error
+.BR EINVAL .
+See
+.BR fanotify (7)
+for additional details.
+.TP
 .BR FAN_REPORT_PIDFD " (since Linux 5.15 and 5.10.220)"
 .\" commit af579beb666aefb17e9a335c12c788c92932baf1
 Events for fanotify groups initialized with this flag will contain
@@ -363,6 +385,34 @@ may be supported at some point in the future,
 so this restriction may eventually be lifted.
 For more details on information records,
 see
+.BR fanotify (7).
+.TP
+.BR FAN_REPORT_FD_ERROR " (since Linux 6.13 and 6.12.4 and 6.6.66)"
+.\" commit 522249f05c5551aec9ec0ba9b6438f1ec19c138d
+Events for fanotify groups initialized with this flag may contain
+an error code that explains the reason for failure to open a file descriptor.
+The
+.I .fd
+member of the
+.I fanotify_event_metadata
+structure normally contains
+an open file descriptor associated with the object of the event
+or FAN_NOFD in case a file descriptor could not be opened.
+For a group initialized with this flag, instead of FAN_NOFD,
+the
+.I .fd
+member of the
+.I fanotify_event_metadata
+structure will contain a negative error value.
+When the group is also initialized with flag
+.BR FAN_REPORT_PIDFD ,
+in case a process file descriptor could not be opened,
+the
+.I .pidfd
+member of the
+.I fanotify_event_info_pidfd
+structure will also contain a negative error value.
+For more details, see
 .BR fanotify (7).
 .P
 The

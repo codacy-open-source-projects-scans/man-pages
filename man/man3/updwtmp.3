@@ -1,12 +1,7 @@
 '\" t
-.\" Copyright 1997 Nicolás Lichtmaier <nick@debian.org>
-.\" Created Wed Jul  2 23:27:34 ART 1997
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" Added info on availability, aeb, 971207
-.\" Added -lutil remark, 030718
-.\" 2008-07-02, mtk, document updwtmpx()
 .\"
 .TH updwtmp 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -18,7 +13,7 @@ System utilities library
 .nf
 .B #include <utmp.h>
 .P
-.BI "void updwtmp(const char *" wtmp_file ", const struct utmp *" ut );
+.BI "void updwtmp(const char *" wtmp_path ", const struct utmp *" ut );
 .BI "void logwtmp(const char *" line ", const char *" name \
 ", const char *" host );
 .fi
@@ -63,7 +58,7 @@ glibc provides (since glibc 2.1):
 .EX
 .BR "#define _GNU_SOURCE          " "/* See feature_test_macros(7) */"
 .B #include <utmpx.h>
-.BI "void updwtmpx (const char *" wtmpx_file ", const struct utmpx *" utx );
+.BI "void updwtmpx (const char *" wtmpx_path ", const struct utmpx *" utx );
 .EE
 .in
 .P

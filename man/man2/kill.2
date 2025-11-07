@@ -1,25 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified by Thomas Koenig <ig25@rz.uni-karlsruhe.de>
-.\" Modified 1993-07-23 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1993-07-25 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1995-11-01 by Michael Haardt
-.\"  <michael@cantor.informatik.rwth-aachen.de>
-.\" Modified 1996-04-14 by Andries Brouwer <aeb@cwi.nl>
-.\"  [added some polishing contributed by Mike Battersby <mib@deakin.edu.au>]
-.\" Modified 1996-07-21 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 1997-01-17 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 2001-12-18 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 2002-07-24 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Added note on historical rules enforced when an unprivileged process
-.\"	sends a signal.
-.\" Modified 2004-06-16 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added note on CAP_KILL
-.\" Modified 2004-06-24 by aeb
-.\" Modified, 2004-11-30, after idea from emmanuel.colbus@ensimag.imag.fr
 .\"
 .TH kill 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -49,23 +30,54 @@ The
 system call
 can be used to send any signal to any process group or process.
 .P
-If \fIpid\fP is positive, then signal \fIsig\fP is sent to the
-process with the ID specified by \fIpid\fP.
+If
+.I pid
+is positive,
+then signal
+.I sig
+is sent to
+the process with the ID specified by
+.IR pid .
 .P
-If \fIpid\fP equals 0, then \fIsig\fP is sent to every process in the
-process group of the calling process.
+If
+.I pid
+equals 0,
+then
+.I sig
+is sent to
+every process in
+the process group of the calling process.
 .P
-If \fIpid\fP equals \-1, then \fIsig\fP is sent to every process
-for which the calling process has permission to send signals,
-except for process 1 (\fIinit\fP), but see below.
+If
+.I pid
+equals \-1,
+then
+.I sig
+is sent to
+every process for which
+the calling process has permission to send signals,
+except for process 1
+.RI ( init ),
+but see below.
 .P
-If \fIpid\fP is less than \-1, then \fIsig\fP is sent to every process
-in the process group whose ID is \fI\-pid\fP.
+If
+.I pid
+is less than \-1,
+then
+.I sig
+is sent to
+every process in
+the process group whose ID is
+.IR \-pid .
 .P
-If \fIsig\fP is 0, then no signal is sent,
+If
+.I sig
+is 0,
+then no signal is sent,
 but existence and permission checks are still performed;
-this can be used to check for the existence of a process ID or
-process group ID that the caller is permitted to signal.
+this can be used to
+check for the existence of
+a process ID or process group ID that the caller is permitted to signal.
 .P
 For a process to have permission to send a signal,
 it must either be privileged (under Linux: have the
@@ -77,9 +89,13 @@ In the case of
 .BR SIGCONT ,
 it suffices when the sending and receiving
 processes belong to the same session.
-(Historically, the rules were different; see HISTORY.)
+(Historically,
+the rules were different;
+see HISTORY.)
 .SH RETURN VALUE
-On success (at least one signal was sent), zero is returned.
+On success, zero is returned.
+If signals were sent to a process group,
+success means that at least one signal was delivered.
 On error, \-1 is returned, and
 .I errno
 is set to indicate the error.
@@ -100,7 +116,7 @@ has not yet been
 .BR wait (2)ed
 for.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4, 4.3BSD.
 .SS Linux notes
@@ -126,11 +142,16 @@ has explicitly installed signal handlers.
 This is done to assure the
 system is not brought down accidentally.
 .P
-POSIX.1 requires that \fIkill(\-1,sig)\fP send \fIsig\fP
+POSIX.1 requires that
+.I kill(\-1,sig)
+send
+.I sig
 to all processes that the calling process may send signals to,
 except possibly for some implementation-defined system processes.
-Linux allows a process to signal itself, but on Linux the call
-\fIkill(\-1,sig)\fP does not signal the calling process.
+Linux allows a process to signal itself,
+but on Linux the call
+.I kill(\-1,sig)
+does not signal the calling process.
 .P
 POSIX.1 requires that if a process sends a signal to itself,
 and the sending thread does not have the signal blocked,
@@ -147,8 +168,11 @@ there was a bug that meant that when sending signals to a process group,
 .BR kill ()
 failed with the error
 .B EPERM
-if the caller did not have permission to send the signal to \fIany\fP (rather
-than \fIall\fP) of the members of the process group.
+if the caller did not have permission to send the signal to
+.I any
+(rather than
+.IR all )
+of the members of the process group.
 Notwithstanding this error return, the signal was still delivered
 to all of the processes for which the caller had permission to signal.
 .SH SEE ALSO

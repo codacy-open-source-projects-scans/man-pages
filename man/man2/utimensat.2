@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (C) 2008, Linux Foundation, written by Michael Kerrisk
-.\" <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -15,7 +14,7 @@ Standard C library
 .BR "#include <fcntl.h>" "            /* Definition of " AT_* " constants */"
 .B #include <sys/stat.h>
 .P
-.BI "int utimensat(int " dirfd ", const char *" pathname ,
+.BI "int utimensat(int " dirfd ", const char *" path ,
 .BI "              const struct timespec " times "[_Nullable 2], int " flags );
 .BI "int futimens(int " fd ", const struct timespec " times "[_Nullable 2]);"
 .fi
@@ -55,7 +54,7 @@ when setting file timestamps.
 With
 .BR utimensat ()
 the file is specified via the pathname given in
-.IR pathname .
+.IR path .
 With
 .BR futimens ()
 the file whose timestamps are to be updated is specified via
@@ -65,9 +64,11 @@ an open file descriptor,
 For both calls, the new file timestamps are specified in the array
 .IR times :
 .I times[0]
-specifies the new "last access time" (\fIatime\fP);
+specifies the new "last access time"
+.RI ( atime );
 .I times[1]
-specifies the new "last modification time" (\fImtime\fP).
+specifies the new "last modification time"
+.RI ( mtime ).
 Each of the elements of
 .I times
 specifies a time as the number of seconds and nanoseconds
@@ -120,7 +121,8 @@ the caller must have write access to the file;
 .\" not on whether the caller's effective UID has write
 .\" permission for the file referred to by the descriptor.
 .IP \[bu]
-the caller's effective user ID must match the owner of the file; or
+the caller's effective user ID must match the owner of the file;
+or
 .IP \[bu]
 the caller must have appropriate privileges.
 .P
@@ -150,7 +152,7 @@ but other error conditions may still be detected.
 .\"
 .SS utimensat() specifics
 If
-.I pathname
+.I path
 is relative, then by default it is interpreted relative to the
 directory referred to by the open file descriptor,
 .I dirfd
@@ -163,19 +165,19 @@ See
 for an explanation of why this can be useful.
 .P
 If
-.I pathname
+.I path
 is relative and
 .I dirfd
 is the special value
 .BR AT_FDCWD ,
 then
-.I pathname
+.I path
 is interpreted relative to the current working
 directory of the calling process (like
 .BR utimes (2)).
 .P
 If
-.I pathname
+.I path
 is absolute, then
 .I dirfd
 is ignored.
@@ -188,7 +190,7 @@ the following values defined in
 .TP
 .BR AT_EMPTY_PATH " (since Linux 5.8)"
 If
-.I pathname
+.I path
 is an empty string, operate on the file referred to by
 .I dirfd
 (which may have been obtained using the
@@ -203,13 +205,14 @@ If
 is
 .BR AT_FDCWD ,
 the call operates on the current working directory.
-This flag is Linux-specific; define
+This flag is Linux-specific;
+define
 .B _GNU_SOURCE
 to obtain its definition.
 .TP
 .B AT_SYMLINK_NOFOLLOW
 If
-.I pathname
+.I path
 specifies a symbolic link, then update the timestamps of the link,
 rather than the file to which it refers.
 .SH RETURN VALUE
@@ -269,7 +272,7 @@ is not a valid file descriptor.
 .TP
 .B EBADF
 .RB ( utimensat ())
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -278,12 +281,13 @@ nor a valid file descriptor.
 .TP
 .B EFAULT
 .I times
-pointed to an invalid address; or,
+pointed to an invalid address;
+or,
 .I dirfd
 was
 .BR AT_FDCWD ,
 and
-.I pathname
+.I path
 is NULL or an invalid address.
 .TP
 .B EINVAL
@@ -303,7 +307,7 @@ fields.
 .TP
 .B EINVAL
 .\" SUSv4 does not specify this error.
-.I pathname
+.I path
 is NULL,
 .I dirfd
 is not
@@ -316,32 +320,32 @@ contains
 .B ELOOP
 .RB ( utimensat ())
 Too many symbolic links were encountered in resolving
-.IR pathname .
+.IR path .
 .TP
 .B ENAMETOOLONG
 .RB ( utimensat ())
-.I pathname
+.I path
 is too long.
 .TP
 .B ENOENT
 .RB ( utimensat ())
 A component of
-.I pathname
+.I path
 does not refer to an existing directory or file,
 or
-.I pathname
+.I path
 is an empty string.
 .TP
 .B ENOTDIR
 .RB ( utimensat ())
-.I pathname
-is a relative pathname, but
+.I path
+is relative, but
 .I dirfd
 is neither
 .B AT_FDCWD
 nor a file descriptor referring to a directory;
 or, one of the prefix components of
-.I pathname
+.I path
 is not a directory.
 .TP
 .B EPERM
@@ -366,7 +370,8 @@ the caller's effective user ID does not match the owner of file,
 and the caller is not privileged
 (Linux: does not have the
 .B CAP_FOWNER
-capability); or,
+capability);
+or,
 .IP \[bu]
 .\" Linux 2.6.22 was broken here:
 .\" it was not consistent with the old utimes() implementation,
@@ -388,7 +393,7 @@ The file is on a read-only filesystem.
 .B ESRCH
 .RB ( utimensat ())
 Search permission is denied for one of the prefix components of
-.IR pathname .
+.IR path .
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
@@ -414,7 +419,7 @@ system call.
 To support this, the Linux
 .BR utimensat ()
 system call implements a nonstandard feature: if
-.I pathname
+.I path
 is NULL, then the call modifies the timestamps of
 the file referred to by the file descriptor
 .I dirfd
@@ -432,13 +437,13 @@ utimensat(fd, NULL, times, 0);
 Note, however, that the glibc wrapper for
 .BR utimensat ()
 disallows passing NULL as the value for
-.IR pathname :
+.IR path :
 the wrapper function returns the error
 .B EINVAL
 in this case.
 .SH STANDARDS
-POSIX.1-2008.
-.SH VERSIONS
+POSIX.1-2024.
+.SH HISTORY
 .TP
 .BR utimensat ()
 Linux 2.6.22,
@@ -471,7 +476,7 @@ then the Linux implementation of
 succeeds even if the file referred to by
 .I dirfd
 and
-.I pathname
+.I path
 does not exist.
 .SH BUGS
 Several bugs afflict
@@ -518,7 +523,8 @@ As a result, in some cases:
 a) file timestamps can be updated by a process that shouldn't have
 permission to perform updates;
 b) file timestamps can't be updated by a process that should have
-permission to perform updates; and
+permission to perform updates;
+and
 c) the wrong
 .I errno
 value is returned in case of an error.
@@ -599,7 +605,8 @@ value is returned in case of an error.
 .\" Instead, the call fails with the error
 .\" .BR EPERM .
 .IP \[bu]
-POSIX.1 says that a process that has \fIwrite access to the file\fP
+POSIX.1 says that a process that has
+.I write access to the file
 can make a call with
 .I times
 as NULL, or with

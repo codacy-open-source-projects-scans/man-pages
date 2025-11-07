@@ -1,11 +1,6 @@
-.\" Copyright (C) 1993 Rickard E. Faith <faith@cs.unc.edu>
-.\" and Copyright (C) 1994 Andries E. Brouwer <aeb@cwi.nl>
-.\" and Copyright (C) 2002, 2005 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2008-10-06, mtk: Created this as a new page by splitting
-.\"     umount/umount2 material out of mount.2
 .\"
 .TH umount 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -90,7 +85,8 @@ or
 Don't dereference
 .I target
 if it is a symbolic link.
-This flag allows security problems to be avoided in set-user-ID-\fIroot\fP
+This flag allows security problems to be avoided in
+.RI set-user-ID- root
 programs that allow unprivileged users to unmount filesystems.
 .SH RETURN VALUE
 On success, zero is returned.
@@ -125,7 +121,8 @@ is not a mount point.
 .TP
 .B EINVAL
 .I target
-is locked; see
+is locked;
+see
 .BR mount_namespaces (7).
 .TP
 .B EINVAL
@@ -165,13 +162,21 @@ are available since glibc 2.11.
 .P
 The original
 .BR umount ()
-function was called as \fIumount(device)\fP and would return
+function was called as
+.I umount(device)
+and would return
 .B ENOTBLK
 when called with something other than a block device.
-In Linux 0.98p4, a call \fIumount(dir)\fP was added, in order to
+In Linux 0.98p4, a call
+.I umount(dir)
+was added, in order to
 support anonymous devices.
-In Linux 2.3.99-pre7, the call \fIumount(device)\fP was removed,
-leaving only \fIumount(dir)\fP (since now devices can be mounted
+In Linux 2.3.99-pre7, the call
+.I umount(device)
+was removed,
+leaving only
+.I umount(dir)
+(since now devices can be mounted
 in more than one place, so specifying the device does not suffice).
 .SH NOTES
 .SS umount() and shared mounts

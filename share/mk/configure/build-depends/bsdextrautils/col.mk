@@ -1,4 +1,4 @@
-# Copyright 2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -10,9 +10,15 @@ DEFAULT_COLFLAGS := \
 	-b \
 	-p \
 	-x
+ifndef COLFLAGS
 COLFLAGS         :=
+endif
+ifndef COLFLAGS_
 COLFLAGS_        := $(DEFAULT_COLFLAGS) $(COLFLAGS)
+endif
+ifndef COL
 COL              := col
+endif
 
 
 endif  # include guard

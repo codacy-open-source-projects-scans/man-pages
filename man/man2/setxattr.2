@@ -1,5 +1,4 @@
-.\" Copyright (C) Andreas Gruenbacher, February 2001
-.\" Copyright (C) Silicon Graphics Inc, September 2001
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -13,12 +12,15 @@ Standard C library
 .nf
 .B #include <sys/xattr.h>
 .P
-.BI "int setxattr(const char *" path ", const char *" name ,
-.BI "              const void " value [. size "], size_t " size ", int " flags );
-.BI "int lsetxattr(const char *" path ", const char *" name ,
-.BI "              const void " value [. size "], size_t " size ", int " flags );
-.BI "int fsetxattr(int " fd ", const char *" name ,
-.BI "              const void " value [. size "], size_t " size ", int " flags );
+.BR "int setxattr(" "size_t size;"
+.BI "              const char *" path ", const char *" name ,
+.BI "              const void " value [ size "], size_t " size ", int " flags );
+.BR "int lsetxattr(" "size_t size;"
+.BI "              const char *" path ", const char *" name ,
+.BI "              const void " value [ size "], size_t " size ", int " flags );
+.BR "int fsetxattr(" "size_t size;"
+.BI "              int " fd ", const char *" name ,
+.BI "              const void " value [ size "], size_t " size ", int " flags );
 .fi
 .SH DESCRIPTION
 Extended attributes are
@@ -64,8 +66,9 @@ in place of
 An extended attribute name is a null-terminated string.
 The
 .I name
-includes a namespace prefix; there may be several, disjoint
-namespaces associated with an individual inode.
+includes a namespace prefix;
+there may be several,
+disjoint namespaces associated with an individual inode.
 The
 .I value
 of an extended attribute is a chunk of arbitrary textual or

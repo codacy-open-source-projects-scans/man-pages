@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH iswblank 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -37,7 +31,9 @@ The
 function is the wide-character equivalent of the
 .BR isblank (3)
 function.
-It tests whether \fIwc\fP is a wide character
+It tests whether
+.I wc
+is a wide character
 belonging to the wide-character class "blank".
 .P
 The wide-character class "blank" is a subclass of the wide-character class
@@ -56,7 +52,9 @@ and the control character \[aq]\[rs]t\[aq].
 The
 .BR iswblank ()
 function returns nonzero
-if \fIwc\fP is a wide character
+if
+.I wc
+is a wide character
 belonging to the wide-character class "blank".
 Otherwise, it returns zero.
 .SH ATTRIBUTES

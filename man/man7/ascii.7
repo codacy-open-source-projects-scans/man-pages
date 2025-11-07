@@ -1,17 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 Michael Haardt (michael@moria.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" Created  1993-04-02 by Michael Haardt (michael@moria.de)
-.\" Modified 1993-07-24 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 1994-05-15 by Daniel Quinlan (quinlan@yggdrasil.com)
-.\" Modified 1994-11-22 by Daniel Quinlan (quinlan@yggdrasil.com)
-.\" Modified 1995-07-11 by Daniel Quinlan (quinlan@yggdrasil.com)
-.\" Modified 1996-12-18 by Michael Haardt and aeb
-.\" Modified 1999-05-31 by Dimitri Papadopoulos (dpo@club-internet.fr)
-.\" Modified 1999-08-08 by Michael Haardt (michael@moria.de)
-.\" Modified 2004-04-01 by aeb
 .\"
 .TH ascii 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -25,7 +15,7 @@ The international counterpart of ASCII is known as ISO/IEC\~646-IRV.
 .P
 The following table contains the 128 ASCII characters.
 .P
-C program \f(CW\[aq]\[rs]X\[aq]\fP escapes are noted.
+C program \f[CW]\[aq]\[rs]X\[aq]\f[] escapes are noted.
 .P
 .EX
 .TS
@@ -55,7 +45,7 @@ _
 024	20	14	DC4 (device control 4)	124	84	54	T
 025	21	15	NAK (negative ack.)	125	85	55	U
 026	22	16	SYN (synchronous idle)	126	86	56	V
-027	23	17	ETB (end of trans. blk)	127	87	57	W
+027	23	17	ETB (end of trans.\& blk)	127	87	57	W
 030	24	18	CAN (cancel)	130	88	58	X
 031	25	19	EM  (end of medium)	131	89	59	Y
 032	26	1A	SUB (substitute)	132	90	5A	Z
@@ -93,7 +83,7 @@ _
 072	58	3A	:	172	122	7A	z
 073	59	3B	;	173	123	7B	{
 074	60	3C	<	174	124	7C	|
-075	61	3D	= 	175	125	7D	}
+075	61	3D	=\&	175	125	7D	}
 076	62	3E	>	176	126	7E	\[ti]
 077	63	3F	?	177	127	7F	DEL
 .TE
@@ -118,7 +108,7 @@ A: * : J Z j z
 B: + ; K [ k {
 C: , < L \[rs] l |
 D: \- = M ] m }
-E: . > N \[ha] n \[ti]
+E: .\& > N \[ha] n \[ti]
 F: / ? O _ o DEL
 .EE
 .SH NOTES
@@ -147,7 +137,7 @@ Standards Institute (USASI) in 1968.
 .\" designated X3.2.4.  In 1966, ASA became the United States of America
 .\" Standards Institute (USASI) and published ASCII in 1968.  It became the
 .\" American National Standards Institute (ANSI) in 1969 and is the
-.\" U.S. member body of ISO; private and nonprofit.
+.\" U.S.\& member body of ISO; private and nonprofit.
 .\"
 .SH SEE ALSO
 .BR charsets (7),

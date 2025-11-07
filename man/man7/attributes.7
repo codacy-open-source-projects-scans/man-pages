@@ -1,7 +1,7 @@
-.\" Copyright (c) 2014, Red Hat, Inc
-.\"     Written by Alexandre Oliva <aoliva@redhat.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
 .TH attributes 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
 attributes \- POSIX safety concepts
@@ -88,8 +88,8 @@ safe for inlining.
 .\" environment cannot be performed atomically then it is also possible that
 .\" the environment encountered is internally inconsistent.
 .TP
-.I MT-Unsafe \" ", " AS-Unsafe ", " AC-Unsafe
-.I MT-Unsafe \" ", " AS-Unsafe ", " AC-Unsafe
+.I MT-Unsafe \" ,\~ AS-Unsafe ,\~ AC-Unsafe
+.I MT-Unsafe \" ,\~ AS-Unsafe ,\~ AC-Unsafe
 functions are not safe to call in a multithreaded programs.
 .\" functions are not
 .\" safe to call within the safety contexts described above.

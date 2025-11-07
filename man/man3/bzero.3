@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (C) 2017 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -13,11 +13,13 @@ Standard C library
 .nf
 .B #include <strings.h>
 .P
-.BI "void bzero(void " s [. n "], size_t " n );
+.BR "void bzero(" "size_t n;"
+.BI "           void " s [ n "], size_t " n );
 .P
 .B #include <string.h>
 .P
-.BI "void explicit_bzero(void " s [. n "], size_t " n );
+.BR "void explicit_bzero(" "size_t n;"
+.BI "           void " s [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
 The

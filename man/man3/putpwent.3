@@ -1,13 +1,8 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 18:43:46 1993 by Rik Faith (faith@cs.unc.edu)
 .TH putpwent 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 putpwent \- write a password file entry
@@ -40,9 +35,16 @@ Feature Test Macro Requirements for glibc (see
 The
 .BR putpwent ()
 function writes a password entry from the
-structure \fIp\fP in the file associated with \fIstream\fP.
+structure
+.I p
+in the file associated with
+.IR stream .
 .P
-The \fIpasswd\fP structure is defined in \fI<pwd.h>\fP as follows:
+The
+.I passwd
+structure is defined in
+.I <pwd.h>
+as follows:
 .P
 .in +4n
 .EX

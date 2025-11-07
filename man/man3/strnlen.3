@@ -1,10 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
 .\"
 .TH strnlen 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -16,7 +13,8 @@ Standard C library
 .nf
 .B #include <string.h>
 .P
-.BI "size_t strnlen(const char " s [. maxlen "], size_t " maxlen );
+.BR "size_t strnlen(" "size_t maxlen;"
+.BI "               const char " s [ maxlen "], size_t " maxlen );
 .fi
 .P
 .RS -4

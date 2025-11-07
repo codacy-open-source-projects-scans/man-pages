@@ -1,13 +1,8 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 18:54:45 1993 by Rik Faith (faith@cs.unc.edu)
 .TH memfrob 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 memfrob \- frobnicate (obfuscate) a memory area
@@ -19,13 +14,17 @@ Standard C library
 .BR "#define _GNU_SOURCE" "             /* See feature_test_macros(7) */"
 .B #include <string.h>
 .P
-.BI "void *memfrob(void " s [. n "], size_t " n );
+.BR "void *memfrob(" "size_t n;"
+.BI "              void " s [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
 The
 .BR memfrob ()
-function obfuscates the first \fIn\fP bytes of the
-memory area \fIs\fP by exclusive-ORing each character with the number
+function obfuscates the first
+.I n
+bytes of the memory area
+.I s
+by exclusive-ORing each character with the number
 42.
 The effect can be reversed by using
 .BR memfrob ()

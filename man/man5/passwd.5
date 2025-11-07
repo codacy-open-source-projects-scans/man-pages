@@ -1,13 +1,7 @@
-.\" Copyright (c) 1993 Michael Haardt (michael@moria.de),
-.\"     Fri Apr  2 11:32:09 MET DST 1993
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
-.\" Modified Sun Jul 25 10:46:28 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Sun Aug 21 18:12:27 1994 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Sun Jun 18 01:53:57 1995 by Andries Brouwer (aeb@cwi.nl)
-.\" Modified Mon Jan  5 20:24:40 MET 1998 by Michael Haardt
-.\"  (michael@cantor.informatik.rwth-aachen.de)
 .TH passwd 5 (date) "Linux man-pages (unreleased)"
 .SH NAME
 passwd \- password file
@@ -47,7 +41,9 @@ arguments to
 .P
 If the encrypted password in
 .I /etc/passwd
-is "\fI*NP*\fP" (without the quotes),
+is
+.RI \[dq] *NP* \[dq]
+(without the quotes),
 the shadow record should be obtained from an NIS+ server.
 .P
 Regardless of whether shadow passwords are used, many system administrators
@@ -90,7 +86,8 @@ login account (superuser) has the user ID 0.
 .TP
 .I GID
 This is the numeric primary group ID for this user.
-(Additional groups for the user are defined in the system group file; see
+(Additional groups for the user are defined in the system group file;
+see
 .BR group (5)).
 .TP
 .I GECOS

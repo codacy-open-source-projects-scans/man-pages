@@ -1,9 +1,7 @@
-.\" Copyright (C) 1996 Free Software Foundation, Inc.
+.\" Copyright 1996, Free Software Foundation, Inc.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
-.\"
-.\" 2006-02-09, some reformatting by Luc Van Oostenryck; some
-.\" reformatting and rewordings by mtk
 .\"
 .TH query_module 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -12,9 +10,9 @@ query_module \- query the kernel for various bits pertaining to modules
 .nf
 .B #include <linux/module.h>
 .P
-.BI "[[deprecated]] int query_module(const char *" name ", int " which ,
-.BI "                                void " buf [. bufsize "], \
-size_t " bufsize ,
+.BR "[[deprecated]] int query_module(" "size_t bufsize;"
+.BI "                                const char *" name ", int " which ,
+.BI "                                void " buf [ bufsize "], size_t " bufsize ,
 .BI "                                size_t *" ret );
 .fi
 .SH DESCRIPTION

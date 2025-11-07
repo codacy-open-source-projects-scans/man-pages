@@ -1,14 +1,6 @@
-.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
-.\"             and Copyright (C) 1993 Michael Haardt, Ian Jackson.
-.\"		and Copyright (C) 2006, 2014 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1993-07-24 by Rik Faith
-.\" Modified 1996-04-26 by Nick Duffek <nsd@bbc.com>
-.\" Modified 1996-11-06 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 1997-01-31 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2004-06-23 by Michael Kerrisk <mtk.manpages@gmail.com>
 .\"
 .TH symlink 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -64,19 +56,24 @@ Symbolic links may contain
 path components, which (if used at the start of the link) refer to the
 parent directories of that in which the link resides.
 .P
-A symbolic link (also known as a soft link) may point to an existing
-file or to a nonexistent one; the latter case is known as a dangling
-link.
+A symbolic link
+(also known as a soft link)
+may point to an existing file
+or to a nonexistent one;
+the latter case is known as a dangling link.
 .P
-The permissions of a symbolic link are irrelevant; the ownership is
-ignored when following the link
+The permissions of a symbolic link are irrelevant;
+the ownership is ignored
+when following the link
 (except when the
 .I protected_symlinks
-feature is enabled, as explained in
+feature is enabled,
+as explained in
 .BR proc (5)),
-but is checked when removal or
-renaming of the link is requested and the link is in a directory with
-the sticky bit
+but is checked
+when removal or renaming of the link is requested
+and the link is in a directory
+with the sticky bit
 .RB ( S_ISVTX )
 set.
 .P
@@ -215,7 +212,7 @@ does not support the creation of symbolic links.
 .I linkpath
 is on a read-only filesystem.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR symlink ()

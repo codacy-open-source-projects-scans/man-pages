@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (C) 2006 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -36,8 +36,8 @@ This structure is defined as:
 .EX
 struct mq_attr {
     long mq_flags;       /* Flags: 0 or O_NONBLOCK */
-    long mq_maxmsg;      /* Max. # of messages on queue */
-    long mq_msgsize;     /* Max. message size (bytes) */
+    long mq_maxmsg;      /* Max.\& # of messages on queue */
+    long mq_msgsize;     /* Max.\& message size (bytes) */
     long mq_curmsgs;     /* # of messages currently in queue */
 };
 .EE
@@ -100,7 +100,8 @@ On success
 .BR mq_getattr ()
 and
 .BR mq_setattr ()
-return 0; on error, \-1 is returned, with
+return 0;
+on error, \-1 is returned, with
 .I errno
 set to indicate the error.
 .SH ERRORS
@@ -155,7 +156,7 @@ Here is an example run of the program:
 .P
 .in +4n
 .EX
-$ \fB./a.out /testq\fP
+.RB $ " ./a.out /testq" ;
 Maximum # of messages on queue:   10
 Maximum message size:             8192
 .EE
@@ -169,11 +170,11 @@ can be used to control the defaults:
 .P
 .in +4n
 .EX
-$ \fBuname \-sr\fP
+.RB $ " uname \-sr" ;
 Linux 3.8.0
-$ \fBcat /proc/sys/fs/mqueue/msg_default\fP
+.RB $ " cat /proc/sys/fs/mqueue/msg_default" ;
 10
-$ \fBcat /proc/sys/fs/mqueue/msgsize_default\fP
+.RB $ " cat /proc/sys/fs/mqueue/msgsize_default" ;
 8192
 .EE
 .in
@@ -181,15 +182,13 @@ $ \fBcat /proc/sys/fs/mqueue/msgsize_default\fP
 \&
 .\" SRC BEGIN (mq_getattr.c)
 .EX
+#include <err.h>
 #include <fcntl.h>
 #include <mqueue.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <unistd.h>
-\&
-#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \[rs]
-                        } while (0)
 \&
 int
 main(int argc, char *argv[])
@@ -204,16 +203,16 @@ main(int argc, char *argv[])
 \&
     mqd = mq_open(argv[1], O_CREAT | O_EXCL, 0600, NULL);
     if (mqd == (mqd_t) \-1)
-        errExit("mq_open");
+        err(EXIT_FAILURE, "mq_open");
 \&
     if (mq_getattr(mqd, &attr) == \-1)
-        errExit("mq_getattr");
+        err(EXIT_FAILURE, "mq_getattr");
 \&
     printf("Maximum # of messages on queue:   %ld\[rs]n", attr.mq_maxmsg);
     printf("Maximum message size:             %ld\[rs]n", attr.mq_msgsize);
 \&
     if (mq_unlink(argv[1]) == \-1)
-        errExit("mq_unlink");
+        err(EXIT_FAILURE, "mq_unlink");
 \&
     exit(EXIT_SUCCESS);
 }

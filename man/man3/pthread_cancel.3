@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (c) 2008 Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -149,14 +148,11 @@ main(): thread was canceled
 \&
 .\" SRC BEGIN (pthread_cancel.c)
 .EX
-#include <errno.h>
+#include <err.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-\&
-#define handle_error_en(en, msg) \[rs]
-        do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
 \&
 static void *
 thread_func(void *ignored_argument)
@@ -164,11 +160,11 @@ thread_func(void *ignored_argument)
     int s;
 \&
     /* Disable cancelation for a while, so that we don\[aq]t
-       immediately react to a cancelation request. */
+       immediately react to a cancelation request.  */
 \&
     s = pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
     if (s != 0)
-        handle_error_en(s, "pthread_setcancelstate");
+        errc(EXIT_FAILURE, s, "pthread_setcancelstate");
 \&
     printf("%s(): started; cancelation disabled\[rs]n", __func__);
     sleep(5);
@@ -176,13 +172,13 @@ thread_func(void *ignored_argument)
 \&
     s = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     if (s != 0)
-        handle_error_en(s, "pthread_setcancelstate");
+        errc(EXIT_FAILURE, s, "pthread_setcancelstate");
 \&
-    /* sleep() is a cancelation point. */
+    /* sleep() is a cancelation point.  */
 \&
     sleep(1000);        /* Should get canceled while we sleep */
 \&
-    /* Should never get here. */
+    /* Should never get here.  */
 \&
     printf("%s(): not canceled!\[rs]n", __func__);
     return NULL;
@@ -195,24 +191,24 @@ main(void)
     void *res;
     int s;
 \&
-    /* Start a thread and then send it a cancelation request. */
+    /* Start a thread and then send it a cancelation request.  */
 \&
     s = pthread_create(&thr, NULL, &thread_func, NULL);
     if (s != 0)
-        handle_error_en(s, "pthread_create");
+        errc(EXIT_FAILURE, s, "pthread_create");
 \&
     sleep(2);           /* Give thread a chance to get started */
 \&
     printf("%s(): sending cancelation request\[rs]n", __func__);
     s = pthread_cancel(thr);
     if (s != 0)
-        handle_error_en(s, "pthread_cancel");
+        errc(EXIT_FAILURE, s, "pthread_cancel");
 \&
-    /* Join with thread to see what its exit status was. */
+    /* Join with thread to see what its exit status was.  */
 \&
     s = pthread_join(thr, &res);
     if (s != 0)
-        handle_error_en(s, "pthread_join");
+        errc(EXIT_FAILURE, s, "pthread_join");
 \&
     if (res == PTHREAD_CANCELED)
         printf("%s(): thread was canceled\[rs]n", __func__);

@@ -1,5 +1,4 @@
-.\" Copyright (c) 2001 Andreas Dilger (adilger@turbolinux.com)
-.\" and Copyright (c) 2017 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -21,7 +20,7 @@ The following (edited) output shows an example of the
 contents of this file:
 .P
 .EX
-$ \fBsudo cat /proc/slabinfo\fP
+.RB $ " sudo cat /proc/slabinfo" ;
 slabinfo \- version: 2.1
 # name    <active_objs> <num_objs> <objsize> <objperslab> <pagesperslab> ...
 sigqueue      100  100  160   25  1 : tunables  0  0  0 : slabdata   4   4  0
@@ -77,7 +76,7 @@ lines of the following form to
 .P
 .in +4n
 .EX
-# \fBecho \[aq]name limit batchcount sharedfactor\[aq] > /proc/slabinfo\fP
+.RB # " echo \[aq]name limit batchcount sharedfactor\[aq] > /proc/slabinfo" ;
 .EE
 .in
 .P
@@ -144,13 +143,15 @@ Kernels configured with
 .B CONFIG_DEBUG_SLAB
 will also have additional statistics fields in each line,
 and the first line of the file will contain the string "(statistics)".
-The statistics field include : the high water mark of active
-objects; the number of times objects have been allocated;
-the number of times the cache has grown (new pages added
-to this cache); the number of times the cache has been
-reaped (unused pages removed from this cache); and the
-number of times there was an error allocating new pages
-to this cache.
+The statistics field include:
+the high water mark of active objects;
+the number of times objects have been allocated;
+the number of times the cache has grown
+(new pages added to this cache);
+the number of times the cache has been reaped
+(unused pages removed from this cache);
+and the number of times there was an error
+allocating new pages to this cache.
 .\"
 .\" SMP systems will also have "(SMP)" in the first line of
 .\" output, and will have two additional columns for each slab,

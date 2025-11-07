@@ -1,16 +1,6 @@
-.\" Copyright (C) 2001 David Gómez <davidge@jazzfree.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Based on comments from mm/filemap.c. Last modified on 10-06-2001
-.\" Modified, 25 Feb 2002, Michael Kerrisk, <mtk.manpages@gmail.com>
-.\"	Added notes on MADV_DONTNEED
-.\" 2010-06-19, mtk, Added documentation of MADV_MERGEABLE and
-.\"     MADV_UNMERGEABLE
-.\" 2010-06-15, Andi Kleen, Add documentation of MADV_HWPOISON.
-.\" 2010-06-19, Andi Kleen, Add documentation of MADV_SOFT_OFFLINE.
-.\" 2011-09-18, Doug Goldstein <cardoe@cardoe.com>
-.\"     Document MADV_HUGEPAGE and MADV_NOHUGEPAGE
 .\"
 .TH madvise 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -22,7 +12,8 @@ Standard C library
 .nf
 .B #include <sys/mman.h>
 .P
-.BI "int madvise(void " addr [. size "], size_t " size ", int " advice );
+.BR "int madvise(" "size_t size;"
+.BI "            void " addr [ size "], size_t " size ", int " advice );
 .fi
 .P
 .RS -4
@@ -222,7 +213,7 @@ DMAs into the page.)
 .\" and into user pages all the time.
 .\"
 .\" This patch adds madvise options to control whether memory range is
-.\" inherited across fork. Useful e.g. for when hardware is doing DMA
+.\" inherited across fork.  Useful, e.g., for when hardware is doing DMA
 .\" from/into these pages.  Could also be useful to an application
 .\" wanting to speed up its forks by cutting large areas out of
 .\" consideration.
@@ -271,7 +262,8 @@ KSM merges only private anonymous pages (see
 .IP
 The KSM feature is intended for applications that generate many
 instances of the same data (e.g., virtualization systems such as KVM).
-It can consume a lot of processing power; use with care.
+It can consume a lot of processing power;
+use with care.
 See the Linux kernel source file
 .I Documentation/admin\-guide/mm/ksm.rst
 for more details.
@@ -603,7 +595,8 @@ files with holes might or might not preallocate blocks.
 If populating fails,
 a
 .B SIGBUS
-signal is not generated; instead, an error is returned.
+signal is not generated;
+instead, an error is returned.
 .IP
 If
 .B MADV_POPULATE_READ
@@ -651,7 +644,8 @@ files with holes will preallocate blocks.
 If populating fails,
 a
 .B SIGBUS
-signal is not generated; instead, an error is returned.
+signal is not generated;
+instead, an error is returned.
 .IP
 If
 .B MADV_POPULATE_WRITE
@@ -688,16 +682,32 @@ causing any read or write in the range to result in a
 signal being raised.
 .IP
 If the region maps memory pages
-they will be cleared as part of the operation,
+those mappings will be replaced
+as part of the operation,
 though if
 .B MADV_GUARD_INSTALL
 is applied to regions
 containing pre-existing lightweight guard regions,
 they are left in place.
 .IP
-This operation is supported
-only for writable anonymous private mappings
-which have not been mlock'd.
+Prior to Linux 6.15,
+this operation was supported
+only for writable anonymous private mappings.
+Since Linux 6.15,
+both anonymous and file-backed mappings are supported,
+including read-only mappings.
+.IP
+The mapping must not be mlock'd,
+map hugetlb ranges,
+nor contain special mappings.
+For example,
+mappings marked with kernel-internal flags such as
+.B VM_PFNMAP
+or
+.BR VM_IO ,
+or secret memory regions created using
+.BR memfd_secret (2).
+.IP
 An
 .B EINVAL
 error is returned if it is attempted on any other kind of mapping.
@@ -754,19 +764,23 @@ and
 .IP
 All mappings in the range
 other than lightweight guard regions
-are left in place
-(including mlock'd mappings).
-The operation is,
-however,
-valid only for writable anonymous private mappings,
+are left in place.
+The operation is supported on those mappings
+permitted by
+.B MADV_GUARD_INSTALL
+in addition to mlock()'d mappings,
 returning an
 .B EINVAL
 error otherwise.
 .IP
 When lightweight guard regions are removed,
 they act as empty regions of the containing mapping.
-Since only writable anonymous private mappings are supported,
-they therefore become zero-fill-on-demand pages.
+Therefore,
+anonymous private mappings become
+zero-fill-on-demand pages,
+and file-backed mappings are repopulated with the
+memory contents from the up-to-date contents of the
+underlying mapped file.
 .IP
 If any transparent huge pages are encountered in the operation,
 they are left in place.

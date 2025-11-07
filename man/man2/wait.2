@@ -1,30 +1,6 @@
-.\" Copyright (c) 1993 by Thomas Koenig <ig25@rz.uni-karlsruhe.de>
-.\" and Copyright (c) 2004 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 13:30:06 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Sun Aug 21 17:42:42 1994 by Rik Faith <faith@cs.unc.edu>
-.\"          (Thanks to Koen Holtman <koen@win.tue.nl>)
-.\" Modified Wed May 17 15:54:12 1995 by Rik Faith <faith@cs.unc.edu>
-.\"           To remove *'s from status in macros (Thanks to Michael Shields).
-.\" Modified as suggested by Nick Duffek <nsd@bbc.com>, aeb, 960426
-.\" Modified Mon Jun 23 14:09:52 1997 by aeb - add EINTR.
-.\" Modified Thu Nov 26 02:12:45 1998 by aeb - add SIGCHLD stuff.
-.\" Modified Mon Jul 24 21:37:38 2000 by David A. Wheeler
-.\"          <dwheeler@dwheeler.com> - noted thread issues.
-.\" Modified 26 Jun 01 by Michael Kerrisk
-.\"          Added __WCLONE, __WALL, and __WNOTHREAD descriptions
-.\" Modified 2001-09-25, aeb
-.\" Modified 26 Jun 01 by Michael Kerrisk, <mtk.manpages@gmail.com>
-.\"	Updated notes on setting disposition of SIGCHLD to SIG_IGN
-.\" 2004-11-11, mtk
-.\"	Added waitid(2); added WCONTINUED and WIFCONTINUED()
-.\"	Added text on SA_NOCLDSTOP
-.\"	Updated discussion of SA_NOCLDWAIT to reflect 2.6 behavior
-.\"	Much other text rewritten
-.\" 2005-05-10, mtk, __W* flags can't be used with waitid()
-.\" 2008-07-04, mtk, removed erroneous text about SA_NOCLDSTOP
 .\"
 .TH wait 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -42,7 +18,7 @@ Standard C library
 .BI "int waitid(idtype_t " idtype ", id_t " id \
 ", siginfo_t *" infop ", int " options );
                 /* This is the glibc and POSIX interface; see
-                   VERSIONS for information on the raw system call. */
+                   VERSIONS for information on the raw system call.  */
 .fi
 .P
 .RS -4
@@ -61,15 +37,22 @@ Feature Test Macro Requirements for glibc (see
             || /* glibc <= 2.19: */ _BSD_SOURCE
 .fi
 .SH DESCRIPTION
-All of these system calls are used to wait for state changes
-in a child of the calling process, and obtain information
+All of these system calls are used
+to wait for state changes
+in a child of the calling process,
+and obtain information
 about the child whose state has changed.
-A state change is considered to be: the child terminated;
-the child was stopped by a signal; or the child was resumed by a signal.
-In the case of a terminated child, performing a wait allows
-the system to release the resources associated with the child;
-if a wait is not performed, then the terminated child remains in
-a "zombie" state (see NOTES below).
+A state change is considered to be:
+the child terminated;
+the child was stopped by a signal;
+or the child was resumed by a signal.
+In the case of a terminated child,
+performing a wait allows the system to
+release the resources associated with the child;
+if a wait is not performed,
+then the terminated child remains
+in a "zombie" state
+(see NOTES below).
 .P
 If a child has already changed state, then these calls return immediately.
 Otherwise, they block until either a child changes state or
@@ -160,7 +143,9 @@ is not NULL,
 .BR wait ()
 and
 .BR waitpid ()
-store status information in the \fIint\fP to which it points.
+store status information in the
+.I int
+to which it points.
 This integer can be inspected with the following macros (which
 take the integer itself as an argument, not a pointer to it,
 as is done in
@@ -199,19 +184,14 @@ This macro should be employed only if
 .B WIFSIGNALED
 returned true.
 .TP
-.BI WCOREDUMP( wstatus )
+.BI WCOREDUMP( wstatus ) "  \f[R]// POSIX.1-2024\f[]"
 returns true if the child produced a core dump (see
 .BR core (5)).
 This macro should be employed only if
 .B WIFSIGNALED
 returned true.
-.IP
-This macro is not specified in POSIX.1-2001 and is not available on
-some UNIX implementations (e.g., AIX, SunOS).
-Therefore, enclose its use inside
-.IR "#ifdef WCOREDUMP ... #endif" .
 .TP
-.BI WIFSTOPPED( wstatus )
+.BI WIFSTOPPED( wstatus ) "  \f[R]// POSIX.1-2024\f[]"
 returns true if the child process was stopped by delivery of a signal;
 this is possible only if the call was done using
 .B WUNTRACED
@@ -240,11 +220,11 @@ and
 .I id
 arguments select the child(ren) to wait for, as follows:
 .TP
-.IR idtype " == " \fBP_PID\fP
+.IR idtype " == " \f[B]P_PID\f[]
 Wait for the child whose process ID matches
 .IR id .
 .TP
-.IR idtype " == " \fBP_PIDFD\fP " (since Linux 5.4)"
+.IR idtype " == " \f[B]P_PIDFD\f[] " (since Linux 5.4)"
 .\" commit 3695eae5fee0605f316fbaad0b9e3de791d7dfaf
 Wait for the child referred to by the PID file descriptor specified in
 .IR id .
@@ -252,7 +232,7 @@ Wait for the child referred to by the PID file descriptor specified in
 .BR pidfd_open (2)
 for further information on PID file descriptors.)
 .TP
-.IR idtype " == " \fBP_PGID\fP
+.IR idtype " == " \f[B]P_PGID\f[]
 Wait for any child whose process group ID matches
 .IR id .
 Since Linux 5.4,
@@ -262,7 +242,7 @@ if
 is zero, then wait for any child that is in the same process group
 as the caller's process group at the time of the call.
 .TP
-.IR idtype " == " \fBP_ALL\fP
+.IR idtype " == " \f[B]P_ALL\f[]
 Wait for any child;
 .I id
 is ignored.
@@ -290,7 +270,8 @@ As for
 .BR waitpid ().
 .TP
 .B WNOWAIT
-Leave the child in a waitable state; a later wait call
+Leave the child in a waitable state;
+a later wait call
 can be used to again retrieve the child status information.
 .P
 Upon successful return,
@@ -300,18 +281,18 @@ fills in the following fields of the
 structure pointed to by
 .IR infop :
 .TP
-\fIsi_pid\fP
+.I si_pid
 The process ID of the child.
 .TP
-\fIsi_uid\fP
+.I si_uid
 The real user ID of the child.
 (This field is not set on most other implementations.)
 .TP
-\fIsi_signo\fP
+.I si_signo
 Always set to
 .BR SIGCHLD .
 .TP
-\fIsi_status\fP
+.I si_status
 Either the exit status of the child, as given to
 .BR _exit (2)
 (or
@@ -321,7 +302,7 @@ The
 .I si_code
 field can be used to determine how to interpret this field.
 .TP
-\fIsi_code\fP
+.I si_code
 Set to one of:
 .B CLD_EXITED
 (child called
@@ -333,7 +314,8 @@ Set to one of:
 .B CLD_STOPPED
 (child stopped by signal);
 .B CLD_TRAPPED
-(traced child has trapped); or
+(traced child has trapped);
+or
 .B CLD_CONTINUED
 (child continued by
 .BR SIGCONT ).
@@ -438,13 +420,16 @@ does not exist or is not a child of the calling process.
 .B SIGCHLD
 is set to
 .BR SIG_IGN .
-See also the \fILinux Notes\fP section about threads.)
+See also the
+.I Linux\~Notes
+section about threads.)
 .TP
 .B EINTR
 .B WNOHANG
 was not set and an unblocked signal or a
 .B SIGCHLD
-was caught; see
+was caught;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -486,7 +471,7 @@ See
 .BR getrusage (2)
 for details.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 SVr4, 4.3BSD, POSIX.1-2001.
 .SH NOTES
@@ -552,14 +537,17 @@ terminates and then returns the process ID and status of that child.
 .SS Linux notes
 In the Linux kernel, a kernel-scheduled thread is not a distinct
 construct from a process.
-Instead, a thread is simply a process
+Instead,
+a thread is simply a process
 that is created using the Linux-unique
 .BR clone (2)
-system call; other routines such as the portable
+system call;
+other routines such as the portable
 .BR pthread_create (3)
 call are implemented using
 .BR clone (2).
-Before Linux 2.4, a thread was just a special case of a process,
+Before Linux 2.4,
+a thread was just a special case of a process,
 and as a consequence one thread could not wait on the children
 of another thread, even when the latter belongs to the same thread group.
 However, POSIX prescribes such functionality, and since Linux 2.4

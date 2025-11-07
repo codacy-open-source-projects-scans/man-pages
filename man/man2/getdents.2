@@ -1,12 +1,6 @@
-.\" Copyright (C) 1995 Andries Brouwer (aeb@cwi.nl)
-.\" and Copyright 2008, 2015 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Written 11 June 1995 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 22 July 1995 by Michael Chastain <mec@duracef.shout.net>:
-.\"   Derived from 'readdir.2'.
-.\" Modified Tue Oct 22 08:11:14 EDT 1996 by Eric S. Raymond <esr@thyrsus.com>
 .\"
 .TH getdents 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -26,7 +20,8 @@ Standard C library
 .BR "#define _GNU_SOURCE" "           /* See feature_test_macros(7) */"
 .B #include <dirent.h>
 .P
-.BI "ssize_t getdents64(int " fd ", void " dirp [. count "], size_t " count );
+.BR "ssize_t getdents64(" "size_t count;"
+.BI "                   int " fd ", void " dirp [ count "], size_t " count );
 .fi
 .P
 .IR Note :
@@ -38,7 +33,8 @@ necessitating the use of
 .IR Note :
 There is no definition of
 .I struct linux_dirent
-in glibc; see NOTES.
+in glibc;
+see NOTES.
 .SH DESCRIPTION
 These are not the interfaces you are interested in.
 Look at
@@ -68,7 +64,7 @@ structure is declared as follows:
 struct linux_dirent {
     unsigned long  d_ino;     /* Inode number */
     unsigned long  d_off;     /* Not an offset; see below */
-    unsigned short d_reclen;  /* Length of this \fIlinux_dirent\fP */
+    unsigned short d_reclen;  /* Length of this \f[I]linux_dirent\f[] */
     char           d_name[];  /* Filename (null\-terminated) */
                       /* length is actually (d_reclen \- 2 \-
                          offsetof(struct linux_dirent, d_name)) */

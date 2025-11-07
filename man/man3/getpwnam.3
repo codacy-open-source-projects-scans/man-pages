@@ -1,19 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
-.\" and Copyright 2008, Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's "POSIX Programmer's Guide" (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\"
-.\" Modified 1993-07-24 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 1996-05-27 by Martin Schulze (joey@linux.de)
-.\" Modified 2003-11-15 by aeb
-.\" 2008-11-07, mtk, Added an example program for getpwnam_r().
 .\"
 .TH getpwnam 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -29,12 +17,15 @@ Standard C library
 .BI "struct passwd *getpwnam(const char *" name );
 .BI "struct passwd *getpwuid(uid_t " uid );
 .P
-.BI "int getpwnam_r(const char *restrict " name ", \
-struct passwd *restrict " pwd ,
-.BI "               char " buf "[restrict ." buflen "], size_t " buflen ,
+.BR "int getpwnam_r(" "size_t size;"
+.BI "               const char *restrict " name ,
+.BI "               struct passwd *restrict " pwd ,
+.BI "               char " buf "[restrict " size "], size_t " size ,
 .BI "               struct passwd **restrict " result );
-.BI "int getpwuid_r(uid_t " uid ", struct passwd *restrict " pwd ,
-.BI "               char " buf "[restrict ." buflen "], size_t " buflen ,
+.BR "int getpwuid_r(" "size_t size;"
+.BI "               uid_t " uid ,
+.BI "               struct passwd *restrict " pwd ,
+.BI "               char " buf "[restrict " size "], size_t " size ,
 .BI "               struct passwd **restrict " result );
 .fi
 .P
@@ -67,7 +58,11 @@ the broken-out fields of the record in the password database
 that matches the user ID
 .IR uid .
 .P
-The \fIpasswd\fP structure is defined in \fI<pwd.h>\fP as follows:
+The
+.I passwd
+structure is defined in
+.I <pwd.h>
+as follows:
 .P
 .in +4n
 .EX
@@ -104,7 +99,7 @@ The string fields pointed to by the members of the
 structure are stored in the buffer
 .I buf
 of size
-.IR buflen .
+.IR size .
 A pointer to the result (in case of success) or NULL (in case no entry
 was found or an error occurred) is stored in
 .IR *result .
@@ -173,7 +168,8 @@ or
 was not found.
 .TP
 .B EINTR
-A signal was caught; see
+A signal was caught;
+see
 .BR signal (7).
 .TP
 .B EIO
@@ -190,7 +186,7 @@ The system-wide limit on the total number of open files has been reached.
 Insufficient memory to allocate
 .I passwd
 structure.
-.\" This structure is static, allocated 0 or 1 times. No memory leak. (libc45)
+.\" This structure is static, allocated 0 or 1 times.  No memory leak.  (libc45)
 .TP
 .B ERANGE
 Insufficient buffer space supplied.

@@ -1,5 +1,4 @@
-.\" Copyright (C) Andreas Gruenbacher, February 2001
-.\" Copyright (C) Silicon Graphics Inc, September 2001
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -13,12 +12,15 @@ Standard C library
 .nf
 .B #include <sys/xattr.h>
 .P
-.BI "ssize_t getxattr(const char *" path ", const char *" name ,
-.BI "                 void " value [. size "], size_t " size );
-.BI "ssize_t lgetxattr(const char *" path ", const char *" name ,
-.BI "                 void " value [. size "], size_t " size );
-.BI "ssize_t fgetxattr(int " fd ", const char *" name ,
-.BI "                 void " value [. size "], size_t " size );
+.BR "ssize_t getxattr(" "size_t size;"
+.BI "                 const char *" path ", const char *" name ,
+.BI "                 void " value [ size "], size_t " size );
+.BR "ssize_t lgetxattr(" "size_t size;"
+.BI "                 const char *" path ", const char *" name ,
+.BI "                 void " value [ size "], size_t " size );
+.BR "ssize_t fgetxattr(" "size_t size;"
+.BI "                 int " fd ", const char *" name ,
+.BI "                 void " value [ size "], size_t " size );
 .fi
 .SH DESCRIPTION
 Extended attributes are
@@ -63,10 +65,12 @@ is interrogated in place of
 An extended attribute
 .I name
 is a null-terminated string.
-The name includes a namespace prefix; there may be several, disjoint
-namespaces associated with an individual inode.
-The value of an extended attribute is a chunk of arbitrary textual or
-binary data that was assigned using
+The name includes a namespace prefix;
+there may be several,
+disjoint namespaces associated with an individual inode.
+The value of an extended attribute is
+a chunk of arbitrary textual or binary data
+that was assigned using
 .BR setxattr (2).
 .P
 If
@@ -90,8 +94,8 @@ is set to indicate the error.
 .SH ERRORS
 .TP
 .B E2BIG
-The size of the attribute value is larger than the maximum size allowed; the
-attribute cannot be retrieved.
+The size of the attribute value is larger than the maximum size allowed;
+the attribute cannot be retrieved.
 This can happen on filesystems that support
 very large attribute values such as NFSv4, for example.
 .TP

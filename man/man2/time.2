@@ -1,10 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified Sat Jul 24 14:13:40 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Additions by Joseph S. Myers <jsm28@cam.ac.uk>, 970909
 .\"
 .TH time 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -30,7 +26,9 @@ the return value is also stored in the memory pointed to by
 .IR tloc .
 .SH RETURN VALUE
 On success, the value of time in seconds since the Epoch is returned.
-On error, \fI((time_t)\ \-1)\fP is returned, and
+On error,
+.I ((time_t)\ \-1)
+is returned, and
 .I errno
 is set to indicate the error.
 .SH ERRORS
@@ -78,7 +76,8 @@ see POSIX.1-2018 Rationale A.4.16.
 .P
 Applications intended to run after 2038 should use ABIs with
 .I time_t
-wider than 32 bits; see
+wider than 32 bits;
+see
 .BR time_t (3type).
 .SS C library/kernel differences
 On some architectures, an implementation of
@@ -86,11 +85,9 @@ On some architectures, an implementation of
 is provided in the
 .BR vdso (7).
 .SH STANDARDS
-C11, POSIX.1-2008.
+C11, POSIX.1-2024.
 .SH HISTORY
-SVr4, 4.3BSD, C89, POSIX.1-2001.
-.\" Under 4.3BSD, this call is obsoleted by
-.\" .BR gettimeofday (2).
+SVr4, 4.3BSD, C89, POSIX.1-2001, V7.
 .SH BUGS
 Error returns from this system call are indistinguishable from
 successful reports that the time is a few seconds

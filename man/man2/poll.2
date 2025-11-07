@@ -1,11 +1,6 @@
-.\" Copyright (C) 2006, 2019 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Additions from Richard Gooch <rgooch@atnf.CSIRO.AU> and aeb, 971207
-.\" 2006-03-13, mtk, Added ppoll() + various other rewordings
-.\" 2006-07-01, mtk, Added POLLRDHUP + various other wording and
-.\"	formatting changes.
 .\"
 .TH poll 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -119,11 +114,13 @@ The call will block until either:
 .IP \[bu] 3
 a file descriptor becomes ready;
 .IP \[bu]
-the call is interrupted by a signal handler; or
+the call is interrupted by a signal handler;
+or
 .IP \[bu]
 the timeout expires.
 .P
-Being "ready" means that the requested operation will not block; thus,
+Being "ready" means that the requested operation will not block;
+thus,
 .BR poll ()ing
 regular files,
 block devices,
@@ -149,7 +146,8 @@ The bits that may be set/returned in
 .I events
 and
 .I revents
-are defined in \fI<poll.h>\fP:
+are defined in
+.IR <poll.h> :
 .TP
 .B POLLIN
 There is data to read.
@@ -347,7 +345,8 @@ The array given as argument was not contained in the calling program's
 address space.
 .TP
 .B EINTR
-A signal occurred before any requested event; see
+A signal occurred before any requested event;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -419,16 +418,7 @@ See
 for a discussion on the differences between the kernel and the libc
 notion of the sigset.
 .SH STANDARDS
-.TP
-.BR poll ()
-POSIX.1-2008.
-.TP
-.BR ppoll ()
-Linux.
-.\" FIXME .
-.\" ppoll() is proposed for inclusion in POSIX:
-.\" https://www.austingroupbugs.net/view.php?id=1263
-.\" NetBSD 3.0 has a pollts() which is like Linux ppoll().
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR poll ()
@@ -442,6 +432,7 @@ wrapper function provides emulation using
 .BR select (2).
 .TP
 .BR ppoll ()
+POSIX.1-2024.
 Linux 2.6.16,
 glibc 2.4.
 .SH NOTES
@@ -476,7 +467,8 @@ displays the returned
 field in a human-readable form;
 .IP \[bu]
 if the file descriptor is readable, reads some data from it,
-and displays that data on standard output; and
+and displays that data on standard output;
+and
 .IP \[bu]
 if the file descriptor was not readable,
 but some other event occurred (presumably
@@ -487,8 +479,8 @@ Suppose we run the program in one terminal, asking it to open a FIFO:
 .P
 .in +4n
 .EX
-$ \fBmkfifo myfifo\fP
-$ \fB./poll_input myfifo\fP
+.RB $ " mkfifo myfifo" ;
+.RB $ " ./poll_input myfifo" ;
 .EE
 .in
 .P
@@ -497,7 +489,7 @@ write some data to it, and close the FIFO:
 .P
 .in +4n
 .EX
-$ \fBecho aaaaabbbbbccccc > myfifo\fP
+.RB $ " echo aaaaabbbbbccccc > myfifo" ;
 .EE
 .in
 .P
@@ -519,7 +511,7 @@ About to poll()
 Ready: 1
   fd=3; events: POLLHUP
     closing fd 3
-All file descriptors closed; bye
+All file descriptors closed.  Bye.
 .EE
 .in
 .P
@@ -559,15 +551,13 @@ at which point the file descriptor was closed and the program terminated.
 \&
    Licensed under GNU General Public License v2 or later.
 */
+#include <err.h>
 #include <fcntl.h>
 #include <poll.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-\&
-#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \[rs]
-                        } while (0)
 \&
 int
 main(int argc, char *argv[])
@@ -586,14 +576,14 @@ main(int argc, char *argv[])
     num_open_fds = nfds = argc \- 1;
     pfds = calloc(nfds, sizeof(struct pollfd));
     if (pfds == NULL)
-        errExit("malloc");
+        err(EXIT_FAILURE, "malloc");
 \&
-    /* Open each file on command line, and add it to \[aq]pfds\[aq] array. */
+    /* Open each file on command line, and add it to \[aq]pfds\[aq] array.  */
 \&
     for (nfds_t j = 0; j < nfds; j++) {
         pfds[j].fd = open(argv[j + 1], O_RDONLY);
         if (pfds[j].fd == \-1)
-            errExit("open");
+            err(EXIT_FAILURE, "open");
 \&
         printf("Opened \[rs]"%s\[rs]" on fd %d\[rs]n", argv[j + 1], pfds[j].fd);
 \&
@@ -601,17 +591,17 @@ main(int argc, char *argv[])
     }
 \&
     /* Keep calling poll() as long as at least one file descriptor is
-       open. */
+       open.  */
 \&
     while (num_open_fds > 0) {
         printf("About to poll()\[rs]n");
         ready = poll(pfds, nfds, \-1);
         if (ready == \-1)
-            errExit("poll");
+            err(EXIT_FAILURE, "poll");
 \&
         printf("Ready: %d\[rs]n", ready);
 \&
-        /* Deal with array returned by poll(). */
+        /* Deal with array returned by poll().  */
 \&
         for (nfds_t j = 0; j < nfds; j++) {
             if (pfds[j].revents != 0) {
@@ -623,20 +613,20 @@ main(int argc, char *argv[])
                 if (pfds[j].revents & POLLIN) {
                     s = read(pfds[j].fd, buf, sizeof(buf));
                     if (s == \-1)
-                        errExit("read");
+                        err(EXIT_FAILURE, "read");
                     printf("    read %zd bytes: %.*s\[rs]n",
                            s, (int) s, buf);
                 } else {                /* POLLERR | POLLHUP */
                     printf("    closing fd %d\[rs]n", pfds[j].fd);
                     if (close(pfds[j].fd) == \-1)
-                        errExit("close");
+                        err(EXIT_FAILURE, "close");
                     num_open_fds\-\-;
                 }
             }
         }
     }
 \&
-    printf("All file descriptors closed; bye\[rs]n");
+    printf("All file descriptors closed.  Bye.\[rs]n");
     exit(EXIT_SUCCESS);
 }
 .EE

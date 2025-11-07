@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH mbsrtowcs 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -19,7 +13,8 @@ Standard C library
 .nf
 .B #include <wchar.h>
 .P
-.BI "size_t mbsrtowcs(wchar_t " dest "[restrict ." dsize ],
+.BR "size_t mbsrtowcs(" "size_t dsize;"
+.BI "                 wchar_t " dest "[restrict " dsize ],
 .BI "                 const char **restrict " src ,
 .BI "                 size_t " dsize ", mbstate_t *restrict " ps );
 .fi

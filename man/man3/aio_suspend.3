@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (c) 2003 Andries Brouwer (aeb@cwi.nl)
-.\" and Copyright (C) 2010 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -15,7 +14,8 @@ Real-time library
 .P
 .B "#include <aio.h>"
 .P
-.BI "int aio_suspend(const struct aiocb *const " aiocb_list "[], int " n ,
+.BR "int aio_suspend(" "int n;"
+.BI "                const struct aiocb *const " aiocb_list [ n "], int " n ,
 .BI "                const struct timespec *restrict " timeout );
 .fi
 .SH DESCRIPTION
@@ -75,8 +75,9 @@ had completed.
 .TP
 .B EINTR
 The call was ended by signal
-(possibly the completion signal of one of the operations we were
-waiting for); see
+(possibly the completion signal of
+one of the operations we were waiting for);
+see
 .BR signal (7).
 .TP
 .B ENOSYS

@@ -1,4 +1,4 @@
-# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -42,17 +42,12 @@ $(foreach s, $(MANSECTIONS),                                                  \
 				$(MANINTROPAGES)))))
 
 
-NONSO_MAN := $(shell $(FIND) $(MANDIR)/* -type f \
+NONSO := $(shell $(FIND) $(MANDIR)/* -type f \
 		| $(GREP) -E '$(MANEXT)' \
-		| $(XARGS) $(GREP) -l '^\.TH ' \
+		| $(XARGS) $(GREP) -l -e '^\.TH ' -e '^\.Dt ' \
 		| $(SORTMAN) \
 		| $(SED) 's,:,\\:,g')
-NONSO_MDOC := $(shell $(FIND) $(MANDIR)/* -type f \
-		| $(GREP) -E '$(MANEXT)' \
-		| $(XARGS) $(GREP) -l '^\.Dt ' \
-		| $(SORTMAN) \
-		| $(SED) 's,:,\\:,g')
-SO_MAN := $(filter-out $(NONSO_MAN) $(NONSO_MDOC), $(MANPAGES))
+SO_MAN := $(filter-out $(NONSO), $(MANPAGES))
 
 
 endif  # include guard

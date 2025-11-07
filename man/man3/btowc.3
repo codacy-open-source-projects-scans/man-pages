@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH btowc 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -24,11 +18,14 @@ Standard C library
 .SH DESCRIPTION
 The
 .BR btowc ()
-function converts \fIc\fP,
+function converts
+.IR c ,
 interpreted as a multibyte sequence
 of length 1, starting in the initial shift state, to a wide character and
 returns it.
-If \fIc\fP is
+If
+.I c
+is
 .B EOF
 or not a valid multibyte sequence of length 1,
 the
@@ -39,8 +36,11 @@ function returns
 The
 .BR btowc ()
 function returns the wide character
-converted from the single byte \fIc\fP.
-If \fIc\fP is
+converted from the single byte
+.IR c .
+If
+.I c
+is
 .B EOF
 or not a valid multibyte sequence of length 1,
 it returns

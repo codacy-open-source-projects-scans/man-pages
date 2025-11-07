@@ -1,4 +1,4 @@
-.\" Copyright (c) 2024 Josef Bacik <josef@toxicpanda.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -15,8 +15,9 @@ Standard C library
 .BR "#include <linux/mount.h>" "  /* Definition of struct mnt_id_req constants */"
 .B #include <unistd.h>
 .P
-.BI "int syscall(SYS_listmount, struct mnt_id_req *" req ,
-.BI "            uint64_t *" mnt_ids ", size_t " nr_mnt_ids ,
+.BR "int syscall(" "size_t n;"
+.BI "            SYS_listmount, struct mnt_id_req *" req ,
+.BI "            uint64_t " mnt_ids [ n "], size_t " n ,
 .BI "            unsigned long " flags );
 .P
 .B #include <linux/mount.h>
@@ -80,7 +81,9 @@ is set to indicate the error.
 .SH ERRORS
 .TP
 .B EPERM
-Permission is denied for accessing this mount.
+The caller does not have
+.B CAP_SYS_ADMIN
+in the user namespace.
 .TP
 .B EFAULT
 .I req

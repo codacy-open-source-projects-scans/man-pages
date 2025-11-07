@@ -1,13 +1,6 @@
-.\" Copyright 1993 Rickard E. Faith (faith@cs.unc.edu)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1995-07-22 by Michael Chastain <mec@duracef.shout.net>:
-.\"   'gethostname' is real system call on Linux/Alpha.
-.\" Modified 1997-01-31 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2000-06-04, 2001-12-15 by aeb
-.\" Modified 2004-06-17 by mtk
-.\" Modified 2008-11-27 by mtk
 .\"
 .TH gethostname 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -122,7 +115,9 @@ is defined with the value 64, which has been the limit since Linux 1.0
 .SS C library/kernel differences
 The GNU C library does not employ the
 .BR gethostname ()
-system call; instead, it implements
+system call;
+instead,
+it implements
 .BR gethostname ()
 as a library function that calls
 .BR uname (2)
@@ -145,13 +140,13 @@ in this case, a terminating null byte is not included in the returned
 .SH STANDARDS
 .TP
 .BR gethostname ()
-POSIX.1-2008.
+POSIX.1-2024.
 .TP
 .BR sethostname ()
 None.
 .SH HISTORY
 SVr4, 4.4BSD (these interfaces first appeared in 4.2BSD).
-POSIX.1-2001 and POSIX.1-2008 specify
+POSIX.1 specifies
 .BR gethostname ()
 but not
 .BR sethostname ().

@@ -1,10 +1,7 @@
 '\" t
-.\" Copyright (C) 2008 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" starting from a version by Davide Libenzi <davidel@xmailserver.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" 2008-10-10, mtk: describe eventfd2(), and EFD_NONBLOCK and EFD_CLOEXEC
 .\"
 .TH eventfd 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -160,7 +157,8 @@ The file descriptor is readable
 (the
 .BR select (2)
 .I readfds
-argument; the
+argument;
+the
 .BR poll (2)
 .B POLLIN
 flag)
@@ -170,7 +168,8 @@ The file descriptor is writable
 (the
 .BR select (2)
 .I writefds
-argument; the
+argument;
+the
 .BR poll (2)
 .B POLLOUT
 flag)
@@ -242,7 +241,7 @@ reached.
 .B ENODEV
 .\" Note from Davide:
 .\" The ENODEV error is basically never going to happen if
-.\" the kernel boots correctly. That error happen only if during
+.\" the kernel boots correctly.  That error happen only if during
 .\" the kernel initialization, some error occur in the anonymous
 .\" inode source initialization.
 Could not mount (internal) anonymous inode device.

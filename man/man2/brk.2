@@ -1,11 +1,6 @@
-.\" Copyright (c) 1993 Michael Haardt, (michael@moria.de)
-.\" and Copyright 2006, 2008, Michael Kerrisk <tmk.manpages@gmail.com>
-.\" Fri Apr  2 11:32:09 MET DST 1993
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" Modified Wed Jul 21 19:52:58 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Sun Aug 21 17:40:38 1994 by Rik Faith <faith@cs.unc.edu>
 .\"
 .TH brk 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -97,7 +92,8 @@ is set to
 .SH STANDARDS
 None.
 .SH HISTORY
-4.3BSD; SUSv1, marked LEGACY in SUSv2, removed in POSIX.1-2001.
+4.3BSD;
+SUSv1, marked LEGACY in SUSv2, removed in POSIX.1-2001.
 .\"
 .\" .BR brk ()
 .\" and
@@ -116,12 +112,16 @@ portable and comfortable way of allocating memory.
 .P
 Various systems use various types for the argument of
 .BR sbrk ().
-Common are \fIint\fP, \fIssize_t\fP, \fIptrdiff_t\fP, \fIintptr_t\fP.
+Common are
+.IR int ,
+.IR ssize_t ,
+.IR ptrdiff_t ,
+.IR intptr_t .
 .\" One sees
-.\" \fIint\fP (e.g., XPGv4, DU 4.0, HP-UX 11, FreeBSD 4.0, OpenBSD 3.2),
-.\" \fIssize_t\fP (OSF1 2.0, Irix 5.3, 6.5),
-.\" \fIptrdiff_t\fP (libc4, libc5, ulibc, glibc 2.0, 2.1),
-.\" \fIintptr_t\fP (e.g., XPGv5, AIX, SunOS 5.8, 5.9, FreeBSD 4.7, NetBSD 1.6,
+.\" \f[I]int\f[] (e.g., XPGv4, DU 4.0, HP-UX 11, FreeBSD 4.0, OpenBSD 3.2),
+.\" \f[I]ssize_t\f[] (OSF1 2.0, Irix 5.3, 6.5),
+.\" \f[I]ptrdiff_t\f[] (libc4, libc5, ulibc, glibc 2.0, 2.1),
+.\" \f[I]intptr_t\f[] (e.g., XPGv5, AIX, SunOS 5.8, 5.9, FreeBSD 4.7, NetBSD 1.6,
 .\" Tru64 5.1, glibc2.2).
 .SS C library/kernel differences
 The return value described above for
@@ -129,9 +129,11 @@ The return value described above for
 is the behavior provided by the glibc wrapper function for the Linux
 .BR brk ()
 system call.
-(On most other implementations, the return value from
+(On most other implementations,
+the return value from
 .BR brk ()
-is the same; this return value was also specified in SUSv2.)
+is the same;
+this return value was also specified in SUSv2.)
 However,
 the actual Linux system call returns the new program break on success.
 On failure, the system call returns the current break.

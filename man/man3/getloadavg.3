@@ -1,12 +1,8 @@
 '\" t
-.\" Copyright (c) 1989, 1991, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Copyright 1989-1993, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-3-Clause
-.\"
-.\"     @(#)getloadavg.3	8.1 (Berkeley) 6/4/93
-.\"
-.\" 2007-12-08, mtk, Converted from mdoc to man macros
 .\"
 .TH getloadavg 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -45,7 +41,9 @@ samples are retrieved and assigned to successive elements of
 The system imposes a maximum of 3 samples, representing averages
 over the last 1, 5, and 15 minutes, respectively.
 .SH RETURN VALUE
-If the load average was unobtainable, \-1 is returned; otherwise,
+If the load average was unobtainable,
+\-1 is returned;
+otherwise,
 the number of samples actually retrieved is returned.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see

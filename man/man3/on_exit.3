@@ -1,14 +1,8 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified 1993-04-02, David Metcalfe
-.\" Modified 1993-07-25, Rik Faith (faith@cs.unc.edu)
 .TH on_exit 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 on_exit \- register a function to be called at normal process termination
@@ -65,7 +59,8 @@ functions, all registrations are removed.
 .SH RETURN VALUE
 The
 .BR on_exit ()
-function returns the value 0 if successful; otherwise
+function returns the value 0 if successful;
+otherwise,
 it returns a nonzero value.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see

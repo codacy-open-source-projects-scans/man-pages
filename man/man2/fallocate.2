@@ -1,10 +1,6 @@
-.\" Copyright (c) 2007 Silicon Graphics, Inc. All Rights Reserved
-.\" Written by Dave Chinner <dgc@sgi.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-only
-.\"
-.\" 2011-09-19: Added FALLOC_FL_PUNCH_HOLE
-.\" 2011-09-19: Substantial restructuring of the page
 .\"
 .TH fallocate 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -320,10 +316,13 @@ exceeds the maximum file size.
 .I mode
 is
 .BR FALLOC_FL_INSERT_RANGE ,
-and the current file size+\fIlen\fP exceeds the maximum file size.
+and the current file
+.RI size+ len
+exceeds the maximum file size.
 .TP
 .B EINTR
-A signal was caught during execution; see
+A signal was caught during execution;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -331,7 +330,7 @@ A signal was caught during execution; see
 was less than 0, or
 .I size
 .\" FIXME . (raise a kernel bug) Probably the size==0 case should be
-.\" a no-op, rather than an error. That would be consistent with
+.\" a no-op, rather than an error.  That would be consistent with
 .\" similar APIs for the size==0 case.
 .\" See "Re: [PATCH] fallocate.2: add FALLOC_FL_PUNCH_HOLE flag definition"
 .\" 21 Sep 2012
@@ -391,7 +390,7 @@ but the file referred to by
 .I fd
 is not a regular file.
 .\" There was an inconsistency in Linux 3.15-rc1, that should be resolved so that all
-.\" filesystems use this error for this case. (Tytso says ex4 will change.)
+.\" filesystems use this error for this case.  (Tytso says ex4 will change.)
 .\" http://thread.gmane.org/gmane.comp.file-systems.xfs.general/60485/focus=5521
 .\" From: Michael Kerrisk (man-pages <mtk.manpages@...>
 .\" Subject: Re: [PATCH v5 10/10] manpage: update FALLOC_FL_COLLAPSE_RANGE flag in fallocate
@@ -447,7 +446,8 @@ is marked append-only
 .BR chattr (1)).
 .TP
 .B EPERM
-The operation was prevented by a file seal; see
+The operation was prevented by a file seal;
+see
 .BR fcntl (2).
 .TP
 .B ESPIPE

@@ -1,15 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
-.\" and Copyright 2020 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 18:08:52 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 2001-08-31, aeb
 .\"
 .TH strcmp 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -22,7 +14,8 @@ Standard C library
 .B #include <string.h>
 .P
 .BI "int strcmp(const char *" s1 ", const char *" s2 );
-.BI "int strncmp(const char " s1 [. n "], const char " s2 [. n "], size_t " n );
+.BR "int strncmp(" "size_t n;"
+.BI "            const char " s1 [ n "], const char " s2 [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
 The
@@ -124,15 +117,15 @@ First, some examples using
 .P
 .in +4n
 .EX
-$ \fB./string_comp ABC ABC\fP
+.RB $ " ./string_comp ABC ABC" ;
 <str1> and <str2> are equal
-$ \fB./string_comp ABC AB\fP      # \[aq]C\[aq] is ASCII 67; \[aq]C\[aq] \- \[aq]\[rs]0\[aq] = 67
+.RB $ " ./string_comp ABC AB" ";      # \[aq]C\[aq] is ASCII 67; \[aq]C\[aq] \- \[aq]\[rs]0\[aq] = 67"
 <str1> is greater than <str2> (67)
-$ \fB./string_comp ABA ABZ\fP     # \[aq]A\[aq] is ASCII 65; \[aq]Z\[aq] is ASCII 90
+.RB $ " ./string_comp ABA ABZ" ";     # \[aq]A\[aq] is ASCII 65; \[aq]Z\[aq] is ASCII 90"
 <str1> is less than <str2> (\-25)
-$ \fB./string_comp ABJ ABC\fP
+.RB $ " ./string_comp ABJ ABC" ;
 <str1> is greater than <str2> (7)
-$ .\fB/string_comp $\[aq]\[rs]201\[aq] A\fP   # 0201 \- 0101 = 0100 (or 64 decimal)
+.RB $ " ./string_comp $\[aq]\[rs]201\[aq] A" ";   # 0201 \- 0101 = 0100 (or 64 decimal)"
 <str1> is greater than <str2> (64)
 .EE
 .in
@@ -148,9 +141,9 @@ And then some examples using
 .P
 .in +4n
 .EX
-$ \fB./string_comp ABC AB 3\fP
+.RB $ " ./string_comp ABC AB 3" ;
 <str1> is greater than <str2> (67)
-$ \fB./string_comp ABC AB 2\fP
+.RB $ " ./string_comp ABC AB 2" ;
 <str1> and <str2> are equal in the first 2 bytes
 .EE
 .in

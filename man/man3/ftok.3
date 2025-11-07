@@ -1,11 +1,7 @@
 '\" t
-.\" Copyright 1993 Giorgio Ciucci (giorgio@crcc.it)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 2001-11-28, by Michael Kerrisk, <mtk.manpages@gmail.com>
-.\"	Changed data type of proj_id; minor fixes
-.\"	aeb: further fixes; added notes.
 .\"
 .TH ftok 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -18,12 +14,12 @@ Standard C library
 .B #include <sys/ipc.h>
 .fi
 .P
-.BI "key_t ftok(const char *" pathname ", int " proj_id );
+.BI "key_t ftok(const char *" path ", int " proj_id );
 .SH DESCRIPTION
 The
 .BR ftok ()
 function uses the identity of the file named by the given
-.I pathname
+.I path
 (which must refer to an existing, accessible file)
 and the least significant 8 bits of
 .I proj_id
@@ -73,7 +69,7 @@ On some ancient systems, the prototype was:
 .P
 .in +4n
 .EX
-.BI "key_t ftok(char *" pathname ", char " proj_id );
+.BI "key_t ftok(char *" path ", char " proj_id );
 .EE
 .in
 .P

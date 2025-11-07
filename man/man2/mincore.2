@@ -1,15 +1,6 @@
-.\" Copyright (C) 2001 Bert Hubert <ahu@ds9a.nl>
-.\" and Copyright (C) 2007 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Created Sun Jun 3 17:23:32 2001 by bert hubert <ahu@ds9a.nl>
-.\" Slightly adapted, following comments by Hugh Dickins, aeb, 2001-06-04.
-.\" Modified, 20 May 2003, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified, 30 Apr 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 2005-04-05 mtk, Fixed error descriptions
-.\" 	after message from <gordon.jin@intel.com>
-.\" 2007-01-08 mtk, rewrote various parts
 .\"
 .TH mincore 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -21,7 +12,8 @@ Standard C library
 .nf
 .B #include <sys/mman.h>
 .P
-.BI "int mincore(void " addr [. length "], size_t " length ", unsigned char *" vec );
+.BR "int mincore(" "size_t length;"
+.BI "            void " addr [ length "], size_t " length ", unsigned char *" vec );
 .fi
 .P
 .RS -4

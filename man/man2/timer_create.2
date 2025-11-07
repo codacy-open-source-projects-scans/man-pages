@@ -1,5 +1,4 @@
-.\" Copyright (c) 2009 Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -143,7 +142,9 @@ field of the
 structure will be set to
 .BR SI_TIMER .
 At any point in time,
-at most one signal is queued to the process for a given timer; see
+at most one signal is queued to the process
+for a given timer;
+see
 .BR timer_getoverrun (2)
 for more details.
 .TP
@@ -254,7 +255,7 @@ which maps these IDs to the timer IDs employed by the kernel.
 .\" that glibc uses to map user-space timer IDs to kernel timer IDs
 .\" The kernel-level timer ID is exposed via siginfo.si_tid.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 Linux 2.6.
 POSIX.1-2001.
@@ -339,7 +340,7 @@ there have been around ten million overruns.
 .P
 .in +4n
 .EX
-$ \fB./a.out 1 100\fP
+.RB $ " ./a.out 1 100" ;
 Establishing handler for signal 34
 Blocking signal 34
 timer ID is 0x804c008
@@ -354,6 +355,7 @@ Caught signal 34
 \&
 .\" SRC BEGIN (timer_create.c)
 .EX
+#include <err.h>
 #include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -363,9 +365,6 @@ Caught signal 34
 \&
 #define CLOCKID CLOCK_REALTIME
 #define SIG SIGRTMIN
-\&
-#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \[rs]
-                        } while (0)
 \&
 static void
 print_siginfo(siginfo_t *si)
@@ -380,9 +379,9 @@ print_siginfo(siginfo_t *si)
 \&
     or = timer_getoverrun(*tidp);
     if (or == \-1)
-        errExit("timer_getoverrun");
-    else
-        printf("    overrun count = %d\[rs]n", or);
+        err(EXIT_FAILURE, "timer_getoverrun");
+\&
+    printf("    overrun count = %d\[rs]n", or);
 }
 \&
 static void
@@ -392,7 +391,7 @@ handler(int sig, siginfo_t *si, void *uc)
        (and should not be done in production programs), since
        printf() is not async\-signal\-safe; see signal\-safety(7).
        Nevertheless, we use printf() here as a simple way of
-       showing that the handler was called. */
+       showing that the handler was called.  */
 \&
     printf("Caught signal %d\[rs]n", sig);
     print_siginfo(si);
@@ -415,34 +414,34 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Establish handler for timer signal. */
+    /* Establish handler for timer signal.  */
 \&
     printf("Establishing handler for signal %d\[rs]n", SIG);
     sa.sa_flags = SA_SIGINFO;
     sa.sa_sigaction = handler;
     sigemptyset(&sa.sa_mask);
     if (sigaction(SIG, &sa, NULL) == \-1)
-        errExit("sigaction");
+        err(EXIT_FAILURE, "sigaction");
 \&
-    /* Block timer signal temporarily. */
+    /* Block timer signal temporarily.  */
 \&
     printf("Blocking signal %d\[rs]n", SIG);
     sigemptyset(&mask);
     sigaddset(&mask, SIG);
     if (sigprocmask(SIG_SETMASK, &mask, NULL) == \-1)
-        errExit("sigprocmask");
+        err(EXIT_FAILURE, "sigprocmask");
 \&
-    /* Create the timer. */
+    /* Create the timer.  */
 \&
     sev.sigev_notify = SIGEV_SIGNAL;
     sev.sigev_signo = SIG;
     sev.sigev_value.sival_ptr = &timerid;
     if (timer_create(CLOCKID, &sev, &timerid) == \-1)
-        errExit("timer_create");
+        err(EXIT_FAILURE, "timer_create");
 \&
     printf("timer ID is %#jx\[rs]n", (uintmax_t) timerid);
 \&
-    /* Start the timer. */
+    /* Start the timer.  */
 \&
     freq_nanosecs = atoll(argv[2]);
     its.it_value.tv_sec = freq_nanosecs / 1000000000;
@@ -451,20 +450,20 @@ main(int argc, char *argv[])
     its.it_interval.tv_nsec = its.it_value.tv_nsec;
 \&
     if (timer_settime(timerid, 0, &its, NULL) == \-1)
-         errExit("timer_settime");
+         err(EXIT_FAILURE, "timer_settime");
 \&
     /* Sleep for a while; meanwhile, the timer may expire
-       multiple times. */
+       multiple times.  */
 \&
     printf("Sleeping for %d seconds\[rs]n", atoi(argv[1]));
     sleep(atoi(argv[1]));
 \&
     /* Unlock the timer signal, so that timer notification
-       can be delivered. */
+       can be delivered.  */
 \&
     printf("Unblocking signal %d\[rs]n", SIG);
     if (sigprocmask(SIG_UNBLOCK, &mask, NULL) == \-1)
-        errExit("sigprocmask");
+        err(EXIT_FAILURE, "sigprocmask");
 \&
     exit(EXIT_SUCCESS);
 }

@@ -56931,12 +56931,6 @@ man2/
 	ioctl_pagemap_scan.2		(moved to PAGEMAP_SCAN.2const)
 
 
-Removed links
--------------
-
-None.
-
-
 Global changes
 --------------
 
@@ -56957,12 +56951,6 @@ to individual pages, or the authors of changes, use git(1).
 Released: 2024-06-17, Aldaya
 
 
-New and rewritten pages
------------------------
-
-None.
-
-
 Newly documented interfaces in existing pages
 ---------------------------------------------
 
@@ -56980,18 +56968,6 @@ man2const/
 man3type/
 	rlimit.3type			(getrlimit(2))
 	rlim_t.3type			(getrlimit(2))
-
-
-Removed pages
--------------
-
-None.
-
-
-Removed links
--------------
-
-None.
 
 
 Global changes
@@ -57015,6 +56991,666 @@ Global changes
 
 Changes to individual files
 ---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
+
+
+==================== Changes in man-pages-6.10 ====================
+
+Released: 2025-01-22, Aldaya
+
+
+New and rewritten pages
+-----------------------
+
+man1/
+	diffman-git.1
+	mansect.1
+	pdfman.1
+	sortman.1
+
+man2/
+	keyctl.2				(split into many pages)
+	listmount.2
+	statmount.2
+	uretprobe.2
+
+man2const/
+	KEYCTL_ASSUME_AUTHORITY.2const		(previously, keyctl.2)
+	KEYCTL_CHOWN.2const			(previously, keyctl.2)
+	KEYCTL_CLEAR.2const			(previously, keyctl.2)
+	KEYCTL_DESCRIBE.2const			(previously, keyctl.2)
+	KEYCTL_DH_COMPUTE.2const		(previously, keyctl.2)
+	KEYCTL_GET_KEYRING_ID.2const		(previously, keyctl.2)
+	KEYCTL_GET_PERSISTENT.2const		(previously, keyctl.2)
+	KEYCTL_GET_SECURITY.2const		(previously, keyctl.2)
+	KEYCTL_INSTANTIATE.2const		(previously, keyctl.2)
+	KEYCTL_INVALIDATE.2const		(previously, keyctl.2)
+	KEYCTL_JOIN_SESSION_KEYRING.2const	(previously, keyctl.2)
+	KEYCTL_LINK.2const			(previously, keyctl.2)
+	KEYCTL_READ.2const			(previously, keyctl.2)
+	KEYCTL_RESTRICT_KEYRING.2const		(previously, keyctl.2)
+	KEYCTL_REVOKE.2const			(previously, keyctl.2)
+	KEYCTL_SEARCH.2const			(previously, keyctl.2)
+	KEYCTL_SESSION_TO_PARENT.2const		(previously, keyctl.2)
+	KEYCTL_SETPERM.2const			(previously, keyctl.2)
+	KEYCTL_SET_REQKEY_KEYRING.2const	(previously, keyctl.2)
+	KEYCTL_SET_TIMEOUT.2const		(previously, keyctl.2)
+	KEYCTL_UNLINK.2const			(previously, keyctl.2)
+	KEYCTL_UPDATE.2const			(previously, keyctl.2)
+	PR_RISCV_SET_ICACHE_FLUSH_CTX.2const
+
+man3/
+	__riscv_flush_icache.3
+	timespec_get.3
+	wcscasecmp.3				(merged wcsncasecmp.3 with it)
+	wcsncasecmp.3				(merged into wcsncasecmp.3)
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+man2/
+	io_submit.2
+		RWF_ATOMIC
+		RWF_NOAPPEND
+	landlock_add_rule.2
+		Landlock ABI v4
+	landlock_create_ruleset.2
+		Landlock ABI v4
+	madvise.2
+		MADV_GUARD_INSTALL
+		MADV_GUARD_REMOVE
+	perf_event_open.2
+		struct perf_event_attr::inherit && cpus=-1
+	posix_fadvise.2
+		POSIX_FADV_NOREUSE
+	prctl.2
+		PR_RISCV_SET_ICACHE_FLUSH_CTX
+	process_madvise.2
+		All flags permitted for calling process
+	readv.2
+		RWF_ATOMIC
+		RWF_NOAPPEND
+	stat.2
+		AT_EMPTY_PATH && NULL
+	statx.2
+		AT_EMPTY_PATH && NULL
+		STATX_DIO_READ_ALIGN
+		STATX_MNT_ID_UNIQUE
+		STATX_SUBVOL
+		STATX_WRITE_ATOMIC
+
+man3/
+	dlinfo.3
+		RTLD_DI_PHDR
+	fnmatch.3
+		FNM_IGNORECASE
+
+man7/
+	landlock.7
+		Landlock ABI v4
+		Landlock ABI v5
+	rtnetlink.7
+		struct ifa_cacheinfo
+
+
+New and changed links
+---------------------
+
+man2/
+	riscv_flush_icache.2			(__riscv_flush_icache(3))
+
+man2const/
+	KEYCTL_INSTANTIATE_IOV.2const		(KEYCTL_INSTANTIATE(2const))
+	KEYCTL_NEGATE.2const			(KEYCTL_INSTANTIATE(2const))
+	KEYCTL_REJECT.2const			(KEYCTL_INSTANTIATE(2const))
+
+man3/
+	timespec_getres.3			(timespec_get(3))
+	wcsncasecmp.3				(wcscasecmp(3))
+
+
+Global changes
+--------------
+
+-  src/bin/
+   -  Add a few programs that are useful for maintaining manual pages:
+      diffman-git(1), mansect(1), pdfman(1), sortman(1)
+
+-  SPONSORS
+   -  Add file listing the sponsors of this project.
+
+-  CONTRIBUTING*
+   -  Expand documentation for contributing to the project.  Especially,
+      regarding help using git(1).
+
+-  man/
+   -  Split keyctl.2
+   -  man2/, man3/: SYNOPSIS: Rename function parameters for consistency
+      and correctness.
+   -  man2/, man3/: SYNOPSIS: Use typeof() to improve readability of
+      function pointers.
+   -  man1/: SYNOPSIS: Use .SY/.YS for formatting commands.
+
+-  share/mk/
+   -  Refactor *FLAGS and LDLIBS variables, as requested by some
+      distros.
+
+-  LICENSES/
+   -  Add GPL-3.0-or-later.
+
+
+Changes to individual files
+---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
+
+
+==================== Changes in man-pages-6.11 ====================
+
+Released: 2025-02-14, Aldaya
+
+
+New and rewritten pages
+-----------------------
+
+man7/
+	pathname.7
+
+
+Global changes
+--------------
+
+-  Build system:
+   -  [Breaking change!]
+      Require the user to pass '-R' to make(1).  This is necessary to be
+      able to do the following change.  When GNU make(1) releases a new
+      version, it will not be necessary to pass -R, but in current
+      versions of make(1) it is necessary.
+
+   -  [Breaking change!]
+      Use '?=' assignments instead of ':=', to support setting make(1)
+      variables in the environment.  Now one can do this:
+
+	$ export prefix=/usr
+	$ make -R
+	$ sudo make install -R
+
+      (The -R is only necessary in GNU make(1) versions prior to the
+       yet-unreleased 4.5.)
+
+   -  Escape '#' in regexes, to support old versions of GNU make(1).
+      This fixes a regression in man-pages-6.10, which caused issues in
+      users with an old-enough version of GNU make(1), such as the one
+      present in Debian old-old-stable.
+
+   -  Fix duplicate overview-panel entries in the PDF book.
+
+-  CONTRIBUTING.d/:
+   -  Add C coding style guide.
+
+-  RELEASE:
+   -  Document the production of the book.
+
+-  man/:
+   -  Refresh bpf-helpers(7) from Linux v6.13.
+
+
+Changes to individual files
+---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
+
+
+==================== Changes in man-pages-6.12 ====================
+
+Released: 2025-02-22, Venezia
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+man2/
+	mbind.2
+		MPOL_PREFERRED_MANY
+	set_mempolicy.2
+		MPOL_PREFERRED_MANY
+
+
+Global changes
+--------------
+
+-  Build system:
+   -  Use ifndef and := instead of ?= (fixes regression introduced in
+      6.11, which affected at least the version string).
+
+
+Changes to individual files
+---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
+
+
+==================== Changes in man-pages-6.13 ====================
+
+Released: 2025-03-06, Vinaròs
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+man7/
+	landlock.7
+		Landlock ABI v6
+		LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET
+		LANDLOCK_SCOPE_SIGNAL
+
+
+Global changes
+--------------
+
+-  Build system:
+   -  PDF book:
+      -  Add support for UNIX V10 sources.
+   -  Makefiles:
+      -  Don't pass an escaped # to grep(1).  Use a trick to work with
+         both new and old systems.  This fixes a regressions in the
+         build system from man-pages-6.11, which was itself introduced
+         while fixing a regression introduced in man-pages-6.10.
+
+
+Changes to individual files
+---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
+
+
+==================== Changes in man-pages-6.14 ====================
+
+Released: 2025-05-09, Aldaya
+
+
+New and rewritten pages
+-----------------------
+
+man2const/
+	UFFDIO_MOVE.2const
+
+man7/
+	mctp.7
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+man2/
+	fanotify_init.2
+		FAN_REPORT_FD_ERROR
+		FAN_REPORT_MNT
+	fanotify_mark.2
+		FAN_PRE_ACCESS
+		FAN_MARK_MNTNS
+		FAN_MNT_ATTACH, FAN_MNT_DETACH
+	open_by_handle_at.2
+		AT_HANDLE_CONNECTABLE
+		AT_HANDLE_MNT_ID_UNIQUE
+
+man2const/
+	TIOCLINUX.2const
+		TIOCL_SELCHAR
+		TIOCL_SELWORD
+		TIOCL_SELLINE
+		TIOCL_SELPOINTER
+		TIOCL_SELCLEAR
+		TIOCL_SELMOUSEREPORT
+
+man3/
+	abs.3
+		uabs(3)
+		ulabs(3)
+		ullabs(3)
+		uimaxabs(3)
+
+man7/
+	fanotify.7
+		FAN_DENY_ERRNO()
+		FAN_REPORT_FD_ERROR
+		FAN_PRE_ACCESS
+		FAN_RESPONSE_INFO_AUDIT_RULE
+		FAN_REPORT_MNT
+		FAN_MNT_ATTACH, FAN_MNT_DETACH
+		FAN_EVENT_INFO_TYPE_MNT
+
+
+New and changed links
+---------------------
+
+man3/
+	uabs.3					(abs(3))
+	ulabs.3					(abs(3))
+	ullabs.3				(abs(3))
+	uimaxabs.3				(abs(3))
+
+
+Global changes
+--------------
+
+-  CREDITS, *
+   -  Move in-source contribution records to a new CREDITS file, and
+      update copyright notices to be uniform across the project.
+
+-  man/
+   -  Use GNU forward declarations of parameters for sizes of array
+      parameters.
+   -  \fX => \f[X]
+   -  Use 'path' instead of 'pathname' for parameters.
+
+
+Changes to individual files
+---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
+
+
+==================== Changes in man-pages-6.15 ====================
+
+Released: 2025-07-20, Aldaya
+
+
+New and rewritten pages
+-----------------------
+
+man2/
+	cachestat.2
+	fcntl.2					(split into many pages)
+	fcntl_locking.2				(previously, fcntl(2))
+	futex.2					(split into many pages)
+
+man2const/
+	FUTEX_CMP_REQUEUE.2const		(previously, futex(2))
+	FUTEX_CMP_REQUEUE_PI.2const		(previously, futex(2))
+	FUTEX_FD.2const				(previously, futex(2))
+	FUTEX_LOCK_PI.2const			(previously, futex(2))
+	FUTEX_LOCK_PI2.2const			(previously, futex(2))
+	FUTEX_REQUEUE.2const			(previously, futex(2))
+	FUTEX_TRYLOCK_PI.2const			(previously, futex(2))
+	FUTEX_UNLOCK_PI.2const			(previously, futex(2))
+	FUTEX_WAIT.2const			(previously, futex(2))
+	FUTEX_WAIT_BITSET.2const		(previously, futex(2))
+	FUTEX_WAIT_REQUEUE_PI.2const		(previously, futex(2))
+	FUTEX_WAKE.2const			(previously, futex(2))
+	FUTEX_WAKE_OP.2const			(previously, futex(2))
+	F_DUPFD.2const				(previously, fcntl(2))
+	F_GETFD.2const				(previously, fcntl(2))
+	F_GETFL.2const				(previously, fcntl(2))
+	F_GETLEASE.2const			(previously, fcntl(2))
+	F_GETPIPE_SZ.2const			(previously, fcntl(2))
+	F_GETSIG.2const				(previously, fcntl(2))
+	F_GET_RW_HINT.2const			(previously, fcntl(2))
+	F_GET_SEALS.2const			(previously, fcntl(2))
+	F_NOTIFY.2const				(previously, fcntl(2))
+	PR_FUTEX_HASH.2const			(previously, fcntl(2))
+
+man3attr/
+	intro.3attr
+	gnu::aligned.3attr
+	gnu::format.3attr
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+man2/
+	chmod.2
+		fchmodat(AT_EMPTY_PATH)
+		fchmodat(AT_SYMLINK_NOFOLLOW)
+
+	ioctl_vt.2
+		VT_GETCONSIZECSRPOS
+
+	prctl.2
+		PR_FUTEX_HASH
+
+	*printf.3
+		ERRORS
+
+	statx.2
+		statx.stx_atomic_write_unit_max_opt
+
+man2const/
+	PR_FUTEX_HASH.2const
+		PR_FUTEX_HASH
+
+	TIOCLINUX.2const
+		TIOCL_GETBRACKETEDPASTE
+
+	UFFDIO_API.2const
+		UFFDIO_FEATURE_MOVE
+
+man5/
+	core.5
+		/proc/sys/kernel/core_pattern	%F
+
+
+New and changed links
+---------------------
+
+man2const/
+	FUTEX_WAKE_BITSET.2const		(FUTEX_WAIT_BITSET(2const))
+	F_ADD_SEALS.2const			(F_GET_SEALS(2const))
+	F_DUPFD_CLOEXEC.2const			(F_DUPFD(2const))
+	F_GETLK.2const				(fcntl_locking(2))
+	F_GETOWN.2const				(F_GETSIG(2const))
+	F_GETOWN_EX.2const			(F_GETSIG(2const))
+	F_GET_FILE_RW_HINT.2const		(F_GET_RW_HINT(2const))
+	F_OFD_GETLK.2const			(fcntl_locking(2))
+	F_OFD_SETLK.2const			(fcntl_locking(2))
+	F_OFD_SETLKW.2const			(fcntl_locking(2))
+	F_SETFD.2const				(F_GETFD(2const))
+	F_SETFL.2const				(F_GETFL(2const))
+	F_SETLEASE.2const			(F_GETLEASE(2const))
+	F_SETLK.2const				(fcntl_locking(2))
+	F_SETLKW.2const				(fcntl_locking(2))
+	F_SETOWN.2const				(F_GETSIG(2const))
+	F_SETOWN_EX.2const			(F_GETSIG(2const))
+	F_SETPIPE_SZ.2const			(F_GETPIPE_SZ(2const))
+	F_SETSIG.2const				(F_GETSIG(2const))
+	F_SET_FILE_RW_HINT.2const		(F_GET_RW_HINT(2const))
+	F_SET_RW_HINT.2const			(F_GET_RW_HINT(2const))
+	VT_GETCONSIZECSRPOS.2const		(ioctl_vt(2))
+
+
+Global changes
+--------------
+
+-  CREDITS renamed to AUTHORS.
+
+-  man/
+   -  realloc(3): Clarify (non)conformance of realloc(p,0) in glibc.
+   -  Don't use bold/italics for forward declarations of function
+      parameters.  This differentiates them from actual parameters.
+   -  fcntl(2) and futex(2) have been split into smaller spages that are
+      easier to read, and also easier to maintain.
+
+
+Changes to individual files
+---------------------------
+
+The manual pages and other files in the repository have been improved
+beyond what this changelog covers.  To learn more about changes applied
+to individual pages, or the authors of changes, use git(1).
+
+
+==================== Changes in man-pages-6.16 ====================
+
+Released: 2025-10-29, Aldaya
+
+
+New and rewritten pages
+-----------------------
+
+man2/
+	fsconfig.2
+	fsmount.2
+	fsopen.2
+	fspick.2
+	move_mount.2
+	open_tree.2
+
+man2const/
+	PR_FUTEX_HASH_GET_SLOTS.2const
+	PR_FUTEX_HASH_SET_SLOTS.2const
+
+man2type/
+	mount_attr.2type			(split from mount_setattr(2))
+
+man3/
+	_Fork.3
+	countof.3
+	memeq.3
+	streq.3
+
+
+Newly documented interfaces in existing pages
+---------------------------------------------
+
+man2/
+	mount_setattr.2
+		glibc wrapper
+
+	pidfd_open.2
+		PIDFD_THREAD
+
+	pidfd_send_signal.2
+		PIDFD_SIGNAL_THREAD
+		PIDFD_SIGNAL_THREAD_GROUP
+		PIDFD_SIGNAL_PROCESS_GROUP
+
+	quotactl.2
+		quotactl_fd(2)
+
+	readv.2
+		RWF_DONTCACHE
+
+	sigaction.2
+		SI_ASYNCNL
+		FPE_FLTUNK
+		FPE_CONDTRAP
+		SEGV_ACCADI
+		SEGV_ADIDERR
+		SEGV_ADIPERR
+		SEGV_MTEAERR
+		SEGV_MTESERR
+		SEGV_CPERR
+		TRAP_UNK
+		TRAP_PERF
+		SYS_USER_DISPATCH
+		EMT_TAGOVF
+
+man3/
+	abs.3
+		umaxabs(3)
+
+	opendir.3
+		ENAMETOOLONG
+
+man7/
+	operator.7
+		(type){}
+		alignof
+		_Countof
+
+	rtnetlink.7
+		RTAX_UNSPEC
+		RTAX_LOCK
+		RTAX_MTU
+		RTAX_WINDOW
+		RTAX_RTT
+		RTAX_RTTVAR
+		RTAX_SSTHRESH
+		RTAX_CWND
+		RTAX_ADVMSS
+		RTAX_REORDERING
+		RTAX_HOPLIMIT
+		RTAX_INITCWND
+		RTAX_FEATURES
+		RTAX_RTO_MIN
+		RTAX_INITRWND
+		RTAX_QUICKACK
+		RTAX_CC_ALGO
+		RTAX_FASTOPEN_NO_COOKIE
+
+	sched.7
+		CONFIG_PREEMPT
+		CONFIG_PREEMPT_LAZY
+
+	tcp.7
+		TCP_SAVE_SYN
+		TCP_SAVED_SYN
+
+
+New and changed links
+---------------------
+
+man2/
+	open_tree_attr.2			(open_tree(2))
+	quotactl_fd.2				(quotactl(2))
+man3/
+	umaxabs.3				(abs(3))
+
+
+Global changes
+--------------
+
+-  man/
+   -  Update documentation for POSIX.1-2024 (still more work to do).
+   -  SYNOPSIS: Use GNU forward-declarations of parameters for sizes of
+      array parameters.
+   -  Improve style of source code for tbl(1) tables.
+   -  man2/: Use the common name 'fd' instead of 'fildes'.
+   -  Use semantic newlines.
+   -  EXAMPLES
+      -  Use err(3) and errc(3bsd) instead of similar macros.
+      -  Fix includes (thanks to iwyu(1)).
+      -  Use NITEMS() consistently.
+      -  Don't name unused parameters.
+-  share/mk/
+   -  Add support for the chapter man3attr.
+   -  help: Document the usual targets.
+   -  lint-man-blank: Add target to lint about blank lines.
+   -  lint-man-ws: Diagnose spurious use of white space.
+   -  lint-man-quote: Diagnose an unmatched quote.
+   -  lint-man-poems: Diagnose (lack of) semantic newlines.
+   -  lint-man-dash: Diagnose unescaped dashes
+   -  Merge handling of man(7) and mdoc(7) pages.
+   -  lint, build, check: Move exceptions to separate files.
+   -  Remove unused variables.
+   -  Unify local variable names.
+   -  Silence diagnostics about unnamed parameters.
+   -  configure/build-depends/:
+      -  Add awk/awk.
+      -  Add pcre2-utils/pcre2grep.
+
+
+Changes to individual files
+---------------------------
+
+-  src/bin/
+   -  sortman(1): Fix order of intro(*) pages for subsections.
+   -  diffman-git(1): Show sections as hunk context.
 
 The manual pages and other files in the repository have been improved
 beyond what this changelog covers.  To learn more about changes applied

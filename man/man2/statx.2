@@ -1,10 +1,5 @@
 '\" t
-.\" Copyright (c) 2017 David Howells <dhowells@redhat.com>
-.\"
-.\" Derived from the stat.2 manual page:
-.\"   Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
-.\"   Parts Copyright (c) 1995 Nicolai Langfeldt (janl@ifi.uio.no), 1/1/95
-.\"   and Copyright (c) 2006, 2007, 2014 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -20,7 +15,7 @@ Standard C library
 .BR "#include <fcntl.h>           " "/* Definition of " AT_* " constants */"
 .B #include <sys/stat.h>
 .P
-.BI "int statx(int " dirfd ", const char *_Nullable restrict " pathname ,
+.BI "int statx(int " dirfd ", const char *_Nullable restrict " path ,
 .BI "          int " flags ", unsigned int " mask ,
 .BI "          struct statx *restrict " statxbuf );
 .fi
@@ -76,6 +71,12 @@ struct statx {
     __u32 stx_atomic_write_unit_min;
     __u32 stx_atomic_write_unit_max;
     __u32 stx_atomic_write_segments_max;
+\&
+    /* File offset alignment for direct I/O reads */
+    __u32 stx_dio_read_offset_align;
+\&
+    /* Direct I/O atomic write max opt limit */
+    __u32 stx_atomic_write_unit_max_opt;
 };
 .EE
 .in
@@ -98,12 +99,12 @@ but in the case of
 .BR statx ()
 with a pathname,
 execute (search) permission is required on all of the directories in
-.I pathname
+.I path
 that lead to the file.
 .P
 .BR statx ()
 uses
-.IR pathname ,
+.IR path ,
 .IR dirfd ,
 and
 .I flags
@@ -111,7 +112,7 @@ to identify the target file in one of the following ways:
 .TP
 An absolute pathname
 If
-.I pathname
+.I path
 begins with a slash,
 then it is an absolute pathname that identifies the target file.
 In this case,
@@ -120,23 +121,23 @@ is ignored.
 .TP
 A relative pathname
 If
-.I pathname
+.I path
 is a string that begins with a character other than a slash and
 .I dirfd
 is
 .BR AT_FDCWD ,
 then
-.I pathname
+.I path
 is a relative pathname that is interpreted relative to the process's
 current working directory.
 .TP
 A directory-relative pathname
 If
-.I pathname
+.I path
 is a string that begins with a character other than a slash and
 .I dirfd
 is a file descriptor that refers to a directory, then
-.I pathname
+.I path
 is a relative pathname that is interpreted relative to the directory
 referred to by
 .IR dirfd .
@@ -146,7 +147,7 @@ for an explanation of why this is useful.)
 .TP
 By file descriptor
 If
-.I pathname
+.I path
 is an empty string (or NULL since Linux 6.11) and the
 .B AT_EMPTY_PATH
 flag is specified in
@@ -164,7 +165,7 @@ is constructed by ORing together zero or more of the following constants:
 .B AT_EMPTY_PATH
 .\" commit 65cfc6722361570bfe255698d9cd4dccaf47570d
 If
-.I pathname
+.I path
 is an empty string (or NULL since Linux 6.11),
 operate on the file referred to by
 .I dirfd
@@ -184,7 +185,7 @@ the call operates on the current working directory.
 .TP
 .B AT_NO_AUTOMOUNT
 Don't automount the terminal ("basename") component of
-.I pathname
+.I path
 if it is a directory that is an automount point.
 This allows the caller to gather attributes of an automount point
 (rather than the location it would mount).
@@ -206,7 +207,7 @@ was set.
 .TP
 .B AT_SYMLINK_NOFOLLOW
 If
-.I pathname
+.I path
 is a symbolic link, do not dereference it:
 instead return information about the link itself, like
 .BR lstat (2).
@@ -261,15 +262,18 @@ STATX_BTIME	Want stx_btime
 STATX_ALL	The same as STATX_BASIC_STATS | STATX_BTIME.
 	It is deprecated and should not be used.
 STATX_MNT_ID	Want stx_mnt_id (since Linux 5.8)
-STATX_DIOALIGN	Want stx_dio_mem_align and stx_dio_offset_align
+STATX_DIOALIGN	Want stx_dio_mem_align and stx_dio_offset_align.
 	(since Linux 6.1; support varies by filesystem)
 STATX_MNT_ID_UNIQUE	Want unique stx_mnt_id (since Linux 6.8)
 STATX_SUBVOL	Want stx_subvol
 	(since Linux 6.10; support varies by filesystem)
 STATX_WRITE_ATOMIC	Want stx_atomic_write_unit_min,
 	stx_atomic_write_unit_max,
-	and stx_atomic_write_segments_max.
+	stx_atomic_write_segments_max,
+	and stx_atomic_write_unit_max_opt.
 	(since Linux 6.11; support varies by filesystem)
+STATX_DIO_READ_ALIGN	Want stx_dio_read_offset_align.
+	(since Linux 6.14; support varies by filesystem)
 .TE
 .in
 .P
@@ -467,11 +471,33 @@ This will only be nonzero if
 .I stx_dio_mem_align
 is nonzero, and vice versa.
 .TP
+.I stx_dio_read_offset_align
+The alignment (in bytes) required for file offsets and I/O segment lengths for
+direct I/O reads
+.RB ( O_DIRECT )
+on this file.
+If zero,
+the limit in
+.I stx_dio_offset_align
+applies for reads as well.
+If non-zero,
+this value must be smaller than or equal to
+.I stx_dio_offset_align
+which must be provided by the file system
+if requested by the application.
+The memory alignment in
+.I stx_dio_mem_align
+is not affected by this value.
+.IP
+.B STATX_DIO_READ_ALIGN
+.RI ( stx_dio_offset_align )
+is supported by xfs on regular files since Linux 6.14.
+.TP
 .I stx_subvol
 Subvolume number of the current file.
 .IP
 Subvolumes are fancy directories,
-i.e. they form a tree structure that may be walked recursively.
+i.e., they form a tree structure that may be walked recursively.
 Support varies by filesystem;
 it is supported by bcachefs and btrfs since Linux 6.10.
 .TP
@@ -482,6 +508,30 @@ The minimum and maximum sizes (in bytes) supported for direct I/O
 .RB ( O_DIRECT )
 on the file to be written with torn-write protection.
 These values are each guaranteed to be a power-of-2.
+.IP
+.B STATX_WRITE_ATOMIC
+.RI ( stx_atomic_write_unit_min ,
+.IR stx_atomic_write_unit_max ,
+and
+.IR stx_atomic_write_segments_max )
+is supported on block devices since Linux 6.11.
+The support on regular files varies by filesystem;
+it is supported by xfs and ext4 since Linux 6.13.
+.TP
+.I stx_atomic_write_unit_max_opt
+The maximum size (in bytes) which is
+optimised for writes issued with torn-write protection.
+If non-zero,
+this value will not exceed the value in
+.I stx_atomic_write_unit_max
+and will not be less than the value in
+.IR stx_atomic_write_unit_min .
+A value of zero indicates that
+.I stx_atomic_write_unit_max
+is the optimised limit.
+Slower writes may be experienced when the size of the write exceeds
+.I stx_atomic_write_unit_max_opt
+(when non-zero).
 .TP
 .I stx_atomic_write_segments_max
 The maximum number of elements in an array of vectors
@@ -589,12 +639,12 @@ is set to indicate the error.
 .B EACCES
 Search permission is denied for one of the directories
 in the path prefix of
-.IR pathname .
+.IR path .
 (See also
 .BR path_resolution (7).)
 .TP
 .B EBADF
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -602,7 +652,7 @@ is neither
 nor a valid file descriptor.
 .TP
 .B EFAULT
-.I pathname
+.I path
 or
 .I statxbuf
 points to a location outside the process's accessible address space
@@ -611,7 +661,8 @@ or is NULL
 .B AT_EMPTY_PATH
 is specified in
 .IR flags ,
-pathname is allowed to be NULL).
+.I path
+is allowed to be NULL).
 .TP
 .B EINVAL
 Invalid flag specified in
@@ -628,14 +679,14 @@ with the value 0x80000000U.)
 Too many symbolic links encountered while traversing the pathname.
 .TP
 .B ENAMETOOLONG
-.I pathname
+.I path
 is too long.
 .TP
 .B ENOENT
 A component of
-.I pathname
+.I path
 does not exist, or
-.I pathname
+.I path
 is an empty string and
 .B AT_EMPTY_PATH
 was not specified in
@@ -646,9 +697,9 @@ Out of memory (i.e., kernel memory).
 .TP
 .B ENOTDIR
 A component of the path prefix of
-.I pathname
+.I path
 is not a directory or
-.I pathname
+.I path
 is relative and
 .I dirfd
 is a file descriptor referring to a file other than a directory.

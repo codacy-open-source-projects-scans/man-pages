@@ -1,14 +1,6 @@
-.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
-.\"             and Copyright (C) 1993 Michael Haardt;
-.\"             and Copyright (C) 1993,1995 Ian Jackson
-.\"		and Copyright (C) 2006, 2014 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 00:35:52 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Thu Jun  4 12:21:13 1998 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified Thu Mar  3 09:49:35 2005 by Michael Haardt <michael@moria.de>
-.\" 2007-03-25, mtk, added various text to DESCRIPTION.
 .\"
 .TH rename 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -96,7 +88,8 @@ must either not exist, or it must specify an empty directory.
 .P
 If
 .I oldpath
-refers to a symbolic link, the link is renamed; if
+refers to a symbolic link, the link is renamed;
+if
 .I newpath
 refers to a symbolic link, the link will be overwritten.
 .SS renameat()
@@ -242,11 +235,15 @@ When not part of a union/overlay,
 the whiteout appears as a character device with a {0,0} device number.
 .\" https://www.freebsd.org/cgi/man.cgi?query=mount_unionfs&manpath=FreeBSD+11.0-RELEASE
 (Note that other union/overlay implementations may employ different methods
-for storing whiteout entries; specifically, BSD union mount employs
+for storing whiteout entries;
+specifically,
+BSD union mount employs
 a separate inode type,
 .BR DT_WHT ,
-which, while supported by some filesystems available in Linux,
-such as CODA and XFS, is ignored by the kernel's whiteout support code,
+which,
+while supported by some filesystems available in Linux,
+such as CODA and XFS,
+is ignored by the kernel's whiteout support code,
 as of Linux 4.19, at least.)
 .IP
 .B RENAME_WHITEOUT
@@ -491,19 +488,20 @@ capability.
 .SH STANDARDS
 .TP
 .BR rename ()
-C11, POSIX.1-2008.
+C11, POSIX.1-2024.
 .TP
 .BR renameat ()
-POSIX.1-2008.
+POSIX.1-2024.
 .TP
 .BR renameat2 ()
 Linux.
 .SH HISTORY
 .TP
 .BR rename ()
-4.3BSD, C89, POSIX.1-2001.
+C89, POSIX.1-2001, 4.3BSD.
 .TP
 .BR renameat ()
+POSIX.1-2008.
 Linux 2.6.16,
 glibc 2.4.
 .TP

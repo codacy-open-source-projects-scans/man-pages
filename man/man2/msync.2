@@ -1,4 +1,4 @@
-.\" Copyright (C) 1996 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -12,7 +12,8 @@ Standard C library
 .nf
 .B #include <sys/mman.h>
 .P
-.BI "int msync(void " addr [. length "], size_t " length ", int " flags );
+.BR "int msync(" "size_t length;"
+.BI "          void " addr [ length "], size_t " length ", int " flags );
 .fi
 .SH DESCRIPTION
 .BR msync ()
@@ -68,7 +69,8 @@ and a memory lock exists for the specified address range.
 .TP
 .B EINVAL
 .I addr
-is not a multiple of PAGESIZE; or any bit other than
+is not a multiple of PAGESIZE;
+or any bit other than
 .BR MS_ASYNC " | " MS_INVALIDATE " | " MS_SYNC
 is set in
 .IR flags ;
@@ -109,7 +111,7 @@ or
 in
 .IR flags .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .P
@@ -137,4 +139,4 @@ to a value greater than 0.
 .SH SEE ALSO
 .BR mmap (2)
 .P
-B.O. Gallmeister, POSIX.4, O'Reilly, pp. 128\[en]129 and 389\[en]391.
+B.O.\& Gallmeister, POSIX.4, O'Reilly, pp.\& 128\[en]129 and 389\[en]391.

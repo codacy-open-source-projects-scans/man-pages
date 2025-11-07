@@ -1,17 +1,6 @@
-.\" Copyright (C) 2005, 2008, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" (A few fragments remain from an earlier (1992) version by
-.\" Drew Eckhardt <drew@cs.colorado.edu>.)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified 1993-07-23 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1996-10-22 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2004-06-17 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2005, mtk: added an example program
-.\" Modified 2008-01-09, mtk: rewrote DESCRIPTION; minor additions
-.\"     to EXAMPLE text.
-.\" 2008-10-10, mtk: add description of pipe2()
 .\"
 .TH pipe 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -181,7 +170,9 @@ The system-wide limit on the total number of open files has been reached.
 .TP
 .B ENFILE
 The user hard limit on memory that can be allocated for pipes
-has been reached and the caller is not privileged; see
+has been reached
+and the caller is not privileged;
+see
 .BR pipe (7).
 .TP
 .B ENOPKG
@@ -195,8 +186,10 @@ is not compiled into the kernel.
 .SH VERSIONS
 .\" See http://math-atlas.sourceforge.net/devel/assembly/64.psabi.1.33.ps.Z
 .\" for example, section 3.2.1 "Registers and the Stack Frame".
-The System V ABI on some architectures allows the use of more than one register
-for returning multiple values; several architectures
+The System V ABI on some architectures
+allows the use of more than one register
+for returning multiple values;
+several architectures
 (namely, Alpha, IA-64, MIPS, SuperH, and SPARC/SPARC64)
 (ab)use this feature in order to implement the
 .BR pipe ()
@@ -210,18 +203,14 @@ See
 .BR syscall (2)
 for information regarding registers used for storing second file descriptor.
 .SH STANDARDS
-.TP
-.BR pipe ()
-POSIX.1-2008.
-.TP
-.BR pipe2 ()
-Linux.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR pipe ()
 POSIX.1-2001.
 .TP
 .BR pipe2 ()
+POSIX.1-2024.
 Linux 2.6.27,
 glibc 2.9.
 .SH EXAMPLES

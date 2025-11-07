@@ -1,6 +1,4 @@
-.\" Copyright (C) 2006 Red Hat, Inc. All Rights Reserved.
-.\" Written by Marcela Maslanova <mmaslano@redhat.com>
-.\" and Copyright 2013, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -16,7 +14,8 @@ Standard C library
 .BR "#include <sys/syscall.h>" "      /* Definition of " SYS_* " constants */"
 .B #include <unistd.h>
 .P
-.BI "[[deprecated]] long syscall(SYS_getunwind, void " buf [. buf_size ],
+.BR "[[deprecated]] long syscall(" "size_t buf_size;"
+.BI "                            SYS_getunwind, void " buf [ buf_size ],
 .BI "                            size_t " buf_size );
 .fi
 .SH DESCRIPTION

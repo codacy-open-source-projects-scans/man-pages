@@ -1,9 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 19:53:02 1993 by Rik Faith (faith@cs.unc.edu)
 .\"
 .\" FIXME Many more values for 'name' are supported, some of which
 .\" are documented under 'info libc confstr'.
@@ -21,7 +19,8 @@ Standard C library
 .nf
 .B #include <unistd.h>
 .P
-.BI "size_t confstr(int " "name" ", char " buf [. size "], size_t " size );
+.BR "size_t confstr(" "size_t size;"
+.BI "               int " "name" ", char " buf [ size "], size_t " size );
 .fi
 .P
 .RS -4

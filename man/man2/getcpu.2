@@ -1,8 +1,6 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
 .\" SPDX-License-Identifier: Linux-man-pages-1-para
-.\"
-.\" This man page is Copyright (C) 2006 Andi Kleen <ak@muc.de>.
-.\"
-.\" 2008, mtk, various edits
 .\"
 .TH getcpu 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -15,8 +13,7 @@ Standard C library
 .BR "#define _GNU_SOURCE" "             /* See feature_test_macros(7) */"
 .B #include <sched.h>
 .P
-.BI "int getcpu(unsigned int *_Nullable " cpu ", \
-unsigned int *_Nullable " node );
+.BI "int getcpu(unsigned int *_Nullable " cpu ", unsigned int *_Nullable " node );
 .fi
 .SH DESCRIPTION
 The

@@ -1,4 +1,4 @@
-.\" Copyright (c) 2012 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -77,7 +77,8 @@ The default value for the
 .B M_ARENA_TEST
 parameter is 2 on systems where
 .I sizeof(long)
-is 4; otherwise the default value is 8.
+is 4;
+otherwise the default value is 8.
 .IP
 This parameter has been available since glibc 2.10 via
 .BR \-\-enable\-experimental\-malloc ,
@@ -139,7 +140,9 @@ the following numeric values are meaningful for
 .RS 12
 .TP
 .B 0
-Ignore error conditions; continue execution (with undefined results).
+Ignore error conditions;
+continue execution
+(with undefined results).
 .TP
 .B 1
 Print a detailed error message and continue execution.
@@ -517,7 +520,7 @@ under glibc, with the default value for
 .P
 .in +4n
 .EX
-$ \fB./a.out\fP
+.RB $ " ./a.out" ;
 main(): returned from first free() call
 *** glibc detected *** ./a.out: double free or corruption (top): 0x09d30008 ***
 ======= Backtrace: =========
@@ -542,14 +545,14 @@ The following runs show the results when employing other values for
 .P
 .in +4n
 .EX
-$ \fB./a.out 1\fP             # Diagnose error and continue
+.RB $ " ./a.out 1" ";             # Diagnose error and continue"
 main(): returned from first free() call
 *** glibc detected *** ./a.out: double free or corruption (top): 0x09cbe008 ***
 main(): returned from second free() call
-$ \fB./a.out 2\fP             # Abort without error message
+.RB $ " ./a.out 2" ";             # Abort without error message"
 main(): returned from first free() call
 Aborted (core dumped)
-$ \fB./a.out 0\fP             # Ignore error and continue
+.RB $ " ./a.out 0" ";             # Ignore error and continue"
 main(): returned from first free() call
 main(): returned from second free() call
 .EE
@@ -561,7 +564,7 @@ environment variable:
 .P
 .in +4n
 .EX
-$ \fBMALLOC_CHECK_=1 ./a.out\fP
+.RB $ " MALLOC_CHECK_=1 ./a.out" ;
 main(): returned from first free() call
 *** glibc detected *** ./a.out: free(): invalid pointer: 0x092c2008 ***
 main(): returned from second free() call

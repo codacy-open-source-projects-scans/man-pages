@@ -1,4 +1,4 @@
-# Copyright 2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -10,9 +10,15 @@ DEFAULT_TROFFFLAGS := \
 	-wbreak \
 	-rS12 \
 	-rU0
+ifndef TROFFFLAGS
 TROFFFLAGS         :=
+endif
+ifndef TROFFFLAGS_
 TROFFFLAGS_        := $(DEFAULT_TROFFFLAGS) $(TROFFFLAGS)
+endif
+ifndef TROFF
 TROFF              := troff
+endif
 
 
 endif  # include guard

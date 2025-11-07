@@ -1,9 +1,10 @@
 '\" t
-.\" Copyright 2000 Sam Varshavchik <mrsam@courier-mta.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
 .\" References: RFC 2553
+.\"
 .TH inet_ntop 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 inet_ntop \- convert IPv4 and IPv6 addresses from binary to text form
@@ -14,8 +15,9 @@ Standard C library
 .nf
 .B #include <arpa/inet.h>
 .P
-.BI "const char *inet_ntop(int " af ", const void *restrict " src ,
-.BI "                      char " dst "[restrict ." size "], socklen_t " size );
+.BR "const char *inet_ntop(" "socklen_t size;"
+.BI "                      int " af ", const void *restrict " src ,
+.BI "                      char " dst "[restrict " size "], socklen_t " size );
 .fi
 .SH DESCRIPTION
 This function converts the network address structure
@@ -45,7 +47,8 @@ points to a
 .I struct in_addr
 (in network byte order)
 which is converted to an IPv4 network address in
-the dotted-decimal format, "\fIddd.ddd.ddd.ddd\fP".
+the dotted-decimal format,
+.RI \[dq] ddd.ddd.ddd.ddd \[dq].
 The buffer
 .I dst
 must be at least

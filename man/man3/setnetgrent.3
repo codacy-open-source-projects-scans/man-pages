@@ -1,10 +1,7 @@
 '\" t
-.\"  Copyright 2002 walter harms (walter.harms@informatik.uni-oldenburg.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
-.\"
-.\"  based on glibc infopages
-.\" polished - aeb
 .\"
 .TH setnetgrent 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -22,9 +19,10 @@ Standard C library
 .P
 .BI "int getnetgrent(char **restrict " host ,
 .BI "            char **restrict " user ", char **restrict " domain );
-.BI "int getnetgrent_r(char **restrict " host ,
+.BR "int getnetgrent_r(" "size_t size;"
+.BI "            char **restrict " host ,
 .BI "            char **restrict " user ", char **restrict " domain ,
-.BI "            char " buf "[restrict ." buflen "], size_t " buflen );
+.BI "            char " buf "[restrict " size "], size_t " size );
 .P
 .BI "int innetgr(const char *" netgroup ", const char *" host ,
 .BI "            const char *" user ", const char *" domain );

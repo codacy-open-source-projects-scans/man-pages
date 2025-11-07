@@ -1,4 +1,4 @@
-.\" Copyright (c) 2010 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -121,7 +121,8 @@ See
 for further details.
 .TP
 .I aio_lio_opcode
-The type of operation to be performed; used only for
+The type of operation to be performed;
+used only for
 .BR lio_listio (3).
 .P
 In addition to the standard functions listed above,
@@ -200,20 +201,20 @@ and these are satisfied by two lines of input containing
 .P
 .in +4n
 .EX
-$ \fB./a.out /dev/stdin /dev/stdin\fP
+.RB $ " ./a.out /dev/stdin /dev/stdin" ;
 opened /dev/stdin on descriptor 3
 opened /dev/stdin on descriptor 4
 aio_error():
     for request 0 (descriptor 3): In progress
     for request 1 (descriptor 4): In progress
-\fBabc\fP
+.B abc
 I/O completion signal received
 aio_error():
     for request 0 (descriptor 3): I/O succeeded
     for request 1 (descriptor 4): In progress
 aio_error():
     for request 1 (descriptor 4): In progress
-\fBx\fP
+.B x
 I/O completion signal received
 aio_error():
     for request 1 (descriptor 4): I/O succeeded
@@ -226,6 +227,7 @@ aio_return():
 .SS Program source
 \&
 .EX
+#include <err.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -235,8 +237,6 @@ aio_return():
 #include <signal.h>
 \&
 #define BUF_SIZE 20     /* Size of buffers for read operations */
-\&
-#define errExit(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 \&
 struct ioRequest {      /* Application\-defined structure for tracking
                            I/O requests */
@@ -286,32 +286,32 @@ main(int argc, char *argv[])
 \&
     numReqs = argc \- 1;
 \&
-    /* Allocate our arrays. */
+    /* Allocate our arrays.  */
 \&
     struct ioRequest *ioList = calloc(numReqs, sizeof(*ioList));
     if (ioList == NULL)
-        errExit("calloc");
+        err(EXIT_FAILURE, "calloc");
 \&
     struct aiocb *aiocbList = calloc(numReqs, sizeof(*aiocbList));
     if (aiocbList == NULL)
-        errExit("calloc");
+        err(EXIT_FAILURE, "calloc");
 \&
-    /* Establish handlers for SIGQUIT and the I/O completion signal. */
+    /* Establish handlers for SIGQUIT and the I/O completion signal.  */
 \&
     sa.sa_flags = SA_RESTART;
     sigemptyset(&sa.sa_mask);
 \&
     sa.sa_handler = quitHandler;
     if (sigaction(SIGQUIT, &sa, NULL) == \-1)
-        errExit("sigaction");
+        err(EXIT_FAILURE, "sigaction");
 \&
     sa.sa_flags = SA_RESTART | SA_SIGINFO;
     sa.sa_sigaction = aioSigHandler;
     if (sigaction(IO_SIGNAL, &sa, NULL) == \-1)
-        errExit("sigaction");
+        err(EXIT_FAILURE, "sigaction");
 \&
     /* Open each file specified on the command line, and queue
-       a read request on the resulting file descriptor. */
+       a read request on the resulting file descriptor.  */
 \&
     for (size_t j = 0; j < numReqs; j++) {
         ioList[j].reqNum = j;
@@ -320,13 +320,13 @@ main(int argc, char *argv[])
 \&
         ioList[j].aiocbp\->aio_fildes = open(argv[j + 1], O_RDONLY);
         if (ioList[j].aiocbp\->aio_fildes == \-1)
-            errExit("open");
+            err(EXIT_FAILURE, "open");
         printf("opened %s on descriptor %d\[rs]n", argv[j + 1],
                 ioList[j].aiocbp\->aio_fildes);
 \&
         ioList[j].aiocbp\->aio_buf = malloc(BUF_SIZE);
         if (ioList[j].aiocbp\->aio_buf == NULL)
-            errExit("malloc");
+            err(EXIT_FAILURE, "malloc");
 \&
         ioList[j].aiocbp\->aio_nbytes = BUF_SIZE;
         ioList[j].aiocbp\->aio_reqprio = 0;
@@ -338,12 +338,12 @@ main(int argc, char *argv[])
 \&
         s = aio_read(ioList[j].aiocbp);
         if (s == \-1)
-            errExit("aio_read");
+            err(EXIT_FAILURE, "aio_read");
     }
 \&
     openReqs = numReqs;
 \&
-    /* Loop, monitoring status of I/O requests. */
+    /* Loop, monitoring status of I/O requests.  */
 \&
     while (openReqs > 0) {
         sleep(3);       /* Delay between each monitoring step */
@@ -352,7 +352,7 @@ main(int argc, char *argv[])
 \&
             /* On receipt of SIGQUIT, attempt to cancel each of the
                outstanding I/O requests, and display status returned
-               from the cancelation requests. */
+               from the cancelation requests.  */
 \&
             printf("got SIGQUIT; canceling I/O requests: \[rs]n");
 \&
@@ -377,7 +377,7 @@ main(int argc, char *argv[])
         }
 \&
         /* Check the status of each I/O request that is still
-           in progress. */
+           in progress.  */
 \&
         printf("aio_error():\[rs]n");
         for (size_t j = 0; j < numReqs; j++) {
@@ -409,7 +409,7 @@ main(int argc, char *argv[])
 \&
     printf("All I/O requests completed\[rs]n");
 \&
-    /* Check status return of all I/O requests. */
+    /* Check status return of all I/O requests.  */
 \&
     printf("aio_return():\[rs]n");
     for (size_t j = 0; j < numReqs; j++) {

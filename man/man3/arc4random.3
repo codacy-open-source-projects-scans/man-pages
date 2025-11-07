@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (C) 2023 Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -16,7 +16,8 @@ Standard C library
 .P
 .B uint32_t arc4random(void);
 .BI "uint32_t arc4random_uniform(uint32_t " upper_bound );
-.BI "void arc4random_buf(void " buf [. n "], size_t " n );
+.BR "void arc4random_buf(" "size_t n;"
+.BI "                    void " buf [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
 These functions give cryptographically-secure pseudorandom numbers.

@@ -1,15 +1,8 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
-.\" and Copyright 2006 Michael Kerrisk <mtk.manpages@ganil.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sun Jul 25 10:53:39 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Added correction due to nsd@bbc.com (Nick Duffek) - aeb, 950610
 .TH strtol 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 strtol, strtoll, strtoq \- convert a string to a long integer
@@ -53,8 +46,13 @@ followed by a single optional \[aq]+\[aq] or \[aq]\-\[aq] sign.
 If
 .I base
 is zero or 16, the string may then include a
-"0x" or "0X" prefix, and the number will be read in base 16; otherwise, a
-zero
+"0x" or "0X" prefix, and the number will be read in base 16;
+if
+.I base
+is zero or 2, the string may then include a
+"0b" or "0B" prefix, and the number will be read in base 2;
+otherwise,
+a zero
 .I base
 is taken as 10 (decimal) unless the next character
 is \[aq]0\[aq], in which case it is taken as 8 (octal).
@@ -183,7 +181,7 @@ may be equivalent to
 or to
 .BR strtol ().
 .SH STANDARDS
-C11, POSIX.1-2008.
+C23, POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR strtol ()
@@ -191,7 +189,13 @@ POSIX.1-2001, C89, SVr4, 4.3BSD.
 .TP
 .BR strtoll ()
 POSIX.1-2001, C99.
+.TP
+"0b", "0B"
+C23.
+glibc 2.38.
+(Not in POSIX.)
 .SH CAVEATS
+.SS Range checks
 Since
 .BR strtol ()
 can legitimately return 0,
@@ -210,6 +214,19 @@ and then determine if an error occurred by checking whether
 .I errno == ERANGE
 after the call.
 .P
+.in +4n
+.EX
+errno = 0;
+n = strtol(s, &end, base);
+if (end == s)
+	goto no_number;
+if ((errno == ERANGE && n == LONG_MIN) || n < min)
+	goto too_low;
+if ((errno == ERANGE && n == LONG_MAX) || n > max)
+	goto too_high;
+.EE
+.in
+.SS base
 If the
 .I base
 needs to be tested,
@@ -224,6 +241,13 @@ if (errno == EINVAL)
     goto unsupported_base;
 .EE
 .in
+.SH BUGS
+.SS White space
+These functions silently accept leading white space.
+To reject white space, call
+.BR isspace (3)
+before
+.BR strtol ().
 .SH EXAMPLES
 The program shown below demonstrates the use of
 .BR strtol ().
@@ -289,7 +313,7 @@ main(int argc, char *argv[])
     errno = 0;    /* To distinguish success/failure after call */
     val = strtol(str, &endptr, base);
 \&
-    /* Check for various possible errors. */
+    /* Check for various possible errors.  */
 \&
     if (errno == ERANGE) {
         perror("strtol");
@@ -301,11 +325,11 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* If we got here, strtol() successfully parsed a number. */
+    /* If we got here, strtol() successfully parsed a number.  */
 \&
     printf("strtol() returned %ld\[rs]n", val);
 \&
-    if (*endptr != \[aq]\[rs]0\[aq])        /* Not necessarily an error... */
+    if (*endptr != \[aq]\[rs]0\[aq])        /* Not necessarily an error.  */
         printf("Further characters after number: \[rs]"%s\[rs]"\[rs]n", endptr);
 \&
     exit(EXIT_SUCCESS);

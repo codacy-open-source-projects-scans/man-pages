@@ -1,14 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 21:46:57 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 961109, 031115, aeb
 .\"
 .TH getmntent 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -22,7 +15,7 @@ Standard C library
 .B #include <stdio.h>
 .B #include <mntent.h>
 .P
-.BI "FILE *setmntent(const char *" filename ", const char *" type );
+.BI "FILE *setmntent(const char *" path ", const char *" type );
 .P
 .BI "struct mntent *getmntent(FILE *" stream );
 .P
@@ -36,9 +29,10 @@ Standard C library
 /* GNU extension */
 .B #include <mntent.h>
 .P
-.BI "struct mntent *getmntent_r(FILE *restrict " streamp ,
+.BR "struct mntent *getmntent_r(" "int size;"
+.BI "              FILE *restrict " streamp ,
 .BI "              struct mntent *restrict " mntbuf ,
-.BI "              char " buf "[restrict ." buflen "], int " buflen );
+.BI "              char " buf "[restrict " size "], int " size );
 .fi
 .P
 .RS -4
@@ -62,7 +56,7 @@ and the mounted filesystem description file
 The
 .BR setmntent ()
 function opens the filesystem description file
-.I filename
+.I path
 and returns a file pointer which can be used by
 .BR getmntent ().
 The argument
@@ -135,7 +129,7 @@ and stores the strings pointed to by the entries in that structure
 in the provided array
 .I buf
 of size
-.IR buflen .
+.IR size .
 .P
 The
 .I mntent

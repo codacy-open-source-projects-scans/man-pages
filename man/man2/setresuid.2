@@ -1,9 +1,7 @@
-.\" Copyright (C) 1997 Andries Brouwer (aeb@cwi.nl)
-.\" and Copyright (C) 2005, 2010, 2014, 2015, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" Modified, 2003-05-26, Michael Kerrisk, <mtk.manpages@gmail.com>
 .TH setresuid 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
 setresuid, setresgid \- set real, effective, and saved user or group ID
@@ -28,7 +26,9 @@ effective UID, and saved set-user-ID, each to one of:
 the current real UID, the current effective UID, or the
 current saved set-user-ID.
 .P
-A privileged process (on Linux, one having the \fBCAP_SETUID\fP capability)
+A privileged process (on Linux, one having the
+.B CAP_SETUID
+capability)
 may set its real UID, effective UID, and
 saved set-user-ID to arbitrary values.
 .P
@@ -114,8 +114,9 @@ all of the other threads in the process also change their credentials.
 For details, see
 .BR nptl (7).
 .SH STANDARDS
-None.
+POSIX.1-2024.
 .SH HISTORY
+POSIX.1-2024.
 Linux 2.1.44,
 glibc 2.3.2.
 HP-UX, FreeBSD.

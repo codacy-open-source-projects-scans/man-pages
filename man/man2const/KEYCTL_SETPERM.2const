@@ -1,8 +1,4 @@
-.\" Copyright 2016, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright 2016, Eugene Syromyatnikov <evgsyr@gmail.com>
-.\" A very few fragments remain from an earlier version of this page
-.\" written by David Howells (dhowells@redhat.com)
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -81,9 +77,11 @@ and
 categories are exclusive:
 if a process matches the
 .I user
-category, it will not receive permissions granted in the
+category,
+it will not receive permissions granted in the
 .I group
-category; if a process matches the
+category;
+if a process matches the
 .I user
 or
 .I group

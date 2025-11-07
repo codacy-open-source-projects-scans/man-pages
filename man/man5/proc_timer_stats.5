@@ -1,6 +1,4 @@
-.\" Copyright (C) 1994, 1995, Daniel Quinlan <quinlan@yggdrasil.com>
-.\" Copyright (C) 2002-2008, 2017, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright (C) 2023, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-3.0-or-later
 .\"
@@ -103,13 +101,14 @@ the PID of the process that initialized the timer;
 .IP [3]
 the name of the process that initialized the timer;
 .IP [4]
-the function where the timer was initialized; and
+the function where the timer was initialized;
+and
 (in parentheses)
 the callback function that is associated with the timer.
 .RE
 .IP
 During the Linux 4.11 development cycle,
-this file  was removed because of security concerns,
+this file was removed because of security concerns,
 as it exposes information across namespaces.
 Furthermore, it is possible to obtain
 the same information via in-kernel tracing facilities such as ftrace.

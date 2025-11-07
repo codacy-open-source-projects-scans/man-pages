@@ -1,16 +1,6 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
 .\" SPDX-License-Identifier: Linux-man-pages-1-para
-.\"
-.\" This man page is Copyright (C) 1999 Andi Kleen <ak@muc.de>,
-.\" Copyright (C) 2008-2014, Michael Kerrisk <mtk.manpages@gmail.com>,
-.\" and Copyright (C) 2016, Heinrich Schuchardt <xypron.glpk@gmx.de>
-.\"
-.\" Modified, 2003-12-02, Michael Kerrisk, <mtk.manpages@gmail.com>
-.\" Modified, 2003-09-23, Adam Langley
-.\" Modified, 2004-05-27, Michael Kerrisk, <mtk.manpages@gmail.com>
-.\"	Added SOCK_SEQPACKET
-.\" 2008-05-27, mtk, Provide a clear description of the three types of
-.\"     address that can appear in the sockaddr_un structure: pathname,
-.\"     unnamed, and abstract.
 .\"
 .TH UNIX 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -70,7 +60,8 @@ field always contains
 .BR AF_UNIX .
 On Linux,
 .I sun_path
-is 108 bytes in size; see also BUGS, below.
+is 108 bytes in size;
+see also BUGS, below.
 .P
 Various system calls (for example,
 .BR bind (2),
@@ -340,7 +331,8 @@ The argument to
 .BR getsockopt (2)
 is a pointer to a
 .I ucred
-structure; define the
+structure;
+define the
 .B _GNU_SOURCE
 feature test macro to obtain the definition of that structure from
 .IR <sys/socket.h> .
@@ -669,10 +661,10 @@ you can use the synonymous
 defined in
 .IR <sys/ioctl.h> .
 .\" SIOCOUTQ also has an effect for UNIX domain sockets, but not
-.\" quite what userland might expect. It seems to return the number
+.\" quite what userland might expect.  It seems to return the number
 .\" of bytes allocated for buffers containing pending output.
 .\" That number is normally larger than the number of bytes of pending
-.\" output. Since this info is, from userland's point of view, imprecise,
+.\" output.  Since this info is, from userland's point of view, imprecise,
 .\" and it may well change, probably best not to document this now.
 For
 .B SOCK_DGRAM
@@ -816,14 +808,16 @@ Binding to a socket with a filename creates a socket
 in the filesystem that must be deleted by the caller when it is no
 longer needed (using
 .BR unlink (2)).
-The usual UNIX close-behind semantics apply; the socket can be unlinked
-at any time and will be finally removed from the filesystem when the last
-reference to it is closed.
+The usual UNIX close-behind semantics apply;
+the socket can be unlinked at any time
+and will be finally removed from the filesystem
+when the last reference to it is closed.
 .P
 To pass file descriptors or credentials over a
 .B SOCK_STREAM
-socket, you must
-send or receive at least one byte of nonancillary data in the same
+socket,
+you must send or receive
+at least one byte of nonancillary data in the same
 .BR sendmsg (2)
 or
 .BR recvmsg (2)
@@ -941,13 +935,13 @@ Execution of the server program ends when it receives the "DOWN" command.
 .SS Example output
 .in +4n
 .EX
-$ \fB./server &\fP
+.RB $ " ./server &"
 [1] 25887
-$ \fB./client 3 4\fP
+.RB $ " ./client 3 4" ;
 Result = 7
-$ \fB./client 11 \-5\fP
+.RB $ " ./client 11 \-5" ;
 Result = 6
-$ \fB./client DOWN\fP
+.RB $ " ./client DOWN" ;
 Result = 0
 [1]+  Done                    ./server
 $
@@ -998,7 +992,7 @@ main(void)
     struct sockaddr_un  name;
     char                buffer[BUFFER_SIZE];
 \&
-    /* Create local socket. */
+    /* Create local socket.  */
 \&
     connection_socket = socket(AF_UNIX, SOCK_SEQPACKET, 0);
     if (connection_socket == \-1) {
@@ -1014,7 +1008,7 @@ main(void)
 \&
     memset(&name, 0, sizeof(name));
 \&
-    /* Bind socket to socket name. */
+    /* Bind socket to socket name.  */
 \&
     name.sun_family = AF_UNIX;
     strncpy(name.sun_path, SOCKET_NAME, sizeof(name.sun_path) \- 1);
@@ -1027,8 +1021,8 @@ main(void)
     }
 \&
     /*
-     * Prepare for accepting connections. The backlog size is set
-     * to 20. So while one request is being processed other requests
+     * Prepare for accepting connections.  The backlog size is set
+     * to 20.  So while one request is being processed other requests
      * can be waiting.
      */
 \&
@@ -1038,11 +1032,11 @@ main(void)
         exit(EXIT_FAILURE);
     }
 \&
-    /* This is the main loop for handling connections. */
+    /* This is the main loop for handling connections.  */
 \&
     for (;;) {
 \&
-        /* Wait for incoming connection. */
+        /* Wait for incoming connection.  */
 \&
         data_socket = accept(connection_socket, NULL, NULL);
         if (data_socket == \-1) {
@@ -1053,7 +1047,7 @@ main(void)
         result = 0;
         for (;;) {
 \&
-            /* Wait for next data packet. */
+            /* Wait for next data packet.  */
 \&
             r = read(data_socket, buffer, sizeof(buffer));
             if (r == \-1) {
@@ -1061,11 +1055,11 @@ main(void)
                 exit(EXIT_FAILURE);
             }
 \&
-            /* Ensure buffer is 0\-terminated. */
+            /* Ensure buffer is 0\-terminated.  */
 \&
             buffer[sizeof(buffer) \- 1] = 0;
 \&
-            /* Handle commands. */
+            /* Handle commands.  */
 \&
             if (!strncmp(buffer, "DOWN", sizeof(buffer))) {
                 down_flag = 1;
@@ -1080,12 +1074,12 @@ main(void)
                 continue;
             }
 \&
-            /* Add received summand. */
+            /* Add received summand.  */
 \&
             result += atoi(buffer);
         }
 \&
-        /* Send result. */
+        /* Send result.  */
 \&
         sprintf(buffer, "%d", result);
         w = write(data_socket, buffer, sizeof(buffer));
@@ -1094,11 +1088,11 @@ main(void)
             exit(EXIT_FAILURE);
         }
 \&
-        /* Close socket. */
+        /* Close socket.  */
 \&
         close(data_socket);
 \&
-        /* Quit on DOWN command. */
+        /* Quit on DOWN command.  */
 \&
         if (down_flag) {
             break;
@@ -1107,7 +1101,7 @@ main(void)
 \&
     close(connection_socket);
 \&
-    /* Unlink the socket. */
+    /* Unlink the socket.  */
 \&
     unlink(SOCKET_NAME);
 \&
@@ -1141,7 +1135,7 @@ main(int argc, char *argv[])
     struct sockaddr_un  addr;
     char                buffer[BUFFER_SIZE];
 \&
-    /* Create local socket. */
+    /* Create local socket.  */
 \&
     data_socket = socket(AF_UNIX, SOCK_SEQPACKET, 0);
     if (data_socket == \-1) {
@@ -1157,7 +1151,7 @@ main(int argc, char *argv[])
 \&
     memset(&addr, 0, sizeof(addr));
 \&
-    /* Connect socket to socket address. */
+    /* Connect socket to socket address.  */
 \&
     addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, SOCKET_NAME, sizeof(addr.sun_path) \- 1);
@@ -1169,7 +1163,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Send arguments. */
+    /* Send arguments.  */
 \&
     for (int i = 1; i < argc; ++i) {
         w = write(data_socket, argv[i], strlen(argv[i]) + 1);
@@ -1179,7 +1173,7 @@ main(int argc, char *argv[])
         }
     }
 \&
-    /* Request result. */
+    /* Request result.  */
 \&
     strcpy(buffer, "END");
     w = write(data_socket, buffer, strlen(buffer) + 1);
@@ -1188,7 +1182,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Receive result. */
+    /* Receive result.  */
 \&
     r = read(data_socket, buffer, sizeof(buffer));
     if (r == \-1) {
@@ -1196,13 +1190,13 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Ensure buffer is 0\-terminated. */
+    /* Ensure buffer is 0\-terminated.  */
 \&
     buffer[sizeof(buffer) \- 1] = 0;
 \&
     printf("Result = %s\[rs]n", buffer);
 \&
-    /* Close socket. */
+    /* Close socket.  */
 \&
     close(data_socket);
 \&

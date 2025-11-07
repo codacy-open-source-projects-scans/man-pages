@@ -1,4 +1,4 @@
-.\" Copyright (c) 2016 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -61,18 +61,18 @@ is a synonym for
 Defaults to unset, which is equivalent to
 .BR never .
 .TP
-.BR device = \fIblobdev\fP
+.BR device = \f[I]blobdev\f[]
 Add extra device holding some of the data.
 Must be given as many times and in the same order as
 .B \-\-blobdev
 was to
 .BR mkfs.erofs (1).
 .\" Nominally there's a device_table feature and it somehow scans(?) for them,
-.\" cf. super.c:erofs_scan_devices(), but I haven't gotten it to work
+.\" cf., super.c:erofs_scan_devices(), but I haven't gotten it to work
 .TP
-.BR domain_id = \fIdid\fP
+.BR domain_id = \f[I]did\f[]
 .TQ
-.BR fsid = \fIid\fP
+.BR fsid = \f[I]id\f[]
 Control CacheFiles on-demand read support.
 To be documented.
 .SH VERSIONS

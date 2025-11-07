@@ -1,4 +1,4 @@
-# Copyright 2022-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -19,12 +19,20 @@ include $(MAKEFILEDIR)/configure/verbose.mk
 
 
 projname      := man-pages
+ifndef VERSION
 VERSION       := $(shell $(GIT) describe --dirty | $(SED) 's/$(projname)-//')
+endif
+ifndef EXTRAVERSION
 EXTRAVERSION  :=
+endif
 
 
+ifndef DISTVERSION
 DISTVERSION   := $(VERSION)$(EXTRAVERSION)
+endif
+ifndef DISTNAME
 DISTNAME      := $(projname)-$(DISTVERSION)
+endif
 
 
 DISTFILESCMD := \
@@ -47,7 +55,9 @@ DISTDATECMD := \
 	fi;
 
 
+ifndef DISTDATE
 DISTDATE := $(shell $(DISTDATECMD))
+endif
 
 
 MANPAGEDATECMD = $(GIT) log --format=%cs -1 -- $< $(HIDE_ERR)

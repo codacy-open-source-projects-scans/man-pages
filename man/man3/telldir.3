@@ -1,13 +1,8 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 17:48:42 1993 by Rik Faith (faith@cs.unc.edu)
 .TH telldir 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 telldir \- return current location in directory stream
@@ -36,7 +31,8 @@ Feature Test Macro Requirements for glibc (see
 The
 .BR telldir ()
 function returns the current location associated with
-the directory stream \fIdirp\fP.
+the directory stream
+.IR dirp .
 .SH RETURN VALUE
 On success, the
 .BR telldir ()
@@ -48,7 +44,8 @@ is set to indicate the error.
 .SH ERRORS
 .TP
 .B EBADF
-Invalid directory stream descriptor \fIdirp\fP.
+Invalid directory stream descriptor
+.IR dirp .
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).

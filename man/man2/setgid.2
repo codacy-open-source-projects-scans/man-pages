@@ -1,11 +1,6 @@
-.\" Copyright (C), 1994, Graeme W. Wilford. (Wilf.)
-.\" and Copyright (C) 2010, 2015, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Fri Jul 29th 12:56:44 BST 1994  Wilf. <G.Wilford@ee.surrey.ac.uk>
-.\" Modified 1997-01-31 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2002-03-09 by aeb
 .\"
 .TH setgid 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -50,7 +45,8 @@ is not valid in this user namespace.
 .TP
 .B EPERM
 The calling process is not privileged (does not have the
-\fBCAP_SETGID\fP capability in its user namespace), and
+.B CAP_SETGID
+capability in its user namespace), and
 .I gid
 does not match the real group ID or saved set-group-ID of
 the calling process.
@@ -70,7 +66,7 @@ all of the other threads in the process also change their credentials.
 For details, see
 .BR nptl (7).
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4.
 .P

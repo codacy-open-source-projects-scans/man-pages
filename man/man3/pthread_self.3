@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (c) 2008 Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -54,7 +53,8 @@ for example, representation using either an arithmetic type or
 a structure is permitted.
 Therefore, variables of type
 .I pthread_t
-can't portably be compared using the C equality operator (\fB==\fP);
+can't portably be compared using the C equality operator
+.RB ( == );
 use
 .BR pthread_equal (3)
 instead.

@@ -1,8 +1,4 @@
-.\" Copyright 2016, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright 2016, Eugene Syromyatnikov <evgsyr@gmail.com>
-.\" A very few fragments remain from an earlier version of this page
-.\" written by David Howells (dhowells@redhat.com)
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -20,9 +16,10 @@ Standard C library
 .BR "#include <sys/syscall.h>" "   /* Definition of " SYS_* " constants */"
 .B #include <unistd.h>
 .P
-.B long syscall(SYS_keyctl, KEYCTL_DH_COMPUTE,
+.BR "long syscall(" "size_t n;"
+.B "             SYS_keyctl, KEYCTL_DH_COMPUTE,"
 .BI "             struct keyctl_dh_params *" dh_params ,
-.BI "             char " buf [. n "], size_t " n ,
+.BI "             char " buf [ n "], size_t " n ,
 .BI "             struct keyctl_kdf_params *_Nullable " kdf_params );
 .fi
 .SH DESCRIPTION
@@ -115,14 +112,17 @@ struct keyctl_kdf_params {
 The
 .I hashname
 field is a null-terminated string which specifies a hash name
-(available in the kernel's crypto API; the list of the hashes available
-is rather tricky to observe; please refer to the
+(available in the kernel's crypto API;
+the list of the hashes available
+is rather tricky to observe;
+please refer to the
 .UR https://www.kernel.org\:/doc\:/html\:/latest\:/crypto\:/architecture.html
 "Kernel Crypto API Architecture"
 .UE
-documentation for the information regarding how hash names are constructed and
-your kernel's source and configuration regarding what ciphers
-and templates with type
+documentation
+for the information regarding how hash names are constructed
+and your kernel's source and configuration
+regarding what ciphers and templates with type
 .B CRYPTO_ALG_TYPE_SHASH
 are available)
 to be applied to DH result in KDF operation.

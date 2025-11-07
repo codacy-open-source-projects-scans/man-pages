@@ -1,14 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Wed Jul 21 22:35:42 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 18 Mar 1996 by Martin Schulze (joey@infodrom.north.de):
-.\"   Corrected description of getwd().
-.\" Modified Sat Aug 21 12:32:12 MET 1999 by aeb - applied fix by aj
-.\" Modified Mon Dec 11 13:32:51 MET 2000 by aeb
-.\" Modified Thu Apr 22 03:49:15 CEST 2002 by Roger Luethi <rl@hellgate.ch>
 .\"
 .TH getcwd 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -20,7 +13,8 @@ Standard C library
 .nf
 .B #include <unistd.h>
 .P
-.BI "char *getcwd(char " buf [. size "], size_t " size );
+.BR "char *getcwd(" "size_t size;"
+.BI "             char " buf [ size "], size_t " size );
 .B "char *get_current_dir_name(void);"
 .P
 .BI "[[deprecated]] char *getwd(char " buf [PATH_MAX]);
@@ -245,8 +239,11 @@ process (e.g., because the process set a new filesystem root using
 without changing its current directory into the new root).
 Such behavior can also be caused by an unprivileged user by changing
 the current directory into another mount namespace.
-When dealing with pathname from untrusted sources, callers of the
-functions described in this page
+When dealing with pathnames from untrusted sources, callers of the
+functions described in this page (before glibc 2.27)
+or the raw
+.BR getcwd ()
+system call
 should consider checking whether the returned pathname starts
 with '/' or '(' to avoid misinterpreting an unreachable path
 as a relative pathname.

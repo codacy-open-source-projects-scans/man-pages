@@ -1,18 +1,7 @@
 '\" t
-.\" Copyright 1995 Yggdrasil Computing, Incorporated.
-.\" written by Adam J. Richter (adam@yggdrasil.com),
-.\" with typesetting help from Daniel Quinlan (quinlan@yggdrasil.com).
-.\" and Copyright 2003, 2015 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" Modified by David A. Wheeler <dwheeler@dwheeler.com> 2000-11-28.
-.\" Applied patch by Terran Melconian, aeb, 2001-12-14.
-.\" Modified by Hacksaw <hacksaw@hacksaw.org> 2003-03-13.
-.\" Modified by Matt Domsch, 2003-04-09: _init and _fini obsolete
-.\" Modified by Michael Kerrisk <mtk.manpages@gmail.com> 2003-05-16.
-.\" Modified by Walter Harms: dladdr, dlvsym
-.\" Modified by Petr Baudis <pasky@suse.cz>, 2008-12-04: dladdr caveat
 .\"
 .TH dlopen 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -25,14 +14,14 @@ Dynamic linking library
 .nf
 .B #include <dlfcn.h>
 .P
-.BI "void *dlopen(const char *" filename ", int " flags );
+.BI "void *dlopen(const char *" path ", int " flags );
 .BI "int dlclose(void *" handle );
 .P
 .B #define _GNU_SOURCE
 .br
 .B #include <dlfcn.h>
 .P
-.BI "void *dlmopen(Lmid_t " lmid ", const char *" filename ", int " flags );
+.BI "void *dlmopen(Lmid_t " lmid ", const char *" path ", int " flags );
 .fi
 .SH DESCRIPTION
 .SS dlopen()
@@ -41,7 +30,7 @@ The function
 loads the dynamic shared object (shared library)
 file named by the null-terminated
 string
-.I filename
+.I path
 and returns an opaque "handle" for the loaded object.
 This handle is employed with other functions in the dlopen API, such as
 .BR dlsym (3),
@@ -51,17 +40,17 @@ and
 .BR dlclose ().
 .P
 If
-.I filename
+.I path
 .\" FIXME On Solaris, when handle is NULL, we seem to get back
 .\" a handle for (something like) the root of the namespace.
 .\" The point here is that if we do a dlmopen(LM_ID_NEWLM), then
-.\" the filename==NULL case returns a different handle than
-.\" in the initial namespace. But, on glibc, the same handle is
-.\" returned. This is probably a bug in glibc.
+.\" the path==NULL case returns a different handle than
+.\" in the initial namespace.  But, on glibc, the same handle is
+.\" returned.  This is probably a bug in glibc.
 .\"
 is NULL, then the returned handle is for the main program.
 If
-.I filename
+.I path
 contains a slash ("/"), then it is interpreted as a (relative
 or absolute) pathname.
 Otherwise, the dynamic linker searches for the object as follows
@@ -92,7 +81,7 @@ The cache file
 (maintained by
 .BR ldconfig (8))
 is checked to see whether it contains an entry for
-.IR filename .
+.IR path .
 .IP \[bu]
 The directories
 .I /lib
@@ -101,7 +90,7 @@ and
 are searched (in that order).
 .P
 If the object specified by
-.I filename
+.I path
 has dependencies on other shared objects,
 then these are also automatically loaded by the dynamic linker
 using the same rules.
@@ -178,7 +167,7 @@ its own symbols in preference to global symbols with the same name
 contained in objects that have already been loaded.
 .P
 If
-.I filename
+.I path
 is NULL, then the returned handle is for the main program.
 When given to
 .BR dlsym (3),
@@ -246,7 +235,7 @@ fails for any reason, it returns NULL.
 .SS dlmopen()
 This function performs the same task as
 .BR dlopen ()\[em]the
-.I filename
+.I path
 and
 .I flags
 arguments, as well as the return value, are the same,
@@ -291,7 +280,7 @@ to reference all of the other shared objects that it requires,
 since the new namespace is initially empty.
 .P
 If
-.I filename
+.I path
 is NULL, then the only permitted value for
 .I lmid
 is
@@ -342,7 +331,8 @@ these functions return NULL.
 .P
 On success,
 .BR dlclose ()
-returns 0; on error, it returns a nonzero value.
+returns 0;
+on error, it returns a nonzero value.
 .P
 Errors from these functions can be diagnosed using
 .BR dlerror (3).
@@ -545,8 +535,8 @@ The following is an example of building and running the program:
 .P
 .in +4n
 .EX
-$ \fBcc dlopen_demo.c \-ldl\fP
-$ \fB./a.out\fP
+.RB $ " cc dlopen_demo.c \-ldl" ;
+.RB $ " ./a.out" ;
 \-0.416147
 .EE
 .in
@@ -564,7 +554,7 @@ int
 main(void)
 {
     void *handle;
-    double (*cosine)(double);
+    typeof(double (double)) *cosine;
     char *error;
 \&
     handle = dlopen(LIBM_SO, RTLD_LAZY);
@@ -575,14 +565,14 @@ main(void)
 \&
     dlerror();    /* Clear any existing error */
 \&
-    cosine = (double (*)(double)) dlsym(handle, "cos");
+    cosine = (typeof(double (double)) *) dlsym(handle, "cos");
 \&
     /* According to the ISO C standard, casting between function
        pointers and \[aq]void *\[aq], as done above, produces undefined results.
        POSIX.1\-2001 and POSIX.1\-2008 accepted this state of affairs and
        proposed the following workaround:
 \&
-           *(void **) (&cosine) = dlsym(handle, "cos");
+           *(void **) &cosine = dlsym(handle, "cos");
 \&
        This (clumsy) cast conforms with the ISO C standard and will
        avoid any compiler warnings.
@@ -591,7 +581,7 @@ main(void)
        by requiring that conforming implementations support casting
        \[aq]void *\[aq] to a function pointer.  Nevertheless, some compilers
        (e.g., gcc with the \[aq]\-pedantic\[aq] option) may complain about the
-       cast used in this program. */
+       cast used in this program.  */
 .\" http://pubs.opengroup.org/onlinepubs/009695399/functions/dlsym.html#tag_03_112_08
 .\" http://pubs.opengroup.org/onlinepubs/9699919799/functions/dlsym.html#tag_16_96_07
 .\" http://austingroupbugs.net/view.php?id=74

@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (C) 2012 Chandan Apsangi <chandan.jc@gmail.com>
-.\" and Copyright (C) 2013 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -16,8 +15,8 @@ POSIX threads library
 .B #include <pthread.h>
 .P
 .BI "int pthread_setname_np(pthread_t " thread ", const char *" name );
-.BI "int pthread_getname_np(pthread_t " thread ", char " name [. size "], \
-size_t " size );
+.BR "int pthread_getname_np(" "size_t size;"
+.BI "                       pthread_t " thread ", char " name [ size "], size_t " size );
 .fi
 .SH DESCRIPTION
 By default, all the threads created using
@@ -121,10 +120,10 @@ The following shell session shows a sample run of the program:
 .P
 .in +4n
 .EX
-.RB "$" " ./a.out"
-Created a thread. Default name is: a.out
+.RB $ " ./a.out" ;
+Created a thread.  Default name is: a.out
 The thread name after setting it is THREADFOO.
-\fB\[ha]Z\fP                           # Suspend the program
+\f[B]\[ha]Z\f[]                           # Suspend the program
 [1]+  Stopped           ./a.out
 .RB "$ " "ps H \-C a.out \-o \[aq]pid tid cmd comm\[aq]"
   PID   TID CMD                         COMMAND
@@ -173,7 +172,7 @@ main(int argc, char *argv[])
     if (rc != 0)
         errc(EXIT_FAILURE, rc, "pthread_getname_np");
 \&
-    printf("Created a thread. Default name is: %s\[rs]n", thread_name);
+    printf("Created a thread.  Default name is: %s\[rs]n", thread_name);
     rc = pthread_setname_np(thread, (argc > 1) ? argv[1] : "THREADFOO");
     if (rc != 0)
         errc(EXIT_FAILURE, rc, "pthread_setname_np");

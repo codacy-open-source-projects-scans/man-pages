@@ -1,11 +1,6 @@
-.\" Copyright (c) International Business Machines orp., 2006
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" HISTORY:
-.\" 2006-04-27, created by Eduardo M. Fleury <efleury@br.ibm.com>
-.\" with various additions by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"
 .\"
 .TH ioprio_set 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -285,7 +280,8 @@ care: one I/O real-time process can starve the entire system.
 Within the real-time class,
 there are 8 levels of class data (priority) that determine exactly
 how much time this process needs the disk for on each service.
-The highest real-time priority level is 0; the lowest is 7.
+The highest real-time priority level is 0;
+the lowest is 7.
 In the future, this might change to be more directly mappable to
 performance, by passing in a desired data rate instead.
 .TP

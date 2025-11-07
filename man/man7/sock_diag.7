@@ -1,7 +1,7 @@
-.\" Copyright (c) 2016 Pavel Emelyanov <xemul@virtuozzo.com>
-.\" Copyright (c) 2016 Dmitry V. Levin <ldv@altlinux.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
 .TH sock_diag 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
 sock_diag \- obtaining information about sockets
@@ -126,7 +126,8 @@ struct unix_diag_req {
 The fields of this structure are as follows:
 .TP
 .I sdiag_family
-The address family; it should be set to
+The address family;
+it should be set to
 .BR AF_UNIX .
 .P
 .I sdiag_protocol

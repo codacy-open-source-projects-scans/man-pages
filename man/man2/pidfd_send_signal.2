@@ -1,4 +1,4 @@
-.\" Copyright (c) 2019 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -64,7 +64,8 @@ is set to
 .BR SI_USER ;
 .IP \[bu]
 .I si_pid
-is set to the caller's PID; and
+is set to the caller's PID;
+and
 .IP \[bu]
 .I si_uid
 is set to the caller's real user ID.
@@ -77,8 +78,65 @@ or be in an ancestor of that namespace.
 .P
 The
 .I flags
-argument is reserved for future use;
-currently, this argument must be specified as 0.
+argument allows to modify the scope of the signal.
+By default,
+the scope of the signal will be inferred from the
+.I pidfd
+argument.
+For example,
+if
+.I pidfd
+refers to a specific thread
+\[em]i.e.,
+the
+.I pidfd
+was created through
+.BR pidfd_open (2)
+using the
+.B PIDFD_THREAD
+flag
+or through
+.BR clone3 (2)
+using the
+.B CLONE_PIDFD
+flag together with the
+.B CLONE_THREAD
+flag\[em]
+then passing
+.I pidfd
+to
+.BR pidfd_send_signal (2)
+and leaving the
+.I flags
+argument as
+.B 0
+will cause the signal to be sent to the specific thread referenced by the
+.IR pidfd .
+.TP
+.BR PIDFD_SIGNAL_THREAD " (since Linux 6.9)"
+.\" commit e1fb1dc08e73466830612bcf2f9f72180965c9ba
+Ensure that the signal is sent to the specific thread referenced by
+.IR pidfd .
+.TP
+.BR PIDFD_SIGNAL_THREAD_GROUP " (since Linux 6.9)"
+.\" commit e1fb1dc08e73466830612bcf2f9f72180965c9ba
+If
+.I pidfd
+refers to a thread-group leader,
+ensure that the signal is sent to the thread-group,
+even if
+.I pidfd
+was created to refer to a specific thread.
+.TP
+.BR PIDFD_SIGNAL_PROCESS_GROUP " (since Linux 6.9)"
+.\" commit e1fb1dc08e73466830612bcf2f9f72180965c9ba
+If
+.I pidfd
+refers to a process-group leader,
+ensure that the signal is sent to the process-group,
+even if
+.I pidfd
+was created to refer to a specific thread or to a thread-group leader.
 .SH RETURN VALUE
 On success,
 .BR pidfd_send_signal ()
@@ -102,7 +160,7 @@ send a signal to the target process.
 .TP
 .B EINVAL
 .I flags
-is not 0.
+is not valid.
 .TP
 .B EPERM
 The calling process does not have permission to send the signal
@@ -127,7 +185,7 @@ Linux 5.1.
 The
 .I pidfd
 argument is a PID file descriptor,
-a file descriptor that refers to  process.
+a file descriptor that refers to process.
 Such a file descriptor can be obtained in any of the following ways:
 .IP \[bu] 3
 by opening a
@@ -198,7 +256,7 @@ main(int argc, char *argv[])
     sig = atoi(argv[2]);
 \&
     /* Obtain a PID file descriptor by opening the /proc/PID directory
-       of the target process. */
+       of the target process.  */
 \&
     snprintf(path, sizeof(path), "/proc/%s", argv[1]);
 \&
@@ -209,7 +267,7 @@ main(int argc, char *argv[])
     }
 \&
     /* Populate a \[aq]siginfo_t\[aq] structure for use with
-       pidfd_send_signal(). */
+       pidfd_send_signal().  */
 \&
     memset(&info, 0, sizeof(info));
     info.si_code = SI_QUEUE;
@@ -219,7 +277,7 @@ main(int argc, char *argv[])
     info.si_pid = getpid();
     info.si_value.sival_int = 1234;
 \&
-    /* Send the signal. */
+    /* Send the signal.  */
 \&
     if (pidfd_send_signal(pidfd, sig, &info, 0) == \-1) {
         perror("pidfd_send_signal");

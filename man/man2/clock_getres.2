@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) 2003 Nick Clifford (zaf@nrc.co.nz), Jan 25, 2003
-.\" Copyright (c) 2003 Andries Brouwer (aeb@cwi.nl), Aug 24, 2003
-.\" Copyright (c) 2020 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2003-08-23 Martin Schulze <joey@infodrom.org> improvements
-.\" 2003-08-24 aeb, large parts rewritten
-.\" 2004-08-06 Christoph Lameter <clameter@sgi.com>, SMP note
 .\"
 .TH clock_getres 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -48,7 +42,9 @@ finds the resolution (precision) of the specified clock
 .IR clockid ,
 and, if
 .I res
-is non-NULL, stores it in the \fIstruct timespec\fP pointed to by
+is non-NULL, stores it in the
+.I struct\ timespec
+pointed to by
 .IR res .
 The resolution of clocks depends on the implementation and cannot be
 configured by a particular process.
@@ -349,9 +345,11 @@ clock via
 shall have no effect on threads that are blocked waiting for a relative time
 service based upon this clock, including the
 .BR nanosleep ()
-function; nor on the expiration of relative timers based upon this clock.
-Consequently, these time services shall expire when the requested relative
-interval elapses, independently of the new or old value of the clock.
+function;
+nor on the expiration of relative timers based upon this clock.
+Consequently,
+these time services shall expire when the requested relative interval elapses,
+independently of the new or old value of the clock.
 .RE
 .P
 According to POSIX.1-2001, a process with "appropriate privileges" may set the
@@ -369,14 +367,16 @@ On some architectures, an implementation of
 is provided in the
 .BR vdso (7).
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SUSv2.
 Linux 2.6.
 .P
 On POSIX systems on which these functions are available, the symbol
 .B _POSIX_TIMERS
-is defined in \fI<unistd.h>\fP to a value greater than 0.
+is defined in
+.I <unistd.h>
+to a value greater than 0.
 POSIX.1-2008 makes these functions mandatory.
 .P
 The symbols
@@ -391,6 +391,10 @@ are available.
 (See also
 .BR sysconf (3).)
 .\"
+.P
+POSIX.1-2024 made
+.B CLOCK_MONOTONIC
+mandatory.
 .SS Historical note for SMP systems
 Before Linux added kernel support for
 .B CLOCK_PROCESS_CPUTIME_ID
@@ -442,7 +446,7 @@ This is an example of what we might see when running the program:
 .P
 .in +4n
 .EX
-$ \fB./clock_times x\fP
+.RB $ " ./clock_times x" ;
 CLOCK_REALTIME : 1585985459.446 (18356 days +  7h 30m 59s)
      resolution:          0.000000001
 CLOCK_TAI      : 1585985496.447 (18356 days +  7h 31m 36s)
@@ -506,7 +510,7 @@ displayClock(clockid_t clock, const char *name, bool showRes)
 }
 \&
 int
-main(int argc, char *argv[])
+main(int argc, char *[])
 {
     bool showRes = argc > 1;
 \&

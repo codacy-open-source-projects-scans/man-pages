@@ -1,12 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt <drew@cs.colorado.edu>, March 28, 1992
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified 1993-07-24 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1996-11-04 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2001-06-04 by aeb
-.\" Modified 2004-05-27 by Michael Kerrisk <mtk.manpages@gmail.com>
 .\"
 .TH nice 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -44,10 +38,12 @@ Attempts to set a nice value outside the range are clamped to the range.
 .P
 Traditionally, only a privileged process could lower the nice value
 (i.e., set a higher priority).
-However, since Linux 2.6.12, an unprivileged process can decrease
+However, since Linux 2.6.12,
+an unprivileged process can decrease
 the nice value of a target process that has a suitable
 .B RLIMIT_NICE
-soft limit; see
+soft limit;
+see
 .BR getrlimit (2)
 for details.
 .SH RETURN VALUE
@@ -92,7 +88,7 @@ wrapper function provided by glibc provides conformance to POSIX.1 by calling
 .BR getpriority (2)
 to obtain the new nice value, which is then returned to the caller.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4, 4.3BSD.
 .\" SVr4 documents an additional

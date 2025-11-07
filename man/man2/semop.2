@@ -1,16 +1,6 @@
-.\" Copyright 1993 Giorgio Ciucci (giorgio@crcc.it)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1996-10-22, Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2002-01-08, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2003-04-28, Ernie Petrides <petrides@redhat.com>
-.\" Modified 2004-05-27, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified, 11 Nov 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Language and formatting clean-ups
-.\"	Added notes on /proc files
-.\" 2005-04-08, mtk, Noted kernel version numbers for semtimedop()
-.\" 2007-07-09, mtk, Added an EXAMPLE code segment.
 .\"
 .TH semop 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -330,7 +320,9 @@ of semaphores in the set.
 The semaphore set was removed.
 .TP
 .B EINTR
-While blocked in this system call, the thread caught a signal; see
+While blocked in this system call,
+the thread caught a signal;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -356,7 +348,7 @@ is greater than
 the implementation dependent maximum value for
 .IR semval .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH VERSIONS
 Linux 2.5.52 (backported into Linux 2.4.22),
 glibc 2.3.3.
@@ -406,11 +398,18 @@ The
 .B CLONE_SYSVSEM
 flag allows more than one process to share a
 .I semadj
-list; see
+list;
+see
 .BR clone (2)
 for details.
 .P
-The \fIsemval\fP, \fIsempid\fP, \fIsemzcnt\fP, and \fIsemnct\fP values
+The
+.IR semval ,
+.IR sempid ,
+.IR semzcnt ,
+and
+.I semnct
+values
 for a semaphore can all be retrieved using appropriate
 .BR semctl (2)
 calls.
@@ -491,7 +490,7 @@ and then increment the semaphore value by one.
 struct sembuf sops[2];
 int semid;
 \&
-/* Code to set \fIsemid\fP omitted */
+/* Code to set \f[I]semid\f[] omitted */
 \&
 sops[0].sem_num = 0;        /* Operate on semaphore 0 */
 sops[0].sem_op = 0;         /* Wait for value to equal 0 */

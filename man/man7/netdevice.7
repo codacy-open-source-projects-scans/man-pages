@@ -1,14 +1,7 @@
 '\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
 .\" SPDX-License-Identifier: Linux-man-pages-1-para
-.\"
-.\" This man page is Copyright (C) 1999 Andi Kleen <ak@muc.de>.
-.\"
-.\" $Id: netdevice.7,v 1.10 2000/08/17 10:09:54 ak Exp $
-.\"
-.\" Modified, 2004-11-25, mtk, formatting and a few wording fixes
-.\"
-.\" Modified, 2011-11-02, <bidulock@openss7.org>, added many basic
-.\"  but missing ioctls, such as SIOCGIFADDR.
 .\"
 .TH netdevice 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -32,7 +25,7 @@ structure:
 .in +4n
 .EX
 struct ifreq {
-    char ifr_name[IFNAMSIZ]; /* Interface name */
+    char ifr_name[IFNAMSIZ];  /* Interface name */
     union {
         struct sockaddr ifr_addr;
         struct sockaddr ifr_dstaddr;
@@ -63,7 +56,7 @@ structure:
 struct in6_ifreq {
     struct in6_addr     ifr6_addr;
     u32                 ifr6_prefixlen;
-    int                 ifr6_ifindex; /* Interface index */
+    int                 ifr6_ifindex;  /* Interface index */
 };
 .EE
 .in
@@ -228,7 +221,8 @@ Setting the network mask is a privileged operation.
 .B SIOCSIFMETRIC
 Get or set the metric of the device using
 .IR ifr_metric .
-This is currently not implemented; it sets
+This is currently not implemented;
+it sets
 .I ifr_metric
 to 0 if you attempt to read it and returns
 .B EOPNOTSUPP

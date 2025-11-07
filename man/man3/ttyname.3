@@ -1,10 +1,7 @@
 '\" t
-.\" Copyright (c) 1995 Jim Van Zandt <jrv@vanzandt.mv.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" Modified 2001-12-13, Martin Schulze <joey@infodrom.org>
-.\" Added ttyname_r, aeb, 2002-07-20
 .\"
 .TH ttyname 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -17,22 +14,28 @@ Standard C library
 .B #include <unistd.h>
 .P
 .BI "char *ttyname(int " fd );
-.BI "int ttyname_r(int " fd ", char " buf [. buflen "], size_t " buflen );
+.BR "int ttyname_r(" "size_t size;"
+.BI "              int " fd ", char " buf [ size "], size_t " size );
 .fi
 .SH DESCRIPTION
 The function
 .BR ttyname ()
 returns a pointer to the null-terminated pathname of the terminal device
-that is open on the file descriptor \fIfd\fP, or NULL on error
-(for example, if \fIfd\fP is not connected to a terminal).
+that is open on the file descriptor
+.IR fd ,
+or NULL on error
+(for example,
+if
+.I fd
+is not connected to a terminal).
 The return value may point to static data, possibly overwritten by the
 next call.
 The function
 .BR ttyname_r ()
 stores this pathname in the buffer
 .I buf
-of length
-.IR buflen .
+of size
+.IR size .
 .SH RETURN VALUE
 The function
 .BR ttyname ()
@@ -60,7 +63,7 @@ does not refer to a terminal device.
 .TP
 .B ERANGE
 .RB ( ttyname_r ())
-.I buflen
+.I size
 was too small to allow storing the pathname.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see

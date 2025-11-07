@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH iswspace 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -36,7 +30,7 @@ The wide-character class "space" is disjoint from the wide-character class
 "graph" and therefore also disjoint from its subclasses "alnum", "alpha",
 "upper", "lower", "digit", "xdigit", "punct".
 .\" Note: UNIX98 (susv2/xbd/locale.html) says that "space" and "graph" may
-.\" have characters in common, except U+0020. But C99 (ISO/IEC 9899:1999
+.\" have characters in common, except U+0020.  But C99 (ISO/IEC 9899:1999
 .\" section 7.25.2.1.10) says that "space" and "graph" are disjoint.
 .P
 The wide-character class "space" contains the wide-character class "blank".

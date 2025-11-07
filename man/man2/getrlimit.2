@@ -1,46 +1,7 @@
 '\" t
-.\" Copyright (c) 1992 Drew Eckhardt, March 28, 1992
-.\" and Copyright (c) 2002, 2004, 2005, 2008, 2010 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified 1993-07-23 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1996-01-13 by Arnt Gulbrandsen <agulbra@troll.no>
-.\" Modified 1996-01-22 by aeb, following a remark by
-.\"          Tigran Aivazian <tigran@sco.com>
-.\" Modified 1996-04-14 by aeb, following a remark by
-.\"          Robert Bihlmeyer <robbe@orcus.ping.at>
-.\" Modified 1996-10-22 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 2001-05-04 by aeb, following a remark by
-.\"          Håvard Lygre <hklygre@online.no>
-.\" Modified 2001-04-17 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2002-06-13 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added note on nonstandard behavior when SIGCHLD is ignored.
-.\" Modified 2002-07-09 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Enhanced descriptions of 'resource' values
-.\" Modified 2003-11-28 by aeb, added RLIMIT_CORE
-.\" Modified 2004-03-26 by aeb, added RLIMIT_AS
-.\" Modified 2004-06-16 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added notes on CAP_SYS_RESOURCE
-.\"
-.\" 2004-11-16 -- mtk: the getrlimit.2 page, which formally included
-.\" coverage of getrusage(2), has been split, so that the latter
-.\" is now covered in its own getrusage.2.
-.\"
-.\" Modified 2004-11-16, mtk: A few other minor changes
-.\" Modified 2004-11-23, mtk
-.\"	Added notes on RLIMIT_MEMLOCK, RLIMIT_NPROC, and RLIMIT_RSS
-.\"		to "CONFORMING TO"
-.\" Modified 2004-11-25, mtk
-.\"	Rewrote discussion on RLIMIT_MEMLOCK to incorporate kernel
-.\"		2.6.9 changes.
-.\"	Added note on RLIMIT_CPU error in older kernels
-.\" 2004-11-03, mtk, Added RLIMIT_SIGPENDING
-.\" 2005-07-13, mtk, documented RLIMIT_MSGQUEUE limit.
-.\" 2005-07-28, mtk, Added descriptions of RLIMIT_NICE and RLIMIT_RTPRIO
-.\" 2008-05-07, mtk / Peter Zijlstra, Added description of RLIMIT_RTTIME
-.\" 2010-11-06, mtk: Added documentation of prlimit()
 .\"
 .TH getrlimit 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -68,7 +29,7 @@ Standard C library
 .EE
 .nf
 .P
-.BR typedef " /* ... */  " rlim_t; "  /* Unsigned integer type */"
+.BR typedef " /* ...\& */  " rlim_t; "  /* Unsigned integer type */"
 .fi
 .P
 .RS -4
@@ -130,7 +91,10 @@ In addition, automatic stack expansion fails
 that kills the process if no alternate stack
 has been made available via
 .BR sigaltstack (2)).
-Since the value is a \fIlong\fP, on machines with a 32-bit \fIlong\fP
+Since the value is a
+.IR long ,
+on machines with a 32-bit
+.I long
 either this limit is at most 2\ GiB, or this resource is unlimited.
 .TP
 .B RLIMIT_CORE
@@ -430,7 +394,8 @@ To handle this signal, a process must employ an alternate signal stack
 .IP
 Since Linux 2.6.23,
 this limit also determines the amount of space used for the process's
-command-line arguments and environment variables; for details, see
+command-line arguments and environment variables;
+for details, see
 .BR execve (2).
 .SS prlimit()
 .\" commit c022a0acad534fd5f5d5f17280f6d4d135e74e81
@@ -521,7 +486,8 @@ was greater than
 .IR rlim\->rlim_max .
 .TP
 .B EPERM
-An unprivileged process tried to raise the hard limit; the
+An unprivileged process tried to raise the hard limit;
+the
 .B CAP_SYS_RESOURCE
 capability is required to do this.
 .TP
@@ -563,7 +529,7 @@ T}	Thread safety	MT-Safe
 .BR getrlimit ()
 .TQ
 .BR setrlimit ()
-POSIX.1-2008.
+POSIX.1-2024.
 .TP
 .BR prlimit ()
 Linux.
@@ -665,7 +631,8 @@ but is actually treated as a limit of 1 second.
 A kernel bug means that
 .\" See https://lwn.net/Articles/145008/
 .B RLIMIT_RTPRIO
-does not work in Linux 2.6.12; the problem is fixed in Linux 2.6.13.
+does not work in Linux 2.6.12;
+the problem is fixed in Linux 2.6.13.
 .P
 In Linux 2.6.12, there was an off-by-one mismatch
 between the priority ranges returned by
@@ -738,7 +705,7 @@ system calls is a (32-bit)
 .\" Linux still uses long for limits internally:
 .\" c022a0acad534fd5f5d5f17280f6d4d135e74e81
 .\" kernel/sys.c:do_prlimit() still uses struct rlimit which
-.\" uses kernel_ulong_t for its members, i.e. 32-bit  on 32-bit kernel.
+.\" uses kernel_ulong_t for its members, i.e., 32-bit on 32-bit kernel.
 Furthermore, in Linux,
 the kernel represents resource limits on 32-bit platforms as
 .IR "unsigned long" .

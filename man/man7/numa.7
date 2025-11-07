@@ -1,8 +1,4 @@
-.\" Copyright (c) 2008, Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
-.\" and Copyright 2003,2004 Andi Kleen, SuSE Labs.
-.\" numa_maps material Copyright (c) 2005 Silicon Graphics Incorporated.
-.\"     Christoph Lameter, <cl@linux-foundation.org>.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -31,7 +27,7 @@ and
 However, applications should normally use the interface provided by
 .IR libnuma ;
 see "Library Support" below.
-.SS \fI/proc/\fPpid\fI/numa_maps\fP  (since Linux 2.6.14)
+.SS \f[I]/proc/\f[]pid\f[I]/numa_maps\f[]  (since Linux 2.6.14)
 .\" See also Changelog-2.6.14
 This file displays information about a process's
 NUMA memory policy and allocation.
@@ -135,7 +131,8 @@ if the kernel was configured and built with the
 .B CONFIG_NUMA
 option.
 .SS Library support
-Link with \fI\-lnuma\fP
+Link with
+.I \-lnuma
 to get the system call definitions.
 .I libnuma
 and the required

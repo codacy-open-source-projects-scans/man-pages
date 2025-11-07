@@ -1,4 +1,4 @@
-# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -15,7 +15,7 @@ _MANPAGES := $(patsubst $(MANDIR)/%, $(_MANDIR)/%, $(MANPAGES))
 
 
 .PHONY: build-man
-build-man: build-man-man build-man-mdoc build-man-so;
+build-man: build-man-nonso build-man-so;
 
 
 endif  # include guard

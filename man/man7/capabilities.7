@@ -1,29 +1,6 @@
-.\" Copyright (c) 2002 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 6 Aug 2002 - Initial Creation
-.\" Modified 2003-05-23, Michael Kerrisk, <mtk.manpages@gmail.com>
-.\" Modified 2004-05-27, Michael Kerrisk, <mtk.manpages@gmail.com>
-.\" 2004-12-08, mtk Added O_NOATIME for CAP_FOWNER
-.\" 2005-08-16, mtk, Added CAP_AUDIT_CONTROL and CAP_AUDIT_WRITE
-.\" 2008-07-15, Serge Hallyn <serue@us.bbm.com>
-.\"     Document file capabilities, per-process capability
-.\"     bounding set, changed semantics for CAP_SETPCAP,
-.\"     and other changes in Linux 2.6.2[45].
-.\"     Add CAP_MAC_ADMIN, CAP_MAC_OVERRIDE, CAP_SETFCAP.
-.\" 2008-07-15, mtk
-.\"     Add text describing circumstances in which CAP_SETPCAP
-.\"     (theoretically) permits a thread to change the
-.\"     capability sets of another thread.
-.\"     Add section describing rules for programmatically
-.\"     adjusting thread capability sets.
-.\"     Describe rationale for capability bounding set.
-.\"     Document "securebits" flags.
-.\"     Add text noting that if we set the effective flag for one file
-.\"     capability, then we must also set the effective flag for all
-.\"     other capabilities where the permitted or inheritable bit is set.
-.\" 2011-09-07, mtk/Serge hallyn: Add CAP_SYSLOG
 .\"
 .TH Capabilities 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -52,7 +29,8 @@ The following list shows the capabilities implemented on Linux,
 and the operations or behaviors that each capability permits:
 .TP
 .BR CAP_AUDIT_CONTROL " (since Linux 2.6.11)"
-Enable and disable kernel auditing; change auditing filter rules;
+Enable and disable kernel auditing;
+change auditing filter rules;
 retrieve auditing status and filtering rules.
 .TP
 .BR CAP_AUDIT_READ " (since Linux 3.16)"
@@ -71,7 +49,8 @@ Employ features that can block system suspend
 .IR /proc/sys/wake_lock ).
 .TP
 .BR CAP_BPF " (since Linux 5.8)"
-Employ privileged BPF operations; see
+Employ privileged BPF operations;
+see
 .BR bpf (2)
 and
 .BR bpf\-helpers (7).
@@ -331,8 +310,10 @@ write a group ID mapping in a user namespace (see
 Set arbitrary capabilities on a file.
 .IP
 .\" commit db2e718a47984b9d71ed890eb2ea36ecf150de18
-Since Linux 5.12, this capability is
-also needed to map user ID 0 in a new user namespace; see
+Since Linux 5.12,
+this capability is also needed
+to map user ID 0 in a new user namespace;
+see
 .BR user_namespaces (7)
 for details.
 .TP
@@ -377,7 +358,8 @@ write a user ID mapping in a user namespace (see
 .TP
 .B CAP_SYS_ADMIN
 .IR Note :
-this capability is overloaded; see
+this capability is overloaded;
+see
 .I Notes to kernel developers
 below.
 .IP
@@ -643,6 +625,15 @@ Use
 Trace arbitrary processes using
 .BR ptrace (2);
 .IP \[bu]
+inspect sensitive information of other processes via
+.I /proc
+(e.g., reading
+.IR /proc/ pid /maps ,
+.IR /proc/ pid /mem ,
+or reading symbolic links
+.IR /proc/ pid /exe ,
+.IR /proc/ pid /fd/* );
+.IP \[bu]
 apply
 .BR get_robust_list (2)
 to arbitrary processes;
@@ -653,7 +644,12 @@ and
 .BR process_vm_writev (2);
 .IP \[bu]
 inspect processes using
-.BR kcmp (2).
+.BR kcmp (2);
+.IP \[bu]
+perform other privileged process-inspection and debugging operations.
+(See uses of the
+.IR ptrace_may_access ()
+kernel function.)
 .RE
 .PD
 .TP
@@ -973,7 +969,8 @@ below.
 .P
 Using
 .BR capset (2),
-a thread may manipulate its own capability sets; see
+a thread may manipulate its own capability sets;
+see
 .I Programmatically adjusting capability sets
 below.
 .P
@@ -1225,8 +1222,9 @@ in the same manner as shown above for
 .P
 .IR Note :
 during the capability transitions described above,
-file capabilities may be ignored (treated as empty) for the same reasons
-that the set-user-ID and set-group-ID bits are ignored; see
+file capabilities may be ignored (treated as empty)
+for the same reasons that the set-user-ID and set-group-ID bits are ignored;
+see
 .BR execve (2).
 File capabilities are similarly ignored if the kernel was booted with the
 .I no_file_caps
@@ -1773,7 +1771,7 @@ Something like:
 .P
 .in +4n
 .EX
-$ \fBsudo strace \-o trace.log \-u ceci ./myprivprog\fP
+.RB $ " sudo strace \-o trace.log \-u ceci ./myprivprog"
 .EE
 .in
 .P

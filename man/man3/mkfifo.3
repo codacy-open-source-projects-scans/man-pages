@@ -1,10 +1,7 @@
 '\" t
-.\" This manpage is Copyright (C) 1995 James R. Van Zandt <jrv@vanzandt.mv.com>
-.\" and Copyright (C) 2006, 2014 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" changed section from 2 to 3, aeb, 950919
 .\"
 .TH mkfifo 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -17,12 +14,12 @@ Standard C library
 .B #include <sys/types.h>
 .B #include <sys/stat.h>
 .P
-.BI "int mkfifo(const char *" pathname ", mode_t " mode );
+.BI "int mkfifo(const char *" path ", mode_t " mode );
 .P
 .BR "#include <fcntl.h>           " "/* Definition of AT_* constants */"
 .B #include <sys/stat.h>
 .P
-.BI "int mkfifoat(int " dirfd ", const char *" pathname ", mode_t " mode );
+.BI "int mkfifoat(int " dirfd ", const char *" path ", mode_t " mode );
 .fi
 .P
 .RS -4
@@ -39,11 +36,16 @@ Feature Test Macro Requirements for glibc (see
 .fi
 .SH DESCRIPTION
 .BR mkfifo ()
-makes a FIFO special file with name \fIpathname\fP.
-\fImode\fP specifies the FIFO's permissions.
+makes a FIFO special file with name
+.IR path .
+.I mode
+specifies the FIFO's permissions.
 It is modified by the
-process's \fBumask\fP in the usual way: the permissions of the created
-file are \fB(\fP\fImode\fP\fB & \[ti]umask)\fP.
+process's
+.B umask
+in the usual way:
+the permissions of the created file are
+.IR "(mode\ &\ \[ti]umask)" .
 .P
 A FIFO special file is similar to a pipe, except that it is created
 in a different way.
@@ -68,8 +70,8 @@ function operates in exactly the same way as
 .BR mkfifo (),
 except for the differences described here.
 .P
-If the pathname given in
-.I pathname
+If
+.I path
 is relative, then it is interpreted relative to the directory
 referred to by the file descriptor
 .I dirfd
@@ -79,19 +81,19 @@ the calling process, as is done by
 for a relative pathname).
 .P
 If
-.I pathname
+.I path
 is relative and
 .I dirfd
 is the special value
 .BR AT_FDCWD ,
 then
-.I pathname
+.I path
 is interpreted relative to the current working
 directory of the calling process (like
 .BR mkfifo ()).
 .P
 If
-.I pathname
+.I path
 is absolute, then
 .I dirfd
 is ignored.
@@ -112,12 +114,13 @@ is set to indicate the error.
 .SH ERRORS
 .TP
 .B EACCES
-One of the directories in \fIpathname\fP did not allow search
-(execute) permission.
+One of the directories in
+.I path
+did not allow search (execute) permission.
 .TP
 .B EBADF
 .RB ( mkfifoat ())
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -129,39 +132,49 @@ The user's quota of disk blocks or inodes on the filesystem has been
 exhausted.
 .TP
 .B EEXIST
-\fIpathname\fP already exists.
+.I path
+already exists.
 This includes the case where
-.I pathname
+.I path
 is a symbolic link, dangling or not.
 .TP
 .B ENAMETOOLONG
-Either the total length of \fIpathname\fP is greater than
-\fBPATH_MAX\fP, or an individual filename component has a length
-greater than \fBNAME_MAX\fP.
+Either the total size of
+.I path
+is greater than
+.BR PATH_MAX ,
+or an individual filename component has a length
+greater than
+.BR NAME_MAX .
 In the GNU system, there is no imposed
 limit on overall filename length, but some filesystems may place
 limits on the length of a component.
 .TP
 .B ENOENT
-A directory component in \fIpathname\fP does not exist or is a
+A directory component in
+.I path
+does not exist or is a
 dangling symbolic link.
 .TP
 .B ENOSPC
 The directory or filesystem has no room for the new file.
 .TP
 .B ENOTDIR
-A component used as a directory in \fIpathname\fP is not, in fact, a
-directory.
+A component used as a directory in
+.I path
+is not, in fact,
+a directory.
 .TP
 .B ENOTDIR
 .RB ( mkfifoat ())
-.I pathname
-is a relative pathname and
+.I path
+is relative and
 .I dirfd
 is a file descriptor referring to a file other than a directory.
 .TP
 .B EROFS
-\fIpathname\fP refers to a read-only filesystem.
+.I path
+refers to a read-only filesystem.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).

@@ -1,5 +1,4 @@
-.\" Copyright (c) 2018 by Eugene Syromyatnikov <evgsyr@gmail.com>,
-.\" and Copyright (c) 2018 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -18,8 +17,9 @@ The
 .I domain
 argument of the
 .BR socket (2)
-specifies a communication domain; this selects the protocol
-family which will be used for communication.
+specifies a communication domain;
+this selects the protocol family
+which will be used for communication.
 These families are defined in
 .IR <sys/socket.h> .
 The formats currently understood by the Linux kernel include:
@@ -101,7 +101,8 @@ See
 in the Linux kernel source tree for details.
 .TP
 .B AF_NETBEUI
-Reserved for "802.2LLC project"; never used.
+Reserved for "802.2LLC project";
+never used.
 .TP
 .B AF_SECURITY
 This was a short-lived (between Linux 2.1.30 and 2.1.99pre2) protocol family
@@ -211,7 +212,7 @@ of data link layer of ISO/OSI networking protocol stack
 has no relation to
 .BR AF_PACKET .
 See chapter
-.I 13.5.3. Logical Link Control
+.I 13.5.3.\& Logical Link Control
 in
 .I Understanding Linux Kernel Internals
 (O'Reilly Media, 2006)
@@ -387,6 +388,13 @@ XDP (express data path) interface (since Linux 4.18).
 See
 .I Documentation/networking/af_xdp.rst
 in the Linux kernel source tree for details.
+.TP
+.B AF_MCTP
+.\" commit: bc49d8169aa72295104f1558830c568efb946315
+MCTP (Management Component Transport Protocol) interface (since Linux 5.15),
+as defined by the DMTF specification DSP0236.
+For further information, see
+.BR mctp (7).
 .SH SEE ALSO
 .BR socket (2),
 .BR socket (7)

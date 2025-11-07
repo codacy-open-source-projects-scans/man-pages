@@ -1,12 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified 1993-07-24 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1995-06-10 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 2004-06-23 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2004-10-10 by Andries Brouwer <aeb@cwi.nl>
 .\"
 .TH utime 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -18,12 +12,12 @@ Standard C library
 .nf
 .B #include <utime.h>
 .P
-.BI "int utime(const char *" filename ,
+.BI "int utime(const char *" path ,
 .BI "          const struct utimbuf *_Nullable " times );
 .P
 .B #include <sys/time.h>
 .P
-.BI "int utimes(const char *" filename ,
+.BI "int utimes(const char *" path ,
 .BI "          const struct timeval " times "[_Nullable 2]);"
 .fi
 .SH DESCRIPTION
@@ -35,7 +29,7 @@ The
 .BR utime ()
 system call
 changes the access and modification times of the inode specified by
-.I filename
+.I path
 to the
 .IR actime " and " modtime
 fields of
@@ -133,11 +127,11 @@ or the
 capability).
 .TP
 .B EFAULT
-.I filename
+.I path
 points to an invalid address.
 .TP
 .B ENOENT
-.I filename
+.I path
 does not exist.
 .TP
 .B EPERM
@@ -153,12 +147,18 @@ capability).
 .I path
 resides on a read-only filesystem.
 .SH STANDARDS
-POSIX.1-2008.
+.TP
+.BR utime ()
+None.
+.TP
+.BR utimes ()
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR utime ()
 SVr4, POSIX.1-2001.
-POSIX.1-2008 marks it as obsolete.
+Obsoleted in POSIX.1-2008.
+Removed in POSIX.1-2024.
 .TP
 .BR utimes ()
 4.3BSD, POSIX.1-2001.

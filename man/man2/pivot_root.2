@@ -1,6 +1,4 @@
-.\" Copyright (C) 2019 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" A very few fragments remain from an earlier page written by
-.\" Werner Almesberger in 2000
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -28,7 +26,11 @@ necessitating the use of
 .BR pivot_root ()
 changes the root mount in the mount namespace of the calling process.
 More precisely, it moves the root mount to the
-directory \fIput_old\fP and makes \fInew_root\fP the new root mount.
+directory
+.I put_old
+and makes
+.I new_root
+the new root mount.
 The calling process must have the
 .B CAP_SYS_ADMIN
 capability in the user namespace that owns the caller's mount namespace.
@@ -44,7 +46,8 @@ On the other hand,
 does not change the caller's current working directory
 (unless it is on the old root directory),
 and thus it should be followed by a
-\fBchdir("/")\fP call.
+.I chdir("/")
+call.
 .P
 The following restrictions apply:
 .IP \[bu] 3
@@ -58,11 +61,16 @@ and
 .I put_old
 must not be on the same mount as the current root.
 .IP \[bu]
-\fIput_old\fP must be at or underneath \fInew_root\fP;
-that is, adding some nonnegative
-number of "\fI/..\fP" suffixes to the pathname pointed to by
 .I put_old
-must yield the same directory as \fInew_root\fP.
+must be at or underneath
+.IR new_root ;
+that is,
+adding some nonnegative number of
+.RI \[dq] /..\& \[dq]
+suffixes to the pathname pointed to by
+.I put_old
+must yield the same directory as
+.IR new_root .
 .IP \[bu]
 .I new_root
 must be a path to a mount point, but can't be
@@ -86,7 +94,8 @@ The current root directory must be a mount point.
 .SH RETURN VALUE
 On success, zero is returned.
 On error, \-1 is returned, and
-\fIerrno\fP is set to indicate the error.
+.I errno
+is set to indicate the error.
 .SH ERRORS
 .BR pivot_root ()
 may fail with any of the same errors as
@@ -97,13 +106,13 @@ Additionally, it may fail with the following errors:
 .\" Reconfirmed that the following error occurs on Linux 5.0 by
 .\" specifying 'new_root' as "/rootfs" and 'put_old' as
 .\" "/rootfs/oldrootfs", and *not* bind mounting "/rootfs" on top of
-.\" itself. Of course, this is an odd situation, since a later check
+.\" itself.  Of course, this is an odd situation, since a later check
 .\" in the kernel code will in any case yield EINVAL if 'new_root' is
-.\" not a mount point. However, when the system call was first added,
-.\" 'new_root' was not required to be a mount point. So, this
+.\" not a mount point.  However, when the system call was first added,
+.\" 'new_root' was not required to be a mount point.  So, this
 .\" error is nowadays probably just the result of crufty accumulation.
 .\" This error can also occur if we bind mount "/" on top of itself
-.\" and try to specify "/" as the 'new' (again, an odd situation). So,
+.\" and try to specify "/" as the 'new' (again, an odd situation).  So,
 .\" the EBUSY check in the kernel does still seem necessary to prevent
 .\" that case.  Furthermore, the "or put_old" piece is probably
 .\" redundant text (although the check is in the kernel), since,
@@ -122,7 +131,9 @@ is
 is not a mount point.
 .TP
 .B EINVAL
-\fIput_old\fP is not at or underneath \fInew_root\fP.
+.I put_old
+is not at or underneath
+.IR new_root .
 .TP
 .B EINVAL
 The current root directory is not a mount point
@@ -130,7 +141,8 @@ The current root directory is not a mount point
 .BR chroot (2)).
 .TP
 .B EINVAL
-The current root is on the rootfs (initial ramfs) mount; see NOTES.
+The current root is on the rootfs (initial ramfs) mount;
+see NOTES.
 .TP
 .B EINVAL
 Either the mount point at
@@ -145,7 +157,10 @@ is a mount point and has the propagation type
 .BR MS_SHARED .
 .TP
 .B ENOTDIR
-\fInew_root\fP or \fIput_old\fP is not a directory.
+.I new_root
+or
+.I put_old
+is not a directory.
 .TP
 .B EPERM
 The calling process does not have the
@@ -197,7 +212,8 @@ to the new
 .IR /dev/console ,
 and exec the new
 .BR init (1).
-Helper programs for this process exist; see
+Helper programs for this process exist;
+see
 .BR switch_root (8).
 .\"
 .SS pivot_root(\[dq].\[dq], \[dq].\[dq])
@@ -247,7 +263,9 @@ The caller of
 must ensure that processes with root or current working directory
 at the old root operate correctly in either case.
 An easy way to ensure this is to change their
-root and current working directory to \fInew_root\fP before invoking
+root and current working directory to
+.I new_root
+before invoking
 .BR pivot_root ().
 .RE
 .P
@@ -277,20 +295,20 @@ executable in that directory.
 .P
 .in +4n
 .EX
-$ \fBmkdir /tmp/rootfs\fP
-$ \fBls \-id /tmp/rootfs\fP    # Show inode number of new root directory
+.RB $ " mkdir /tmp/rootfs" ;
+.RB $ " ls \-id /tmp/rootfs" ";    # Show inode number of new root directory"
 319459 /tmp/rootfs
-$ \fBcp $(which busybox) /tmp/rootfs\fP
-$ \fBPS1=\[aq]bbsh$ \[aq] sudo ./pivot_root_demo /tmp/rootfs /busybox sh\fP
-bbsh$ \fBPATH=/\fP
-bbsh$ \fBbusybox ln busybox ln\fP
-bbsh$ \fBln busybox echo\fP
-bbsh$ \fBln busybox ls\fP
-bbsh$ \fBls\fP
+.RB $ " cp $(which busybox) /tmp/rootfs" ;
+.RB $ " PS1=\[aq]bbsh$ \[aq] sudo ./pivot_root_demo /tmp/rootfs /busybox sh" ;
+.RB bbsh$ " PATH=/" ;
+.RB bbsh$ " busybox ln busybox ln" ;
+.RB bbsh$ " ln busybox echo" ;
+.RB bbsh$ " ln busybox ls" ;
+.RB bbsh$ " ls" ;
 busybox  echo     ln       ls
-bbsh$ \fBls \-id /\fP          # Compare with inode number above
+.RB bbsh$ " ls \-id /" ";          # Compare with inode number above"
 319459 /
-bbsh$ \fBecho \[aq]hello world\[aq]\fP
+.RB bbsh$ " echo \[aq]hello world\[aq]" ;
 hello world
 .EE
 .in
@@ -334,40 +352,40 @@ child(void *arg)
     /* Ensure that \[aq]new_root\[aq] and its parent mount don\[aq]t have
        shared propagation (which would cause pivot_root() to
        return an error), and prevent propagation of mount
-       events to the initial mount namespace. */
+       events to the initial mount namespace.  */
 \&
     if (mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL) == \-1)
         err(EXIT_FAILURE, "mount\-MS_PRIVATE");
 \&
-    /* Ensure that \[aq]new_root\[aq] is a mount point. */
+    /* Ensure that \[aq]new_root\[aq] is a mount point.  */
 \&
     if (mount(new_root, new_root, NULL, MS_BIND, NULL) == \-1)
         err(EXIT_FAILURE, "mount\-MS_BIND");
 \&
-    /* Create directory to which old root will be pivoted. */
+    /* Create directory to which old root will be pivoted.  */
 \&
     snprintf(path, sizeof(path), "%s/%s", new_root, put_old);
     if (mkdir(path, 0777) == \-1)
         err(EXIT_FAILURE, "mkdir");
 \&
-    /* And pivot the root filesystem. */
+    /* And pivot the root filesystem.  */
 \&
     if (pivot_root(new_root, path) == \-1)
         err(EXIT_FAILURE, "pivot_root");
 \&
-    /* Switch the current working directory to "/". */
+    /* Switch the current working directory to "/".  */
 \&
     if (chdir("/") == \-1)
         err(EXIT_FAILURE, "chdir");
 \&
-    /* Unmount old root and remove mount point. */
+    /* Unmount old root and remove mount point.  */
 \&
     if (umount2(put_old, MNT_DETACH) == \-1)
         perror("umount2");
     if (rmdir(put_old) == \-1)
         perror("rmdir");
 \&
-    /* Execute the command specified in argv[1]... */
+    /* Execute the command specified in argv[1]...  */
 \&
     execv(args[1], &args[1]);
     err(EXIT_FAILURE, "execv");
@@ -378,7 +396,7 @@ main(int argc, char *argv[])
 {
     char *stack;
 \&
-    /* Create a child process in a new mount namespace. */
+    /* Create a child process in a new mount namespace.  */
 \&
     stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE,
                  MAP_PRIVATE | MAP_ANONYMOUS | MAP_STACK, \-1, 0);
@@ -389,7 +407,7 @@ main(int argc, char *argv[])
               CLONE_NEWNS | SIGCHLD, &argv[1]) == \-1)
         err(EXIT_FAILURE, "clone");
 \&
-    /* Parent falls through to here; wait for child. */
+    /* Parent falls through to here; wait for child.  */
 \&
     if (wait(NULL) == \-1)
         err(EXIT_FAILURE, "wait");

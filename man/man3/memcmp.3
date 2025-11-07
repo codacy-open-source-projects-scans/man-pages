@@ -1,13 +1,8 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 18:55:27 1993 by Rik Faith (faith@cs.unc.edu)
 .TH memcmp 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 memcmp \- compare memory areas
@@ -18,21 +13,34 @@ Standard C library
 .nf
 .B #include <string.h>
 .P
-.BI "int memcmp(const void " s1 [. n "], const void " s2 [. n "], size_t " n );
+.BR "int memcmp(" "size_t n;"
+.BI "           const void " s1 [ n "], const void " s2 [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
 The
 .BR memcmp ()
-function compares the first \fIn\fP bytes (each interpreted as
-.IR "unsigned char" )
-of the memory areas \fIs1\fP and \fIs2\fP.
+function compares the first
+.I n
+bytes (each interpreted as
+.IR "unsigned\ char" )
+of the memory areas
+.I s1
+and
+.IR s2 .
 .SH RETURN VALUE
 The
 .BR memcmp ()
 function returns an integer less than, equal to, or
-greater than zero if the first \fIn\fP bytes of \fIs1\fP is found,
-respectively, to be less than, to match, or be greater than the first
-\fIn\fP bytes of \fIs2\fP.
+greater than zero if the first
+.I n
+bytes of
+.I s1
+is found,
+respectively,
+to be less than, to match, or be greater than the first
+.I n
+bytes of
+.IR s2 .
 .P
 For a nonzero return value, the sign is determined by the sign of
 the difference between the first pair of bytes (interpreted as

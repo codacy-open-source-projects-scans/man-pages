@@ -1,14 +1,7 @@
-.\" Copyright (c) 1992, 1993, 1994
-.\"	The Regents of the University of California.  All rights reserved.
-.\" and Copyright (C) 2008, 2014 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright 1992-1994, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-3-Clause
-.\"
-.\"	@(#)symlink.7	8.3 (Berkeley) 3/31/94
-.\" $FreeBSD: src/bin/ln/symlink.7,v 1.30 2005/02/13 22:25:09 ru Exp $
-.\"
-.\" 2008-06-11, mtk, Taken from FreeBSD 6.2 and heavily edited for
-.\"     specific Linux details, improved readability, and man-pages style.
 .\"
 .TH symlink 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -294,20 +287,27 @@ the command
 would display the contents of the file
 .IR afile .
 .P
-It is important to realize that this rule includes commands which may
-optionally traverse file trees; for example, the command
+It is important to realize that this rule
+includes commands which may optionally traverse file trees;
+for example,
+the command
 .I "chown file"
 is included in this rule, while the command
 .IR "chown\ \-R file" ,
 which performs a tree traversal, is not.
 (The latter is described in the third area, below.)
 .P
-If it is explicitly intended that the command operate on the symbolic
-link instead of following the symbolic link\[em]for example, it is desired that
+If it is explicitly intended
+that the command operate on the symbolic link
+instead of following the symbolic link
+\[em]for example,
+it is desired that
 .I "chown slink"
 change the ownership of the file that
 .I slink
-is, whether it is a symbolic link or not\[em]then the
+is,
+whether it is a symbolic link or not\[em]
+then the
 .I \-h
 option should be used.
 In the above example,
@@ -397,8 +397,9 @@ It is important to realize that the following rules apply equally to
 symbolic links encountered during the file tree traversal and symbolic
 links listed as command-line arguments.
 .P
-The \fIfirst rule\fP applies to symbolic links that reference files other
-than directories.
+The
+.I first rule
+applies to symbolic links that reference files other than directories.
 Operations that apply to symbolic links are performed on the links
 themselves, but otherwise the links are ignored.
 .P
@@ -414,7 +415,9 @@ In no case will
 affect the file referred to by
 .IR slink .
 .P
-The \fIsecond rule\fP applies to symbolic links that refer to directories.
+The
+.I second rule
+applies to symbolic links that refer to directories.
 Symbolic links that refer to directories are never followed by default.
 This is often referred to as a "physical" walk, as opposed to a "logical"
 walk (where symbolic links that refer to directories are followed).

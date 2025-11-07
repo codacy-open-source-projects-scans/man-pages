@@ -1,11 +1,6 @@
-.\" Copyright (C) 1996 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Written 11 April 1996 by Andries Brouwer <aeb@cwi.nl>
-.\" 960412: Added comments from Stephen Tweedie
-.\" Modified Tue Oct 22 22:28:41 1996 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified Mon Jan  5 20:31:04 1998 by aeb.
 .\"
 .TH sysctl 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -125,7 +120,7 @@ It is not yet possible to change operating system by writing to
 \&
 #include <linux/sysctl.h>
 \&
-#define ARRAY_SIZE(arr)  (sizeof(arr) / sizeof((arr)[0]))
+#define NITEMS(arr)  (sizeof(arr) / sizeof((arr)[0]))
 \&
 int _sysctl(struct __sysctl_args *args);
 \&
@@ -141,7 +136,7 @@ main(void)
 \&
     memset(&args, 0, sizeof(args));
     args.name = name;
-    args.nlen = ARRAY_SIZE(name);
+    args.nlen = NITEMS(name);
     args.oldval = osname;
     args.oldlenp = &osnamelth;
 \&

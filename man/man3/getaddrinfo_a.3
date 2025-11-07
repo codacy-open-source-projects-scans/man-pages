@@ -1,12 +1,7 @@
 '\" t
-.\" Copyright (c) 2009 Petr Baudis <pasky@suse.cz>
-.\" and clean-ups and additions (C) Copyright 2010 Michael Kerrisk
-.\"                                 <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References: http://people.redhat.com/drepper/asynchnl.pdf,
-.\"     http://www.imperialviolet.org/2005/06/01/asynchronous-dns-lookups-with-glibc.html
 .\"
 .TH getaddrinfo_a 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -20,9 +15,9 @@ Asynchronous name lookup library
 .BR "#define _GNU_SOURCE" "         /* See feature_test_macros(7) */"
 .B #include <netdb.h>
 .P
-.BI "int getaddrinfo_a(int " mode ", struct gaicb *" list [restrict],
+.BI "int getaddrinfo_a(int " mode ", struct gaicb *" list "[restrict " n ],
 .BI "                  int " n ", struct sigevent *restrict " sevp );
-.BI "int gai_suspend(const struct gaicb *const " list "[], int " n ,
+.BI "int gai_suspend(const struct gaicb *const " list [ n "], int " n ,
 .BI "                  const struct timespec *" timeout );
 .P
 .BI "int gai_error(struct gaicb *" req );
@@ -99,9 +94,10 @@ Finally,
 .I ar_result
 corresponds to the
 .I res
-argument; you do not need to initialize this element,
-it will be automatically set when the request
-is resolved.
+argument;
+you do not need to initialize this element,
+it will be automatically set
+when the request is resolved.
 The
 .I addrinfo
 structure referenced by the last two elements is described in
@@ -322,7 +318,7 @@ The program might be used like this:
 .P
 .in +4n
 .EX
-$ \fB./a.out mirrors.kernel.org enoent.linuxfoundation.org gnu.org\fP
+.RB $ " ./a.out mirrors.kernel.org enoent.linuxfoundation.org gnu.org" ;
 mirrors.kernel.org: 139.178.88.99
 enoent.linuxfoundation.org: Name or service not known
 gnu.org: 209.51.188.116
@@ -405,7 +401,7 @@ An example session might look like this:
 .P
 .in +4n
 .EX
-$ \fB./a.out\fP
+.RB $ " ./a.out" ;
 > a mirrors.kernel.org enoent.linuxfoundation.org gnu.org
 > c 2
 [2] gnu.org: Request not canceled
@@ -462,7 +458,8 @@ getcmd(void)
 {
     static char buf[256];
 \&
-    fputs("> ", stdout); fflush(stdout);
+    fputs("> ", stdout);
+    fflush(stdout);
     if (fgets(buf, sizeof(buf), stdin) == NULL)
         return NULL;
 \&
@@ -472,7 +469,7 @@ getcmd(void)
     return buf;
 }
 \&
-/* Add requests for specified hostnames. */
+/* Add requests for specified hostnames.  */
 static void
 add_requests(void)
 {
@@ -493,7 +490,7 @@ add_requests(void)
         reqs[nreqs \- 1]\->ar_name = strdup(host);
     }
 \&
-    /* Queue nreqs_base..nreqs requests. */
+    /* Queue nreqs_base..nreqs requests.  */
 \&
     ret = getaddrinfo_a(GAI_NOWAIT, &reqs[nreqs_base],
                         nreqs \- nreqs_base, NULL);
@@ -504,7 +501,7 @@ add_requests(void)
     }
 }
 \&
-/* Wait until at least one of specified requests completes. */
+/* Wait until at least one of specified requests completes.  */
 static void
 wait_requests(void)
 {
@@ -517,7 +514,7 @@ wait_requests(void)
     if (wait_reqs == NULL)
         err(EXIT_FAILURE, "calloc");
 \&
-                /* NULL elements are ignored by gai_suspend(). */
+                /* NULL elements are ignored by gai_suspend().  */
 \&
     while ((id = strtok(NULL, " ")) != NULL) {
         n = atoi(id);
@@ -549,7 +546,7 @@ wait_requests(void)
     }
 }
 \&
-/* Cancel specified requests. */
+/* Cancel specified requests.  */
 static void
 cancel_requests(void)
 {
@@ -571,7 +568,7 @@ cancel_requests(void)
     }
 }
 \&
-/* List all requests. */
+/* List all requests.  */
 static void
 list_requests(void)
 {

@@ -1,13 +1,6 @@
-.\" Copyright 1993 Rickard E. Faith (faith@cs.unc.edu) and
-.\" and Copyright 2002 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Fri Jan 31 16:26:07 1997 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified Fri Dec 11 17:57:27 1998 by Jamie Lokier <jamie@imbolc.ucc.ie>
-.\" Modified 24 Apr 2002 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Substantial rewrites and additions
-.\" 2005-05-10 mtk, noted that lock conversions are not atomic.
 .\"
 .\" FIXME Maybe document LOCK_MAND, LOCK_RW, LOCK_READ, LOCK_WRITE
 .\" which only have effect for SAMBA.
@@ -107,7 +100,8 @@ is not an open file descriptor.
 .TP
 .B EINTR
 While waiting to acquire a lock, the call was interrupted by
-delivery of a signal caught by a handler; see
+delivery of a signal caught by a handler;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -220,7 +214,8 @@ option in
 .BR nfs (5).
 .SH NOTES
 .BR flock ()
-places advisory locks only; given suitable permissions on a file,
+places advisory locks only;
+given suitable permissions on a file,
 a process is free to ignore the use of
 .BR flock ()
 and perform I/O on the file.

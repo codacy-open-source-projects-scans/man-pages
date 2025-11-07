@@ -1,20 +1,6 @@
-.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
-.\"             and Copyright (C) 1993 Michael Haardt, Ian Jackson.
-.\" and Copyright (C) 2007 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 13:35:59 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Sun Nov 28 17:19:01 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Sat Jan 13 12:58:08 1996 by Michael Haardt
-.\"   <michael@cantor.informatik.rwth-aachen.de>
-.\" Modified Sun Jul 21 18:59:33 1996 by Andries Brouwer <aeb@cwi.nl>
-.\" 2001-12-13 added remark by Zack Weinberg
-.\" 2007-06-18 mtk:
-.\"    	Added details about seekable files and file offset.
-.\"	Noted that write() may write less than 'count' bytes, and
-.\"	gave some examples of why this might occur.
-.\"	Noted what happens if write() is interrupted by a signal.
 .\"
 .TH write 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -26,7 +12,8 @@ Standard C library
 .nf
 .B #include <unistd.h>
 .P
-.BI "ssize_t write(int " fd ", const void " buf [. count "], size_t " count );
+.BR "ssize_t write(" "size_t count;"
+.BI "              int " fd ", const void " buf [ count "], size_t " count );
 .fi
 .SH DESCRIPTION
 .BR write ()
@@ -80,7 +67,9 @@ the result is implementation-defined;
 see NOTES for the upper limit on Linux.
 .SH RETURN VALUE
 On success, the number of bytes written is returned.
-On error, \-1 is returned, and \fIerrno\fP is set
+On error, \-1 is returned, and
+.I errno
+is set
 to indicate the error.
 .P
 Note that a successful
@@ -101,7 +90,9 @@ call to transfer the remaining bytes.
 The subsequent call will either transfer further bytes or
 may result in an error (e.g., if the disk is now full).
 .P
-If \fIcount\fP is zero and
+If
+.I count
+is zero and
 .I fd
 refers to a regular file, then
 .BR write ()
@@ -109,7 +100,8 @@ may return a failure status if one of the errors below is detected.
 If no errors are detected, or error detection is not performed,
 0 is returned without causing any other effect.
 If
-\fIcount\fP is zero and
+.I count
+is zero and
 .I fd
 refers to a file other than a regular file,
 the results are not specified.
@@ -163,7 +155,8 @@ maximum file size or the process's file size limit,
 or to write at a position past the maximum allowed offset.
 .TP
 .B EINTR
-The call was interrupted by a signal before any data was written; see
+The call was interrupted by a signal before any data was written;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -211,7 +204,8 @@ The device containing the file referred to by
 has no room for the data.
 .TP
 .B EPERM
-The operation was prevented by a file seal; see
+The operation was prevented by a file seal;
+see
 .BR fcntl (2).
 .TP
 .B EPIPE
@@ -226,7 +220,7 @@ catches, blocks or ignores this signal.)
 Other errors may occur, depending on the object connected to
 .IR fd .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 SVr4, 4.3BSD, POSIX.1-2001.
 .\" SVr4 documents additional error

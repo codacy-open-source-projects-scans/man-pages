@@ -1,4 +1,4 @@
-.\" Copyright (C) 2015 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -12,7 +12,8 @@ Standard C library
 .nf
 .B #include <sys/mman.h>
 .P
-.BI "int posix_madvise(void " addr [. size "], size_t " size ", int " advice );
+.BR "int posix_madvise(" "size_t size;"
+.BI "                  void " addr [ size "], size_t " size ", int " advice );
 .fi
 .P
 .RS -4

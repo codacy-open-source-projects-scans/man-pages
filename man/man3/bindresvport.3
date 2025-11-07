@@ -1,12 +1,7 @@
 '\" t
-.\" Copyright (C) 2007, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (C) 2008, Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2007-05-31, mtk: Rewrite and substantial additional text.
-.\" 2008-12-03, mtk: Rewrote some pieces and fixed some errors
 .\"
 .TH bindresvport 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -52,7 +47,8 @@ has no way to return the port number actually allocated.
 .BR getsockname (2).)
 .SH RETURN VALUE
 .BR bindresvport ()
-returns 0 on success; otherwise \-1 is returned and
+returns 0 on success;
+otherwise \-1 is returned and
 .I errno
 is set to indicate the error.
 .SH ERRORS

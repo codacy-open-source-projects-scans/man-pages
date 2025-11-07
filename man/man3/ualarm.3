@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (c) 2003 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -60,11 +60,16 @@ any alarm that was previously set, or 0 if no alarm was pending.
 .SH ERRORS
 .TP
 .B EINTR
-Interrupted by a signal; see
+Interrupted by a signal;
+see
 .BR signal (7).
 .TP
 .B EINVAL
-\fIusecs\fP or \fIinterval\fP is not smaller than 1000000.
+.I usecs
+or
+.I interval
+is not smaller than
+.BR 1000000 .
 (On systems where that is considered an error.)
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see

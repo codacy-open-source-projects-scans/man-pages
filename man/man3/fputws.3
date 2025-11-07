@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH fputws 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -28,9 +22,11 @@ function is the wide-character equivalent of
 the
 .BR fputs (3)
 function.
-It writes the wide-character string starting at \fIws\fP,
+It writes the wide-character string starting at
+.IR ws ,
 up to but not including the terminating null wide character (L\[aq]\[rs]0\[aq]),
-to \fIstream\fP.
+to
+.IR stream .
 .P
 For a nonlocking counterpart, see
 .BR unlocked_stdio (3).
@@ -72,7 +68,8 @@ call, it is
 reasonable to expect that
 .BR fputws ()
 will actually write the multibyte
-string corresponding to the wide-character string \fIws\fP.
+string corresponding to the wide-character string
+.IR ws .
 .SH SEE ALSO
 .BR fputwc (3),
 .BR unlocked_stdio (3)

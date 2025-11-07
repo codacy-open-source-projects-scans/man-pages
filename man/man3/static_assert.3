@@ -1,4 +1,4 @@
-.\" Copyright (c) 2022 by Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -12,10 +12,10 @@ Standard C library
 .nf
 .B #include <assert.h>
 .P
-.BI "void static_assert(scalar " constant-expression ", const char *" msg );
+.BI "void static_assert(bool " constant-expression ", const char *" msg );
 .P
 /* Since C23: */
-.BI "void static_assert(scalar " constant-expression );
+.BI "void static_assert(bool " constant-expression );
 .fi
 .SH DESCRIPTION
 This macro is similar to
@@ -62,7 +62,6 @@ The following program uses the macro to get the size of an array safely.
 .\" SRC BEGIN (must_be.c)
 .EX
 #include <assert.h>
-#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -91,7 +90,7 @@ The following program uses the macro to get the size of an array safely.
 #define must_be_array(arr)  must_be(is_array(arr))
 \&
 #define sizeof_array(arr)   (sizeof(arr) + must_be_array(arr))
-#define nitems(arr)         (sizeof((arr)) / sizeof((arr)[0]) \[rs]
+#define NITEMS(arr)         (sizeof((arr)) / sizeof((arr)[0]) \[rs]
                              + must_be_array(arr))
 \&
 int     foo[10];
@@ -100,13 +99,13 @@ int8_t  bar[sizeof_array(foo)];
 int
 main(void)
 {
-    for (size_t i = 0; i < nitems(foo); i++) {
+    for (size_t i = 0; i < NITEMS(foo); i++) {
         foo[i] = i;
     }
 \&
     memcpy(bar, foo, sizeof_array(bar));
 \&
-    for (size_t i = 0; i < nitems(bar); i++) {
+    for (size_t i = 0; i < NITEMS(bar); i++) {
         printf("%d,", bar[i]);
     }
 \&

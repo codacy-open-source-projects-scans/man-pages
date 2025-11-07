@@ -1,10 +1,6 @@
-.\" Copyright 1993 Rickard E. Faith (faith@cs.unc.edu)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1997-08-25 by Nicolás Lichtmaier <nick@debian.org>
-.\" Modified 2004-06-17 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified 2008-11-27 by mtk
 .\"
 .TH getdomainname 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -16,8 +12,10 @@ Standard C library
 .nf
 .B #include <unistd.h>
 .P
-.BI "int getdomainname(char *" name ", size_t " size );
-.BI "int setdomainname(const char *" name ", size_t " size );
+.BR "int getdomainname(" "size_t size;"
+.BI "                  char " name [ size "], size_t " size );
+.BR "int setdomainname(" "size_t size;"
+.BI "                  const char " name [ size "], size_t " size );
 .fi
 .P
 .RS -4
@@ -59,9 +57,13 @@ returns the null-terminated domain name in the character array
 which has a size of
 .I size
 bytes.
-If the null-terminated domain name requires more than \fIlen\fP bytes,
+If the null-terminated domain name requires more than
+.I len
+bytes,
 .BR getdomainname ()
-returns the first \fIlen\fP bytes (glibc) or gives an error (libc).
+returns the first
+.I len
+bytes (glibc) or gives an error (libc).
 .SH RETURN VALUE
 On success, zero is returned.
 On error, \-1 is returned, and
@@ -102,7 +104,8 @@ bytes.
 On most Linux architectures (including x86),
 there is no
 .BR getdomainname ()
-system call; instead, glibc implements
+system call;
+instead, glibc implements
 .BR getdomainname ()
 as a library function that returns a copy of the
 .I domainname

@@ -1,8 +1,6 @@
-.\" Copyright (c) 2020-2022 by Alejandro Colomar <alx@kernel.org>
-.\" and Copyright (c) 2020 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
 .\"
 .TH intmax_t 3type (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -24,8 +22,8 @@ Standard C library
 .BR "#define INTMAX_MIN    " "/*  - 2**(INTMAX_WIDTH - 1)    */"
 .BR "#define UINTMAX_MAX   " "/*  2**UINTMAX_WIDTH - 1       */"
 .P
-.BI "#define INTMAX_C(" c ) "   c " ## " \fR/* ... */\fP"
-.BI "#define UINTMAX_C(" c ) "  c " ## " \fR/* ... */\fP"
+.BI "#define INTMAX_C(" c ) "   c " ## " \f[R]/* ... */\f[]"
+.BI "#define UINTMAX_C(" c ) "  c " ## " \f[R]/* ... */\f[]"
 .fi
 .SH DESCRIPTION
 .I intmax_t
@@ -81,7 +79,7 @@ for printing
 .RI [ u ] intmax_t
 values.
 .SH STANDARDS
-C11, POSIX.1-2008.
+C11, POSIX.1-2024.
 .SH HISTORY
 C99, POSIX.1-2001.
 .SH NOTES

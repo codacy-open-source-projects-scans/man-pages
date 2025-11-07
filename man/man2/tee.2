@@ -1,5 +1,4 @@
-.\" This manpage is Copyright (C) 2006 Jens Axboe
-.\" and Copyright (C) 2006 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -48,14 +47,16 @@ see
 .BR splice (2).
 .TP
 .B SPLICE_F_NONBLOCK
-Do not block on I/O; see
+Do not block on I/O;
+see
 .BR splice (2)
 for further details.
 .TP
 .B SPLICE_F_MORE
 Currently has no effect for
 .BR tee (),
-but may be implemented in the future; see
+but may be implemented in the future;
+see
 .BR splice (2).
 .TP
 .B SPLICE_F_GIFT
@@ -92,7 +93,8 @@ and the operation would block.
 .I fd_in
 or
 .I fd_out
-does not refer to a pipe; or
+does not refer to a pipe;
+or
 .I fd_in
 and
 .I fd_out
@@ -124,9 +126,9 @@ Here is an example of its use:
 .P
 .in +4n
 .EX
-$ \fBdate | ./a.out out.log | cat\fP
+.RB $ " date | ./a.out out.log | cat" ;
 Tue Oct 28 10:06:00 CET 2014
-$ \fBcat out.log\fP
+.RB $ " cat out.log" ;
 Tue Oct 28 10:06:00 CET 2014
 .EE
 .in

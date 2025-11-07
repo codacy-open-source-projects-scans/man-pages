@@ -1,9 +1,7 @@
 '\" t
-.\" Copyright (c) 2013, 2016, 2017 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (c) 2012 by Eric W. Biederman <ebiederm@xmission.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
 .\"
 .TH namespaces 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -35,34 +33,34 @@ lB lB lB      lB
 l  lB lw(21n) lx.
 Namespace	Flag	Page	Isolates
 _
-Cgroup	CLONE_NEWCGROUP	\fBcgroup_namespaces\fP(7)	T{
+Cgroup	CLONE_NEWCGROUP	\f[B]cgroup_namespaces\f[](7)	T{
 .na
 .nh
 Cgroup root directory
 T}
-IPC	CLONE_NEWIPC	\fBipc_namespaces\fP(7)	T{
+IPC	CLONE_NEWIPC	\f[B]ipc_namespaces\f[](7)	T{
 .na
 .nh
 System V IPC,
 POSIX message queues
 T}
-Network	CLONE_NEWNET	\fBnetwork_namespaces\fP(7)	T{
+Network	CLONE_NEWNET	\f[B]network_namespaces\f[](7)	T{
 .na
 .nh
 Network devices,
 stacks, ports, etc.
 T}
-Mount	CLONE_NEWNS	\fBmount_namespaces\fP(7)	Mount points
-PID	CLONE_NEWPID	\fBpid_namespaces\fP(7)	Process IDs
-Time	CLONE_NEWTIME	\fBtime_namespaces\fP(7)	T{
+Mount	CLONE_NEWNS	\f[B]mount_namespaces\f[](7)	Mount points
+PID	CLONE_NEWPID	\f[B]pid_namespaces\f[](7)	Process IDs
+Time	CLONE_NEWTIME	\f[B]time_namespaces\f[](7)	T{
 .na
 .nh
 Boot and monotonic clocks
 T}
-User	CLONE_NEWUSER	\fBuser_namespaces\fP(7)	T{
+User	CLONE_NEWUSER	\f[B]user_namespaces\f[](7)	T{
 User and group IDs
 T}
-UTS	CLONE_NEWUTS	\fButs_namespaces\fP(7)	T{
+UTS	CLONE_NEWUTS	\f[B]uts_namespaces\f[](7)	T{
 .na
 .nh
 Hostname and NIS domain name
@@ -134,7 +132,7 @@ no privilege is required to create a user namespace.
 .\"
 .\" ==================== The /proc/[pid]/ns/ directory ====================
 .\"
-.SS The \fI/proc/\fPpid\fI/ns/\fP directory
+.SS The \f[I]/proc/\f[]pid\f[I]/ns/\f[] directory
 Each process has a
 .IR /proc/ pid /ns/
 .\" See commit 6b4e306aa3dc94a0545eb9279475b1ab6209a31f
@@ -144,18 +142,18 @@ supports being manipulated by
 .P
 .in +4n
 .EX
-$ \fBls \-l /proc/$$/ns | awk \[aq]{print $1, $9, $10, $11}\[aq]\fP
+.RB $ " ls \-l /proc/$$/ns | awk \[aq]{print $1, $9, $10, $11}\[aq]"
 total 0
-lrwxrwxrwx. cgroup \-> cgroup:[4026531835]
-lrwxrwxrwx. ipc \-> ipc:[4026531839]
-lrwxrwxrwx. mnt \-> mnt:[4026531840]
-lrwxrwxrwx. net \-> net:[4026531969]
-lrwxrwxrwx. pid \-> pid:[4026531836]
-lrwxrwxrwx. pid_for_children \-> pid:[4026531834]
-lrwxrwxrwx. time \-> time:[4026531834]
-lrwxrwxrwx. time_for_children \-> time:[4026531834]
-lrwxrwxrwx. user \-> user:[4026531837]
-lrwxrwxrwx. uts \-> uts:[4026531838]
+lrwxrwxrwx.\& cgroup \-> cgroup:[4026531835]
+lrwxrwxrwx.\& ipc \-> ipc:[4026531839]
+lrwxrwxrwx.\& mnt \-> mnt:[4026531840]
+lrwxrwxrwx.\& net \-> net:[4026531969]
+lrwxrwxrwx.\& pid \-> pid:[4026531836]
+lrwxrwxrwx.\& pid_for_children \-> pid:[4026531834]
+lrwxrwxrwx.\& time \-> time:[4026531834]
+lrwxrwxrwx.\& time_for_children \-> time:[4026531834]
+lrwxrwxrwx.\& user \-> user:[4026531837]
+lrwxrwxrwx.\& uts \-> uts:[4026531838]
 .EE
 .in
 .P
@@ -185,7 +183,8 @@ they appear as symbolic links.
 If two processes are in the same namespace,
 then the device IDs and inode numbers of their
 .IR /proc/ pid /ns/ xxx
-symbolic links will be the same; an application can check this using the
+symbolic links will be the same;
+an application can check this using the
 .I stat.st_dev
 .\" Eric Biederman: "I reserve the right for st_dev to be significant
 .\" when comparing namespaces."
@@ -201,7 +200,7 @@ the namespace type and inode number as in the following example:
 .P
 .in +4n
 .EX
-$ \fBreadlink /proc/$$/ns/uts\fP
+.RB $ " readlink /proc/$$/ns/uts"
 uts:[4026531838]
 .EE
 .in
@@ -271,12 +270,13 @@ Permission to dereference or read
 .RB ( readlink (2))
 these symbolic links is governed by a ptrace access mode
 .B PTRACE_MODE_READ_FSCREDS
-check; see
+check;
+see
 .BR ptrace (2).
 .\"
 .\" ==================== The /proc/sys/user directory ====================
 .\"
-.SS The \fI/proc/sys/user\fP directory
+.SS The \f[I]/proc/sys/user\f[] directory
 The files in the
 .I /proc/sys/user
 directory (which is present since Linux 4.9) expose limits

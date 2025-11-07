@@ -1,18 +1,7 @@
 '\" t
-.\" Copyright (c) 2008 Petr Baudis <pasky@suse.cz>
-.\" and copyright (c) 2009, Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\"
-.\" 2008-12-08 Petr Baudis <pasky@suse.cz>
-.\"    Rewrite the BSD manpage in the Linux man pages style and account
-.\"    for glibc specificities, provide an example.
-.\" 2009-01-14 mtk, many edits and changes, rewrote example program.
 .\"
 .TH getifaddrs 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -212,7 +201,7 @@ Here is what we see when running this program on one system:
 .P
 .in +4n
 .EX
-$ \fB./a.out\fP
+.RB $ " ./a.out" ;
 lo       AF_PACKET (17)
                 tx_packets =        524; rx_packets =        524
                 tx_bytes   =      38788; rx_bytes   =      38788
@@ -257,7 +246,7 @@ int main(int argc, char *argv[])
     }
 \&
     /* Walk through linked list, maintaining head pointer so we
-       can free list later. */
+       can free list later.  */
 \&
     for (struct ifaddrs *ifa = ifaddr; ifa != NULL;
              ifa = ifa\->ifa_next) {
@@ -267,7 +256,7 @@ int main(int argc, char *argv[])
         family = ifa\->ifa_addr\->sa_family;
 \&
         /* Display interface name and family (including symbolic
-           form of the latter for the common families). */
+           form of the latter for the common families).  */
 \&
         printf("%\-8s %s (%d)\[rs]n",
                ifa\->ifa_name,
@@ -276,7 +265,7 @@ int main(int argc, char *argv[])
                (family == AF_INET6) ? "AF_INET6" : "???",
                family);
 \&
-        /* For an AF_INET* interface address, display the address. */
+        /* For an AF_INET* interface address, display the address.  */
 \&
         if (family == AF_INET || family == AF_INET6) {
             s = getnameinfo(ifa\->ifa_addr,

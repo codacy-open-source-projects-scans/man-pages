@@ -1,11 +1,7 @@
 '\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
 .\" SPDX-License-Identifier: Linux-man-pages-1-para
-.\"
-.\" This man page is Copyright (C) 1999 Andi Kleen <ak@muc.de>.
-.\"
-.\" Based on the original comments from Alexey Kuznetsov, written with
-.\" help from Matthew Wilcox.
-.\" $Id: rtnetlink.7,v 1.8 2000/01/22 01:55:04 freitag Exp $
 .\"
 .TH rtnetlink 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -29,7 +25,8 @@ disciplines, traffic classes and packet classifiers may all be controlled
 through
 .B NETLINK_ROUTE
 sockets.
-It is based on netlink messages; see
+It is based on netlink messages;
+see
 .BR netlink (7)
 for more information.
 .\" FIXME . ? all these macros could be moved to rtnetlink(3)
@@ -346,10 +343,14 @@ RTA_OIF:int:Output interface index
 RTA_GATEWAY:protocol address:The gateway of the route
 RTA_PRIORITY:int:Priority of route
 RTA_PREFSRC:protocol address:Preferred source address
-RTA_METRICS:int:Route metric
+RTA_METRICS::T{
+Route metrics
+.br
+(see below).
+T}
 RTA_MULTIPATH::T{
 Multipath nexthop data
-br
+.br
 (see below).
 T}
 RTA_PROTOINFO::No longer used
@@ -358,7 +359,8 @@ RTA_CACHEINFO:struct rta_cacheinfo:(see linux/rtnetlink.h)
 RTA_SESSION::No longer used
 RTA_MP_ALGO::No longer used
 RTA_TABLE:int:T{
-Routing table ID; if set,
+Routing table ID;
+if set,
 .br
 rtm_table is ignored
 T}
@@ -387,6 +389,83 @@ Expire time for IPv6
 routes (in seconds)
 T}
 .TE
+.IP
+.B RTA_METRICS
+contains an array of
+.I struct rtattr
+with their corresponding attributes:
+.RS
+.IP
+.TS
+tab(:);
+c s s
+lb l lx.
+Attributes
+rta_type:Value type:Description
+_
+RTAX_UNSPEC:-:unspecified
+RTAX_LOCK:__u32:T{
+Bit field indicating which RTAX_* attributes are locked.
+T}
+RTAX_MTU:__u32:T{
+Maximum Transmission Unit for this route.
+T}
+RTAX_WINDOW:__u32:T{
+Maximum size of the receive window for this route.
+T}
+RTAX_RTT:__u32:T{
+Estimated round-trip time for this route.
+T}
+RTAX_RTTVAR:__u32:T{
+Estimated round-trip time variation for this route.
+T}
+RTAX_SSTHRESH:__u32:T{
+Slow start threshold to use for this route.
+T}
+RTAX_CWND:__u32:T{
+Maximum size of the congestion window for this route.
+T}
+RTAX_ADVMSS:__u32:T{
+Maximum Segment Size to advertise for this route.
+T}
+RTAX_REORDERING:__u32:T{
+Initial reordering level of packets for this route.
+T}
+RTAX_HOPLIMIT:__u32:T{
+Hop limit (TTL) to use for this route.
+T}
+RTAX_INITCWND:__u32:T{
+Initial congestion window to use for this route.
+T}
+RTAX_FEATURES:__u32:T{
+Features to enable for this route specifically.
+T}
+RTAX_RTO_MIN:__u32:T{
+Minimum Retransmission TimeOut to use for this route.
+T}
+RTAX_INITRWND:__u32:T{
+Initial size of the receive window for this route.
+T}
+RTAX_QUICKACK:__u32:T{
+Use quick ack for this route.
+T}
+RTAX_CC_ALGO:asciiz string:T{
+Congestion Control algorithm to use for this route.
+T}
+RTAX_FASTOPEN_NO_COOKIE:__u32:T{
+Allow TCP Fast Open without cookie.
+T}
+.TE
+.RE
+.IP
+Metrics that are locked with
+.B RTAX_LOCK
+take precedence over the values normally used by the kernel
+(computed or assigned by a sysctl or setsockopt(2)).
+Therefore, some metrics, like
+.BR RTAX_RTO_MIN ,
+have no effect unless their bit is set in
+.BR RTAX_LOCK .
 .IP
 .B RTA_MULTIPATH
 contains several packed instances of

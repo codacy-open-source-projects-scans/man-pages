@@ -1,16 +1,8 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification
-.\"      http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
-.\"
-.\" Modified Tue Oct 16 23:18:40 BST 2001 by John Levon <moz@compsoc.man.ac.uk>
 .TH fgetwc 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 fgetwc, getwc \- read a wide character from a FILE stream
@@ -32,12 +24,19 @@ function is the wide-character equivalent
 of the
 .BR fgetc (3)
 function.
-It reads a wide character from \fIstream\fP and returns it.
-If the end of stream is reached, or if \fIferror(stream)\fP becomes true,
+It reads a wide character from
+.I stream
+and returns it.
+If the end of stream is reached, or if
+.I ferror(stream)
+becomes true,
 it returns
 .BR WEOF .
 If a wide-character conversion error occurs, it sets
-\fIerrno\fP to \fBEILSEQ\fP and returns
+.I errno
+to
+.B EILSEQ
+and returns
 .BR WEOF .
 .P
 The

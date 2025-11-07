@@ -1,17 +1,7 @@
-.\" Copyright (C) Markus Kuhn, 1996
-.\" and Copyright (C) Linux Foundation, 2008, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
-.\" 1996-04-10  Markus Kuhn <mskuhn@cip.informatik.uni-erlangen.de>
-.\"             First version written
-.\" Modified, 2004-10-24, aeb
-.\" 2008-06-24, mtk
-.\"     Minor rewrites of some parts.
-.\"     NOTES: describe case where clock_nanosleep() can be preferable.
-.\"     NOTES: describe CLOCK_REALTIME versus CLOCK_NANOSLEEP
-.\"     Replace crufty discussion of HZ with a pointer to time(7).
 .TH nanosleep 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
 nanosleep \- high-resolution sleep
@@ -137,13 +127,13 @@ shall
 have no effect on threads that are blocked waiting for a relative time
 service based upon this clock, including the
 .BR nanosleep ()
-function; ...
+function.
 Consequently,
 these time services shall expire when the requested duration elapses,
 independently of the new or old value of the clock.
 .RE
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .P

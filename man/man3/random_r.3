@@ -1,8 +1,7 @@
 '\" t
-.\" Copyright 2008 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
 .\"
 .TH random_r 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -19,9 +18,9 @@ Standard C library
 .BI "             int32_t *restrict " result );
 .BI "int srandom_r(unsigned int " seed ", struct random_data *" buf );
 .P
-.BI "int initstate_r(unsigned int " seed ", \
-char " statebuf "[restrict ." statelen ],
-.BI "             size_t " statelen ", struct random_data *restrict " buf );
+.BI "int initstate_r(unsigned int " seed ,
+.BI "             char " statebuf "[restrict ." statelen "], size_t " statelen ,
+.BI "             struct random_data *restrict " buf );
 .BI "int setstate_r(char *restrict " statebuf ,
 .BI "             struct random_data *restrict " buf );
 .fi
@@ -73,7 +72,7 @@ instead of the seed associated with the global state variable.
 The
 .BR initstate_r ()
 function is like
-.BR initstate (3)
+.BR initstate (3),
 except that it initializes the state in the object pointed to by
 .IR buf ,
 rather than initializing the global state variable.
@@ -101,11 +100,12 @@ or similar.)
 The
 .BR setstate_r ()
 function is like
-.BR setstate (3)
+.BR setstate (3),
 except that it modifies the state in the object pointed to by
 .IR buf ,
 rather than modifying the global state variable.
-\fIstate\fP must first have been initialized
+.I state
+must first have been initialized
 using
 .BR initstate_r ()
 or be the result of a previous call of

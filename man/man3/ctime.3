@@ -1,17 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified Sat Jul 24 19:49:27 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Fri Apr 26 12:38:55 MET DST 1996 by Martin Schulze (joey@linux.de)
-.\" Modified 2001-11-13, aeb
-.\" Modified 2001-12-13, joey, aeb
-.\" Modified 2004-11-16, mtk
 .\"
 .TH ctime 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -63,7 +53,9 @@ The
 and
 .BR localtime ()
 functions all take
-an argument of data type \fItime_t\fP, which represents calendar time.
+an argument of data type
+.IR time_t ,
+which represents calendar time.
 When interpreted as an absolute time value, it represents the number of
 seconds elapsed since the Epoch, 1970-01-01 00:00:00 +0000 (UTC).
 .P
@@ -83,8 +75,10 @@ described in
 The call
 .BI ctime( t )
 is equivalent to
-.BI asctime(localtime( t )) \fR.
-It converts the calendar time \fIt\fP into a
+.IR asctime(localtime(t)) .
+It converts the calendar time
+.I t
+into a
 null-terminated string of the form
 .P
 .in +4n
@@ -101,22 +95,30 @@ The abbreviations for the months are "Jan",
 The return value points to a statically allocated string which
 might be overwritten by subsequent calls to any of the date and time
 functions.
-The function also sets the external variables \fItzname\fP,
-\fItimezone\fP, and \fIdaylight\fP as if it called
+The function also sets the external variables
+.IR tzname ,
+.IR timezone ,
+and
+.I daylight
+as if it called
 .BR tzset (3).
 The reentrant version
 .BR ctime_r ()
 does the same, but stores the
 string in a user-supplied buffer
 which should have room for at least 26 bytes.
-It need not
-set \fItzname\fP, \fItimezone\fP, and \fIdaylight\fP.
+It need not set
+.IR tzname ,
+.IR timezone ,
+and
+.IR daylight .
 .P
 The
 .BR gmtime ()
-function converts the calendar time \fItimep\fP to
-broken-down time representation, expressed in Coordinated Universal Time
-(UTC).
+function converts the calendar time
+.I timep
+to broken-down time representation,
+expressed in Coordinated Universal Time (UTC).
 It may return NULL when the year does not fit into an integer.
 The return value points to a statically allocated struct which might be
 overwritten by subsequent calls to any of the date and time functions.
@@ -127,11 +129,16 @@ user-supplied struct.
 .P
 The
 .BR localtime ()
-function converts the calendar time \fItimep\fP to
-broken-down time representation,
+function converts the calendar time
+.I timep
+to broken-down time representation,
 expressed relative to the user's specified timezone.
-The function also sets the external variables \fItzname\fP,
-\fItimezone\fP, and \fIdaylight\fP as if it called
+The function also sets the external variables
+.IR tzname ,
+.IR timezone ,
+and
+.I daylight
+as if it called
 .BR tzset (3).
 The return value points to a statically allocated struct which might be
 overwritten by subsequent calls to any of the date and time functions.
@@ -139,12 +146,17 @@ The
 .BR localtime_r ()
 function does the same, but stores the data in a
 user-supplied struct.
-It need not set \fItzname\fP, \fItimezone\fP, and \fIdaylight\fP.
+It need not set
+.IR tzname ,
+.IR timezone ,
+and
+.IR daylight .
 .P
 The
 .BR asctime ()
 function converts the broken-down time value
-\fItm\fP into a null-terminated string with the same format as
+.I tm
+into a null-terminated string with the same format as
 .BR ctime ().
 The return value points to a statically allocated string which might be
 overwritten by subsequent calls to any of the date and time functions.
@@ -177,6 +189,9 @@ and a negative value means that
 .BR mktime ()
 should (use timezone information and system databases to)
 attempt to determine whether DST is in effect at the specified time.
+See
+.BR timegm (3)
+for a UTC equivalent of this function.
 .P
 The
 .BR mktime ()
@@ -193,8 +208,12 @@ normalized (so that, for example, 40 October is changed into 9 November);
 is set (regardless of its initial value)
 to a positive value or to 0, respectively,
 to indicate whether DST is or is not in effect at the specified time.
-The function also sets the external variables \fItzname\fP,
-\fItimezone\fP, and \fIdaylight\fP as if it called
+The function also sets the external variables
+.IR tzname ,
+.IR timezone ,
+and
+.I daylight
+as if it called
 .BR tzset (3).
 .P
 If the specified broken-down
@@ -484,7 +503,7 @@ The following shell session shows sample runs of the program:
 $
 .RB $\~ "export TZ=Europe/Madrid" ;
 $
-.RB $\~ "./a.out 2147483647 2147483647 00 00 00 00 -1" ;
+.RB $\~ "./a.out 2147483647 2147483647 00 00 00 00 \-1" ;
 a.out: mktime: Value too large for defined data type
 $
 .RB $\~ "./a.out 2024 08 23 00 17 53 \-1" ;
@@ -533,7 +552,7 @@ a.out: my_mktime: Invalid argument
 \&
 #define is_signed(T)  ((T) \-1 < 1)
 \&
-time_t my_mktime(struct tm *tp);
+static time_t my_mktime(struct tm *tp);
 \&
 int
 main(int argc, char *argv[])
@@ -572,7 +591,7 @@ main(int argc, char *argv[])
     exit(EXIT_SUCCESS);
 }
 \&
-time_t
+static time_t
 my_mktime(struct tm *tp)
 {
     int            e, isdst;

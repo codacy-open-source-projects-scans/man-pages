@@ -1,4 +1,4 @@
-.\" Copyright (c) 2002 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -55,9 +55,11 @@ containing information about the signal.
 .P
 If multiple signals in
 .I set
-are pending for the caller, the signal that is retrieved by
+are pending for the caller,
+the signal that is retrieved by
 .BR sigwaitinfo ()
-is determined according to the usual ordering rules; see
+is determined according to the usual ordering rules;
+see
 .BR signal (7)
 for further details.
 .P
@@ -102,7 +104,8 @@ period specified to
 .BR sigtimedwait ().
 .TP
 .B EINTR
-The wait was interrupted by a signal handler; see
+The wait was interrupted by a signal handler;
+see
 .BR signal (7).
 (This handler was for a signal other than one of those in
 .IR set .)
@@ -154,7 +157,7 @@ wrapper function hides these details from us, transparently calling
 when the kernel provides it.
 .\"
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .SH NOTES

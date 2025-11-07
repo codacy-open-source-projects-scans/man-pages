@@ -1,10 +1,6 @@
-.\" Copyright (C) 2008 Michael Kerrisk <tmk.manpages@gmail.com>
-.\" and Copyright 2003 Abhijit Menon-Sen <ams@wiw.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2004-05-31, added tgkill, ahu, aeb
-.\" 2008-01-15 mtk -- rewrote DESCRIPTION
 .\"
 .TH tkill 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -72,7 +68,7 @@ Avoid using this system call.
 .\" that a thread cannot exit while pthread_kill is being called on it.
 .\"
 .\" Note that in most real-world situations, like almost all race
-.\" conditions, this one will be extremely rare. To make it
+.\" conditions, this one will be extremely rare.  To make it
 .\" measurable, one could exhaust all but 1-2 available pid values,
 .\" possibly by lowering the max pid parameter in /proc, forcing
 .\" the same tid to be reused rapidly.
@@ -81,7 +77,8 @@ These are the raw system call interfaces, meant for internal
 thread library use.
 .SH RETURN VALUE
 On success, zero is returned.
-On error, \-1 is returned, and \fIerrno\fP
+On error, \-1 is returned, and
+.I errno
 is set to indicate the error.
 .SH ERRORS
 .TP

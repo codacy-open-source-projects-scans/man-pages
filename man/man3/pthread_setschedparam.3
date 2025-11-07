@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (c) 2008 Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -80,7 +79,7 @@ and
 .BR pthread_mutexattr_setprotocol (3)).
 .\" FIXME . nptl/pthread_setschedparam.c has the following
 .\"   /* If the thread should have higher priority because of some
-.\"      PTHREAD_PRIO_PROTECT mutexes it holds, adjust the priority. */
+.\"      PTHREAD_PRIO_PROTECT mutexes it holds, adjust the priority.  */
 .\" Eventually (perhaps after writing the mutexattr pages), we
 .\" may want to add something on the topic to this page.
 .SH RETURN VALUE
@@ -170,9 +169,9 @@ and that thread displays its scheduling policy and priority.
 .P
 .in +4n
 .EX
-$ \fBsu\fP      # Need privilege to set real\-time scheduling policies
+.RB $ " su" ";      # Need privilege to set real-time scheduling policies"
 Password:
-# \fB./a.out \-mf10 \-ar20 \-i e\fP
+.RB # " ./a.out \-mf10 \-ar20 \-i e" ;
 Scheduler settings of main thread
     policy=SCHED_FIFO, priority=10
 \&
@@ -197,7 +196,7 @@ and instead take their scheduling attributes from the creating thread.
 .P
 .in +4n
 .EX
-# \fB./a.out \-mf10 \-ar20 \-i i\fP
+.RB # " ./a.out \-mf10 \-ar20 \-i i" ;
 Scheduler settings of main thread
     policy=SCHED_FIFO, priority=10
 \&
@@ -225,14 +224,12 @@ is the default for the inherit scheduler attribute.
 .EX
 /* pthreads_sched_test.c */
 \&
+#include <err.h>
 #include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-\&
-#define handle_error_en(en, msg) \[rs]
-        do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
 \&
 [[noreturn]]
 static void
@@ -288,7 +285,7 @@ display_thread_sched_attr(char *msg)
 \&
     s = pthread_getschedparam(pthread_self(), &policy, &param);
     if (s != 0)
-        handle_error_en(s, "pthread_getschedparam");
+        errc(EXIT_FAILURE, s, "pthread_getschedparam");
 \&
     printf("%s\[rs]n", msg);
     display_sched_attr(policy, &param);
@@ -312,7 +309,7 @@ main(int argc, char *argv[])
     char *attr_sched_str, *main_sched_str, *inheritsched_str;
     struct sched_param param;
 \&
-    /* Process command\-line options. */
+    /* Process command\-line options.  */
 \&
     use_null_attrib = 0;
     attr_sched_str = NULL;
@@ -336,7 +333,7 @@ main(int argc, char *argv[])
     }
 \&
     /* Optionally set scheduling attributes of main thread,
-       and display the attributes. */
+       and display the attributes.  */
 \&
     if (main_sched_str != NULL) {
         if (!get_policy(main_sched_str[0], &policy))
@@ -345,20 +342,20 @@ main(int argc, char *argv[])
 \&
         s = pthread_setschedparam(pthread_self(), policy, &param);
         if (s != 0)
-            handle_error_en(s, "pthread_setschedparam");
+            errc(EXIT_FAILURE, s, "pthread_setschedparam");
     }
 \&
     display_thread_sched_attr("Scheduler settings of main thread");
     printf("\[rs]n");
 \&
-    /* Initialize thread attributes object according to options. */
+    /* Initialize thread attributes object according to options.  */
 \&
     attrp = NULL;
 \&
     if (!use_null_attrib) {
         s = pthread_attr_init(&attr);
         if (s != 0)
-            handle_error_en(s, "pthread_attr_init");
+            errc(EXIT_FAILURE, s, "pthread_attr_init");
         attrp = &attr;
     }
 \&
@@ -372,7 +369,7 @@ main(int argc, char *argv[])
 \&
         s = pthread_attr_setinheritsched(&attr, inheritsched);
         if (s != 0)
-            handle_error_en(s, "pthread_attr_setinheritsched");
+            errc(EXIT_FAILURE, s, "pthread_attr_setinheritsched");
     }
 \&
     if (attr_sched_str != NULL) {
@@ -382,22 +379,22 @@ main(int argc, char *argv[])
 \&
         s = pthread_attr_setschedpolicy(&attr, policy);
         if (s != 0)
-            handle_error_en(s, "pthread_attr_setschedpolicy");
+            errc(EXIT_FAILURE, s, "pthread_attr_setschedpolicy");
         s = pthread_attr_setschedparam(&attr, &param);
         if (s != 0)
-            handle_error_en(s, "pthread_attr_setschedparam");
+            errc(EXIT_FAILURE, s, "pthread_attr_setschedparam");
     }
 \&
     /* If we initialized a thread attributes object, display
-       the scheduling attributes that were set in the object. */
+       the scheduling attributes that were set in the object.  */
 \&
     if (attrp != NULL) {
         s = pthread_attr_getschedparam(&attr, &param);
         if (s != 0)
-            handle_error_en(s, "pthread_attr_getschedparam");
+            errc(EXIT_FAILURE, s, "pthread_attr_getschedparam");
         s = pthread_attr_getschedpolicy(&attr, &policy);
         if (s != 0)
-            handle_error_en(s, "pthread_attr_getschedpolicy");
+            errc(EXIT_FAILURE, s, "pthread_attr_getschedpolicy");
 \&
         printf("Scheduler settings in \[aq]attr\[aq]\[rs]n");
         display_sched_attr(policy, &param);
@@ -410,23 +407,23 @@ main(int argc, char *argv[])
         printf("\[rs]n");
     }
 \&
-    /* Create a thread that will display its scheduling attributes. */
+    /* Create a thread that will display its scheduling attributes.  */
 \&
     s = pthread_create(&thread, attrp, &thread_start, NULL);
     if (s != 0)
-        handle_error_en(s, "pthread_create");
+        errc(EXIT_FAILURE, s, "pthread_create");
 \&
-    /* Destroy unneeded thread attributes object. */
+    /* Destroy unneeded thread attributes object.  */
 \&
     if (!use_null_attrib) {
       s = pthread_attr_destroy(&attr);
       if (s != 0)
-          handle_error_en(s, "pthread_attr_destroy");
+          errc(EXIT_FAILURE, s, "pthread_attr_destroy");
     }
 \&
     s = pthread_join(thread, NULL);
     if (s != 0)
-        handle_error_en(s, "pthread_join");
+        errc(EXIT_FAILURE, s, "pthread_join");
 \&
     exit(EXIT_SUCCESS);
 }

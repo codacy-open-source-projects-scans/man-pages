@@ -1,9 +1,7 @@
 '\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
 .\" SPDX-License-Identifier: Linux-man-pages-1-para
-.\"
-.\" This man page is Copyright (C) 1999 Andi Kleen <ak@muc.de>.
-.\"
-.\" $Id: raw.7,v 1.6 1999/06/05 10:32:08 freitag Exp $
 .\"
 .TH raw 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -54,7 +52,7 @@ is not possible using raw sockets.
 tab(:) allbox;
 c s
 l l.
-IP Header fields modified on sending by \fBIP_HDRINCL\fP
+IP Header fields modified on sending by \f[B]IP_HDRINCL\f[]
 IP Checksum:Always filled in
 Source Address:Filled in when zero
 Packet ID:Filled in when zero
@@ -226,7 +224,8 @@ unlike raw sockets.
 If you want to receive all ICMP packets for a datagram socket,
 it is often better to use
 .B IP_RECVERR
-on that particular socket; see
+on that particular socket;
+see
 .BR ip (7).
 .P
 Raw sockets may tap all IP protocols in Linux, even

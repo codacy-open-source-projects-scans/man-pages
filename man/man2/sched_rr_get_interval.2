@@ -1,11 +1,6 @@
-.\" Copyright (C) Tom Bjorkholm & Markus Kuhn, 1996
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" 1996-04-01 Tom Bjorkholm <tomb@mydata.se>
-.\"            First version written
-.\" 1996-04-10 Markus Kuhn <mskuhn@cip.informatik.uni-erlangen.de>
-.\"            revision
 .\"
 .TH sched_rr_get_interval 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -56,7 +51,8 @@ is set to indicate the error.
 Problem with copying information to user space.
 .TP
 .B EINVAL
-Invalid pid.
+Invalid
+.IR pid .
 .TP
 .B ENOSYS
 The system call is not yet implemented (only on rather old kernels).
@@ -75,7 +71,7 @@ quantum: the
 file exposes the quantum as a millisecond value, whose default is 100.
 Writing 0 to this file resets the quantum to the default value.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .SS Linux

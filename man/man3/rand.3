@@ -1,23 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\"
-.\" Modified 1993-03-29, David Metcalfe
-.\" Modified 1993-04-28, Lars Wirzenius
-.\" Modified 1993-07-24, Rik Faith (faith@cs.unc.edu)
-.\" Modified 1995-05-18, Rik Faith (faith@cs.unc.edu) to add
-.\"          better discussion of problems with rand on other systems.
-.\"          (Thanks to Esa Hyyti{ (ehyytia@snakemail.hut.fi).)
-.\" Modified 1998-04-10, Nicolás Lichtmaier <nick@debian.org>
-.\"          with contribution from Francesco Potorti <F.Potorti@cnuce.cnr.it>
-.\" Modified 2003-11-15, aeb, added rand_r
-.\" 2010-09-13, mtk, added example program
 .\"
 .TH rand 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -52,7 +36,8 @@ The
 .BR rand ()
 function returns a pseudo-random integer in the range 0 to
 .B RAND_MAX
-inclusive (i.e., the mathematical range [0,\ \fBRAND_MAX\fR]).
+inclusive (i.e., the mathematical range
+.RB [ 0 ,\~ RAND_MAX ]).
 .P
 The
 .BR srand ()
@@ -81,7 +66,8 @@ this can be done using the reentrant function
 Like
 .BR rand (),
 .BR rand_r ()
-returns a pseudo-random integer in the range [0,\ \fBRAND_MAX\fR].
+returns a pseudo-random integer in the range
+.RB [ 0 ,\~ RAND_MAX ].
 The
 .I seedp
 argument is a pointer to an
@@ -182,7 +168,7 @@ static unsigned long next = 1;
 /* RAND_MAX assumed to be 32767 */
 int myrand(void) {
     next = next * 1103515245 + 12345;
-    return((unsigned)(next/65536) % 32768);
+    return((unsigned) (next/65536) % 32768);
 }
 \&
 void mysrand(unsigned int seed) {

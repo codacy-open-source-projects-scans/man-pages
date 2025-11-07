@@ -1,18 +1,7 @@
 '\" t
-.\" peter memishian -- meem@gnu.ai.mit.edu
-.\" $Id: insque.3,v 1.2 1996/10/30 21:03:39 meem Exp meem $
-.\" and Copyright (c) 2010, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"   Linux libc source code (5.4.7)
-.\"   Solaris 2.x, OSF/1, and HP-UX manpages
-.\"   Curry's "UNIX Systems Programming for SVR4" (O'Reilly & Associates 1996)
-.\"
-.\" Changed to POSIX, 2003-08-11, aeb+wh
-.\" mtk, 2010-09-09: Noted glibc 2.4 bug, added info on circular
-.\"	lists, added example program
 .\"
 .TH insque 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -56,8 +45,10 @@ or circular.
 .P
 The
 .BR insque ()
-function inserts the element pointed to by \fIelem\fP
-immediately after the element pointed to by \fIprev\fP.
+function inserts the element pointed to by
+.I elem
+immediately after the element pointed to by
+.IR prev .
 .P
 If the list is linear, then the call
 .I "insque(elem, NULL)"
@@ -77,8 +68,9 @@ call should also point to the element.
 .P
 The
 .BR remque ()
-function removes the element pointed to by \fIelem\fP from the
-doubly linked list.
+function removes the element pointed to by
+.I elem
+from the doubly linked list.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
@@ -97,7 +89,8 @@ T}	Thread safety	MT-Safe
 .SH VERSIONS
 On ancient systems,
 .\" e.g., SunOS, Linux libc4 and libc5
-the arguments of these functions were of type \fIstruct qelem *\fP,
+the arguments of these functions were of type
+.IR "struct\ qelem\ *" ,
 defined as:
 .P
 .in +4n
@@ -113,14 +106,16 @@ struct qelem {
 This is still what you will get if
 .B _GNU_SOURCE
 is defined before
-including \fI<search.h>\fP.
+including
+.IR <search.h> .
 .P
 The location of the prototypes for these functions differs among several
 versions of UNIX.
 The above is the POSIX version.
-Some systems place them in \fI<string.h>\fP.
-.\" Linux libc4 and libc 5 placed them
-.\" in \fI<stdlib.h>\fP.
+Some systems place them in
+.IR <string.h> .
+.\" Linux libc4 and libc 5 placed them in
+.\" .IR <stdlib.h> .
 .SH STANDARDS
 POSIX.1-2008.
 .SH HISTORY
@@ -183,7 +178,7 @@ main(int argc, char *argv[])
     int circular, opt, errfnd;
 \&
     /* The "\-c" command\-line option can be used to specify that the
-       list is circular. */
+       list is circular.  */
 \&
     errfnd = 0;
     circular = 0;
@@ -203,7 +198,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 \&
-    /* Create first element and place it in the linked list. */
+    /* Create first element and place it in the linked list.  */
 \&
     elem = new_element();
     first = elem;
@@ -218,7 +213,7 @@ main(int argc, char *argv[])
         insque(elem, NULL);
     }
 \&
-    /* Add remaining command\-line arguments as list elements. */
+    /* Add remaining command\-line arguments as list elements.  */
 \&
     while (++optind < argc) {
         prev = elem;
@@ -228,7 +223,7 @@ main(int argc, char *argv[])
         insque(elem, prev);
     }
 \&
-    /* Traverse the list from the start, printing element names. */
+    /* Traverse the list from the start, printing element names.  */
 \&
     printf("Traversing completed list:\[rs]n");
     elem = first;

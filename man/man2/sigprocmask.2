@@ -1,10 +1,6 @@
-.\" Copyright (c) 2005 Michael Kerrisk
-.\" based on earlier work by faith@cs.unc.edu and
-.\" Mike Battersby <mib@deakin.edu.au>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2005-09-15, mtk, Created new page by splitting off from sigaction.2
 .\"
 .TH sigprocmask 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -94,7 +90,8 @@ A set of functions for modifying and inspecting variables of type
 .P
 The use of
 .BR sigprocmask ()
-is unspecified in a multithreaded process; see
+is unspecified in a multithreaded process;
+see
 .BR pthread_sigmask (3).
 .SH RETURN VALUE
 .BR sigprocmask ()
@@ -163,7 +160,7 @@ This argument is currently required to have a fixed architecture specific value
 (equal to
 .IR sizeof(kernel_sigset_t) ).
 .\" sizeof(kernel_sigset_t) == _NSIG / 8,
-.\" which equals to 8 on most architectures, but e.g. on MIPS it's 16.
+.\" which equals to 8 on most architectures, but e.g., on MIPS it's 16.
 .P
 The glibc
 .BR sigprocmask ()
@@ -172,7 +169,7 @@ wrapper function hides these details from us, transparently calling
 when the kernel provides it.
 .\"
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .SH NOTES

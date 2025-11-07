@@ -1,16 +1,6 @@
-.\" Copyright (C) 2002 Robert Love
-.\" and Copyright (C) 2006, 2015 Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" 2002-11-19 Robert Love <rml@tech9.net> - initial version
-.\" 2004-04-20 mtk - fixed description of return value
-.\" 2004-04-22 aeb - added glibc prototype history
-.\" 2005-05-03 mtk - noted that sched_setaffinity may cause thread
-.\"	migration and that CPU affinity is a per-thread attribute.
-.\" 2006-02-03 mtk -- Major rewrite
-.\" 2008-11-12, mtk, removed CPU_*() macro descriptions to a
-.\" separate CPU_SET(3) page.
 .\"
 .TH sched_setaffinity 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -133,7 +123,9 @@ capability in the user namespace of the thread
 .IR pid .
 .TP
 .B ESRCH
-The thread whose ID is \fIpid\fP could not be found.
+The thread whose ID is
+.I pid
+could not be found.
 .SH STANDARDS
 Linux.
 .SH HISTORY
@@ -171,7 +163,8 @@ to obtain the values of the
 .B _SC_NPROCESSORS_CONF
 and
 .B _SC_NPROCESSORS_ONLN
-parameters; and inspecting the list of CPU directories under
+parameters;
+and inspecting the list of CPU directories under
 .IR /sys/devices/system/cpu/ .
 .P
 .BR sched (7)
@@ -312,7 +305,7 @@ system has two cores, each with two CPUs:
 .P
 .in +4n
 .EX
-$ \fBlscpu | egrep \-i \[aq]core.*:|socket\[aq]\fP
+.RB $ " lscpu | egrep \-i \[aq]core.*:|socket\[aq]" ;
 Thread(s) per core:    2
 Core(s) per socket:    2
 Socket(s):             1
@@ -326,15 +319,15 @@ and both processes running on different CPUs on different cores.
 .P
 .in +4n
 .EX
-$ \fBtime \-p ./a.out 0 0 100000000\fP
+.RB $ " time \-p ./a.out 0 0 100000000" ;
 real 14.75
 user 3.02
 sys 11.73
-$ \fBtime \-p ./a.out 0 1 100000000\fP
+.RB $ " time \-p ./a.out 0 1 100000000" ;
 real 11.52
 user 3.98
 sys 19.06
-$ \fBtime \-p ./a.out 0 3 100000000\fP
+.RB $ " time \-p ./a.out 0 3 100000000" ;
 real 7.89
 user 3.29
 sys 12.07
@@ -378,7 +371,7 @@ main(int argc, char *argv[])
     case 0:             /* Child */
         CPU_SET(childCPU, &set);
 \&
-        if (sched_setaffinity(getpid(), sizeof(set), &set) == \-1)
+        if (sched_setaffinity(0, sizeof(set), &set) == \-1)
             err(EXIT_FAILURE, "sched_setaffinity");
 \&
         for (unsigned int j = 0; j < nloops; j++)
@@ -389,7 +382,7 @@ main(int argc, char *argv[])
     default:            /* Parent */
         CPU_SET(parentCPU, &set);
 \&
-        if (sched_setaffinity(getpid(), sizeof(set), &set) == \-1)
+        if (sched_setaffinity(0, sizeof(set), &set) == \-1)
             err(EXIT_FAILURE, "sched_setaffinity");
 \&
         for (unsigned int j = 0; j < nloops; j++)

@@ -1,5 +1,4 @@
-.\" Copyright (c) 1995 Michael Chastain (mec@duracef.shout.net), 22 July 1995.
-.\" Copyright (c) 2015 Andrew Lutomirski
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -15,7 +14,8 @@ Standard C library
 .BR "#include <sys/syscall.h>" "     /* Definition of " SYS_* " constants */"
 .B #include <unistd.h>
 .P
-.BI "int syscall(SYS_modify_ldt, int " func ", void " ptr [. bytecount ],
+.BR "int syscall(" "unsigned long bytecount;"
+.BI "            SYS_modify_ldt, int " func ", void " ptr [ bytecount ],
 .BI "            unsigned long " bytecount );
 .fi
 .P
@@ -63,7 +63,9 @@ must equal the size of this structure.
 .P
 The
 .I user_desc
-structure is defined in \fI<asm/ldt.h>\fP as:
+structure is defined in
+.I <asm/ldt.h>
+as:
 .P
 .in +4n
 .EX

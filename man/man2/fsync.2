@@ -1,19 +1,6 @@
-.\" Copyright 1993 Rickard E. Faith (faith@cs.unc.edu) and
-.\" and Copyright 2006 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 21 Aug 1994 by Michael Chastain <mec@shell.portal.com>:
-.\"   Removed note about old libc (pre-4.5.26) translating to 'sync'.
-.\" Modified 15 Apr 1995 by Michael Chastain <mec@shell.portal.com>:
-.\"   Added `see also' section.
-.\" Modified 13 Apr 1996 by Markus Kuhn <mskuhn@cip.informatik.uni-erlangen.de>
-.\"   Added remarks about fdatasync.
-.\" Modified 31 Jan 1997 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 18 Apr 2001 by Andi Kleen
-.\"   Fix description to describe what it really does; add a few caveats.
-.\" 2006-04-28, mtk, substantial rewrite of various parts.
-.\" 2012-02-27 Various changes by Christoph Hellwig <hch@lst.de>
 .\"
 .TH fsync 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -84,7 +71,8 @@ For example, changes to
 or
 .I st_mtime
 (respectively, time of last access and
-time of last modification; see
+time of last modification;
+see
 .BR inode (7))
 do not require flushing because they are not necessary for
 a subsequent data read to be handled correctly.
@@ -110,7 +98,8 @@ is set to indicate the error.
 is not a valid open file descriptor.
 .TP
 .B EINTR
-The function was interrupted by a signal; see
+The function was interrupted by a signal;
+see
 .BR signal (7).
 .TP
 .B EIO
@@ -160,7 +149,7 @@ to a value greater than 0.
 .\" -1: unavailable, 0: ask using sysconf().
 .\" glibc defines them to 1.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, 4.2BSD.
 .P

@@ -1,12 +1,8 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" Modified Sat Jul 24 21:27:01 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 14 Jun 2002, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 	Added notes on differences from other UNIX systems with respect to
-.\"	waited-for children.
 .TH clock 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 clock \- determine processor time
@@ -64,7 +60,7 @@ value returned by
 .\" I have seen this behavior on Irix 6.3, and the OSF/1, HP/UX, and
 .\" Solaris manual pages say that clock() also does this on those systems.
 .\" POSIX.1-2001 doesn't explicitly allow this, nor is there an
-.\" explicit prohibition. -- MTK
+.\" explicit prohibition.  -- MTK
 The
 .BR times (2)
 function, which explicitly returns (separate) information about the

@@ -1,9 +1,6 @@
-.\" Copyright 2002 Walter Harms (walter.harms@informatik.uni-oldenburg.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
-.\"
-.\" Heavily based on glibc documentation
-.\" Polished, added docs, removed glibc doc bug, 2002-07-20, aeb
 .\"
 .TH __malloc_hook 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -52,7 +49,7 @@ the application with a definition like the following:
 .P
 .in +4n
 .EX
-void (*__malloc_initialize_hook)(void) = my_init_hook;
+typeof(void (void))  *__malloc_initialize_hook = my_init_hook;
 .EE
 .in
 .P
@@ -112,10 +109,10 @@ static void my_init_hook(void);
 static void *my_malloc_hook(size_t, const void *);
 \&
 /* Variables to save original hooks */
-static void *(*old_malloc_hook)(size_t, const void *);
+static typeof(void *(size_t, const void *))  *old_malloc_hook;
 \&
 /* Override initializing hook from the C library */
-void (*__malloc_initialize_hook)(void) = my_init_hook;
+typeof(void (void))  *__malloc_initialize_hook = my_init_hook;
 \&
 static void
 my_init_hook(void)

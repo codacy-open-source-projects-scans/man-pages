@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (C) 2008, George Spelvin <linux@horizon.com>,
-.\" and Copyright (C) 2008, Matt Mackall <mpm@selenic.com>
-.\" and Copyright (C) 2016, Laurent Georget <laurent.georget@supelec.fr>
-.\" and Copyright (C) 2016, Nikos Mavrogiannopoulos <nmav@redhat.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" The following web page is quite informative:
-.\" http://www.2uo.de/myths-about-urandom/
 .\"
 .TH random 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -44,7 +38,8 @@ or to the same source as
 source in this page).
 The default is the
 .I urandom
-source; the
+source;
+the
 .I random
 source is selected by specifying the
 .B GRND_RANDOM
@@ -143,7 +138,7 @@ T}	T{
 Same as
 .I /dev/urandom
 T}	T{
-Does not block once is pool ready
+Does not block once pool is ready
 T}	T{
 Blocks until pool ready
 T}
@@ -165,7 +160,7 @@ T}	T{
 Same as
 .I /dev/urandom
 T}	T{
-Does not block once is pool ready
+Does not block once pool is ready
 T}	T{
 .B EAGAIN
 T}
@@ -211,3 +206,6 @@ skillfully implemented.
 .BR random (4),
 .BR urandom (4),
 .BR signal (7)
+.P
+.UR http://www.2uo.de/myths-about-urandom/
+.UE

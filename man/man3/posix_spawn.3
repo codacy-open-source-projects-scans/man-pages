@@ -1,12 +1,6 @@
-.\" Copyright (c) 2009 Bill O. Gallmeister (bgallmeister@gmail.com)
-.\" and Copyright 2010 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux glibc source code
-.\"     POSIX 1003.1-2004 documentation
-.\"     (http://www.opengroup.org/onlinepubs/009695399)
 .\"
 .TH posix_spawn 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -182,7 +176,9 @@ is NULL and the
 .I spawn-flags
 element of the attributes object pointed to by
 .I attrp
-does \fInot\fP contain
+does
+.I not
+contain
 .BR POSIX_SPAWN_SETSIGMASK ,
 .BR POSIX_SPAWN_SETSIGDEF ,
 .BR POSIX_SPAWN_SETSCHEDPARAM ,
@@ -482,7 +478,8 @@ and these functions return an error number as described below.
 .P
 Even when these functions return a success status,
 the child process may still fail for a plethora of reasons related to its
-pre-\fBexec\fR() initialization.
+.RB pre- exec ()
+initialization.
 In addition, the
 .BR exec (3)
 may fail.
@@ -591,7 +588,7 @@ call employs no file actions or attributes objects.
 .P
 .in +4n
 .EX
-$ \fB./a.out date\fP
+.RB $ " ./a.out date" ;
 PID of child: 7634
 Tue Feb  1 19:47:50 CEST 2011
 Child status: exited, status=0
@@ -608,7 +605,7 @@ fails when trying to perform output and exits with a status of 1.
 .P
 .in +4n
 .EX
-$ \fB./a.out \-c date\fP
+.RB $ " ./a.out \-c date" ;
 PID of child: 7636
 date: write error: Bad file descriptor
 Child status: exited, status=1
@@ -632,12 +629,12 @@ can't be blocked).
 .P
 .in +4n
 .EX
-$ \fB./a.out \-s sleep 60 &\fP
+.RB $ " ./a.out \-s sleep 60 &"
 [1] 7637
 $ PID of child: 7638
 .P
-$ \fBkill 7638\fP
-$ \fBkill \-KILL 7638\fP
+.RB $ " kill 7638" ;
+.RB $ " kill \-KILL 7638" ;
 $ Child status: killed by signal 9
 [1]+  Done                    ./a.out \-s sleep 60
 .EE
@@ -649,7 +646,7 @@ fails and the child exits with a status of 127.
 .P
 .in +4n
 .EX
-$ \fB./a.out xxxxx
+.RB $ " ./a.out xxxxx" ;
 PID of child: 10190
 Child status: exited, status=127
 .EE
@@ -658,6 +655,7 @@ Child status: exited, status=127
 \&
 .\" SRC BEGIN (posix_spawn.c)
 .EX
+#include <err.h>
 #include <errno.h>
 #include <spawn.h>
 #include <stdint.h>
@@ -666,13 +664,6 @@ Child status: exited, status=127
 #include <string.h>
 #include <unistd.h>
 #include <wait.h>
-\&
-#define errExit(msg)    do { perror(msg); \[rs]
-                             exit(EXIT_FAILURE); } while (0)
-\&
-#define errExitEN(en, msg) \[rs]
-                        do { errno = en; perror(msg); \[rs]
-                             exit(EXIT_FAILURE); } while (0)
 \&
 char **environ;
 \&
@@ -688,7 +679,7 @@ main(int argc, char *argv[])
     posix_spawn_file_actions_t *file_actionsp;
 \&
     /* Parse command\-line options, which can be used to specify an
-       attributes object and file actions object for the child. */
+       attributes object and file actions object for the child.  */
 \&
     attrp = NULL;
     file_actionsp = NULL;
@@ -698,16 +689,16 @@ main(int argc, char *argv[])
         case \[aq]c\[aq]:       /* \-c: close standard output in child */
 \&
             /* Create a file actions object and add a "close"
-               action to it. */
+               action to it.  */
 \&
             s = posix_spawn_file_actions_init(&file_actions);
             if (s != 0)
-                errExitEN(s, "posix_spawn_file_actions_init");
+                errc(EXIT_FAILURE, s, "posix_spawn_file_actions_init");
 \&
             s = posix_spawn_file_actions_addclose(&file_actions,
                                                   STDOUT_FILENO);
             if (s != 0)
-                errExitEN(s, "posix_spawn_file_actions_addclose");
+                errc(EXIT_FAILURE, s, "posix_spawn_file_actions_addclose");
 \&
             file_actionsp = &file_actions;
             break;
@@ -715,57 +706,62 @@ main(int argc, char *argv[])
         case \[aq]s\[aq]:       /* \-s: block all signals in child */
 \&
             /* Create an attributes object and add a "set signal mask"
-               action to it. */
+               action to it.  */
 \&
             s = posix_spawnattr_init(&attr);
             if (s != 0)
-                errExitEN(s, "posix_spawnattr_init");
+                errc(EXIT_FAILURE, s, "posix_spawnattr_init");
             s = posix_spawnattr_setflags(&attr, POSIX_SPAWN_SETSIGMASK);
             if (s != 0)
-                errExitEN(s, "posix_spawnattr_setflags");
+                errc(EXIT_FAILURE, s, "posix_spawnattr_setflags");
 \&
             sigfillset(&mask);
             s = posix_spawnattr_setsigmask(&attr, &mask);
             if (s != 0)
-                errExitEN(s, "posix_spawnattr_setsigmask");
+                errc(EXIT_FAILURE, s, "posix_spawnattr_setsigmask");
 \&
             attrp = &attr;
             break;
         }
     }
 \&
-    /* Spawn the child. The name of the program to execute and the
+    if (argv[optind] == NULL) {
+        fprintf(stderr, "Usage: %s [\-cs] executable [args]\[rs]n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+\&
+    /* Spawn the child.  The name of the program to execute and the
        command\-line arguments are taken from the command\-line arguments
-       of this program. The environment of the program execed in the
-       child is made the same as the parent\[aq]s environment. */
+       of this program.  The environment of the program execed in the
+       child is made the same as the parent\[aq]s environment.  */
 \&
     s = posix_spawnp(&child_pid, argv[optind], file_actionsp, attrp,
                      &argv[optind], environ);
     if (s != 0)
-        errExitEN(s, "posix_spawn");
+        errc(EXIT_FAILURE, s, "posix_spawn");
 \&
-    /* Destroy any objects that we created earlier. */
+    /* Destroy any objects that we created earlier.  */
 \&
     if (attrp != NULL) {
         s = posix_spawnattr_destroy(attrp);
         if (s != 0)
-            errExitEN(s, "posix_spawnattr_destroy");
+            errc(EXIT_FAILURE, s, "posix_spawnattr_destroy");
     }
 \&
     if (file_actionsp != NULL) {
         s = posix_spawn_file_actions_destroy(file_actionsp);
         if (s != 0)
-            errExitEN(s, "posix_spawn_file_actions_destroy");
+            errc(EXIT_FAILURE, s, "posix_spawn_file_actions_destroy");
     }
 \&
     printf("PID of child: %jd\[rs]n", (intmax_t) child_pid);
 \&
-    /* Monitor status of the child until it terminates. */
+    /* Monitor status of the child until it terminates.  */
 \&
     do {
         s = waitpid(child_pid, &status, WUNTRACED | WCONTINUED);
         if (s == \-1)
-            errExit("waitpid");
+            err(EXIT_FAILURE, "waitpid");
 \&
         printf("Child status: ");
         if (WIFEXITED(status)) {

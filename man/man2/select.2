@@ -1,21 +1,6 @@
-.\" This manpage is copyright (C) 1992 Drew Eckhardt,
-.\"     copyright (C) 1995 Michael Shields,
-.\"     copyright (C) 2001 Paul Sheer,
-.\"     copyright (C) 2006, 2019 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified 1993-07-24 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1995-05-18 by Jim Van Zandt <jrv@vanzandt.mv.com>
-.\" Sun Feb 11 14:07:00 MET 1996  Martin Schulze  <joey@linux.de>
-.\"	* layout slightly modified
-.\"
-.\" Modified Mon Oct 21 23:05:29 EDT 1996 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified Thu Feb 24 01:41:09 CET 2000 by aeb
-.\" Modified Thu Feb  9 22:32:09 CET 2001 by bert hubert <ahu@ds9a.nl>, aeb
-.\" Modified Mon Nov 11 14:35:00 PST 2002 by Ben Woodard <ben@zork.net>
-.\" 2005-03-11, mtk, modified pselect() text (it is now a system
-.\"     call in Linux 2.6.16.
 .\"
 .TH select 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -28,7 +13,7 @@ Standard C library
 .nf
 .B #include <sys/select.h>
 .P
-.BR typedef " /* ... */ " fd_set;
+.BR typedef " /* .\|.\|.\& */ " fd_set;
 .P
 .BI "int select(int " nfds ", fd_set *_Nullable restrict " readfds ,
 .BI "           fd_set *_Nullable restrict " writefds ,
@@ -36,7 +21,7 @@ Standard C library
 .BI "           struct timeval *_Nullable restrict " timeout );
 .P
 .BI "void FD_CLR(int " fd ", fd_set *" set );
-.BI "int  FD_ISSET(int " fd ", fd_set *" set );
+.BI "int  FD_ISSET(int " fd ", const fd_set *" set );
 .BI "void FD_SET(int " fd ", fd_set *" set );
 .BI "void FD_ZERO(fd_set *" set );
 .P
@@ -105,7 +90,9 @@ Upon return, each of the file descriptor sets is modified in place
 to indicate which file descriptors are currently "ready".
 Thus, if using
 .BR select ()
-within a loop, the sets \fImust be reinitialized\fP before each call.
+within a loop, the sets
+.I must be reinitialized
+before each call.
 .P
 The contents of a file descriptor set can be manipulated
 using the following macros:
@@ -156,12 +143,15 @@ are as follows:
 .I readfds
 The file descriptors in this set are watched to see if they are
 ready for reading.
-A file descriptor is ready for reading if a read operation will not
-block; in particular, a file descriptor is also ready on end-of-file.
+A file descriptor is ready for reading if a read operation will not block;
+in particular,
+a file descriptor is also ready on end-of-file.
 .IP
 After
 .BR select ()
-has returned, \fIreadfds\fP will be
+has returned,
+.I readfds
+will be
 cleared of all file descriptors except for those that are ready for reading.
 .TP
 .I writefds
@@ -173,7 +163,9 @@ a large write may still block.
 .IP
 After
 .BR select ()
-has returned, \fIwritefds\fP will be
+has returned,
+.I writefds
+will be
 cleared of all file descriptors except for those that are ready for writing.
 .TP
 .I exceptfds
@@ -186,7 +178,8 @@ in
 After
 .BR select ()
 has returned,
-\fIexceptfds\fP will be cleared of all file descriptors except for those
+.I exceptfds
+will be cleared of all file descriptors except for those
 for which an exceptional condition has occurred.
 .TP
 .I nfds
@@ -208,7 +201,8 @@ The call will block until either:
 .IP \[bu] 3
 a file descriptor becomes ready;
 .IP \[bu]
-the call is interrupted by a signal handler; or
+the call is interrupted by a signal handler;
+or
 .IP \[bu]
 the timeout expires.
 .RE
@@ -356,13 +350,16 @@ On Linux,
 .BR select ()
 modifies
 .I timeout
-to reflect the amount of time not slept; most other implementations
+to reflect the amount of time not slept;
+most other implementations
 do not do this.
 (POSIX.1 permits either behavior.)
 This causes problems both when Linux code which reads
 .I timeout
 is ported to other operating systems, and when code is ported to Linux
-that reuses a \fIstruct timeval\fP for multiple
+that reuses a
+.I struct\ timeval
+for multiple
 .BR select ()s
 in a loop without reinitializing it.
 Consider
@@ -403,7 +400,8 @@ or one on which an error has occurred.)
 However, see BUGS.
 .TP
 .B EINTR
-A signal was caught; see
+A signal was caught;
+see
 .BR signal (7).
 .TP
 .B EINVAL
@@ -438,7 +436,7 @@ Portable programs may wish to check for
 and loop, just as with
 .BR EINTR .
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR select ()
@@ -723,12 +721,12 @@ main(void)
     fd_set          rfds;
     struct timeval  tv;
 \&
-    /* Watch stdin (fd 0) to see when it has input. */
+    /* Watch stdin (fd 0) to see when it has input.  */
 \&
     FD_ZERO(&rfds);
     FD_SET(0, &rfds);
 \&
-    /* Wait up to five seconds. */
+    /* Wait up to five seconds.  */
 \&
     tv.tv_sec = 5;
     tv.tv_usec = 0;
@@ -740,7 +738,7 @@ main(void)
         perror("select()");
     else if (retval)
         printf("Data is available now.\[rs]n");
-        /* FD_ISSET(0, &rfds) will be true. */
+        /* FD_ISSET(0, &rfds) will be true.  */
     else
         printf("No data within five seconds.\[rs]n");
 \&

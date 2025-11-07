@@ -1,19 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
-.\" and Copyright (c) 1998 Andries Brouwer (aeb@cwi.nl)
-.\" and Copyright (c) 2006, 2007, 2008, 2014 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified 1993-07-21 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 1996-07-09 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 1996-11-06 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified 1997-05-18 by Michael Haardt <michael@cantor.informatik.rwth-aachen.de>
-.\" Modified 2004-06-23 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 2007-07-08, mtk, added an example program; updated SYNOPSIS
-.\" 2008-05-08, mtk, Describe rules governing ownership of new files
-.\"     (bsdgroups versus sysvgroups, and the effect of the parent
-.\"     directory's set-group-ID mode bit).
 .\"
 .TH chown 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -25,14 +12,14 @@ Standard C library
 .nf
 .B #include <unistd.h>
 .P
-.BI "int chown(const char *" pathname ", uid_t " owner ", gid_t " group );
+.BI "int chown(const char *" path ", uid_t " owner ", gid_t " group );
 .BI "int fchown(int " fd ", uid_t " owner ", gid_t " group );
-.BI "int lchown(const char *" pathname ", uid_t " owner ", gid_t " group );
+.BI "int lchown(const char *" path ", uid_t " owner ", gid_t " group );
 .P
 .BR "#include <fcntl.h>           " "/* Definition of AT_* constants */"
 .B #include <unistd.h>
 .P
-.BI "int fchownat(int " dirfd ", const char *" pathname ,
+.BI "int fchownat(int " dirfd ", const char *" path ,
 .BI "             uid_t " owner ", gid_t " group ", int " flags );
 .fi
 .P
@@ -68,7 +55,7 @@ system calls differ only in how the file is specified:
 .IP \[bu] 3
 .BR chown ()
 changes the ownership of the file specified by
-.IR pathname ,
+.IR path ,
 which is dereferenced if it is a symbolic link.
 .IP \[bu]
 .BR fchown ()
@@ -126,8 +113,8 @@ system call operates in exactly the same way as
 .BR chown (),
 except for the differences described here.
 .P
-If the pathname given in
-.I pathname
+If
+.I path
 is relative, then it is interpreted relative to the directory
 referred to by the file descriptor
 .I dirfd
@@ -137,19 +124,19 @@ the calling process, as is done by
 for a relative pathname).
 .P
 If
-.I pathname
+.I path
 is relative and
 .I dirfd
 is the special value
 .BR AT_FDCWD ,
 then
-.I pathname
+.I path
 is interpreted relative to the current working
 directory of the calling process (like
 .BR chown ()).
 .P
 If
-.I pathname
+.I path
 is absolute, then
 .I dirfd
 is ignored.
@@ -162,7 +149,7 @@ argument is a bit mask created by ORing together
 .BR AT_EMPTY_PATH " (since Linux 2.6.39)"
 .\" commit 65cfc6722361570bfe255698d9cd4dccaf47570d
 If
-.I pathname
+.I path
 is an empty string, operate on the file referred to by
 .I dirfd
 (which may have been obtained using the
@@ -177,14 +164,15 @@ If
 is
 .BR AT_FDCWD ,
 the call operates on the current working directory.
-This flag is Linux-specific; define
+This flag is Linux-specific;
+define
 .B _GNU_SOURCE
 .\" Before glibc 2.16, defining _ATFILE_SOURCE sufficed
 to obtain its definition.
 .TP
 .B AT_SYMLINK_NOFOLLOW
 If
-.I pathname
+.I path
 is a symbolic link, do not dereference it:
 instead operate on the link itself, like
 .BR lchown ().
@@ -222,7 +210,7 @@ is not a valid open file descriptor.
 .TP
 .B EBADF
 .RB ( fchownat ())
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -230,7 +218,7 @@ is neither
 nor a valid file descriptor.
 .TP
 .B EFAULT
-.I pathname
+.I path
 points outside your accessible address space.
 .TP
 .B EINVAL
@@ -244,10 +232,10 @@ A low-level I/O error occurred while modifying the inode.
 .TP
 .B ELOOP
 Too many symbolic links were encountered in resolving
-.IR pathname .
+.IR path .
 .TP
 .B ENAMETOOLONG
-.I pathname
+.I path
 is too long.
 .TP
 .B ENOENT
@@ -261,7 +249,7 @@ A component of the path prefix is not a directory.
 .TP
 .B ENOTDIR
 .RB ( fchownat ())
-.I pathname
+.I path
 is relative and
 .I dirfd
 is a file descriptor referring to a file other than a directory.
@@ -287,7 +275,7 @@ used only by the superuser (that is, ordinary users cannot give away files).
 .\" SVr4 documents additional EINVAL, EIO, EINTR, and ENOLINK
 .\" error conditions.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR chown ()
@@ -359,8 +347,8 @@ is unavailable, the glibc wrapper function falls back to the use of
 and
 .BR lchown ().
 When
-.I pathname
-is a relative pathname,
+.I path
+is relative,
 glibc constructs a pathname based on the symbolic link in
 .I /proc/self/fd
 that corresponds to the

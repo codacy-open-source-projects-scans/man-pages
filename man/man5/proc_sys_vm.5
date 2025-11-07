@@ -1,7 +1,4 @@
-.\" Copyright (C) 1994, 1995, Daniel Quinlan <quinlan@yggdrasil.com>
-.\" Copyright (C) 2002-2008, 2017, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright (C) , Andries Brouwer <aeb@cwi.nl>
-.\" Copyright (C) 2023, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-3.0-or-later
 .\"
@@ -88,14 +85,15 @@ user should run
 .BR sync (1)
 first.
 .TP
-.IR  /proc/sys/vm/sysctl_hugetlb_shm_group " (since Linux 2.6.7)"
+.IR  /proc/sys/vm/hugetlb_shm_group " (since Linux 2.6.7)"
 This writable file contains a group ID that is allowed
 to allocate memory using huge pages.
 If a process has a filesystem group ID or any supplementary group ID that
 matches this group ID,
 then it can make huge-page allocations without holding the
 .B CAP_IPC_LOCK
-capability; see
+capability;
+see
 .BR memfd_create (2),
 .BR mmap (2),
 and
@@ -139,7 +137,8 @@ signal with
 .I si_code
 set to
 .BR BUS_MCEERR_AO .
-Processes can handle this if they want to; see
+Processes can handle this if they want to;
+see
 .BR sigaction (2)
 for more details.
 .IP

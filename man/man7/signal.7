@@ -1,27 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
-.\" and Copyright (c) 2002, 2006, 2020 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" and Copyright (c) 2008 Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 17:34:08 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Sun Jan  7 01:41:27 1996 by Andries Brouwer (aeb@cwi.nl)
-.\" Modified Sun Apr 14 12:02:29 1996 by Andries Brouwer (aeb@cwi.nl)
-.\" Modified Sat Nov 13 16:28:23 1999 by Andries Brouwer (aeb@cwi.nl)
-.\" Modified 10 Apr 2002, by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Modified  7 Jun 2002, by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Added information on real-time signals
-.\" Modified 13 Jun 2002, by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Noted that SIGSTKFLT is in fact unused
-.\" 2004-12-03, Modified mtk, added notes on RLIMIT_SIGPENDING
-.\" 2006-04-24, mtk, Added text on changing signal dispositions,
-.\"		signal mask, and pending signals.
-.\" 2008-07-04, mtk:
-.\"     Added section on system call restarting (SA_RESTART)
-.\"     Added section on stop/cont signals interrupting syscalls.
-.\" 2008-10-05, mtk: various additions
 .\"
 .TH signal 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -62,9 +42,11 @@ or
 see
 .BR signal (2)
 for details.)
-Using these system calls, a process can elect one of the
-following behaviors to occur on delivery of the signal:
-perform the default action; ignore the signal;
+Using these system calls,
+a process can elect one of the following behaviors
+to occur on delivery of the signal:
+perform the default action;
+ignore the signal;
 or catch the signal with a
 .IR "signal handler" ,
 a programmer-defined function that is automatically invoked
@@ -73,7 +55,8 @@ when the signal is delivered.
 By default, a signal handler is invoked on the
 normal process stack.
 It is possible to arrange that the signal handler
-uses an alternate stack; see
+uses an alternate stack;
+see
 .BR sigaltstack (2)
 for a discussion of how to do this and when it might be useful.
 .P
@@ -205,7 +188,7 @@ or
 .P
 A process-directed signal may be delivered to any one of the
 threads that does not currently have the signal blocked.
-.\" Joseph C. Sible notes:
+.\" Joseph C.\& Sible notes:
 .\" On Linux, if the main thread has the signal unblocked, then the kernel
 .\" will always deliver the signal there, citing this kernel code
 .\"
@@ -360,33 +343,36 @@ Linux supports the standard signals listed below.
 The second column of the table indicates which standard (if any)
 specified the signal: "P1990" indicates that the signal is described
 in the original POSIX.1-1990 standard;
-"P2001" indicates that the signal was added in SUSv2 and POSIX.1-2001.
+"P2001" indicates that the signal was added or its definition changed
+in SUSv2 and POSIX.1-2001.
+"P2024" indicates that the signal was added or its definition changed
+in POSIX.1-2024.
 .TS
 l c c l
-____
 lB c c l.
 Signal	Standard	Action	Comment
-SIGABRT	P1990	Core	Abort signal from \fBabort\fP(3)
-SIGALRM	P1990	Term	Timer signal from \fBalarm\fP(2)
+_
+SIGABRT	P1990	Core	Abort signal from \f[B]abort\f[](3)
+SIGALRM	P1990	Term	Timer signal from \f[B]alarm\f[](2)
 SIGBUS	P2001	Core	Bus error (bad memory access)
-SIGCHLD	P1990	Ign	Child stopped or terminated
-SIGCLD	\-	Ign	A synonym for \fBSIGCHLD\fP
+SIGCHLD	P2001	Ign	Child stopped, terminated, or continued
+SIGCLD	\-	Ign	A synonym for \f[B]SIGCHLD\f[]
 SIGCONT	P1990	Cont	Continue if stopped
 SIGEMT	\-	Term	Emulator trap
 SIGFPE	P1990	Core	Erroneous arithmetic operation
 SIGHUP	P1990	Term	Hangup detected on controlling terminal
 			or death of controlling process
 SIGILL	P1990	Core	Illegal Instruction
-SIGINFO	\-		A synonym for \fBSIGPWR\fP
+SIGINFO	\-		A synonym for \f[B]SIGPWR\f[]
 SIGINT	P1990	Term	Interrupt from keyboard
 SIGIO	\-	Term	I/O now possible (4.2BSD)
-SIGIOT	\-	Core	IOT trap. A synonym for \fBSIGABRT\fP
+SIGIOT	\-	Core	IOT trap.  A synonym for \f[B]SIGABRT\f[]
 SIGKILL	P1990	Term	Kill signal
 SIGLOST	\-	Term	File lock lost (unused)
 SIGPIPE	P1990	Term	Broken pipe: write to pipe with no
-			readers; see \fBpipe\fP(7)
+			readers; see \f[B]pipe\f[](7)
 SIGPOLL	P2001	Term	Pollable event (Sys V);
-			synonym for \fBSIGIO\fP
+			synonym for \f[B]SIGIO\f[]
 SIGPROF	P2001	Term	Profiling timer expired
 SIGPWR	\-	Term	Power failure (System V)
 SIGQUIT	P1990	Core	Quit from keyboard
@@ -395,21 +381,21 @@ SIGSTKFLT	\-	Term	Stack fault on coprocessor (unused)
 SIGSTOP	P1990	Stop	Stop process
 SIGTSTP	P1990	Stop	Stop typed at terminal
 SIGSYS	P2001	Core	Bad system call (SVr4);
-			see also \fBseccomp\fP(2)
+			see also \f[B]seccomp\f[](2)
 SIGTERM	P1990	Term	Termination signal
 SIGTRAP	P2001	Core	Trace/breakpoint trap
 SIGTTIN	P1990	Stop	Terminal input for background process
 SIGTTOU	P1990	Stop	Terminal output for background process
-SIGUNUSED	\-	Core	Synonymous with \fBSIGSYS\fP
+SIGUNUSED	\-	Core	Synonymous with \f[B]SIGSYS\f[]
 SIGURG	P2001	Ign	Urgent condition on socket (4.2BSD)
 SIGUSR1	P1990	Term	User-defined signal 1
 SIGUSR2	P1990	Term	User-defined signal 2
 SIGVTALRM	P2001	Term	Virtual alarm clock (4.2BSD)
 SIGXCPU	P2001	Core	CPU time limit exceeded (4.2BSD);
-			see \fBsetrlimit\fP(2)
+			see \f[B]setrlimit\f[](2)
 SIGXFSZ	P2001	Core	File size limit exceeded (4.2BSD);
-			see \fBsetrlimit\fP(2)
-SIGWINCH	\-	Ign	Window resize signal (4.3BSD, Sun)
+			see \f[B]setrlimit\f[](2)
+SIGWINCH	P2024	Ign	Window resize signal (4.3BSD, Sun)
 .TE
 .P
 The signals
@@ -467,16 +453,17 @@ As shown in the table, many signals have different numeric values
 on different architectures.
 The first numeric value in each table row shows the signal number
 on x86, ARM, and most other architectures;
-the second value is for Alpha and SPARC; the third is for MIPS;
+the second value is for Alpha and SPARC;
+the third is for MIPS;
 and the last is for PARISC.
 A dash (\-) denotes that a signal is absent on the corresponding architecture.
 .TS
 l c c c c l
 l c c c c l
-______
 lB c c c c l.
 Signal	x86/ARM	Alpha/	MIPS	PARISC	Notes
 	most others	SPARC
+_
 SIGHUP	\01	\01	\01	\01
 SIGINT	\02	\02	\02	\02
 SIGQUIT	\03	\03	\03	\03
@@ -632,8 +619,8 @@ In Linux 2.6.8, these
 .I /proc
 interfaces were replaced by the
 .B RLIMIT_SIGPENDING
-resource limit, which specifies a per-user limit for queued
-signals; see
+resource limit, which specifies a per-user limit for queued signals;
+see
 .BR setrlimit (2)
 for further details.
 .P
@@ -648,19 +635,21 @@ The old and new system calls are as follows:
 lb lb
 l l.
 Linux 2.0 and earlier	Linux 2.2 and later
-\fBsigaction\fP(2)	\fBrt_sigaction\fP(2)
-\fBsigpending\fP(2)	\fBrt_sigpending\fP(2)
-\fBsigprocmask\fP(2)	\fBrt_sigprocmask\fP(2)
-\fBsigreturn\fP(2)	\fBrt_sigreturn\fP(2)
-\fBsigsuspend\fP(2)	\fBrt_sigsuspend\fP(2)
-\fBsigtimedwait\fP(2)	\fBrt_sigtimedwait\fP(2)
+\f[B]sigaction\f[](2)	\f[B]rt_sigaction\f[](2)
+\f[B]sigpending\f[](2)	\f[B]rt_sigpending\f[](2)
+\f[B]sigprocmask\f[](2)	\f[B]rt_sigprocmask\f[](2)
+\f[B]sigreturn\f[](2)	\f[B]rt_sigreturn\f[](2)
+\f[B]sigsuspend\f[](2)	\f[B]rt_sigsuspend\f[](2)
+\f[B]sigtimedwait\f[](2)	\f[B]rt_sigtimedwait\f[](2)
 .TE
 .\"
 .SS Interruption of system calls and library functions by signal handlers
-If a signal handler is invoked while a system call or library
-function call is blocked, then either:
+If a signal handler is invoked
+while a system call or library function call is blocked,
+then either:
 .IP \[bu] 3
-the call is automatically restarted after the signal handler returns; or
+the call is automatically restarted after the signal handler returns;
+or
 .IP \[bu]
 the call fails with the error
 .BR EINTR .
@@ -677,7 +666,8 @@ If a blocked call to one of the following interfaces is interrupted
 by a signal handler, then the call is automatically restarted
 after the signal handler returns if the
 .B SA_RESTART
-flag was used; otherwise the call fails with the error
+flag was used;
+otherwise the call fails with the error
 .BR EINTR :
 .\" The following system calls use ERESTARTSYS,
 .\" so that they are restartable
@@ -699,7 +689,9 @@ Note that a (local) disk is not a slow device according to this definition;
 I/O operations on disk devices are not interrupted by signals.
 .IP \[bu]
 .BR open (2),
-if it can block (e.g., when opening a FIFO; see
+if it can block
+(e.g., when opening a FIFO;
+see
 .BR fifo (7)).
 .IP \[bu]
 .BR wait (2),
@@ -752,10 +744,6 @@ beforehand, always failed with
 .BR EINTR ).
 .IP \[bu]
 .BR getrandom (2).
-.IP \[bu]
-.BR pthread_mutex_lock (3),
-.BR pthread_cond_wait (3),
-and related APIs.
 .IP \[bu]
 .BR futex (2)
 .BR FUTEX_WAIT_BITSET .

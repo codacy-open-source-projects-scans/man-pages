@@ -1,6 +1,7 @@
-.\" Copyright (C) 2013,  Heinrich Schuchardt <xypron.glpk@gmx.de>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
 .TH fanotify_mark 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
 fanotify_mark \- add, remove, or modify an fanotify mark on a filesystem
@@ -14,7 +15,7 @@ Standard C library
 .P
 .BI "int fanotify_mark(int " fanotify_fd ", unsigned int " flags ,
 .BI "                  uint64_t " mask ", int " dirfd ,
-.BI "                  const char *_Nullable " pathname );
+.BI "                  const char *_Nullable " path );
 .fi
 .SH DESCRIPTION
 For an overview of the fanotify API, see
@@ -67,7 +68,8 @@ contains
 all marks for filesystems are removed from the group.
 Otherwise, all marks for directories and files are removed.
 No flag other than, and at most one of, the flags
-.B FAN_MARK_MOUNT
+.BR FAN_MARK_MNTNS ,
+.BR FAN_MARK_MOUNT ,
 or
 .B FAN_MARK_FILESYSTEM
 can be used in conjunction with
@@ -85,13 +87,13 @@ zero or more of the following values may be ORed into
 .TP
 .B FAN_MARK_DONT_FOLLOW
 If
-.I pathname
+.I path
 is a symbolic link, mark the link itself, rather than the file to which it
 refers.
 (By default,
 .BR fanotify_mark ()
 dereferences
-.I pathname
+.I path
 if it is a symbolic link.)
 .TP
 .B FAN_MARK_ONLYDIR
@@ -99,13 +101,27 @@ If the filesystem object to be marked is not a directory, the error
 .B ENOTDIR
 shall be raised.
 .TP
+.BR FAN_MARK_MNTNS " (since Linux 6.14)"
+.\" commit 0f46d81f2bce970b1c562aa3c944a271bbec2729
+Mark the mount namespace specified by
+.IR path .
+If
+.I path
+does not represent a mount namespace (e.g.
+.IR /proc/ pid /ns/mnt ),
+the call fails with the error
+.BR EINVAL .
+An fanotify group that was initialized with flag
+.B FAN_REPORT_MNT
+is required.
+.TP
 .B FAN_MARK_MOUNT
 Mark the mount specified by
-.IR pathname .
+.IR path .
 If
-.I pathname
+.I path
 is not itself a mount point, the mount containing
-.I pathname
+.I path
 will be marked.
 All directories, subdirectories, and the contained files of the mount
 will be monitored.
@@ -132,9 +148,9 @@ capability.
 .BR FAN_MARK_FILESYSTEM " (since Linux 4.20)"
 .\" commit d54f4fba889b205e9cd8239182ca5d27d0ac3bc2
 Mark the filesystem specified by
-.IR pathname .
+.IR path .
 The filesystem containing
-.I pathname
+.I path
 will be marked.
 All the contained files and directories of the filesystem from any mount
 point will be monitored.
@@ -362,29 +378,6 @@ Create an event when a marked file or directory itself is deleted.
 An fanotify group that identifies filesystem objects by file handles
 is required.
 .TP
-.BR FAN_FS_ERROR " (since Linux 5.16, 5.15.154, and 5.10.220)"
-.\" commit 9709bd548f11a092d124698118013f66e1740f9b
-Create an event when a filesystem error
-leading to inconsistent filesystem metadata is detected.
-An additional information record of type
-.B FAN_EVENT_INFO_TYPE_ERROR
-is returned for each event in the read buffer.
-An fanotify group that identifies filesystem objects by file handles
-is required.
-.IP
-Events of such type are dependent on support
-from the underlying filesystem.
-At the time of writing,
-only the
-.B ext4
-filesystem reports
-.B FAN_FS_ERROR
-events.
-.IP
-See
-.BR fanotify (7)
-for additional details.
-.TP
 .BR FAN_MOVED_FROM " (since Linux 5.1)"
 .\" commit 235328d1fa4251c6dcb32351219bb553a58838d2
 Create an event when a file or directory has been moved from a marked
@@ -418,6 +411,49 @@ Create an event when a marked file or directory itself has been moved.
 An fanotify group that identifies filesystem objects by file handles
 is required.
 .TP
+.B FAN_MNT_ATTACH
+.TQ
+.BR FAN_MNT_DETACH " (both since Linux 6.14)"
+.\" commit 0f46d81f2bce970b1c562aa3c944a271bbec2729
+Create an event when
+a mount was attached to or detached from a marked mount namespace,
+respectively.
+An attempt to set this flag on an inode, mount, or filesystem mark
+will result in the error
+.BR EINVAL .
+An fanotify group that was initialized with flag
+.B FAN_REPORT_MNT
+and the mark flag
+.B FAN_MARK_MNTNS
+are required.
+An additional information record of type
+.B FAN_EVENT_INFO_TYPE_MNT
+is returned with the event.
+See
+.BR fanotify (7)
+for additional details.
+.TP
+.BR FAN_FS_ERROR " (since Linux 5.16, 5.15.154, and 5.10.220)"
+.\" commit 9709bd548f11a092d124698118013f66e1740f9b
+Create an event when a filesystem error
+leading to inconsistent filesystem metadata is detected.
+An additional information record of type
+.B FAN_EVENT_INFO_TYPE_ERROR
+is returned for each event in the read buffer.
+An fanotify group that identifies filesystem objects by file handles
+is required.
+Events of such type are dependent on support
+from the underlying filesystem.
+At the time of writing,
+only the
+.B ext4
+filesystem reports
+.B FAN_FS_ERROR
+events.
+See
+.BR fanotify (7)
+for additional details.
+.TP
 .B FAN_OPEN_PERM
 Create an event when a permission to open a file or directory is requested.
 An fanotify file descriptor created with
@@ -443,6 +479,20 @@ An fanotify file descriptor created with
 .B FAN_CLASS_PRE_CONTENT
 or
 .B FAN_CLASS_CONTENT
+is required.
+.TP
+.BR FAN_PRE_ACCESS " (since Linux 6.14)"
+.\" commit 4f8afa33817a6420398d1c177c6e220a05081f51
+Create an event before read or write access to a file range,
+that provides an opportunity for the event listener
+to modify the content of the file
+before access to the content
+in the specified range.
+An additional information record of type
+.B FAN_EVENT_INFO_TYPE_RANGE
+is returned for each event in the read buffer.
+An fanotify file descriptor created with
+.B FAN_CLASS_PRE_CONTENT
 is required.
 .TP
 .B FAN_ONDIR
@@ -500,16 +550,16 @@ A file or directory has been moved
 The filesystem object to be marked is determined by the file descriptor
 .I dirfd
 and the pathname specified in
-.IR pathname :
+.IR path :
 .IP \[bu] 3
 If
-.I pathname
+.I path
 is NULL,
 .I dirfd
 defines the filesystem object to be marked.
 .IP \[bu]
 If
-.I pathname
+.I path
 is NULL, and
 .I dirfd
 takes the special value
@@ -517,30 +567,30 @@ takes the special value
 the current working directory is to be marked.
 .IP \[bu]
 If
-.I pathname
+.I path
 is absolute, it defines the filesystem object to be marked, and
 .I dirfd
 is ignored.
 .IP \[bu]
 If
-.I pathname
+.I path
 is relative, and
 .I dirfd
 does not have the value
 .BR AT_FDCWD ,
 then the filesystem object to be marked is determined by interpreting
-.I pathname
+.I path
 relative the directory referred to by
 .IR dirfd .
 .IP \[bu]
 If
-.I pathname
+.I path
 is relative, and
 .I dirfd
 has the value
 .BR AT_FDCWD ,
 then the filesystem object to be marked is determined by interpreting
-.I pathname
+.I path
 relative to the current working directory.
 (See
 .BR openat (2)
@@ -561,7 +611,7 @@ An invalid file descriptor was passed in
 .IR fanotify_fd .
 .TP
 .B EBADF
-.I pathname
+.I path
 is relative but
 .I dirfd
 is neither
@@ -572,7 +622,7 @@ nor a valid file descriptor.
 The filesystem object indicated by
 .I dirfd
 and
-.I pathname
+.I path
 has a mark that was updated without the
 .B FAN_MARK_EVICTABLE
 flag,
@@ -584,7 +634,7 @@ flag.
 The filesystem object indicated by
 .I dirfd
 and
-.I pathname
+.I path
 has a mark that was updated with the
 .B FAN_MARK_IGNORE
 flag,
@@ -596,7 +646,7 @@ flag.
 The filesystem object indicated by
 .I dirfd
 and
-.I pathname
+.I path
 has a mark that was updated with the
 .B FAN_MARK_IGNORE
 and
@@ -651,14 +701,14 @@ but does not contain
 and
 .I dirfd
 and
-.I pathname
+.I path
 specify a directory.
 .TP
 .B ENODEV
 The filesystem object indicated by
 .I dirfd
 and
-.I pathname
+.I path
 is associated with a filesystem that reports zero
 .I fsid
 (e.g.,
@@ -674,10 +724,10 @@ when trying to add a mount or filesystem mark.
 The filesystem object indicated by
 .I dirfd
 and
-.I pathname
+.I path
 does not exist.
 This error also occurs when trying to remove a mark from an object
-which is not marked.
+that is not marked.
 .TP
 .B ENOMEM
 The necessary memory could not be allocated.
@@ -704,7 +754,7 @@ contains
 and
 .I dirfd
 and
-.I pathname
+.I path
 do not specify a directory.
 .TP
 .B ENOTDIR
@@ -714,7 +764,7 @@ contains
 and
 .I dirfd
 and
-.I pathname
+.I path
 do not specify a directory.
 .TP
 .B ENOTDIR
@@ -736,12 +786,12 @@ or directory event flags
 and
 .I dirfd
 and
-.I pathname
+.I path
 do not specify a directory.
 .TP
 .B EOPNOTSUPP
 The object indicated by
-.I pathname
+.I path
 is associated with a filesystem
 that does not support the encoding of file handles.
 This error can be returned only with an fanotify group that identifies
@@ -759,7 +809,7 @@ The operation is not permitted because the caller lacks a required capability.
 .TP
 .B EXDEV
 The filesystem object indicated by
-.I pathname
+.I path
 resides within a filesystem subvolume (e.g.,
 .BR btrfs (5))
 which uses a different
@@ -844,7 +894,7 @@ contains
 .BR FAN_MARK_FLUSH ,
 .IR dirfd ,
 and
-.I pathname
+.I path
 must specify a valid filesystem object, even though this object is not used.
 .IP \[bu]
 .\" Fixed by commit d4c7cf6cffb1bc711a833b5e304ba5bcfe76398b

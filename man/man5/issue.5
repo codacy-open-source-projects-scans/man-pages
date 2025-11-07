@@ -1,10 +1,7 @@
-.\" Copyright (c) 1993 Michael Haardt (michael@moria.de),
-.\"     Fri Apr  2 11:32:09 MET DST 1993
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
-.\" Modified Sun Jul 25 11:06:22 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Mon Oct 21 17:47:19 EDT 1996 by Eric S. Raymond <esr@thyrsus.com>
 .TH issue 5 (date) "Linux man-pages (unreleased)"
 .SH NAME
 issue \- prelogin message and identification file
@@ -12,7 +9,10 @@ issue \- prelogin message and identification file
 .I /etc/issue
 is a text file which contains a message or
 system identification to be printed before the login prompt.
-It may contain various \fB@\fP\fIchar\fP and \fB\[rs]\fP\fIchar\fP
+It may contain various
+.BI @ char
+and
+.BI \[rs] char
 sequences, if supported by the
 .BR getty -type
 program employed on the system.

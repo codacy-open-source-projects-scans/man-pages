@@ -1,18 +1,8 @@
 '\" t
-.\" Copyright (c) 1989, 1990, 1993
-.\"	The Regents of the University of California.  All rights reserved.
+.\" Copyright 1989-1993, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-3-Clause
-.\"
-.\"	@(#)operator.7	8.1 (Berkeley) 6/9/93
-.\"
-.\" Copied shamelessly from FreeBSD with minor changes. 2003-05-21
-.\"     Brian M. Carlson <sandals@crustytoothpaste.ath.cx>
-.\"
-.\" Restored automatic formatting from FreeBSD.  2003-08-24
-.\"	Martin Schulze <joey@infodrom.org>
-.\"
-.\" 2007-12-08, mtk, Converted from mdoc to man macros
 .\"
 .TH operator 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -24,8 +14,9 @@ This manual page lists C operators and their precedence in evaluation.
 lb lb lb
 l l l.
 Operator	Associativity	Notes
-[] () . \-> ++ \-\-	left to right	[1]
-++ \-\- & * + \- \[ti] ! sizeof	right to left	[2]
+() _Generic()	-	[1]
+[] () . \-> ++ \-\- (type){}	left to right	[2] [3]
+++ \-\- & * + \- \[ti] ! _Countof sizeof alignof	right to left	[4]
 (type)	right to left
 * / %	left to right
 + \-	left to right
@@ -46,9 +37,13 @@ The following notes provide further information to the above table:
 .P
 .PD 0
 .IP [1] 5
+The () at this precedence is the parenthesized expression.
+.IP [2]
+The () at this precedence is the function call operator.
+.IP [3]
 The ++ and \-\- operators at this precedence level are
 the postfix flavors of the operators.
-.IP [2]
+.IP [4]
 The ++ and \-\- operators at this precedence level are
 the prefix flavors of the operators.
 .PD

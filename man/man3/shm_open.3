@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (C) 2002, 2020 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -273,9 +273,9 @@ An example execution of the two programs is the following:
 .P
 .in +4n
 .EX
-$ \fB./pshm_ucase_bounce /myshm &\fP
+.RB $ " ./pshm_ucase_bounce /myshm &"
 [1] 270171
-$ \fB./pshm_ucase_send /myshm hello\fP
+.RB $ " ./pshm_ucase_send /myshm hello" ;
 HELLO
 .EE
 .in
@@ -293,13 +293,11 @@ on the memory object that is shared between the two programs.
 #ifndef PSHM_UCASE_H
 #define PSHM_UCASE_H
 \&
+#include <err.h>
 #include <semaphore.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-\&
-#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \[rs]
-                        } while (0)
 \&
 #define BUF_SIZE 1024   /* Maximum size for exchanged string */
 \&
@@ -363,49 +361,49 @@ main(int argc, char *argv[])
     shmpath = argv[1];
 \&
     /* Create shared memory object and set its size to the size
-       of our structure. */
+       of our structure.  */
 \&
     fd = shm_open(shmpath, O_CREAT | O_EXCL | O_RDWR, 0600);
     if (fd == \-1)
-        errExit("shm_open");
+        err(EXIT_FAILURE, "shm_open");
 \&
     if (ftruncate(fd, sizeof(struct shmbuf)) == \-1)
-        errExit("ftruncate");
+        err(EXIT_FAILURE, "ftruncate");
 \&
-    /* Map the object into the caller\[aq]s address space. */
+    /* Map the object into the caller\[aq]s address space.  */
 \&
     shmp = mmap(NULL, sizeof(*shmp), PROT_READ | PROT_WRITE,
                 MAP_SHARED, fd, 0);
     if (shmp == MAP_FAILED)
-        errExit("mmap");
+        err(EXIT_FAILURE, "mmap");
 \&
-    /* Initialize semaphores as process\-shared, with value 0. */
+    /* Initialize semaphores as process\-shared, with value 0.  */
 \&
     if (sem_init(&shmp\->sem1, 1, 0) == \-1)
-        errExit("sem_init\-sem1");
+        err(EXIT_FAILURE, "sem_init\-sem1");
     if (sem_init(&shmp\->sem2, 1, 0) == \-1)
-        errExit("sem_init\-sem2");
+        err(EXIT_FAILURE, "sem_init\-sem2");
 \&
     /* Wait for \[aq]sem1\[aq] to be posted by peer before touching
-       shared memory. */
+       shared memory.  */
 \&
     if (sem_wait(&shmp\->sem1) == \-1)
-        errExit("sem_wait");
+        err(EXIT_FAILURE, "sem_wait");
 \&
-    /* Convert data in shared memory into upper case. */
+    /* Convert data in shared memory into upper case.  */
 \&
     for (size_t j = 0; j < shmp\->cnt; j++)
         shmp\->buf[j] = toupper((unsigned char) shmp\->buf[j]);
 \&
     /* Post \[aq]sem2\[aq] to tell the peer that it can now
-       access the modified data in shared memory. */
+       access the modified data in shared memory.  */
 \&
     if (sem_post(&shmp\->sem2) == \-1)
-        errExit("sem_post");
+        err(EXIT_FAILURE, "sem_post");
 \&
-    /* Unlink the shared memory object. Even if the peer process
-       is still using the object, this is okay. The object will
-       be removed only after all open references are closed. */
+    /* Unlink the shared memory object.  Even if the peer process
+       is still using the object, this is okay.  The object will
+       be removed only after all open references are closed.  */
 \&
     shm_unlink(shmpath);
 \&
@@ -470,39 +468,39 @@ main(int argc, char *argv[])
     }
 \&
     /* Open the existing shared memory object and map it
-       into the caller\[aq]s address space. */
+       into the caller\[aq]s address space.  */
 \&
     fd = shm_open(shmpath, O_RDWR, 0);
     if (fd == \-1)
-        errExit("shm_open");
+        err(EXIT_FAILURE, "shm_open");
 \&
     shmp = mmap(NULL, sizeof(*shmp), PROT_READ | PROT_WRITE,
                 MAP_SHARED, fd, 0);
     if (shmp == MAP_FAILED)
-        errExit("mmap");
+        err(EXIT_FAILURE, "mmap");
 \&
-    /* Copy data into the shared memory object. */
+    /* Copy data into the shared memory object.  */
 \&
     shmp\->cnt = len;
     memcpy(&shmp\->buf, string, len);
 \&
-    /* Tell peer that it can now access shared memory. */
+    /* Tell peer that it can now access shared memory.  */
 \&
     if (sem_post(&shmp\->sem1) == \-1)
-        errExit("sem_post");
+        err(EXIT_FAILURE, "sem_post");
 \&
     /* Wait until peer says that it has finished accessing
-       the shared memory. */
+       the shared memory.  */
 \&
     if (sem_wait(&shmp\->sem2) == \-1)
-        errExit("sem_wait");
+        err(EXIT_FAILURE, "sem_wait");
 \&
-    /* Write modified data in shared memory to standard output. */
+    /* Write modified data in shared memory to standard output.  */
 \&
     if (write(STDOUT_FILENO, &shmp\->buf, len) == \-1)
-        errExit("write");
+        err(EXIT_FAILURE, "write");
     if (write(STDOUT_FILENO, "\[rs]n", 1) == \-1)
-        errExit("write");
+        err(EXIT_FAILURE, "write");
 \&
     exit(EXIT_SUCCESS);
 }

@@ -1,10 +1,10 @@
 '\" t
-.\" Copyright (C) 2001 Andries Brouwer <aeb@cwi.nl>.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
 .\" FIXME . There are a lot of other process termination actions that
-.\" could be listed on this page. See, for example, the list in the
+.\" could be listed on this page.  See, for example, the list in the
 .\" POSIX exit(3p) page.
 .\"
 .TH exit 3 (date) "Linux man-pages (unreleased)"
@@ -24,7 +24,9 @@ The
 .BR exit ()
 function causes normal process termination and the least significant byte of
 .I status
-(i.e., \fIstatus & 0xFF\fP) is returned to the parent (see
+(i.e.,
+.IR "status\ &\ 0xFF" )
+is returned to the parent (see
 .BR wait (2)).
 .P
 All functions registered with
@@ -62,7 +64,9 @@ Files created by
 are removed.
 .P
 The C standard specifies two constants,
-\fBEXIT_SUCCESS\fP and \fBEXIT_FAILURE\fP,
+.B EXIT_SUCCESS
+and
+.BR EXIT_FAILURE ,
 that may be passed to
 .BR exit ()
 to indicate successful or unsuccessful

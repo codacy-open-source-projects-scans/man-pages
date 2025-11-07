@@ -1,4 +1,4 @@
-# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -10,16 +10,22 @@ include $(MAKEFILEDIR)/build/html/troff.mk
 include $(MAKEFILEDIR)/configure/build-depends/groff/post-grohtml.mk
 
 
-_HTMLMAN := $(patsubst %.html.set, %.html, $(_HTMLMAN_MAN_set) $(_HTMLMAN_MDOC_set))
+ext := .html
 
 
-$(_HTMLMAN): %.html: %.html.set $(MK) | $$(@D)/
+_HTMLMAN := $(patsubst %.html.set, %$(ext), $(_HTMLMAN_set))
+
+
+$(_HTMLMAN): %$(ext): %.html.set $(MK) | $$(@D)/
 	$(info	$(INFO_)POST_GROHTML	$@)
 	$(POST_GROHTML) $(POST_GROHTMLFLAGS_) <$< >$@
 
 
 .PHONY: build-html-post-grohtml
 build-html-post-grohtml: $(_HTMLMAN);
+
+
+undefine ext
 
 
 endif  # include guard

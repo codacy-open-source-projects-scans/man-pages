@@ -1,15 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\"
-.\" Modified 1993-07-24 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 2003-11-15 by aeb
 .\"
 .TH getgrnam 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -25,12 +17,14 @@ Standard C library
 .BI "struct group *getgrnam(const char *" name );
 .BI "struct group *getgrgid(gid_t " gid );
 .P
-.BI "int getgrnam_r(const char *restrict " name \
+.BR "int getgrnam_r(" "size_t size;"
+.BI "               const char *restrict " name \
 ", struct group *restrict " grp ,
-.BI "               char " buf "[restrict ." buflen "], size_t " buflen ,
+.BI "               char " buf "[restrict " size "], size_t " size ,
 .BI "               struct group **restrict " result );
-.BI "int getgrgid_r(gid_t " gid ", struct group *restrict " grp ,
-.BI "               char " buf "[restrict ." buflen "], size_t " buflen ,
+.BR "int getgrgid_r(" "size_t size;"
+.BI "               gid_t " gid ", struct group *restrict " grp ,
+.BI "               char " buf "[restrict " size "], size_t " size ,
 .BI "               struct group **restrict " result );
 .fi
 .P
@@ -63,7 +57,11 @@ the broken-out fields of the record in the group database
 that matches the group ID
 .IR gid .
 .P
-The \fIgroup\fP structure is defined in \fI<grp.h>\fP as follows:
+The
+.I group
+structure is defined in
+.I <grp.h>
+as follows:
 .P
 .in +4n
 .EX
@@ -98,7 +96,7 @@ The string fields pointed to by the members of the
 structure are stored in the buffer
 .I buf
 of size
-.IR buflen .
+.IR size .
 A pointer to the result (in case of success) or NULL (in case no entry
 was found or an error occurred) is stored in
 .IR *result .
@@ -167,7 +165,8 @@ or
 was not found.
 .TP
 .B EINTR
-A signal was caught; see
+A signal was caught;
+see
 .BR signal (7).
 .TP
 .B EIO

@@ -1,17 +1,7 @@
-.\" Copyright (c) 1983, 1991 The Regents of the University of California.
-.\" All rights reserved.
+.\" Copyright 1983-1991, The Regents of the University of California.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
-.\"
-.\"     $Id: getsockopt.2,v 1.1 1999/05/24 14:57:04 freitag Exp $
-.\"
-.\" Modified Sat Jul 24 16:19:32 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Mon Apr 22 02:29:06 1996 by Martin Schulze (joey@infodrom.north.de)
-.\" Modified Tue Aug 27 10:52:51 1996 by Andries Brouwer (aeb@cwi.nl)
-.\" Modified Thu Jan 23 13:29:34 1997 by Andries Brouwer (aeb@cwi.nl)
-.\" Modified Sun Mar 28 21:26:46 1999 by Andries Brouwer (aeb@cwi.nl)
-.\" Modified 1999 by Andi Kleen <ak@muc.de>.
-.\"     Removed most stuff because it is in socket.7 now.
 .\"
 .TH getsockopt 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -23,11 +13,13 @@ Standard C library
 .nf
 .B #include <sys/socket.h>
 .P
-.BI "int getsockopt(int " sockfd ", int " level ", int " optname ,
-.BI "               void " optval "[restrict *." optlen ],
+.BR "int getsockopt(" "socklen_t *restrict optlen;"
+.BI "               int " sockfd ", int " level ", int " optname ,
+.BI "               void " optval "[_Nullable restrict *" optlen ],
 .BI "               socklen_t *restrict " optlen );
-.BI "int setsockopt(int " sockfd ", int " level ", int " optname ,
-.BI "               const void " optval [. optlen ],
+.BR "int setsockopt(" "socklen_t optlen;"
+.BI "               int " sockfd ", int " level ", int " optname ,
+.BI "               const void " optval [ optlen ],
 .BI "               socklen_t " optlen );
 .fi
 .SH DESCRIPTION
@@ -36,9 +28,8 @@ and
 .BR setsockopt ()
 manipulate options for the socket referred to by the file descriptor
 .IR sockfd .
-Options may exist at multiple
-protocol levels; they are always present at the uppermost
-socket level.
+Options may exist at multiple protocol levels;
+they are always present at the uppermost socket level.
 .P
 When manipulating socket options, the level at which the
 option resides and the name of the option must be specified.
@@ -86,10 +77,10 @@ and any specified options are passed uninterpreted to the appropriate
 protocol module for interpretation.
 The include file
 .I <sys/socket.h>
-contains definitions for socket level options, described below.
-Options at
-other protocol levels vary in format and name; consult the appropriate
-entries in section 4 of the manual.
+contains definitions for socket level options,
+described below.
+Options at other protocol levels vary in format and name;
+consult the appropriate entries in section 4 of the manual.
 .P
 Most socket-level options utilize an
 .I int
@@ -110,8 +101,9 @@ On error, \-1 is returned, and
 is set to indicate the error.
 .P
 Netfilter allows the programmer
-to define custom socket options with associated handlers; for such
-options, the return value on success is the value returned by the handler.
+to define custom socket options with associated handlers;
+for such options,
+the return value on success is the value returned by the handler.
 .SH ERRORS
 .TP
 .B EBADF
@@ -148,7 +140,7 @@ The file descriptor
 .I sockfd
 does not refer to a socket.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001,
 SVr4, 4.4BSD (first appeared in 4.2BSD).

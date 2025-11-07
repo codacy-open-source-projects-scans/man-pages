@@ -1,9 +1,6 @@
-.\" This manpage is Copyright (C) 2004, Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2004-05-40 Created by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" 2004-10-05 aeb, minor correction
 .\"
 .TH readahead 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -50,9 +47,10 @@ is left unchanged.
 .SH RETURN VALUE
 On success,
 .BR readahead ()
-returns 0; on failure, \-1 is returned, with
+returns 0;
+on failure, \-1 is returned, and
 .I errno
-set to indicate the error.
+is set to indicate the error.
 .SH ERRORS
 .TP
 .B EBADF

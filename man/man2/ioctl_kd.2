@@ -1,9 +1,5 @@
 '\" t
-.\" Copyright 1995, Jim Van Zandt <jrv@vanzandt.mv.com> and aeb
-.\" Copyright 1995, <faith@cs.unc.edu>
-.\" Copyright 1995, <jrv@vanzandt.mv.com>
-.\" Copyright 1995, "H. Peter Anvin" <hpa@storm.net>
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -44,9 +40,9 @@ of
 are set to the state of the LEDs, as follows:
 .TS
 l l l.
-LED_CAP 	0x04	caps lock led
-LED_NUM 	0x02	num lock led
-LED_SCR 	0x01	scroll lock led
+LED_CAP	0x04	caps lock led
+LED_NUM	0x02	num lock led
+LED_SCR	0x01	scroll lock led
 .TE
 .TP
 .B KDSETLED
@@ -138,7 +134,9 @@ For example,
 .I argp
 = (125<<16) + 0x637 would specify
 the beep normally associated with a ctrl-G.
-(Thus since Linux 0.99pl1; broken in Linux 2.1.49-50.)
+(Thus,
+since Linux 0.99pl1;
+broken in Linux 2.1.49-50.)
 .TP
 .B KIOCSOUND
 Start or stop sound generation.
@@ -203,8 +201,9 @@ the respective data for the currently loaded font, and the
 .I chardata
 array contains the font data if the initial value of
 .I charcount
-indicated enough space was available; otherwise the
-buffer is untouched and
+indicated enough space was available;
+otherwise,
+the buffer is untouched and
 .I errno
 is set to
 .BR ENOMEM .
@@ -219,7 +218,9 @@ points to an 8192-byte map, with 32 bytes per
 character.
 Only the first
 .I N
-of them are used for an 8x\fIN\fP font
+of them are used for an
+.RI 8x N
+font
 (0 <
 .I N
 <= 32).
@@ -359,7 +360,7 @@ K_RAW	0x00  /* Raw (scancode) mode */
 K_XLATE	0x01  /* Translate keycodes using keymap */
 K_MEDIUMRAW	0x02  /* Medium raw (scancode) mode */
 K_UNICODE	0x03  /* Unicode mode */
-K_OFF	0x04  /* Disabled mode; since Linux 2.6.39 */
+K_OFF	0x04  /* Disabled mode (since Linux 2.6.39) */
 .\" K_OFF: commit 9fc3de9c83565fcaa23df74c2fc414bb6e7efb0a
 .TE
 .TP

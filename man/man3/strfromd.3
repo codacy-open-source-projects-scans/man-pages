@@ -1,14 +1,7 @@
 '\" t
-.\" Copyright (c) 2016, IBM Corporation.
-.\" Written by Wainer dos Santos Moschetta <wainersm@linux.vnet.ibm.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"   glibc 2.25 source code and manual.
-.\"   C99 standard document.
-.\"   ISO/IEC TS 18661-1 technical specification.
-.\"   snprintf and other man.3 pages.
 .\"
 .TH strfromd 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -21,11 +14,14 @@ Standard C library
 .nf
 .B #include <stdlib.h>
 .P
-.BI "int strfromd(char " str "[restrict ." n "], size_t " n ,
+.BR "int strfromd(" "size_t n;"
+.BI "             char " str "[restrict " n "], size_t " n ,
 .BI "             const char *restrict " format ", double " fp ");"
-.BI "int strfromf(char " str "[restrict ." n "], size_t " n ,
+.BR "int strfromf(" "size_t n;"
+.BI "             char " str "[restrict " n "], size_t " n ,
 .BI "             const char *restrict " format ", float "fp ");"
-.BI "int strfroml(char " str "[restrict ." n "], size_t " n ,
+.BR "int strfroml(" "size_t n;"
+.BI "             char " str "[restrict " n "], size_t " n ,
 .BI "             const char *restrict " format ", long double " fp ");"
 .fi
 .P

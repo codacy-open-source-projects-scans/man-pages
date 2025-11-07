@@ -1,19 +1,7 @@
 '\" t
-.\" Written  Feb 1994 by Steve Greenland (stevegr@neosoft.com)
-.\" and Copyright 2001, 2017 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Updated 1999.12.19 by Karl M. Hegbloom <karlheg@debian.org>
-.\"
-.\" Updated 13 Oct 2001, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Added description of vsyslog
-.\"	Added descriptions of LOG_ODELAY and LOG_NOWAIT
-.\"	Added brief description of facility and option arguments
-.\"	Added CONFORMING TO section
-.\" 2001-10-13, aeb, minor changes
-.\" Modified 13 Dec 2001, Martin Schulze <joey@infodrom.org>
-.\" Modified 3 Jan 2002, Michael Kerrisk <mtk.manpages@gmail.com>
 .\"
 .TH syslog 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -78,9 +66,11 @@ are described below.
 .P
 The use of
 .BR openlog ()
-is optional; it will automatically be called by
+is optional;
+it will automatically be called by
 .BR syslog ()
-if necessary, in which case
+if necessary,
+in which case
 .I ident
 will default to NULL.
 .\"
@@ -137,7 +127,7 @@ The use of
 .BR closelog ()
 is optional.
 .\"
-.SS Values for \fIoption\fP
+.SS Values for \f[I]option\f[]
 The
 .I option
 argument to
@@ -177,7 +167,7 @@ Also log the message to
 .B LOG_PID
 Include the caller's PID with each message.
 .\"
-.SS Values for \fIfacility\fP
+.SS Values for \f[I]facility\f[]
 The
 .I facility
 argument is used to specify what type of program is logging the message.
@@ -227,7 +217,7 @@ generic user-level messages
 .B LOG_UUCP
 UUCP subsystem
 .\"
-.SS Values for \fIlevel\fP
+.SS Values for \f[I]level\f[]
 This determines the importance of the message.
 The levels are, in order of decreasing importance:
 .TP 15

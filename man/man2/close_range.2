@@ -1,5 +1,4 @@
-.\" Copyright (c) 2020 Stephen Kitt <steve@sk2.org>
-.\" and Copyright (c) 2021 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -134,7 +133,7 @@ This avoids subsequent
 .BR close (2)
 calls entirely;
 the whole operation is complete once the table is unshared.
-.SS Closing files on \fBexec\fP
+.SS Closing files on \f[I]exec\f[]
 .\" 582f1fb6b721facf04848d2ca57f34468da1813e
 This is particularly useful in cases where multiple
 .RB pre- exec
@@ -175,8 +174,8 @@ The following example demonstrates the use of the program:
 .P
 .in +4n
 .EX
-$ \fBtouch /tmp/a /tmp/b /tmp/c\fP
-$ \fB./a.out /tmp/a /tmp/b /tmp/c\fP
+.RB $ " touch /tmp/a /tmp/b /tmp/c" ;
+.RB $ " ./a.out /tmp/a /tmp/b /tmp/c" ;
 /tmp/a opened as FD 3
 /tmp/b opened as FD 4
 /tmp/c opened as FD 5
@@ -185,7 +184,7 @@ $ \fB./a.out /tmp/a /tmp/b /tmp/c\fP
 /proc/self/fd/2 ==> /dev/pts/1
 /proc/self/fd/3 ==> /tmp/a
 /proc/self/fd/4 ==> /tmp/b
-/proc/self/fd/5 ==> /tmp/b
+/proc/self/fd/5 ==> /tmp/c
 /proc/self/fd/6 ==> /proc/9005/fd
 ========= About to call close_range() =======
 /proc/self/fd/0 ==> /dev/pts/1

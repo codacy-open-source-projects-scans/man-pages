@@ -1,9 +1,8 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" Modified Sat Jul 24 18:42:59 1993 by Rik Faith (faith@cs.unc.edu)
 .TH puts 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 fputc, fputs, putc, putchar, puts \- output of characters and strings
@@ -37,9 +36,9 @@ except that it may be implemented as a macro which evaluates
 .I stream
 more than once.
 .P
-.BI "putchar(" c )
+.I putchar(c)
 is equivalent to
-.BI "putc(" c ", " stdout ) \fR.
+.IR "putc(c,\ stdout)" .
 .P
 .BR fputs ()
 writes the string
@@ -108,8 +107,9 @@ It is not advisable to mix calls to output functions from the
 .I stdio
 library with low-level calls to
 .BR write (2)
-for the file descriptor associated with the same output stream; the results
-will be undefined and very probably not what you want.
+for the file descriptor associated with the same output stream;
+the results will be undefined
+and very probably not what you want.
 .SH SEE ALSO
 .BR write (2),
 .BR ferror (3),

@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH mbtowc 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -19,8 +13,9 @@ Standard C library
 .nf
 .B #include <stdlib.h>
 .P
-.BI "int mbtowc(wchar_t *restrict " pwc ", const char " s "[restrict ." n "], \
-size_t " n );
+.BR "int mbtowc(" "size_t size;"
+.BI "           wchar_t *restrict " pwc ", const char " s "[restrict " size ],
+.BI "           size_t " size );
 .fi
 .SH DESCRIPTION
 The main case for this function is when
@@ -32,7 +27,7 @@ not NULL.
 In this case, the
 .BR mbtowc ()
 function inspects at most
-.I n
+.I size
 bytes of the multibyte string starting at
 .IR s ,
 extracts the next complete
@@ -49,7 +44,7 @@ of bytes that were consumed from
 otherwise it returns 0.
 .P
 If the
-.I n
+.I size
 bytes starting at
 .I s
 do not contain a complete multibyte
@@ -57,7 +52,7 @@ character, or if they contain an invalid multibyte sequence,
 .BR mbtowc ()
 returns \-1.
 This can happen even if
-.I n
+.I size
 >=
 .IR MB_CUR_MAX ,
 if the multibyte string contains redundant shift sequences.
@@ -78,7 +73,7 @@ is NULL.
 In this case,
 .I pwc
 and
-.I n
+.I size
 are
 ignored.
 The

@@ -1,29 +1,6 @@
-.\" Copyright (c) 1994,1995 Mike Battersby <mib@deakin.edu.au>
-.\" and Copyright 2004, 2005 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" based on work by faith@cs.unc.edu
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified, aeb, 960424
-.\" Modified Fri Jan 31 17:31:20 1997 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified Thu Nov 26 02:12:45 1998 by aeb - add SIGCHLD stuff.
-.\" Modified Sat May  8 17:40:19 1999 by Matthew Wilcox
-.\"	add POSIX.1b signals
-.\" Modified Sat Dec 29 01:44:52 2001 by Evan Jones <ejones@uwaterloo.ca>
-.\"	SA_ONSTACK
-.\" Modified 2004-11-11 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Added mention of SIGCONT under SA_NOCLDSTOP
-.\"	Added SA_NOCLDWAIT
-.\" Modified 2004-11-17 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Updated discussion for POSIX.1-2001 and SIGCHLD and sa_flags.
-.\"	Formatting fixes
-.\" 2004-12-09, mtk, added SI_TKILL + other minor changes
-.\" 2005-09-15, mtk, split sigpending(), sigprocmask(), sigsuspend()
-.\"	out of this page into separate pages.
-.\" 2010-06-11 Andi Kleen, add hwpoison signal extensions
-.\" 2010-06-11 mtk, improvements to discussion of various siginfo_t fields.
-.\" 2015-01-17, Kees Cook <keescook@chromium.org>
-.\"	Added notes on ptrace SIGTRAP and SYS_SECCOMP.
 .\"
 .TH sigaction 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -317,10 +294,12 @@ as described below.
 .I ucontext
 This is a pointer to a
 .I ucontext_t
-structure, cast to \fIvoid\ *\fP.
+structure, cast to
+.IR "void\ *" .
 The structure pointed to by this field contains
 signal context information that was saved
-on the user-space stack by the kernel; for details, see
+on the user-space stack by the kernel;
+for details, see
 .BR sigreturn (2).
 Further information about the
 .I ucontext_t
@@ -360,7 +339,7 @@ siginfo_t {
     int      si_timerid;   /* Timer ID; POSIX.1b timers */
 .\" In the kernel: si_tid
     void    *si_addr;      /* Memory location which caused fault */
-    long     si_band;      /* Band event (was \fIint\fP in
+    long     si_band;      /* Band event (was \f[I]int\f[] in
                               glibc 2.3.2 and earlier) */
     int      si_fd;        /* File descriptor */
     short    si_addr_lsb;  /* Least significant bit of address
@@ -409,8 +388,10 @@ and
 .IR si_timerid .
 The
 .I si_timerid
-field is an internal ID used by the kernel to identify
-the timer; it is not the same as the timer ID returned by
+field is an internal ID
+used by the kernel
+to identify the timer;
+it is not the same as the timer ID returned by
 .BR timer_create (2).
 The
 .I si_overrun
@@ -430,7 +411,8 @@ with the
 supplied to
 .BR mq_notify (3);
 .IR si_pid ,
-with the process ID of the message sender; and
+with the process ID of the message sender;
+and
 .IR si_uid ,
 with the real user ID of the message sender.
 .IP \[bu]
@@ -652,7 +634,8 @@ or
 timer expired.
 .TP
 .BR SI_MESGQ " (since Linux 2.6.6)"
-POSIX message queue state changed; see
+POSIX message queue state changed;
+see
 .BR mq_notify (3).
 .TP
 .B SI_ASYNCIO
@@ -661,7 +644,8 @@ AIO completed.
 .B SI_SIGIO
 Queued
 .B SIGIO
-(only up to Linux 2.2; from Linux 2.4 onward
+(only up to Linux 2.2;
+from Linux 2.4 onward
 .BR SIGIO / SIGPOLL
 fills in
 .I si_code
@@ -674,6 +658,9 @@ or
 .\" SI_DETHREAD is defined in Linux 2.6.9 sources, but isn't implemented
 .\" It appears to have been an idea that was tried during 2.5.6
 .\" through to Linux 2.5.24 and then was backed out.
+.TP
+.B SI_ASYNCNL
+Async name lookup completion.
 .RE
 .P
 The following values can be placed in
@@ -738,6 +725,12 @@ Floating-point invalid operation.
 .TP
 .B FPE_FLTSUB
 Subscript out of range.
+.TP
+.BR FPE_FLTUNK " (since Linux 4.17)"
+Undiagnosed floating-point exception.
+.TP
+.BR FPE_CONDTRAP " (PARISC only)"
+Trap on condition.
 .RE
 .P
 The following values can be placed in
@@ -764,6 +757,24 @@ See
 .BR pkeys (7).
 The protection key which applied to this access is available via
 .IR si_pkey .
+.TP
+.BR SEGV_ACCADI " (since Linux 4.17; SPARC only)"
+Application Data Integrity not enabled for mapped object.
+.TP
+.BR SEGV_ADIDERR " (since Linux 4.17; SPARC only)"
+Disrupting Memory Corruption Detection error.
+.TP
+.BR SEGV_ADIPERR " (since Linux 4.17; SPARC only)"
+Precise Memory Corruption Detection exception.
+.TP
+.BR SEGV_MTEAERR " (since Linux 5.10; ARM only)"
+Asynchronous Memory Tagging Extension error.
+.TP
+.BR SEGV_MTESERR " (since Linux 5.10; ARM only)"
+Synchronous Memory Tagging Extension exception.
+.TP
+.BR SEGV_CPERR " (since Linux 6.10)"
+Control protection fault.
 .RE
 .P
 The following values can be placed in
@@ -783,10 +794,12 @@ Nonexistent physical address.
 Object-specific hardware error.
 .TP
 .BR BUS_MCEERR_AR " (since Linux 2.6.32)"
-Hardware memory error consumed on a machine check; action required.
+Hardware memory error consumed on a machine check;
+action required.
 .TP
 .BR BUS_MCEERR_AO " (since Linux 2.6.32)"
-Hardware memory error detected in process but not consumed; action optional.
+Hardware memory error detected in process but not consumed;
+action optional.
 .RE
 .P
 The following values can be placed in
@@ -802,11 +815,17 @@ Process breakpoint.
 .B TRAP_TRACE
 Process trace trap.
 .TP
-.BR TRAP_BRANCH " (since Linux 2.4, IA64 only)"
+.BR TRAP_BRANCH " (since Linux 2.4; IA64 only)"
 Process taken branch trap.
 .TP
-.BR TRAP_HWBKPT " (since Linux 2.4, IA64 only)"
+.BR TRAP_HWBKPT " (since Linux 2.4; IA64 only)"
 Hardware breakpoint/watchpoint.
+.TP
+.BR TRAP_UNK " (since Linux 4.18)"
+Undiagnosed trap.
+.TP
+.BR TRAP_PERF " (since Linux 5.13 and glibc 2.43)"
+Perf event with sigtrap=1.
 .RE
 .P
 The following values can be placed in
@@ -861,17 +880,31 @@ High priority input available.
 Device disconnected.
 .RE
 .P
-The following value can be placed in
+The following values can be placed in
 .I si_code
 for a
 .B SIGSYS
 signal:
 .RS 4
 .TP
-.BR SYS_SECCOMP " (since Linux 3.5)"
+.BR SYS_SECCOMP " (since Linux 3.5 and glibc 2.43)"
 Triggered by a
 .BR seccomp (2)
 filter rule.
+.TP
+.BR SYS_USER_DISPATCH " (since Linux 5.11 and glibc 2.43)"
+Syscall user dispatch triggered.
+.RE
+.P
+The following value can be placed in
+.I si_code
+for a
+.B SIGEMT
+signal:
+.RS 4
+.TP
+.BR EMT_TAGOVF " (SPARC only)"
+Tag overflow.
 .RE
 .SS Dynamically probing for flag bit support
 The
@@ -930,7 +963,8 @@ See EXAMPLES below for a demonstration of the use of
 .BR SA_UNSUPPORTED .
 .SH RETURN VALUE
 .BR sigaction ()
-returns 0 on success; on error, \-1 is returned, and
+returns 0 on success;
+on error, \-1 is returned, and
 .I errno
 is set to indicate the error.
 .SH ERRORS
@@ -998,7 +1032,7 @@ wrapper function hides these details from us, transparently calling
 .BR rt_sigaction ()
 when the kernel provides it.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4.
 .\" SVr4 does not document the EINTR condition.
@@ -1181,7 +1215,7 @@ otherwise.
 #include <stdlib.h>
 #include <unistd.h>
 \&
-void
+static void
 handler(int signo, siginfo_t *info, void *context)
 {
     struct sigaction oldact;

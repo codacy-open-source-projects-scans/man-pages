@@ -1,9 +1,8 @@
 '\" t
-.\" Copyright (c) 1995 Michael Chastain (mec@shell.portal.com), 15 April 1995.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
-.\" Modified Tue Oct 22 22:11:53 1996 by Eric S. Raymond <esr@thyrsus.com>
 .TH socketcall 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
 socketcall \- socket system calls
@@ -40,7 +39,7 @@ Only standard library implementors and kernel hackers need to know about
 .TS
 tab(:);
 l l.
-\fIcall\fR:Man page
+\f[I]call\f[]:Man page
 T{
 .B SYS_SOCKET
 T}:T{
@@ -143,9 +142,12 @@ T}:T{
 T}
 .TE
 .SH VERSIONS
-On some architectures\[em]for example, x86-64 and ARM\[em]there is no
+On some architectures
+\[em]for example, x86-64 and ARM\[em]
+there is no
 .BR socketcall ()
-system call; instead
+system call;
+instead
 .BR socket (2),
 .BR accept (2),
 .BR bind (2),

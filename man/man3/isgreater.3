@@ -1,10 +1,7 @@
 '\" t
-.\" Copyright 2002 Walter Harms (walter.harms@informatik.uni-oldenburg.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
-.\"
-.\" 2002-07-27 Walter Harms
-.\" this was done with the help of the glibc manual
 .\"
 .TH isgreater 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -49,7 +46,9 @@ integer values as arguments to these macros, since the arguments will
 be promoted to real-floating types).
 .TP
 .BR isgreater ()
-determines \fI(x)\ >\ (y)\fP without an exception
+determines
+.I (x)\ >\ (y)
+without an exception
 if
 .I x
 or
@@ -57,7 +56,9 @@ or
 is NaN.
 .TP
 .BR isgreaterequal ()
-determines \fI(x)\ >=\ (y)\fP without an exception
+determines
+.I (x)\ >=\ (y)
+without an exception
 if
 .I x
 or
@@ -65,7 +66,9 @@ or
 is NaN.
 .TP
 .BR isless ()
-determines \fI(x)\ <\ (y)\fP without an exception
+determines
+.I (x)\ <\ (y)
+without an exception
 if
 .I x
 or
@@ -73,7 +76,9 @@ or
 is NaN.
 .TP
 .BR islessequal ()
-determines \fI(x)\ <=\ (y)\fP without an exception
+determines
+.I (x)\ <=\ (y)
+without an exception
 if
 .I x
 or
@@ -81,13 +86,16 @@ or
 is NaN.
 .TP
 .BR islessgreater ()
-determines \fI(x)\ < (y) || (x) >\ (y)\fP
+determines
+.I (x)\ <\ (y)\ ||\ (x)\ >\ (y)
 without an exception if
 .I x
 or
 .I y
 is NaN.
-This macro is not equivalent to \fIx\ !=\ y\fP because that expression is
+This macro is not equivalent to
+.I x\ !=\ y
+because that expression is
 true if
 .I x
 or

@@ -1,13 +1,6 @@
-.\" Copyright (c) International Business Machines Corp., 2006
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" HISTORY:
-.\" 2005-09-28, created by Arnd Bergmann <arndb@de.ibm.com>
-.\" 2006-06-16, revised by Eduardo M. Fleury <efleury@br.ibm.com>
-.\" 2007-07-10, some polishing by mtk
-.\" 2007-09-28, updates for newer kernels, added example
-.\"             by Jeremy Kerr <jk@ozlabs.org>
 .\"
 .TH spu_run 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -161,7 +154,8 @@ is non-NULL and an invalid pointer.
 .B EINTR
 A signal occurred while
 .BR spu_run ()
-was in progress; see
+was in progress;
+see
 .BR signal (7).
 The
 .I npc
@@ -231,7 +225,7 @@ int main(void)
 \&
     /*
      * set npc to the starting instruction address of the
-     * SPU program. Since we wrote the instruction at the
+     * SPU program.  Since we wrote the instruction at the
      * start of the mem file, the entry point will be 0x0.
      */
     npc = 0;

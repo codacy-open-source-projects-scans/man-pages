@@ -1,4 +1,4 @@
-# Copyright 2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -11,7 +11,9 @@ include $(MAKEFILEDIR)/configure/build-depends/grep/grep.mk
 include $(MAKEFILEDIR)/configure/build-depends/sed/sed.mk
 
 
+ifndef CC
 CC := gcc
+endif
 
 
 CC_VENDOR := \
@@ -47,6 +49,9 @@ GCC_CFLAGS := -fanalyzer
 
 CLANG_CFLAGS := \
 	-Weverything \
+	-Wno-c23-extensions \
+	-Wno-language-extension-token \
+	-Wno-unknown-attributes \
 	-Wno-unreachable-code \
 	-Wno-unsafe-buffer-usage \
 	-Wno-used-but-marked-unused
@@ -60,8 +65,12 @@ else ifeq ($(CC_VENDOR),clang)
 DEFAULT_CFLAGS += $(CLANG_CFLAGS)
 endif
 
+ifndef CFLAGS
 CFLAGS         :=
+endif
+ifndef CFLAGS_
 CFLAGS_        := $(DEFAULT_CFLAGS) $(CFLAGS)
+endif
 
 
 endif  # include guard

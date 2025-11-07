@@ -1,8 +1,4 @@
-.\" Copyright 2016, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright 2016, Eugene Syromyatnikov <evgsyr@gmail.com>
-.\" A very few fragments remain from an earlier version of this page
-.\" written by David Howells (dhowells@redhat.com)
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -20,7 +16,7 @@ Standard C library
 .BR "#include <sys/syscall.h>" "   /* Definition of " SYS_* " constants */"
 .B #include <unistd.h>
 .P
-.BI long syscall(SYS_keyctl, KEYCTL_SESSION_TO_PARENT);
+.B long syscall(SYS_keyctl, KEYCTL_SESSION_TO_PARENT);
 .fi
 .SH DESCRIPTION
 Replace the session keyring to which the

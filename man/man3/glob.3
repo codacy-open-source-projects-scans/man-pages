@@ -1,16 +1,7 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Wed Jul 28 11:12:17 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Mon May 13 23:08:50 1996 by Martin Schulze (joey@linux.de)
-.\" Modified 11 May 1998 by Joseph S. Myers (jsm28@cam.ac.uk)
-.\" Modified 990912 by aeb
-.\" 2007-10-10 mtk
-.\"     Added description of GLOB_TILDE_NOMATCH
-.\"     Expanded the description of various flags
-.\"     Various wording fixes.
 .\"
 .TH glob 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -32,10 +23,12 @@ The
 .BR glob ()
 function searches for all the pathnames matching
 .I pattern
-according to the rules used by the shell (see
+according to the rules used by the shell
+(see
 .BR glob (7)).
-No tilde expansion or parameter substitution is done; if you want
-these, use
+No tilde expansion or parameter substitution is done;
+if you want these,
+use
 .BR wordexp (3).
 .P
 The
@@ -60,7 +53,7 @@ present as an extension):
 typedef struct {
     size_t   gl_pathc;    /* Count of paths matched so far  */
     char   **gl_pathv;    /* List of matched pathnames.  */
-    size_t   gl_offs;     /* Slots to reserve in \fIgl_pathv\fP.  */
+    size_t   gl_offs;     /* Slots to reserve in \f[I]gl_pathv\f[].  */
 } glob_t;
 .EE
 .in

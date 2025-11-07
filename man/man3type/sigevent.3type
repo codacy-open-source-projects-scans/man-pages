@@ -1,6 +1,4 @@
-.\" Copyright (c) 2006, 2010, 2020, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright (C) 2009 Petr Baudis <pasky@suse.cz>
-.\" Copyright (c) 2020-2023, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -109,12 +107,13 @@ structure that defines attributes for the new thread (see
 .TP
 .BR SIGEV_THREAD_ID " (Linux-specific)"
 .\" | SIGEV_SIGNAL vs not?
-Currently used only by POSIX timers; see
+Currently used only by POSIX timers;
+see
 .BR timer_create (2).
 .SS sigval
 Data passed with a signal.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .P

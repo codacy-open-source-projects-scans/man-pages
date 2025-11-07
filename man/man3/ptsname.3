@@ -1,9 +1,7 @@
 '\" t
 .\" %%%LICENSE_START(PUBLIC_DOMAIN)
-.\" This page is in the public domain. - aeb
+.\" This page is in the public domain.  - aeb
 .\" %%%LICENSE_END
-.\"
-.\" 2004-12-17, mtk, added description of ptsname_r() + ERRORS
 .\"
 .TH ptsname 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -16,7 +14,8 @@ Standard C library
 .B #include <stdlib.h>
 .P
 .BI "char *ptsname(int " fd );
-.BI "int ptsname_r(int " fd ", char " buf [. buflen "], size_t " buflen );
+.BR "int ptsname_r(" "size_t size;"
+.BI "              int " fd ", char " buf [ size "], size_t " size );
 .fi
 .P
 .RS -4
@@ -52,7 +51,7 @@ It returns the name of the slave pseudoterminal device as a
 null-terminated string in the buffer pointed to by
 .IR buf .
 The
-.I buflen
+.I size
 argument specifies the number of bytes available in
 .IR buf .
 .SH RETURN VALUE
@@ -68,7 +67,7 @@ On success,
 returns 0.
 On failure, an error number is returned to indicate the error.
 .\" In glibc, the error number is not only returned as the return value
-.\" but also stored in errno. But this is not true for musl libc.
+.\" but also stored in errno.  But this is not true for musl libc.
 .SH ERRORS
 .TP
 .B EINVAL
@@ -111,7 +110,7 @@ T}	Thread safety	MT-Safe
 .SH VERSIONS
 A version of
 .BR ptsname_r ()
-is documented on Tru64 and HP-UX,
+is documented on Tru64, HP-UX, and FreeBSD,
 but on those implementations,
 \-1 is returned on error, with
 .I errno
@@ -121,13 +120,9 @@ Avoid using this function in portable programs.
 .TP
 .BR ptsname ():
 POSIX.1-2008.
-.P
-.BR ptsname_r ()
-is a Linux extension, that is proposed for inclusion
-.\" FIXME . for later review when Issue 8 is one day released
-.\" http://austingroupbugs.net/tag_view_page.php?tag_id=8
-.\" http://austingroupbugs.net/view.php?id=508
-in the next major revision of POSIX.1 (Issue 8).
+.TP
+.BR ptsname_r ():
+POSIX.1-2024.
 .SH HISTORY
 .TP
 .BR ptsname ():
@@ -137,6 +132,9 @@ glibc 2.1.
 .BR ptsname ()
 is part of the UNIX 98 pseudoterminal support (see
 .BR pts (4)).
+.TP
+.BR ptsname_r ():
+GNU.
 .SH SEE ALSO
 .BR grantpt (3),
 .BR posix_openpt (3),

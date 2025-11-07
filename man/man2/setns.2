@@ -1,5 +1,4 @@
-.\" Copyright (C) 2011, Eric Biederman <ebiederm@xmission.com>
-.\" and Copyright (C) 2011, 2012, Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-only
 .\"
@@ -35,7 +34,7 @@ The
 .I nstype
 argument is interpreted differently in each case.
 .\"
-.SS fd refers to a \fI/proc/\fPpid\fI/ns/\fP link
+.SS fd refers to a \f[I]/proc/\f[]pid\f[I]/ns/\f[] link
 If
 .I fd
 refers to a
@@ -237,7 +236,17 @@ Using
 to change the caller's cgroup namespace does not change
 the caller's cgroup memberships.
 .TP
-Network, IPC, time, and UTS namespaces
+Time namespaces
+In order to reassociate itself with a new time namespace,
+the caller must have the
+.B CAP_SYS_ADMIN
+capability both in its own user namespace and in the user namespace
+that owns the target namespace.
+.IP
+A multithreaded process may not change time namespace with
+.BR setns ().
+.TP
+Network, IPC, and UTS namespaces
 In order to reassociate itself with a new network, IPC, time, or UTS namespace,
 the caller must have the
 .B CAP_SYS_ADMIN
@@ -262,7 +271,7 @@ refers to a namespace whose type does not match that specified in
 .IR nstype .
 .TP
 .B EINVAL
-There is problem with reassociating
+There is a problem with reassociating
 the thread with the specified namespace.
 .TP
 .\" See kernel/pid_namespace.c::pidns_install() [kernel 3.18 sources]
@@ -348,14 +357,14 @@ so that we can see that they are different.
 .P
 .in +4n
 .EX
-$ \fBsu\fP                   # Need privilege for namespace operations
+.RB $ " su" ";                   # Need privilege for namespace operations"
 Password:
-# \fB./newuts bizarro &\fP
+.RB # " ./newuts bizarro &"
 [1] 3549
 clone() returned 3550
 uts.nodename in child:  bizarro
 uts.nodename in parent: antero
-# \fBuname \-n\fP             # Verify hostname in the shell
+.RB # " uname \-n" ";             # Verify hostname in the shell"
 antero
 .EE
 .in
@@ -367,8 +376,8 @@ set by the child created by the first program:
 .P
 .in +4n
 .EX
-# \fB./ns_exec /proc/3550/ns/uts /bin/bash\fP
-# \fBuname \-n\fP             # Executed in shell started by ns_exec
+.RB # " ./ns_exec /proc/3550/ns/uts /bin/bash" ;
+.RB # " uname \-n" ";             # Executed in shell started by ns_exec"
 bizarro
 .EE
 .in
@@ -395,7 +404,7 @@ main(int argc, char *argv[])
 \&
     /* Get file descriptor for namespace; the file descriptor is opened
        with O_CLOEXEC so as to ensure that it is not inherited by the
-       program that is later executed. */
+       program that is later executed.  */
 \&
     fd = open(argv[1], O_RDONLY | O_CLOEXEC);
     if (fd == \-1)

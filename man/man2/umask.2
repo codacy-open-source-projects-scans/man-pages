@@ -1,16 +1,7 @@
-.\" Copyright (c) 2006, 2008, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" (A few fragments remain from an earlier (1992) version written in
-.\" 1992 by Drew Eckhardt <drew@cs.colorado.edu>.)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified Sat Jul 24 12:51:53 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Tue Oct 22 22:39:04 1996 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified Thu May  1 06:05:54 UTC 1997 by Nicolás Lichtmaier
-.\"  <nick@debian.com> with Lars Wirzenius <liw@iki.fi> suggestion
-.\" 2006-05-13, mtk, substantial rewrite of description of 'mask'
-.\" 2008-01-09, mtk, a few rewrites and additions.
 .TH umask 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
 umask \- set file mode creation mask
@@ -95,7 +86,8 @@ resulting file will be:
 .EE
 .in
 .P
-(because 0666 & \[ti]022 = 0644; i.e. rw\-r\-\-r\-\-).
+(because 0666 & \[ti]022 = 0644;
+i.e., rw\-r\-\-r\-\-).
 .SH RETURN VALUE
 This system call always succeeds and the previous value of the mask
 is returned.

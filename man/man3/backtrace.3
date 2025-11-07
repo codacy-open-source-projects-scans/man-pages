@@ -1,6 +1,5 @@
 '\" t
-.\" Copyright (C) 2007 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" drawing on material by Justin Pryzby <pryzbyj@justinpryzby.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" %%%LICENSE_START(PERMISSIVE_MISC)
 .\" Permission is hereby granted, free of charge, to any person obtaining
@@ -23,8 +22,6 @@
 .\" SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 .\" %%%LICENSE_END
 .\"
-.\" References:
-.\"   glibc manual and source
 .TH backtrace 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 backtrace, backtrace_symbols, backtrace_symbols_fd \- support
@@ -36,11 +33,13 @@ Standard C library
 .nf
 .B #include <execinfo.h>
 .P
-.BI "int backtrace(void *" buffer [. size "], int " size );
+.BR "int backtrace(" "int size;"
+.BI "              void *" buffer [ size "], int " size );
 .P
-.BI "char **backtrace_symbols(void *const " buffer [. size "], int " size );
-.BI "void backtrace_symbols_fd(void *const " buffer [. size "], int " size ", \
-int " fd );
+.BR "char **backtrace_symbols(" "int size;"
+.BI "              void *const " buffer [ size "], int " size );
+.BR "void backtrace_symbols_fd(" "int size;"
+.BI "              void *const " buffer [ size "], int " size ", int " fd );
 .fi
 .SH DESCRIPTION
 .BR backtrace ()
@@ -119,10 +118,12 @@ which is not greater than
 .IR size .
 If the return value is less than
 .IR size ,
-then the full backtrace was stored; if it is equal to
+then the full backtrace was stored;
+if it is equal to
 .IR size ,
-then it may have been truncated, in which case the addresses of the
-oldest stack frames are not returned.
+then it may have been truncated,
+in which case,
+the addresses of the oldest stack frames are not returned.
 .P
 On success,
 .BR backtrace_symbols ()
@@ -246,7 +247,7 @@ myfunc3(void)
     free(strings);
 }
 \&
-static void   /* "static" means don\[aq]t export the symbol... */
+static void   /* "static" means don\[aq]t export the symbol.  */
 myfunc2(void)
 {
     myfunc3();

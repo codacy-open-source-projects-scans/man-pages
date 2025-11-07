@@ -1,6 +1,4 @@
-.\" Copyright (C) Andreas Gruenbacher, February 2001
-.\" Copyright (C) Silicon Graphics Inc, September 2001
-.\" Copyright (C) 2015 Heinrich Schuchardt <xypron.glpk@gmx.de>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -67,8 +65,9 @@ is interrogated in place of
 A single extended attribute
 .I name
 is a null-terminated string.
-The name includes a namespace prefix; there may be several, disjoint
-namespaces associated with an individual inode.
+The name includes a namespace prefix;
+there may be several,
+disjoint namespaces associated with an individual inode.
 .P
 If
 .I size
@@ -114,10 +113,13 @@ is set to indicate the error.
 .SH ERRORS
 .TP
 .B E2BIG
-The size of the list of extended attribute names is larger than the maximum
-size allowed; the list cannot be retrieved.
-This can happen on filesystems that support an unlimited number of
-extended attributes per file such as XFS, for example.
+The size of the list of extended attribute names
+is larger than the maximum size allowed;
+the list cannot be retrieved.
+This can happen on filesystems that support
+an unlimited number of extended attributes per file,
+such as XFS,
+for example.
 See BUGS.
 .TP
 .B ENOTSUP
@@ -184,11 +186,11 @@ and then listing the attributes with the example program.
 .SS Example output
 .in +4n
 .EX
-$ \fBtouch /tmp/foo\fP
-$ \fBsetfattr \-n user.fred \-v chocolate /tmp/foo\fP
-$ \fBsetfattr \-n user.frieda \-v bar /tmp/foo\fP
-$ \fBsetfattr \-n user.empty /tmp/foo\fP
-$ \fB./listxattr /tmp/foo\fP
+.RB $ " touch /tmp/foo" ;
+.RB $ " setfattr \-n user.fred \-v chocolate /tmp/foo" ;
+.RB $ " setfattr \-n user.frieda \-v bar /tmp/foo" ;
+.RB $ " setfattr \-n user.empty /tmp/foo" ;
+.RB $ " ./listxattr /tmp/foo" ;
 user.fred: chocolate
 user.frieda: bar
 user.empty: <no value>
@@ -246,7 +248,7 @@ main(int argc, char *argv[])
 \&
     /*
      * Loop over the list of zero terminated strings with the
-     * attribute keys. Use the remaining buffer length to determine
+     * attribute keys.  Use the remaining buffer length to determine
      * the end of the list.
      */
     key = buf;

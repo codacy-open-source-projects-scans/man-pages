@@ -1,14 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification
-.\"      http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH mbrtowc 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -20,7 +13,8 @@ Standard C library
 .nf
 .B #include <wchar.h>
 .P
-.BI "size_t mbrtowc(wchar_t *restrict " pwc ", const char " s "[restrict ." n ],
+.BR "size_t mbrtowc(" "size_t n;"
+.BI "               wchar_t *restrict " pwc ", const char " s "[restrict " n ],
 .BI "               size_t " n ", mbstate_t *restrict " ps );
 .fi
 .SH DESCRIPTION
@@ -167,10 +161,10 @@ if an invalid multibyte sequence was
 encountered.
 It returns
 .I "(size_t)\ \-2"
-if it couldn't parse a complete multibyte
-character, meaning that
+if the consumed
 .I n
-should be increased.
+bytes form a valid partial character sequence;
+more subsequent data needs to be fed in.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).

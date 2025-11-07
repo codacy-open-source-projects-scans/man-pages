@@ -1,14 +1,7 @@
 '\" t
-.\" Copyright 1995 Mark D. Roth (roth@uiuc.edu)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Solaris manpages
-.\"
-.\" Modified Thu Jul 25 14:43:46 MET DST 1996 by Michael Haardt
-.\"     <michael@cantor.informatik.rwth-aachen.de>
 .\"
 .TH getutent 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -30,20 +23,23 @@ Standard C library
 .B void setutent(void);
 .B void endutent(void);
 .P
-.BI "int utmpname(const char *" file );
+.BI "int utmpname(const char *" path );
 .fi
 .SH DESCRIPTION
-New applications should use the POSIX.1-specified "utmpx" versions of
-these functions; see STANDARDS.
+New applications should use
+the POSIX.1-specified "utmpx" versions of these functions;
+see STANDARDS.
 .P
 .BR utmpname ()
-sets the name of the utmp-format file for the other utmp
+sets the pathname of the utmp-format file for the other utmp
 functions to access.
 If
 .BR utmpname ()
-is not used to set the filename
-before the other functions are used, they assume \fB_PATH_UTMP\fP, as
-defined in \fI<paths.h>\fP.
+is not used to set the pathname
+before the other functions are used, they assume
+.BR _PATH_UTMP ,
+as defined in
+.IR <paths.h> .
 .P
 .BR setutent ()
 rewinds the file pointer to the beginning of the utmp file.
@@ -64,39 +60,63 @@ The definition of this structure is shown in
 .P
 .BR getutid ()
 searches forward from the current file position in the utmp
-file based upon \fIut\fP.
-If \fIut\->ut_type\fP is one of \fBRUN_LVL\fP,
-\fBBOOT_TIME\fP, \fBNEW_TIME\fP, or \fBOLD_TIME\fP,
+file based upon
+.IR ut .
+If
+.I ut\->ut_type
+is one of
+.BR RUN_LVL ,
+.BR BOOT_TIME ,
+.BR NEW_TIME ,
+or
+.BR OLD_TIME ,
 .BR getutid ()
 will
-find the first entry whose \fIut_type\fP field matches \fIut\->ut_type\fP.
-If \fIut\->ut_type\fP is one of \fBINIT_PROCESS\fP, \fBLOGIN_PROCESS\fP,
-\fBUSER_PROCESS\fP, or \fBDEAD_PROCESS\fP,
+find the first entry whose
+.I ut_type
+field matches
+.IR ut\->ut_type .
+If
+.I ut\->ut_type
+is one of
+.BR INIT_PROCESS ,
+.BR LOGIN_PROCESS ,
+.BR USER_PROCESS ,
+or
+.BR DEAD_PROCESS ,
 .BR getutid ()
 will find the
 first entry whose
 .I ut_id
-field matches \fIut\->ut_id\fP.
+field matches
+.IR ut\->ut_id .
 .P
 .BR getutline ()
 searches forward from the current file position in the utmp file.
 It scans entries whose
 .I ut_type
-is \fBUSER_PROCESS\fP
-or \fBLOGIN_PROCESS\fP and returns the first one whose
+is
+.B USER_PROCESS
+or
+.B LOGIN_PROCESS
+and returns the first one whose
 .I ut_line
 field
-matches \fIut\->ut_line\fP.
+matches
+.IR ut\->ut_line .
 .P
 .BR pututline ()
 writes the
 .I utmp
-structure \fIut\fP into the utmp file.
+structure
+.I ut
+into the utmp file.
 It uses
 .BR getutid ()
 to search for the proper place in the file to insert
 the new entry.
-If it cannot find an appropriate slot for \fIut\fP,
+If it cannot find an appropriate slot for
+.IR ut ,
 .BR pututline ()
 will append the new entry to the end of the file.
 .SH RETURN VALUE
@@ -104,10 +124,14 @@ will append the new entry to the end of the file.
 .BR getutid (),
 and
 .BR getutline ()
-return a pointer to a \fIstruct utmp\fP on success,
+return a pointer to a
+.I struct\ utmp
+on success,
 and NULL on failure (which includes the "record not found" case).
-This \fIstruct utmp\fP is allocated in static storage, and may be
-overwritten by subsequent calls.
+This
+.I struct\ utmp
+is allocated in static storage,
+and may be overwritten by subsequent calls.
 .P
 On success
 .BR pututline ()
@@ -246,15 +270,23 @@ For completeness, glibc also provides
 although this function is not specified by POSIX.1.
 .P
 On some other systems,
-the \fIutmpx\fP structure is a superset of the \fIutmp\fP structure,
+the
+.I utmpx
+structure is a superset of the
+.I utmp
+structure,
 with additional fields, and larger versions of the existing fields,
 and parallel files are maintained, often
 .I /var/*/utmpx
 and
 .IR /var/*/wtmpx .
 .P
-Linux glibc on the other hand does not use a parallel \fIutmpx\fP file
-since its \fIutmp\fP structure is already large enough.
+Linux glibc on the other hand does not use a parallel
+.I utmpx
+file
+since its
+.I utmp
+structure is already large enough.
 The "x" functions listed above are just aliases for
 their counterparts without the "x" (e.g.,
 .BR getutxent ()

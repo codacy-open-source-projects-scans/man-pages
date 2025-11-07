@@ -1,16 +1,14 @@
-.\"	$OpenBSD: elf.5,v 1.12 2003/10/27 20:23:58 jmc Exp $
-.\"Copyright (c) 1999 Jeroen Ruigrok van der Werven
-.\"All rights reserved.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" %%%LICENSE_START(PERMISSIVE_MISC)
 .\"Redistribution and use in source and binary forms, with or without
 .\"modification, are permitted provided that the following conditions
 .\"are met:
-.\"1. Redistributions of source code must retain the above copyright
-.\"   notice, this list of conditions and the following disclaimer.
-.\"2. Redistributions in binary form must reproduce the above copyright
-.\"   notice, this list of conditions and the following disclaimer in the
-.\"   documentation and/or other materials provided with the distribution.
+.\"1.  Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\"2.  Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
 .\"
 .\"THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
 .\"ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -24,13 +22,6 @@
 .\"OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\"SUCH DAMAGE.
 .\" %%%LICENSE_END
-.\"
-.\"	$FreeBSD: src/share/man/man5/elf.5,v 1.21 2001/10/01 16:09:23 ru Exp $
-.\"
-.\" Slightly adapted - aeb, 2004-01-01
-.\" 2005-07-15, Mike Frysinger <vapier@gentoo.org>, various fixes
-.\" 2007-10-11, Mike Frysinger <vapier@gentoo.org>, various fixes
-.\" 2007-12-08, mtk, Converted from mdoc to man macros
 .\"
 .TH ELF 5 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -426,7 +417,7 @@ MIPS RS3000 (big-endian only)
 .\" 9
 .\" .TP
 .\" .BR EM_MIPS_RS4_BE
-.\" MIPS RS4000 (big-endian only). Deprecated
+.\" MIPS RS4000 (big-endian only).  Deprecated
 .\" 10
 .\" EM_MIPS_RS3_LE (MIPS R3000 little-endian)
 .\" 10
@@ -523,8 +514,9 @@ Currently, no flags have been defined.
 This member holds the ELF header's size in bytes.
 .TP
 .I e_phentsize
-This member holds the size in bytes of one entry in the file's
-program header table; all entries are the same size.
+This member holds the size in bytes
+of one entry in the file's program header table;
+all entries are the same size.
 .TP
 .I e_phnum
 This member holds the number of entries in the program header
@@ -563,8 +555,9 @@ can have, specifying where the actual number of program headers is assigned.
 .TP
 .I e_shentsize
 This member holds a sections header's size in bytes.
-A section header is one
-entry in the section header table; all entries are the same size.
+A section header is
+one entry in the section header table;
+all entries are the same size.
 .TP
 .I e_shnum
 This member holds the number of entries in the section header table.
@@ -951,6 +944,10 @@ An object file can
 also contain a
 .B SHT_DYNSYM
 section.
+The index of the associated string table section
+can be found in the
+.I sh_link
+member.
 .TP
 .B SHT_STRTAB
 This section holds a string table.
@@ -1313,7 +1310,9 @@ Different files with the same build ID should contain the same executable
 content.
 See the
 .B \-\-build\-id
-option to the GNU linker (\fBld\fR (1)) for more details.
+option to the GNU linker
+.RB ( ld (1))
+for more details.
 This section is of type
 .BR SHT_NOTE .
 The only attribute used is
@@ -1850,7 +1849,7 @@ This is automatically populated by the linker.
 .\" http://www.sco.com/developers/gabi/latest/ch5.pheader.html#note_section
 .\"
 .\" Note that it implies the sizes and alignments of notes depend on the ELF
-.\" size (e.g. 32-bit ELFs have three 4-byte words and use 4-byte alignment
+.\" size (e.g., 32-bit ELFs have three 4-byte words and use 4-byte alignment
 .\" while 64-bit ELFs use 8-byte words & alignment), but that is not the case
 .\" in the real world.  Notes always have three 4-byte words as can be seen
 .\" in the source links below (remember that Elf64_Word is a 32-bit quantity).
@@ -1877,8 +1876,10 @@ Note sections contain a series of notes (see the
 .I struct
 definitions below).
 Each note is followed by the name field (whose length is defined in
-\fIn_namesz\fR) and then by the descriptor field (whose length is defined in
-\fIn_descsz\fR) and whose starting address has a 4 byte alignment.
+.IR n_namesz )
+and then by the descriptor field (whose length is defined in
+.IR n_descsz )
+and whose starting address has a 4 byte alignment.
 Neither field is defined in the note struct due to their arbitrary lengths.
 .P
 An example for parsing out two consecutive notes should clarify their layout
@@ -1889,19 +1890,19 @@ in memory:
 void *memory, *name, *desc;
 Elf64_Nhdr *note, *next_note;
 \&
-/* The buffer is pointing to the start of the section/segment. */
+/* The buffer is pointing to the start of the section/segment.  */
 note = memory;
 \&
-/* If the name is defined, it follows the note. */
+/* If the name is defined, it follows the note.  */
 name = note\->n_namesz == 0 ? NULL : memory + sizeof(*note);
 \&
 /* If the descriptor is defined, it follows the name
-   (with alignment). */
+   (with alignment).  */
 \&
 desc = note\->n_descsz == 0 ? NULL :
        memory + sizeof(*note) + ALIGN_UP(note\->n_namesz, 4);
 \&
-/* The next note follows both (with alignment). */
+/* The next note follows both (with alignment).  */
 next_note = memory + sizeof(*note) +
                      ALIGN_UP(note\->n_namesz, 4) +
                      ALIGN_UP(note\->n_descsz, 4);
@@ -2098,7 +2099,9 @@ The desc field will be 4 words:
 .RS
 .IP [0] 5
 OS descriptor
-(\fBELF_NOTE_OS_LINUX\fR, \fBELF_NOTE_OS_GNU\fR, and so on)`
+.RB ( ELF_NOTE_OS_LINUX ,
+.BR ELF_NOTE_OS_GNU ,
+and so on)
 .IP [1]
 major version of the ABI
 .IP [2]
@@ -2168,7 +2171,8 @@ and
 .I e_shstrndx
 respectively are
 Linux extensions.
-Sun, BSD, and AMD64 also support them; for further information,
+Sun, BSD, and AMD64 also support them;
+for further information,
 look under SEE ALSO.
 .\" .SH AUTHORS
 .\" The original version of this manual page was written by

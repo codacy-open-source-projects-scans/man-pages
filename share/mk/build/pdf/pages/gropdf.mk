@@ -1,4 +1,4 @@
-# Copyright 2021-2024, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: LGPL-3.0-only WITH LGPL-3.0-linking-exception
 
 
@@ -10,16 +10,22 @@ include $(MAKEFILEDIR)/build/pdf/pages/troff.mk
 include $(MAKEFILEDIR)/configure/build-depends/groff/gropdf.mk
 
 
-_PDFMAN := $(patsubst %.pdf.set, %.pdf, $(_PDFMAN_MAN_set) $(_PDFMAN_MDOC_set))
+ext := .pdf
 
 
-$(_PDFMAN): %.pdf: %.pdf.set $(MK) | $$(@D)/
+_PDFMAN := $(patsubst %.pdf.set, %$(ext), $(_PDFMAN_set))
+
+
+$(_PDFMAN): %$(ext): %.pdf.set $(MK) | $$(@D)/
 	$(info	$(INFO_)GROPDF		$@)
 	$(GROPDF) $(GROPDFFLAGS_) <$< >$@
 
 
 .PHONY: build-pdf-pages-gropdf
 build-pdf-pages-gropdf: $(_PDFMAN);
+
+
+undefine ext
 
 
 endif  # include guard

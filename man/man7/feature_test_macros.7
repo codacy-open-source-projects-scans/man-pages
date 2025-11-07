@@ -1,4 +1,4 @@
-.\" This manpage is Copyright (C) 2006, Michael Kerrisk
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -125,7 +125,8 @@ that the proper function declarations are visible,
 and the macros are not defined by default.
 .SS Feature test macros understood by glibc
 The paragraphs below explain how feature test macros are handled
-in glibc 2.\fIx\fP,
+in glibc
+.RI 2. x ,
 .I x
 > 0.
 .P
@@ -374,7 +375,8 @@ versus
 versus
 .BR lseek (),
 etc.).
-New programs should not employ this macro; instead
+New programs should not employ this macro;
+instead
 .I _FILE_OFFSET_BITS=64
 should be employed.
 .TP
@@ -472,7 +474,8 @@ and
 .BR _SVID_SOURCE " (deprecated since glibc 2.20)"
 Defining this macro with any value causes header files to expose
 System V-derived definitions.
-(SVID == System V Interface Definition; see
+(SVID == System V Interface Definition;
+see
 .BR standards (7).)
 .IP
 Since glibc 2.20, this macro is deprecated in the same fashion as
@@ -545,7 +548,7 @@ Historically, on various C libraries
 it was necessary to define this macro in all
 multithreaded code.
 .\" Zack Weinberg
-.\"     There did once exist C libraries where it was necessary. The ones
+.\"     There did once exist C libraries where it was necessary.  The ones
 .\"     I remember were proprietary Unix vendor libcs from the mid-1990s
 .\"     You would get completely unlocked stdio without _REENTRANT.
 (Some C libraries may still require this.)
@@ -718,7 +721,8 @@ is not defined or
 is defined with a value of 500 or more, then
 .IP \[bu] 3
 .B _POSIX_SOURCE
-is defined with the value 1; and
+is defined with the value 1;
+and
 .IP \[bu]
 .B _POSIX_C_SOURCE
 is defined with one of the following values:
@@ -757,11 +761,13 @@ is undefined, then the setting of
 .B _POSIX_C_SOURCE
 depends on the glibc version:
 199506L, before glibc 2.4;
-200112L, since glibc 2.4 to glibc 2.9; and
+200112L, since glibc 2.4 to glibc 2.9;
+and
 200809L, since glibc 2.10.
 .RE
 .P
-Multiple macros can be defined; the results are additive.
+Multiple macros can be defined;
+the results are additive.
 .SH STANDARDS
 POSIX.1 specifies
 .BR _POSIX_C_SOURCE ,
@@ -814,20 +820,20 @@ shows some examples of what we would see:
 .P
 .in +4n
 .EX
-$ \fBcc ftm.c\fP
-$ \fB./a.out\fP
+.RB $ " cc ftm.c"
+.RB $ " ./a.out"
 _POSIX_SOURCE defined
 _POSIX_C_SOURCE defined: 200809L
 _BSD_SOURCE defined
 _SVID_SOURCE defined
 _ATFILE_SOURCE defined
-$ \fBcc \-D_XOPEN_SOURCE=500 ftm.c\fP
-$ \fB./a.out\fP
+.RB $ " cc \-D_XOPEN_SOURCE=500 ftm.c"
+.RB $ " ./a.out"
 _POSIX_SOURCE defined
 _POSIX_C_SOURCE defined: 199506L
 _XOPEN_SOURCE defined: 500
-$ \fBcc \-D_GNU_SOURCE ftm.c\fP
-$ \fB./a.out\fP
+.RB $ " cc \-D_GNU_SOURCE ftm.c"
+.RB $ " ./a.out"
 _POSIX_SOURCE defined
 _POSIX_C_SOURCE defined: 200809L
 _ISOC99_SOURCE defined

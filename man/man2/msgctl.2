@@ -1,20 +1,7 @@
 '\" t
-.\" Copyright 1993 Giorgio Ciucci (giorgio@crcc.it)
-.\" and Copyright 2004, 2005 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Tue Oct 22 08:11:14 EDT 1996 by Eric S. Raymond <esr@thyrsus.com>
-.\" Modified Sun Feb 18 01:59:29 2001 by Andries E. Brouwer <aeb@cwi.nl>
-.\" Modified, 27 May 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added notes on CAP_IPC_OWNER requirement
-.\" Modified, 17 Jun 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"     Added notes on CAP_SYS_ADMIN requirement for IPC_SET and IPC_RMID
-.\" Modified, 11 Nov 2004, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Language and formatting clean-ups
-.\"	Added msqid_ds and ipc_perm structure definitions
-.\" 2005-08-02, mtk: Added IPC_INFO, MSG_INFO, MSG_STAT descriptions
-.\" 2018-03-20, dbueso: Added MSG_STAT_ANY description.
 .\"
 .TH msgctl 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -37,7 +24,9 @@ on the System\ V message queue with identifier
 .P
 The
 .I msqid_ds
-data structure is defined in \fI<sys/msg.h>\fP as follows:
+data structure is defined in
+.I <sys/msg.h>
+as follows:
 .P
 .in +4n
 .EX
@@ -113,11 +102,11 @@ structure is defined as follows
 .EX
 struct ipc_perm {
     key_t          __key;       /* Key supplied to msgget(2) */
-    uid_t          \fBuid\fP;         /* Effective UID of owner */
-    gid_t          \fBgid\fP;         /* Effective GID of owner */
+    uid_t          \f[B]uid\f[];         /* Effective UID of owner */
+    gid_t          \f[B]gid\f[];         /* Effective GID of owner */
     uid_t          cuid;        /* Effective UID of creator */
     gid_t          cgid;        /* Effective GID of creator */
-    unsigned short \fBmode\fP;        /* Permissions */
+    unsigned short \f[B]mode\f[];        /* Permissions */
     unsigned short __seq;       /* Sequence number */
 };
 .EE
@@ -243,7 +232,8 @@ and
 .I msgmnb
 settings can be changed via
 .I /proc
-files of the same name; see
+files of the same name;
+see
 .BR proc (5)
 for details.
 .TP
@@ -253,13 +243,16 @@ Return a
 structure containing the same information as for
 .BR IPC_INFO ,
 except that the following fields are returned with information
-about system resources consumed by message queues: the
+about system resources consumed by message queues:
+the
 .I msgpool
 field returns the number of message queues that currently exist
-on the system; the
+on the system;
+the
 .I msgmap
 field returns the total number of messages in all queues
-on the system; and the
+on the system;
+and the
 .I msgtql
 field returns the total number of bytes in all messages
 in all queues on the system.
@@ -385,13 +378,14 @@ but the caller is not privileged (Linux: does not have the
 .B CAP_SYS_RESOURCE
 capability).
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4.
 .\" SVID does not document the EIDRM error condition.
 .P
-Various fields in the \fIstruct msqid_ds\fP were
-typed as
+Various fields in the
+.I struct\ msqid_ds
+were typed as
 .I short
 under Linux 2.2
 and have become

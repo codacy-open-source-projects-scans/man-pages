@@ -1,7 +1,4 @@
-.\" Copyright 2016, IBM Corporation.
-.\" Written by Mike Rapoport <rppt@linux.vnet.ibm.com>
-.\" Copyright 2016, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -39,9 +36,11 @@ Either
 or the
 .I argp->len
 fields
-was not a multiple of the system page size; or the
+was not a multiple of the system page size;
+or the
 .I argp->len
-field was zero; or these fields were otherwise invalid.
+field was zero;
+or these fields were otherwise invalid.
 .TP
 .B EINVAL
 There as an incompatible mapping in the specified address range.

@@ -1,11 +1,6 @@
-.\" This manpage is Copyright (C) 1992 Drew Eckhardt;
-.\"             and Copyright (C) 1993 Michael Haardt, Ian Jackson.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Wed Jul 21 19:42:57 1993 by Rik Faith <faith@cs.unc.edu>
-.\" Modified Sun Jul 21 21:25:26 1996 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified Wed Nov  6 03:46:05 1996 by Eric S. Raymond <esr@thyrsus.com>
 .\"
 .TH alarm 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -40,15 +35,15 @@ returns the number of seconds remaining until any previously scheduled
 alarm was due to be delivered, or zero if there was no previously
 scheduled alarm.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001, SVr4, 4.3BSD.
 .SH NOTES
 .BR alarm ()
 and
 .BR setitimer (2)
-share the same timer; calls to one will interfere with use of the
-other.
+share the same timer;
+calls to one will interfere with use of the other.
 .P
 Alarms created by
 .BR alarm ()

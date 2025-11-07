@@ -1,10 +1,6 @@
-.\" Copyright (c) 2005 Michael Kerrisk
-.\" based on earlier work by faith@cs.unc.edu and
-.\" Mike Battersby <mib@deakin.edu.au>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2005-09-15, mtk, Created new page by splitting off from sigaction.2
 .\"
 .TH sigpending 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -46,7 +42,7 @@ is set to indicate the error.
 .I set
 points to memory which is not a valid part of the process address space.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 POSIX.1-2001.
 .SS C library/kernel differences
@@ -86,7 +82,8 @@ added to the mask of pending signals when generated.
 .P
 The set of signals that is pending for a thread
 is the union of the set of signals that is pending for that thread
-and the set of signals that is pending for the process as a whole; see
+and the set of signals that is pending for the process as a whole;
+see
 .BR signal (7).
 .P
 A child created via

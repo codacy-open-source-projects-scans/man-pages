@@ -1,5 +1,4 @@
-.\" Copyright (c) 2009 Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -169,11 +168,12 @@ may fail with the following errors:
 .TP
 .B EINVAL
 .I new_value.it_value
-is negative; or
+is negative;
+or
 .I new_value.it_value.tv_nsec
 is negative or greater than 999,999,999.
 .SH STANDARDS
-POSIX.1-2008.
+POSIX.1-2024.
 .SH HISTORY
 Linux 2.6.
 POSIX.1-2001.

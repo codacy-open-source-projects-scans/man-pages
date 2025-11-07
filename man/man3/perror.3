@@ -1,14 +1,7 @@
 '\" t
-.\" Copyright (c) 1994 Michael Haardt (michael@moria.de), 1994-06-04
-.\" Copyright (c) 1995 Michael Haardt
-.\"      (michael@cantor.informatik.rwth-aachen.de), 1995-03-16
-.\" Copyright (c) 1996 Andries Brouwer (aeb@cwi.nl), 1996-01-13
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" 1996-01-13 aeb: merged in some text contributed by Melvin Smith
-.\"   (msmith@falcon.mercer.peachnet.edu) and various other changes.
-.\" Modified 1996-05-16 by Martin Schulze (joey@infodrom.north.de)
 .\"
 .TH perror 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -24,7 +17,7 @@ Standard C library
 .P
 .B #include <errno.h>
 .P
-.BI "int " errno ";       \fR/* Not really declared this way; see errno(3) */"
+.BI "int " errno ";  \f[R]/* Not really declared this way; see errno(3) */\f[]"
 .P
 .BI "[[deprecated]] const char *const " sys_errlist [];
 .BI "[[deprecated]] int " sys_nerr ;
@@ -70,17 +63,20 @@ which can be indexed by
 can be used to obtain the error message without the newline.
 The largest message number provided in the table is
 .IR sys_nerr "\-1."
-Be careful when directly accessing this list, because new error values
+Be careful when directly accessing this list,
+because new error values
 may not have been added to
-.IR sys_errlist "[]."
+.IR sys_errlist [].
 The use of
-.IR sys_errlist "[]"
-is nowadays deprecated; use
+.IR sys_errlist []
+is nowadays deprecated;
+use
 .BR strerror (3)
 instead.
 .P
-When a system call fails, it usually returns \-1 and sets the
-variable
+When a system call fails,
+it usually returns \-1
+and sets the variable
 .I errno
 to a value describing what went wrong.
 (These values can be found in

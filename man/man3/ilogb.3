@@ -1,11 +1,7 @@
 '\" t
-.\" Copyright 2004 Andries Brouwer <aeb@cwi.nl>.
-.\" and Copyright 2008, Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Inspired by a page by Walter Harms created 2002-08-10
 .\"
 .TH ilogb 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -91,7 +87,7 @@ when calling these functions.
 .P
 The following errors can occur:
 .TP
-Domain error: \fIx\fP is 0 or a NaN
+Domain error: \f[I]x\f[] is 0 or a NaN
 An invalid floating-point exception
 .RB ( FE_INVALID )
 is raised, and
@@ -100,7 +96,7 @@ is set to
 .B EDOM
 (but see BUGS).
 .TP
-Domain error: \fIx\fP is an infinity
+Domain error: \f[I]x\f[] is an infinity
 An invalid floating-point exception
 .RB ( FE_INVALID )
 is raised, and

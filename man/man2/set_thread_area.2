@@ -1,6 +1,5 @@
-.\" Copyright (C) 2003 Free Software Foundation, Inc.
-.\" Copyright (C) 2015 Andrew Lutomirski
-.\" Author: Kent Yoder
+.\" Copyright 2003, Free Software Foundation, Inc.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-1.0-or-later
 .\"
@@ -150,10 +149,12 @@ returns the thread area pointer value
 .SH ERRORS
 .TP
 .B EFAULT
-\fIu_info\fP is an invalid pointer.
+.I u_info
+is an invalid pointer.
 .TP
 .B EINVAL
-\fIu_info\->entry_number\fP is out of bounds.
+.I u_info\->entry_number
+is out of bounds.
 .TP
 .B ENOSYS
 .BR get_thread_area ()

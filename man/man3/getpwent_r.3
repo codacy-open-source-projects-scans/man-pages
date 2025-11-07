@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (c) 2003 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -13,12 +13,13 @@ Standard C library
 .nf
 .B #include <pwd.h>
 .P
-.BI "int getpwent_r(struct passwd *restrict " pwbuf ,
-.BI "               char " buf "[restrict ." buflen "], size_t " buflen ,
+.BR "int getpwent_r(" "size_t size;"
+.BI "               struct passwd *restrict " pwbuf ,
+.BI "               char " buf "[restrict " size "], size_t " size ,
 .BI "               struct passwd **restrict " pwbufp );
-.BI "int fgetpwent_r(FILE *restrict " stream \
-", struct passwd *restrict " pwbuf ,
-.BI "               char " buf "[restrict ." buflen "], size_t " buflen ,
+.BR "int fgetpwent_r(" "size_t size;"
+.BI "               FILE *restrict " stream ", struct passwd *restrict " pwbuf ,
+.BI "               char " buf "[restrict " size "], size_t " size ,
 .BI "               struct passwd **restrict " pwbufp );
 .fi
 .P
@@ -56,7 +57,9 @@ The former reads the next passwd entry from the stream initialized by
 The latter reads the next passwd entry from
 .IR stream .
 .P
-The \fIpasswd\fP structure is defined in
+The
+.I passwd
+structure is defined in
 .I <pwd.h>
 as follows:
 .P
@@ -84,21 +87,27 @@ The reentrant functions described here return all of that in
 caller-provided buffers.
 First of all there is the buffer
 .I pwbuf
-that can hold a \fIstruct passwd\fP.
+that can hold a
+.IR "struct\ passwd" .
 And next the buffer
 .I buf
 of size
-.I buflen
+.I size
 that can hold additional strings.
-The result of these functions, the \fIstruct passwd\fP read from the stream,
+The result of these functions, the
+.I struct\ passwd
+read from the stream,
 is stored in the provided buffer
 .IR *pwbuf ,
-and a pointer to this \fIstruct passwd\fP is returned in
+and a pointer to this
+.I struct\ passwd
+is returned in
 .IR *pwbufp .
 .SH RETURN VALUE
 On success, these functions return 0 and
 .I *pwbufp
-is a pointer to the \fIstruct passwd\fP.
+is a pointer to the
+.IR "struct\ passwd" .
 On error, these functions return an error value and
 .I *pwbufp
 is NULL.
@@ -152,7 +161,7 @@ Other systems use the prototype
 .in +4n
 .EX
 struct passwd *
-getpwent_r(struct passwd *pwd, char *buf, int buflen);
+getpwent_r(struct passwd *pwd, char buf[.size], int size);
 .EE
 .in
 .P
@@ -161,7 +170,7 @@ or, better,
 .in +4n
 .EX
 int
-getpwent_r(struct passwd *pwd, char *buf, int buflen,
+getpwent_r(struct passwd *pwd, char buf[.size], int size,
            FILE **pw_fp);
 .EE
 .in

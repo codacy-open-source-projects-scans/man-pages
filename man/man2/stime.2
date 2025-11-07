@@ -1,11 +1,6 @@
-.\" Copyright (c) 1992 Drew Eckhardt (drew@cs.colorado.edu), March 28, 1992
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified by Michael Haardt <michael@moria.de>
-.\" Modified 1993-07-24 by Rik Faith <faith@cs.unc.edu>
-.\" Modified 2001-03-16 by Andries Brouwer <aeb@cwi.nl>
-.\" Modified 2004-05-27 by Michael Kerrisk <mtk.manpages@gmail.com>
 .\"
 .TH stime 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -39,8 +34,10 @@ instead.
 .BR stime ()
 sets the system's idea of the time and date.
 The time, pointed
-to by \fIt\fP, is measured in seconds since the
-Epoch, 1970-01-01 00:00:00 +0000 (UTC).
+to by
+.IR t ,
+is measured in seconds since the Epoch,
+1970-01-01 00:00:00 +0000 (UTC).
 .BR stime ()
 may be executed only by the superuser.
 .SH RETURN VALUE

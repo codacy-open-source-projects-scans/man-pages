@@ -1,7 +1,4 @@
-.\" Copyright (c) 2012 by Michael Kerrisk <mtk.manpages@gmail.com>
-.\" with some material from a draft by
-.\" Stephan Mueller <stephan.mueller@atsec.com>
-.\" in turn based on Andi Kleen's recvmmsg.2 page.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -16,8 +13,9 @@ Standard C library
 .BR "#define _GNU_SOURCE" "         /* See feature_test_macros(7) */"
 .B #include <sys/socket.h>
 .P
-.BI "int sendmmsg(int " sockfd \
-", struct mmsghdr " msgvec [. n "], unsigned int " n ,
+.BR "int sendmmsg(" "unsigned int n;"
+.BI "             int " sockfd \
+", struct mmsghdr " msgvec [ n "], unsigned int " n ,
 .BI "             int " flags ");"
 .fi
 .SH DESCRIPTION
@@ -119,7 +117,7 @@ Errors are as for
 An error is returned only if no datagrams could be sent.
 See also BUGS.
 .\" commit 728ffb86f10873aaf4abd26dde691ee40ae731fe
-.\"     ... only return an error if no datagrams could be sent.
+.\"     ...only return an error if no datagrams could be sent.
 .\"     If less than the requested number of messages were sent, the application
 .\"     must retry starting at the first failed one and if the problem is
 .\"     persistent the error will be returned.

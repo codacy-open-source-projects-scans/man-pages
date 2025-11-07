@@ -1,12 +1,8 @@
 '\" t
-.\" Copyright (c) 1996 Joerg Wunsch
-.\" Copyright (c) 2022 Alejandro Colomar <alx@kernel.org>
-.\"
-.\" All rights reserved.
+.\" Copyright 1996, Joerg Wunsch
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-2-Clause
-.\"
-.\" Rewritten for the Linux man-pages by Alejandro Colomar
 .\"
 .TH sysexits.h 3head (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -62,7 +58,8 @@ T}
 input/output error */
 T}
 #define EX_TEMPFAIL	75	/*	T{
-temp failure; user is invited to retry */
+temp failure;
+user is invited to retry */
 T}
 #define EX_PROTOCOL	76	/*	T{
 remote error in protocol */

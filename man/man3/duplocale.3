@@ -1,4 +1,4 @@
-.\" Copyright (C) 2014 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -109,7 +109,7 @@ An example of its use is the following:
 .P
 .in +4n
 .EX
-$ \fB./a.out abc\fP
+.RB $ " ./a.out abc" ;
 ABC
 .EE
 .in
@@ -119,12 +119,10 @@ ABC
 .EX
 #define _XOPEN_SOURCE 700
 #include <ctype.h>
+#include <err.h>
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
-\&
-#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \[rs]
-                        } while (0)
 \&
 int
 main(int argc, char *argv[])
@@ -138,15 +136,15 @@ main(int argc, char *argv[])
 \&
     /* This sequence is necessary, because uselocale() might return
        the value LC_GLOBAL_LOCALE, which can\[aq]t be passed as an
-       argument to toupper_l(). */
+       argument to toupper_l().  */
 \&
     loc = uselocale((locale_t) 0);
     if (loc == (locale_t) 0)
-        errExit("uselocale");
+        err(EXIT_FAILURE, "uselocale");
 \&
     nloc = duplocale(loc);
     if (nloc == (locale_t) 0)
-        errExit("duplocale");
+        err(EXIT_FAILURE, "duplocale");
 \&
     for (char *p = argv[1]; *p; p++)
         putchar(toupper_l(*p, nloc));

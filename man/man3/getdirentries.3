@@ -1,7 +1,6 @@
 '\" t
-.\" Copyright 1993 Rickard E. Faith (faith@cs.unc.edu)
-.\" Portions extracted from /usr/include/dirent.h are:
-.\"                    Copyright 1991, 1992 Free Software Foundation
+.\" Copyright 1991-1992, Free Software Foundation
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -15,8 +14,8 @@ Standard C library
 .nf
 .B #include <dirent.h>
 .P
-.BI "ssize_t getdirentries(int " fd ", char " buf "[restrict ." nbytes "], \
-size_t " nbytes ,
+.BR "ssize_t getdirentries(" "size_t size;"
+.BI "                      int " fd ", char " buf "[restrict " size "], size_t " size ,
 .BI "                      off_t *restrict " basep );
 .fi
 .P
@@ -38,8 +37,8 @@ Read directory entries from the directory specified by
 into
 .IR buf .
 At most
-.I nbytes
-are read.
+.I size
+bytes are read.
 Reading starts at offset
 .IR *basep ,
 and

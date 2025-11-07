@@ -1,5 +1,5 @@
 '\" t
-.\" Copyright (c) 2003 Andries Brouwer (aeb@cwi.nl)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
@@ -21,11 +21,12 @@ Standard C library
 .BI "void cfree(void *" ptr );
 .P
 /* In SCO OpenServer */
-.BI "void cfree(char " ptr [. size " * ." n "], unsigned int " n ", \
-unsigned int " size );
+.BR "void cfree(" "unsigned int n, unsigned int size;"
+.BI "           char " ptr [ size " * " n "], unsigned int " n ", unsigned int " size );
 .P
 /* In Solaris watchmalloc.so.1 */
-.BI "void cfree(void " ptr [. size " * ." n "], size_t " n ", size_t " size );
+.BR "void cfree(" "size_t n, size_t size;"
+.BI "           void " ptr [ size " * " n "], size_t " n ", size_t " size );
 .fi
 .P
 .RS -4
@@ -79,7 +80,7 @@ A frequently asked question is "Can I use
 to free memory allocated with
 .BR calloc (3),
 or do I need
-.BR cfree ()?"
+.BR cfree ()?\[dq].
 Answer: use
 .BR free (3).
 .P

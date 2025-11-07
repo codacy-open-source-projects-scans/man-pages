@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH wmemmove 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -19,8 +13,8 @@ Standard C library
 .nf
 .B #include <wchar.h>
 .P
-.BI "wchar_t *wmemmove(wchar_t " dest [. n "], const wchar_t " src [. n "], \
-size_t " n );
+.BR "wchar_t *wmemmove(" "size_t n;"
+.BI "                  wchar_t " dest [ n "], const wchar_t " src [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
 The

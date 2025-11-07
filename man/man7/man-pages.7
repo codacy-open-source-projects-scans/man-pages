@@ -1,12 +1,7 @@
 '\" t
-.\" (C) Copyright 1992-1999 Rickard E. Faith and David A. Wheeler
-.\" (faith@cs.unc.edu and dwheeler@ida.org)
-.\" and (C) Copyright 2007 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" 2007-05-30 created by mtk, using text from old man.7 plus
-.\" rewrites and additional text.
 .\"
 .TH man-pages 7 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -17,7 +12,8 @@ man-pages \- conventions for writing Linux man pages
 .I title
 .SH DESCRIPTION
 This page describes the conventions that should be employed
-when writing man pages for the Linux \fIman-pages\fP project,
+when writing man pages for the
+.IR "Linux man-pages project" ,
 which documents the user-space API provided by the Linux kernel
 and the GNU C library.
 The project thus provides most of the pages in Section 2,
@@ -95,8 +91,7 @@ command:
 The arguments of the command are as follows:
 .TP
 .I title
-The title of the man page, written in all caps (e.g.,
-.IR MAN-PAGES ).
+The title of the man page.
 .TP
 .I section
 The section number in which the man page should be placed (e.g.,
@@ -130,11 +125,11 @@ are placed in the order shown in the list.
 .RS
 .TS
 l l.
-\fBNAME\fP
+\f[B]NAME\f[]
 LIBRARY	[Normally only in Sections 2, 3]
-\fBSYNOPSIS\fP
+\f[B]SYNOPSIS\f[]
 CONFIGURATION	[Normally only in Section 4]
-\fBDESCRIPTION\fP
+\f[B]DESCRIPTION\f[]
 OPTIONS	[Normally only in Sections 1, 8]
 EXIT STATUS	[Normally only in Sections 1, 8]
 RETURN VALUE	[Normally only in Sections 2, 3]
@@ -160,7 +155,7 @@ EXAMPLES
 AUTHORS	[Discouraged]
 REPORTING BUGS	[Not used in man-pages]
 COPYRIGHT	[Not used in man-pages]
-\fBSEE ALSO\fP
+\f[B]SEE ALSO\f[]
 .TE
 .RE
 .P
@@ -170,8 +165,9 @@ If you must, you can create your own
 headings if they make things easier to understand (this can
 be especially useful for pages in Sections 4 and 5).
 However, before doing this, consider whether you could use the
-traditional headings, with some subsections (\fI.SS\fP) within
-those sections.
+traditional headings, with some subsections
+.RI ( .SS )
+within those sections.
 .P
 The following list elaborates on the contents of each of
 the above sections.
@@ -182,7 +178,8 @@ The name of this manual page.
 See
 .BR man (7)
 for important details of the line(s) that should follow the
-\fB.SH NAME\fP command.
+.B .SH\~NAME
+command.
 All words in this line (including the word immediately
 following the "\[rs]\-") should be in lowercase,
 except where English or technical terminological convention
@@ -396,7 +393,12 @@ SUS, SUSv2, and XPG, or the SVr4 and 4.xBSD implementation standards.
 Miscellaneous notes.
 .IP
 For Section 2 and 3 man pages you may find it useful to include
-subsections (\fBSS\fP) named \fILinux Notes\fP and \fIglibc Notes\fP.
+subsections
+.RB ( SS )
+named
+.I Linux\~Notes
+and
+.IR glibc\~Notes .
 .IP
 In Section 2, use the heading
 .I "C library/kernel differences"
@@ -417,12 +419,14 @@ One or more examples demonstrating how this function, file, or
 command is used.
 .IP
 For details on writing example programs,
-see \fIExample programs\fP below.
+see
+.I Example\~programs
+below.
 .TP
 .B AUTHORS
 A list of authors of the documentation or program.
 .IP
-\fBUse of an AUTHORS section is strongly discouraged\fP.
+.B "Use of an AUTHORS section is strongly discouraged" .
 Generally, it is better not to clutter every page with a list
 of (over time potentially numerous) authors;
 if you write or significantly amend a page,
@@ -479,6 +483,19 @@ project.
 Wrap the function prototype(s) in a
 .IR .nf / .fi
 pair to prevent filling.
+.P
+Forward declarations of parameters in functions
+should not use bold nor italics;
+this helps distinguish them visually from actual parameters.
+As an example:
+.P
+.in +4n
+.nf
+.BR "int snprintf(" "size_t size;"
+.BI "             char " str "[restrict " size "], size_t " size ,
+.BI "             const char *restrict " format ", ...);"
+.fi
+.in
 .P
 In general, where more than one function prototype is shown in the SYNOPSIS,
 the prototypes should
@@ -574,6 +591,12 @@ project.
 For details not covered below, the Chicago Manual of Style
 is usually a good source;
 try also grepping for preexisting usage in the project source tree.
+.P
+.UR https://www.ualberta.ca/\:computing-science/\:media-library/\:docs/\:unix-beginners.pdf
+UNIX for Beginners [2nd ed., Brian W.\& Kernighan]
+.UE
+also contains a noteworthy section,
+\[lq]Hints for Preparing Documents\[rq].
 .SS Use of gender-neutral language
 As far as possible, use gender-neutral language in the text of man
 pages.
@@ -741,7 +764,7 @@ for example
 .P
 .in +4n
 .EX
-$ \fBdate\fP
+.RB $ " date" ;
 Thu Jul  7 13:01:27 CEST 2016
 .EE
 .in
@@ -764,7 +787,8 @@ The preferred way to write this in the source file is:
 create properly hyperlinked pages.)
 .P
 Control characters should be written in bold face,
-with no quotes; for example,
+with no quotes;
+for example,
 .BR \[ha]X .
 .SS Spelling
 Starting with release 2.59,
@@ -841,11 +865,9 @@ The following table lists some preferred terms to use in man pages,
 mainly to ensure consistency across pages.
 .ad l
 .TS
-l l l
----
-l l ll.
+l l l.
 Term	Avoid using	Notes
-
+_
 bit mask	bitmask
 built-in	builtin
 Epoch	epoch	T{
@@ -894,7 +916,9 @@ usable	useable
 user space	userspace
 username	user name
 x86-64	x86_64	T{
-Except if referring to result of "uname\ \-m" or similar
+Except if referring to result of
+.I \%uname\~\-m
+or similar
 T}
 zeros	zeroes
 .TE
@@ -908,11 +932,9 @@ along with some suggested alternatives,
 mainly to ensure consistency across pages.
 .ad l
 .TS
-l l l
----
 l l l.
 Avoid	Use instead	Notes
-
+_
 32bit	32-bit	T{
 same for 8-bit, 16-bit, etc.
 T}
@@ -981,7 +1003,7 @@ when rendering a page with, say:
 .P
 .in +4n
 .EX
-BROWSER=firefox man -H pagename
+BROWSER=firefox man \-H pagename
 .EE
 .in
 .SS Use of e.g., i.e., etc., a.k.a., and similar
@@ -1006,7 +1028,8 @@ Em-dashes should be written
 surrounding spaces.
 .SS Hyphenation of attributive compounds
 Compound terms should be hyphenated when used attributively
-(i.e., to qualify a following noun). Some examples:
+(i.e., to qualify a following noun).
+Some examples:
 .IP
 .TS
 l.
@@ -1090,7 +1113,8 @@ To generate glyphs that when copied from rendered pages will
 produce real minus signs when pasted into a terminal.
 .P
 To produce unslanted single quotes that render well in ASCII, UTF-8, and PDF,
-use "\[rs][aq]" ("apostrophe quote"); for example
+use "\[rs][aq]" ("apostrophe quote");
+for example
 .P
 .in +4n
 .EX
@@ -1145,7 +1169,8 @@ Example programs should do error checking after system calls and
 library function calls.
 .IP \[bu]
 Example programs should be complete, and compile without
-warnings when compiled with \fIcc\ \-Wall\fP.
+warnings when compiled with
+.IR "cc\ \-Wall" .
 .IP \[bu]
 Where possible and appropriate, example programs should allow
 experimentation, by varying their behavior based on inputs

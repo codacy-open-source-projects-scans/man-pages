@@ -1,8 +1,4 @@
-.\" Copyright 2016, Michael Kerrisk <mtk.manpages@gmail.com>
-.\" Copyright 2016, Eugene Syromyatnikov <evgsyr@gmail.com>
-.\" A very few fragments remain from an earlier version of this page
-.\" written by David Howells (dhowells@redhat.com)
-.\" Copyright 2024, Alejandro Colomar <alx@kernel.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -23,11 +19,13 @@ Standard C library
 .BR "#include <sys/syscall.h>" "   /* Definition of " SYS_* " constants */"
 .B #include <unistd.h>
 .P
-.BI "long syscall(SYS_keyctl, KEYCTL_INSTANTIATE, key_serial_t " key ,
-.BI "             const void " payload [. n "], size_t " n ,
+.BR "long syscall(" "size_t n;"
+.BI "             SYS_keyctl, KEYCTL_INSTANTIATE, key_serial_t " key ,
+.BI "             const void " payload [ n "], size_t " n ,
 .BI "             key_serial_t " keyring );
-.BI "long syscall(SYS_keyctl, KEYCTL_INSTANTIATE_IOV, key_serial_t " key ,
-.BI "             const struct iovec " payload [. n "], unsigned int " n ,
+.BR "long syscall(" "size_t n;"
+.BI "             SYS_keyctl, KEYCTL_INSTANTIATE_IOV, key_serial_t " key ,
+.BI "             const struct iovec " payload [ n "], unsigned int " n ,
 .BI "             key_serial_t " keyring );
 .BI "long syscall(SYS_keyctl, KEYCTL_NEGATE, key_serial_t " key ,
 .BI "             unsigned int " timeout ", key_serial_t " keyring );

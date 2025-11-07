@@ -1,8 +1,7 @@
-.\" Copyright (c) 1995 Michael Chastain (mec@shell.portal.com), 15 April 1995.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
 .\"
-.\" Modified Tue Oct 22 08:11:14 EDT 1996 by Eric S. Raymond <esr@thyrsus.com>
 .TH ipc 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
 ipc \- System V IPC system calls
@@ -38,9 +37,12 @@ User-space programs should call the appropriate functions by their usual names.
 Only standard library implementors and kernel hackers need to know about
 .BR ipc ().
 .SH VERSIONS
-On some architectures\[em]for example x86-64 and ARM\[em]there is no
+On some architectures
+\[em]for example x86-64 and ARM\[em]
+there is no
 .BR ipc ()
-system call; instead,
+system call;
+instead,
 .BR msgctl (2),
 .BR semctl (2),
 .BR shmctl (2),

@@ -1,9 +1,8 @@
 '\" t
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.\" Modified Sat Jul 24 19:51:06 1993 by Rik Faith (faith@cs.unc.edu)
 .TH ctermid 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
 ctermid \- get controlling terminal name
@@ -62,8 +61,8 @@ POSIX.1-2008.
 .SH HISTORY
 POSIX.1-2001, Svr4.
 .SH BUGS
-The returned pathname may not uniquely identify the controlling
-terminal; it may, for example, be
+The returned pathname may not uniquely identify the controlling terminal;
+it may, for example, be
 .IR /dev/tty .
 .P
 It is not assured that the program can open the terminal.

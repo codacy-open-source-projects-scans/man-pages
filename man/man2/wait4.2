@@ -1,14 +1,6 @@
-.\" Copyright (c) 1993 by Thomas Koenig (ig25@rz.uni-karlsruhe.de)
-.\" and Copyright (c) 2004 by Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" Modified Sat Jul 24 13:32:44 1993 by Rik Faith (faith@cs.unc.edu)
-.\" Modified Mon Jun 23 14:09:52 1997 by aeb - add EINTR.
-.\" Modified Tue Jul  7 12:26:42 1998 by aeb - changed return value wait3
-.\" Modified 2004-11-11, Michael Kerrisk <mtk.manpages@gmail.com>
-.\"	Rewrote much of this page, and removed much duplicated text,
-.\"		replacing with pointers to wait.2
 .\"
 .TH wait4 2 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -53,7 +45,9 @@ Feature Test Macro Requirements for glibc (see
         _BSD_SOURCE
 .fi
 .SH DESCRIPTION
-These functions are nonstandard; in new programs, the use of
+These functions are nonstandard;
+in new programs,
+the use of
 .BR waitpid (2)
 or
 .BR waitid (2)

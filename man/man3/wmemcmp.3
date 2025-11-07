@@ -1,12 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
 .\"
 .TH wmemcmp 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -18,8 +13,8 @@ Standard C library
 .nf
 .B #include <wchar.h>
 .P
-.BI "int wmemcmp(const wchar_t " s1 [. n "], const wchar_t " s2 [. n "], \
-size_t " n );
+.BR "int wmemcmp(" "size_t n;"
+.BI "            const wchar_t " s1 [ n "], const wchar_t " s2 [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
 The

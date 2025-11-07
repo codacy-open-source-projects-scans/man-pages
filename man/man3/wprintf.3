@@ -1,13 +1,7 @@
 '\" t
-.\" Copyright (c) Bruno Haible <haible@clisp.cons.org>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
-.\"
-.\" References consulted:
-.\"   GNU glibc-2 source code and manual
-.\"   Dinkumware C library reference http://www.dinkumware.com/
-.\"   OpenGroup's Single UNIX specification http://www.UNIX-systems.org/online.html
-.\"   ISO/IEC 9899:1999
 .\"
 .TH wprintf 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -24,13 +18,15 @@ Standard C library
 .BI "int wprintf(const wchar_t *restrict " format ", ...);"
 .BI "int fwprintf(FILE *restrict " stream ,
 .BI "             const wchar_t *restrict " format ", ...);"
-.BI "int swprintf(wchar_t " wcs "[restrict ." maxlen "], size_t " maxlen ,
+.BR "int swprintf(" "size_t n;"
+.BI "             wchar_t " wcs "[restrict " n "], size_t " n ,
 .BI "             const wchar_t *restrict " format ", ...);"
 .P
 .BI "int vwprintf(const wchar_t *restrict " format ", va_list " args );
 .BI "int vfwprintf(FILE *restrict " stream ,
 .BI "             const wchar_t *restrict " format ", va_list " args );
-.BI "int vswprintf(wchar_t " wcs "[restrict ." maxlen "], size_t " maxlen ,
+.BR "int vswprintf(" "size_t n;"
+.BI "             wchar_t " wcs "[restrict " n "], size_t " n ,
 .BI "             const wchar_t *restrict " format ", va_list " args );
 .fi
 .P
@@ -68,7 +64,8 @@ functions
 perform wide-character output to
 .IR stdout .
 .I stdout
-must not be byte oriented; see
+must not be byte oriented;
+see
 .BR fwide (3)
 for more information.
 .P
@@ -80,7 +77,8 @@ functions
 perform wide-character output to
 .IR stream .
 .I stream
-must not be byte oriented; see
+must not be byte oriented;
+see
 .BR fwide (3)
 for more information.
 .P
@@ -93,7 +91,7 @@ perform wide-character output
 to an array of wide characters.
 The programmer must ensure that there is
 room for at least
-.I maxlen
+.I n
 wide
 characters at
 .IR wcs .
@@ -122,7 +120,7 @@ The output consists of wide characters, not bytes.
 and
 .BR vswprintf ()
 take a
-.I maxlen
+.I n
 argument,
 .BR sprintf (3)
 and
@@ -132,7 +130,7 @@ do not.
 and
 .BR vsnprintf (3)
 take a
-.I maxlen
+.I n
 argument, but these functions do not return \-1 upon
 buffer overflow on Linux.)
 .P
@@ -202,7 +200,30 @@ case of the functions
 .BR swprintf ()
 and
 .BR vswprintf ().
-They return \-1 when an error occurs.
+On error,
+\-1 is returned,
+and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+See
+.BR write (2)
+and
+.BR putwc (3).
+In addition, the following error may occur:
+.TP
+.B EOVERFLOW
+The value to be returned is greater than
+.BR INT_MAX .
+.P
+The
+.BR fwprintf ()
+and
+.BR wprintf ()
+functions may fail additionally if:
+.TP
+.B ENOMEM
+Insufficient storage space is available.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
@@ -229,7 +250,7 @@ POSIX.1-2001, C99.
 .SH NOTES
 The behavior of
 .BR wprintf ()
-et al. depends
+et al.\& depends
 on the
 .B LC_CTYPE
 category of the

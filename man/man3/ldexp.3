@@ -1,16 +1,7 @@
 '\" t
-.\" Copyright 1993 David Metcalfe (david@prism.demon.co.uk)
-.\" and Copyright 2008, Linux Foundation, written by Michael Kerrisk
-.\"     <mtk.manpages@gmail.com>
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
-.\"
-.\" References consulted:
-.\"     Linux libc source code
-.\"     Lewine's _POSIX Programmer's Guide_ (O'Reilly & Associates, 1991)
-.\"     386BSD man pages
-.\" Modified 1993-07-24 by Rik Faith (faith@cs.unc.edu)
-.\" Modified 2004-10-31 by aeb
 .\"
 .TH ldexp 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
@@ -22,9 +13,9 @@ Math library
 .nf
 .B #include <math.h>
 .P
-.BI "double ldexp(double " x ", int " exp );
-.BI "float ldexpf(float " x ", int " exp );
-.BI "long double ldexpl(long double " x ", int " exp );
+.BI "double ldexp(double " x ", int " e );
+.BI "float ldexpf(float " x ", int " e );
+.BI "long double ldexpl(long double " x ", int " e );
 .fi
 .P
 .RS -4
@@ -43,13 +34,13 @@ Feature Test Macro Requirements for glibc (see
 These functions return the result of multiplying the floating-point number
 .I x
 by 2 raised to the power
-.IR exp .
+.IR e .
 .SH RETURN VALUE
 On success, these functions return
-.IR "x * (2\[ha]exp)" .
+.IR "x * (2\[ha]e)" .
 .P
 If
-.I exp
+.I e
 is zero, then
 .I x
 is returned.

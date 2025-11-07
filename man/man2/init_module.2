@@ -1,6 +1,5 @@
-.\" Copyright (C) 2012 Michael Kerrisk <mtk.manpages@gmail.com>
-.\" A few fragments remain from a version
-.\" Copyright (C) 1996 Free Software Foundation, Inc.
+.\" Copyright 1996, Free Software Foundation, Inc.
+.\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
@@ -16,8 +15,9 @@ Standard C library
 .BR "#include <sys/syscall.h>" "     /* Definition of " SYS_* " constants */"
 .B #include <unistd.h>
 .P
-.BI "int syscall(SYS_init_module, void " module_image [. size "], \
-unsigned long " size ,
+.BR "int syscall(" "unsigned long size;"
+.B  "            SYS_init_module,"
+.BI "            void " module_image [ size "], unsigned long " size ,
 .BI "            const char *" param_values );
 .BI "int syscall(SYS_finit_module, int " fd ,
 .BI "            const char *" param_values ", int " flags );
@@ -358,8 +358,8 @@ struct module {
     struct module_symbol *syms;
     struct module_ref    *deps;
     struct module_ref    *refs;
-    int                 (*init)(void);
-    void                (*cleanup)(void);
+    typeof(int (void))   *init;
+    typeof(void (void))  *cleanup;
     const struct exception_table_entry *ex_table_start;
     const struct exception_table_entry *ex_table_end;
 #ifdef __alpha__
