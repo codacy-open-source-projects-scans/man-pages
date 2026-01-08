@@ -61,7 +61,7 @@ The default is
 .TP
 .BI scopev4\~ mask\~value
 Add another rule to the RFC\ 3484 scope table for IPv4 address.
-By default, the scope IDs described in section 3.2 in RFC\ 3438 are used.
+By default, the scope IDs described in section 3.2 in RFC\ 3484 are used.
 Changing these defaults should hardly ever be necessary.
 .SH FILES
 .I /etc/gai.conf
@@ -86,6 +86,22 @@ precedence  ::/0          40
 precedence  2002::/16     30
 precedence ::/96          20
 precedence ::ffff:0:0/96  10
+.EE
+.in
+.P
+glibc includes some extra rules in the label table
+for site-local addresses, ULA, and Teredo tunnels.
+Its default label table is:
+.in +4n
+.EX
+label ::1/128        0
+label ::/0           1
+label 2002::/16      2
+label ::/96          3
+label ::ffff:0:0/96  4
+label fec0::/10      5
+label fc00::/7       6
+label 2001:0::/32    7
 .EE
 .in
 .\" .SH AUTHOR
