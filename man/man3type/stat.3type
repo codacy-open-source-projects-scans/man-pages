@@ -26,7 +26,7 @@ Standard C library
 \&
     /* Since POSIX.1-2008, this structure supports nanosecond
        precision for the following timestamp fields.
-       For the details before POSIX.1-2008, see VERSIONS.  */
+       For the details before POSIX.1-2008, see HISTORY.  */
 \&
 .BR "    struct timespec  st_atim;" "  /* Time of last access */"
 .BR "    struct timespec  st_mtim;" "  /* Time of last modification */"
@@ -135,7 +135,7 @@ For further information on the above fields, see
 .SH STANDARDS
 POSIX.1-2024.
 .SH HISTORY
-POSIX.1-2001.
+POSIX.1-1988.
 .P
 Old kernels and old standards did not support nanosecond timestamp fields.
 Instead, there were three timestamp fields
