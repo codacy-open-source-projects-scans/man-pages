@@ -76,7 +76,7 @@ for printing
 .I intptr_t
 values.
 The length modifiers for the
-.IR [ u ] intptr_t
+.RI [ u ] intptr_t
 types
 for the
 .BR scanf (3)
@@ -94,9 +94,31 @@ for scanning
 .I uintptr_t
 values.
 .SH STANDARDS
-C11, POSIX.1-2024.
+.TP
+.RI [ u ] intptr_t
+.TQ
+.RB [ U ] INTPTR_MAX
+.TQ
+.B INTPTR_MIN
+C23, POSIX.1-2024.
+.TP
+.RB [ U ] INTPTR_WIDTH
+C23.
 .SH HISTORY
-C99, POSIX.1-2001.
+.TP
+.RI [ u ] intptr_t
+SUSv2,
+C99,
+POSIX.1-2001 XSI.
+.TP
+.RB [ U ] INTPTR_MAX
+.TQ
+.B INTPTR_MIN
+C99,
+POSIX.1-2001 XSI.
+.TP
+.RB [ U ] INTPTR_WIDTH
+C23.
 .SH NOTES
 The following header also provides these types:
 .IR <inttypes.h> .

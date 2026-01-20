@@ -53,13 +53,17 @@ None.
 .SH HISTORY
 .TP
 .I time_t
-C89, POSIX.1-2001.
+C89,
+POSIX.1-1988.
 .TP
 .I suseconds_t
-POSIX.1-2001.
+SUSv2,
+POSIX.1-2001 XSI,
+POSIX.1-2024.
 .TP
 .I useconds_t
-POSIX.1-2001.
+SUSv1,
+POSIX.1-2001 XSI.
 Removed in POSIX.1-2008.
 .SS Header files
 .I <sched.h>
@@ -67,16 +71,11 @@ defines
 .I time_t
 since POSIX.1-2008.
 .SS time_t
-In POSIX.1-2001,
+POSIX.1-2024 requires that the width of
 .I time_t
-was specified as being either an integer type or a real-floating type.
-However,
-existing implementations used an integer type,
-and POSIX.1-2008 tightened the specification to reflect this.
-.P
-POSIX.1-2024 required that the width of
-.I time_t
-is at least 64 bits.
+is at least 64 bits;
+however,
+some systems still use 32 bits by default.
 .SH NOTES
 On some architectures,
 the width of

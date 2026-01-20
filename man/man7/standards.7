@@ -9,13 +9,7 @@ standards \- C and UNIX Standards
 The STANDARDS section that appears in many manual pages identifies
 various standards to which the documented interface conforms.
 The following list briefly describes these standards.
-.TP
-.B K&R C
-This refers to the C language as specified in
-.I \[lq]The C Programming Language\[rq]
-[Brian W.\& Kernighan and Dennis M.\& Ritchie;
-Prentice Hall;
-1st Ed., 1978].
+.SS Research Unix
 .TP
 .B V7
 Version 7 (also known as Seventh Edition) UNIX,
@@ -26,6 +20,7 @@ Sources are
 .UR https:\://www.tuhs.org/\:cgi\-bin/\:utree.pl?file=V7
 available online
 .UE .
+.SS BSD
 .TP
 .B 4.2BSD
 This is an implementation standard defined by the 4.2 release
@@ -63,26 +58,34 @@ Sources are
 .UR https:\://www.tuhs.org/\:cgi\-bin/\:utree.pl?file=4.4BSD
 available online
 .UE .
+.SS Unix/TS
 .TP
-.B System V
-This is an implementation standard defined by AT&T's milestone 1983
-release of its commercial System V (five) release.
+.B Unix/TS 4
+This was an internal release of Unix
+that was never released to the public
+(in which case it would have been called System IV).
 The previous major AT&T release was
 .IR "System III" ,
 released in 1981.
 .TP
+.B System V
+This is an implementation standard defined by AT&T's milestone 1983
+release of its commercial System V (five) release.
+.TP
 .B System V release 2 (SVr2)
 This was the next System V release, made in 1985.
 The SVr2 was formally described in the
-.I "System V Interface Definition version 1"
+.I "System V Interface Definition Issue 1"
 .RI ( "SVID 1" )
 published in 1985.
 .TP
 .B System V release 3 (SVr3)
 This was the successor to SVr2, released in 1986.
 This release was formally described in the
-.I "System V Interface Definition version 2"
-.RI ( "SVID 2" ).
+.UR https:\://bitsavers.org/\:pdf/\:att/\:unix/\:SVID/\:System_V_Interface_Definition_Issue_2_Volume_1_1986.pdf
+.I "System V Interface Definition Issue 2"
+.RI ( "SVID 2" )
+.UE .
 .TP
 .B System V release 4 (SVr4)
 This was the successor to SVr3, released in 1989.
@@ -90,8 +93,10 @@ This version of System V is described in the "Programmer's Reference
 Manual: Operating System API (Intel processors)" (Prentice-Hall
 1992, ISBN 0-13-951294-2)
 This release was formally described in the
-.I "System V Interface Definition version 3"
-.RI ( "SVID 3" ),
+.UR https:\://archive.org/\:details/\:systemvinterface0001unse/
+.I "System V Interface Definition Third Edition"
+.RI ( "SVID 3" )
+.UE ,
 and is considered the definitive System V release.
 .TP
 .B SVID 4
@@ -99,6 +104,14 @@ System V Interface Definition version 4, issued in 1995.
 Available online at
 .UR http:\://www.sco.com\:/developers\:/devspecs/
 .UE .
+.SS Standard C
+.TP
+.B K&R
+This refers to the C language as specified in
+.I \[lq]The C Programming Language\[rq]
+[Brian W.\& Kernighan and Dennis M.\& Ritchie;
+Prentice Hall;
+1st Ed., 1978].
 .TP
 .B C89
 This was the first C language standard, ratified by ANSI
@@ -212,14 +225,7 @@ A draft is
 .UR https:\://www.open\-std.org/\:jtc1/\:sc22/\:wg14/\:www/\:docs/\:n3220.pdf
 available online
 .UE .
-.TP
-.B LFS
-The Large File Summit specification, completed in 1996.
-This specification defined mechanisms that allowed 32-bit systems
-to support the use of large files (i.e., 64-bit file offsets).
-See
-.UR https:\://www.opengroup.org\:/platform\:/lfs.html
-.UE .
+.SS POSIX and SUS
 .TP
 .B POSIX.1-1988
 This was the first POSIX standard,
@@ -289,11 +295,15 @@ Ratified by ISO/IEC in 1996
 .B XPG3
 Released in 1989, this was the first release of the X/Open
 Portability Guide to be based on a POSIX standard (POSIX.1-1988).
+It is also known as
+.IR Issue\~3 .
 This multivolume guide was developed by the X/Open Group,
 a multivendor consortium.
 .TP
 .B XPG4
 A revision of the X/Open Portability Guide, released in 1992.
+It is also known as
+.IR Issue\~4 .
 This revision incorporated POSIX.2.
 .TP
 .B XPG4v2
@@ -313,8 +323,8 @@ Systems conforming to this standard can be branded
 .TP
 .B SUSv2
 Single UNIX Specification version 2.
-Sometimes also referred to (incorrectly) as
-.IR XPG5 .
+Sometimes also referred to as
+.IR Issue\~5 .
 This standard appeared in 1997.
 Systems conforming to this standard can be branded
 .IR UNIX\~98 .
@@ -500,6 +510,15 @@ manual pages under sections 0p (header files), 1p (commands),
 and 3p (functions);
 thus one can write
 .IR man\~3p\~open .
+.SS Other standards
+.TP
+.B LFS
+The Large File Summit specification, completed in 1996.
+This specification defined mechanisms that allowed 32-bit systems
+to support the use of large files (i.e., 64-bit file offsets).
+See
+.UR https:\://www.opengroup.org\:/platform\:/lfs.html
+.UE .
 .SH SEE ALSO
 .BR getconf (1),
 .BR confstr (3),
