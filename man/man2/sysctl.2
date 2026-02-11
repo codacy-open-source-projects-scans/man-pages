@@ -1,3 +1,4 @@
+.\" Copyright 1996, Andries E. Brouwer <aeb@cwi.nl>
 .\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
@@ -111,6 +112,7 @@ It is not yet possible to change operating system by writing to
 .\" SRC BEGIN (sysctl.c)
 .EX
 #define _GNU_SOURCE
+#include <stdcountof.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -118,8 +120,6 @@ It is not yet possible to change operating system by writing to
 #include <unistd.h>
 \&
 #include <linux/sysctl.h>
-\&
-#define NITEMS(arr)  (sizeof(arr) / sizeof((arr)[0]))
 \&
 int _sysctl(struct __sysctl_args *args);
 \&
@@ -135,7 +135,7 @@ main(void)
 \&
     memset(&args, 0, sizeof(args));
     args.name = name;
-    args.nlen = NITEMS(name);
+    args.nlen = countof(name);
     args.oldval = osname;
     args.oldlenp = &osnamelth;
 \&

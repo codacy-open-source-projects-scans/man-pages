@@ -90,21 +90,20 @@ Shlemiel the painter
 .SH EXAMPLES
 .\" SRC BEGIN (strncat.c)
 .EX
+#include <stdcountof.h>
 #include <stdio.h>
 #include <string.h>
 #include <utmp.h>
-\&
-#define NITEMS(arr)     (sizeof((arr)) / sizeof((arr)[0]))
 \&
 void print_ut_user(struct utmp *ut);
 \&
 void
 print_ut_user(struct utmp *ut)
 {
-	char  buf[NITEMS(ut\->ut_user) + 1];
+	char  buf[countof(ut\->ut_user) + 1];
 \&
 	strcpy(buf, "");
-	strncat(buf, ut\->ut_user, NITEMS(ut\->ut_user));
+	strncat(buf, ut\->ut_user, countof(ut\->ut_user));
 	puts(buf);
 }
 .EE

@@ -1,3 +1,5 @@
+.\" Copyright 2015, Alexei Starovoitov <ast@kernel.org>
+.\" Copyright 2015, Michael Kerrisk <mtk.manpages@gmail.com>
 .\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
@@ -1206,7 +1208,7 @@ riscv
 .SH EXAMPLES
 .\" SRC BEGIN (bpf.c)
 .EX
-#define NITEMS(a)  (sizeof(a) / sizeof(*(a)))
+#include <stdcountof.h>
 \&
 /* bpf+sockets example:
  * 1.  create array map of 256 elements
@@ -1252,7 +1254,7 @@ main(int argc, char *argv[])
     };
 \&
     prog_fd = bpf_prog_load(BPF_PROG_TYPE_SOCKET_FILTER, prog,
-                            NITEMS(prog), "GPL");
+                            countof(prog), "GPL");
 \&
     sock = open_raw_sock("lo");
 \&

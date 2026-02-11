@@ -1,3 +1,4 @@
+.\" Copyright 2006, Michael Kerrisk <mtk.manpages@gmail.com>
 .\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
@@ -333,16 +334,7 @@ SYNOPSIS in man pages.
 .TP
 .BR _ISOC99_SOURCE " (since glibc 2.1.3)"
 Exposes declarations consistent with the ISO C99 standard.
-.IP
-Earlier glibc 2.1.x versions recognized an equivalent macro named
-.B _ISOC9X_SOURCE
-(because the C99 standard had not then been finalized).
-Although the use of this macro is obsolete, glibc continues
-to recognize it for backward compatibility.
-.IP
-Defining
-.B _ISOC99_SOURCE
-also exposes ISO C (1990) Amendment 1 ("C95") definitions.
+Defining this macro also exposes ISO C (1990) Amendment 1 ("C95") definitions.
 (The primary change in C95 was support for international character sets.)
 .IP
 Invoking the C compiler with the option
@@ -356,6 +348,25 @@ Defining this macro also enables C99 and C95 features (like
 .IP
 Invoking the C compiler with the option
 .I \-std=c11
+produces the same effects as defining this macro.
+.TP
+.BR _ISOC23_SOURCE " (since glibc 2.40)"
+Exposes declarations consistent with the ISO C23 standard.
+.IP
+Since glibc 2.31,
+an equivalent macro named
+.B _ISOC2X_SOURCE
+was recognized
+(because the C23 standard had not then been finalized).
+Although the use of this macro is obsolete,
+glibc continues to recognize it for backward compatibility.
+.IP
+Defining
+.B _ISOC23_SOURCE
+also enables C11, C99, and C95 features.
+.IP
+Invoking the C compiler with the option
+.I \-std=c23
 produces the same effects as defining this macro.
 .TP
 .B _LARGEFILE64_SOURCE
@@ -692,6 +703,8 @@ If any of
 .BR _ISOC99_SOURCE ,
 .B _ISOC11_SOURCE
 (since glibc 2.18),
+.B _ISOC23_SOURCE
+(since glibc 2.40),
 .BR _POSIX_SOURCE ,
 .BR _POSIX_C_SOURCE  ,
 .BR _XOPEN_SOURCE ,
@@ -874,6 +887,10 @@ main(int argc, char *argv[])
 \&
 #ifdef _ISOC11_SOURCE
     printf("_ISOC11_SOURCE defined\[rs]n");
+#endif
+\&
+#ifdef _ISOC23_SOURCE
+    printf("_ISOC23_SOURCE defined\[rs]n");
 #endif
 \&
 #ifdef _XOPEN_SOURCE

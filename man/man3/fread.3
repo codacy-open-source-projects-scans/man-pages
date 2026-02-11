@@ -1,5 +1,6 @@
 '\" t
 .\" Copyright 1990-1991, The Regents of the University of California.
+.\" Copyright 2020, Arkadiusz Drabczyk <arkadiusz@drabczyk.org>
 .\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: BSD-4-Clause-UC
@@ -105,10 +106,9 @@ Class: 0x02
 \&
 .\" SRC BEGIN (fread.c)
 .EX
+#include <stdcountof.h>
 #include <stdio.h>
 #include <stdlib.h>
-\&
-#define NITEMS(arr)  (sizeof(arr) / sizeof((arr)[0]))
 \&
 int
 main(void)
@@ -123,8 +123,8 @@ main(void)
         return EXIT_FAILURE;
     }
 \&
-    ret = fread(buffer, sizeof(*buffer), NITEMS(buffer), fp);
-    if (ret != NITEMS(buffer)) {
+    ret = fread(buffer, sizeof(*buffer), countof(buffer), fp);
+    if (ret != countof(buffer)) {
         fprintf(stderr, "fread() failed: %zu\[rs]n", ret);
         exit(EXIT_FAILURE);
     }

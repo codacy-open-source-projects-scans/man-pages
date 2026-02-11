@@ -1,4 +1,5 @@
 .\"
+.\" Copyright 2017, Red Hat, Inc.
 .\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: GPL-2.0-or-later
@@ -23,9 +24,6 @@ Lockdown: X: Y is restricted, see man kernel_lockdown.7
 .in
 .P
 where X indicates the process name and Y indicates what is restricted.
-.P
-On an EFI-enabled x86 or arm64 machine, lockdown will be automatically enabled
-if the system boots in EFI Secure Boot mode.
 .\"
 .SS Coverage
 When lockdown is in effect, a number of features are disabled or have their

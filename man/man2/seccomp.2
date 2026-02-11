@@ -1,3 +1,6 @@
+.\" Copyright 2008-2017 Michael Kerrisk <mtk.manpages@gmail.com>
+.\" Copyright 2012, Will Drewry <wad@chromium.org>
+.\" Copyright 2017, Tyler Hicks <tyhicks@canonical.com>
 .\" Copyright, the authors of the Linux man-pages project
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
@@ -1107,6 +1110,7 @@ cecilia
 #include <linux/audit.h>
 #include <linux/filter.h>
 #include <linux/seccomp.h>
+#include <stdcountof.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -1115,7 +1119,6 @@ cecilia
 #include <unistd.h>
 \&
 #define X32_SYSCALL_BIT 0x40000000
-#define NITEMS(arr)  (sizeof(arr) / sizeof((arr)[0]))
 \&
 static int
 install_filter(int syscall_nr, unsigned int t_arch, int f_errno)
@@ -1166,7 +1169,7 @@ install_filter(int syscall_nr, unsigned int t_arch, int f_errno)
     };
 \&
     struct sock_fprog prog = {
-        .len = NITEMS(filter),
+        .len = countof(filter),
         .filter = filter,
     };
 \&
