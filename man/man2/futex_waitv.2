@@ -77,6 +77,12 @@ specifies a deadline measured against clock
 This interval will be rounded up to the system clock granularity,
 and is guaranteed not to expire early.
 .P
+The following clocks are supported:
+.TP
+.B CLOCK_MONOTONIC
+.TQ
+.B CLOCK_REALTIME
+.P
 Futex words to monitor are given by
 .IR "struct futex_waitv" ,
 whose fields are analogous to
@@ -86,15 +92,23 @@ parameters, except
 must be 0
 and
 .I .flags
-must contain one of
-.BI FUTEX2_SIZE_ *
-ORed with some of the flags below.
+must contain exactly one size flag,
+ORed with some other flags.
 .TP
 .B FUTEX2_SIZE_U32
 .I .val
 and
 .I .uaddr[]
 are 32-bit unsigned integers.
+.TP
+.B FUTEX2_SIZE_U8
+.TQ
+.B FUTEX2_SIZE_U16
+.TQ
+.B FUTEX2_SIZE_U64
+These are defined,
+but not supported
+.RB ( EINVAL ).
 .TP
 .B FUTEX2_NUMA
 The futex word is followed by another word of the same size
@@ -200,10 +214,7 @@ was not in the range
 .I timeout
 was not NULL and
 .I clockid
-was not a valid clock
-.RB ( CLOCK_MONOTONIC
-or
-.BR CLOCK_REALTIME ).
+was not a valid clock.
 .TP
 .B EINVAL
 .I *timeout
@@ -221,11 +232,8 @@ field contains an unknown flag.
 .B EINVAL
 Any
 .IR waiters []. flags
-field is missing a
-.BI FUTEX2_SIZE_ *
-flag or has a size flag different than
-.B FUTEX2_SIZE_U32
-set.
+field does not contain exactly one size flag,
+or it contains an unsupported one.
 .TP
 .B EINVAL
 Any
@@ -274,17 +282,6 @@ operation was interrupted by a signal (see
 .\"
 .SH STANDARDS
 Linux.
-.SH NOTES
-.BR FUTEX2_SIZE_U8 ,
-.BR FUTEX2_SIZE_U16 ,
-and
-.B FUTEX2_SIZE_U64
-where
-.I .val
-and
-.I .uaddr[]
-are 8, 16, or 64 bits are defined, but not implemented
-.RB ( EINVAL ).
 .SH HISTORY
 .\" commit bf69bad38cf63d980e8a603f8d1bd1f85b5ed3d9
 .\" Author: André Almeida <andrealmeid@igalia.com>
