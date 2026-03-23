@@ -355,8 +355,9 @@ They can be iterated over with the help of
 The number of uid mappings applied on the mount.
 If
 .I smbuf.mask
-has STATMOUNT_UIDMAP set and this field is 0,
-the mount is not an idmapped mount.
+has STATMOUNT_MNT_UIDMAP set and this field is 0,
+then uid mappings applied on the mount
+cannot be resolved in the user namespace of the caller.
 .TP
 .IR smbuf.mnt_uidmap " (since Linux 6.15)"
 The offset to the location in the
@@ -371,8 +372,9 @@ of the caller.
 The number of gid mappings applied on the mount.
 If
 .I smbuf.mask
-has STATMOUNT_GIDMAP set and this field is 0,
-the mount is not an idmapped mount.
+has STATMOUNT_MNT_GIDMAP set and this field is 0,
+then gid mappings applied on the mount
+cannot be resolved in the user namespace of the caller.
 .TP
 .IR smbuf.mnt_gidmap " (since Linux 6.15)"
 The offset to the location in the
