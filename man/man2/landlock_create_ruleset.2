@@ -44,6 +44,7 @@ It points to the following structure:
 struct landlock_ruleset_attr {
     __u64 handled_access_fs;
     __u64 handled_access_net;
+    __u64 scoped;
 };
 .EE
 .in
@@ -59,6 +60,13 @@ in
 is a bitmask of handled network actions
 (see
 .B Network actions
+in
+.BR landlock (7)).
+.IP
+.I scoped
+is a bitmask of scope flags
+(see
+.B Scope flags
 in
 .BR landlock (7)).
 .IP
@@ -134,15 +142,6 @@ is set to indicate the error.
 .BR landlock_create_ruleset ()
 can fail for the following reasons:
 .TP
-.B EOPNOTSUPP
-Landlock is supported by the kernel but disabled at boot time.
-.TP
-.B EINVAL
-Unknown
-.IR flags ,
-or unknown access, or too small
-.IR size .
-.TP
 .B E2BIG
 .I size
 is too big.
@@ -151,10 +150,19 @@ is too big.
 .I attr
 was not a valid address.
 .TP
+.B EINVAL
+Unknown
+.IR flags ,
+or unknown access, or too small
+.IR size .
+.TP
 .B ENOMSG
 Empty accesses (i.e.,
 .I attr
 did not specify any access rights to restrict).
+.TP
+.B EOPNOTSUPP
+Landlock is supported by the kernel but disabled at boot time.
 .SH STANDARDS
 Linux.
 .SH HISTORY
