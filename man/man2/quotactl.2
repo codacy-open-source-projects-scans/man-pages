@@ -13,26 +13,23 @@ Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
-.B #include <sys/quota.h>
 .BR "#include <xfs/xqm.h>" " /* Definition of " Q_X* " and " XFS_QUOTA_* \
 " constants"
 .RB    "                        (or " <linux/dqblk_xfs.h> "; see NOTES) */"
+.B #include <sys/quota.h>
 .P
 .BI "int quotactl(int " op ", const char *_Nullable " special ", int " id ,
 .BI "             caddr_t " addr );
 .P
+.BR "#include <xfs/xqm.h>" " /* Definition of " Q_X* " and " XFS_QUOTA_* \
+" constants"
+.RB    "                        (or " <linux/dqblk_xfs.h> "; see NOTES) */"
 .BR "#include <sys/syscall.h>" "    /* Definition of " SYS_* " constants */"
 .B #include <unistd.h>
 .P
 .BI "int syscall(SYS_quotactl_fd, int " fd ", int " op ", int " id \
 ", caddr_t " addr );
 .fi
-.P
-.IR Note :
-glibc provides no wrapper for
-.BR quotactl_fd (),
-necessitating the use of
-.BR syscall (2).
 .SH DESCRIPTION
 The quota system can be used to set per-user, per-group, and per-project limits
 on the amount of disk space used on a filesystem.
@@ -189,9 +186,6 @@ as follows:
 .IP
 .in +4n
 .EX
-/* uint64_t is an unsigned 64\-bit integer;
-   uint32_t is an unsigned 32\-bit integer */
-\&
 struct dqblk {      /* Definition since Linux 2.4.22 */
     uint64_t dqb_bhardlimit;  /* Absolute limit on disk
                                  quota blocks alloc */
@@ -312,9 +306,6 @@ as follows:
 .IP
 .in +4n
 .EX
-/* uint64_t is an unsigned 64\-bit integer;
-   uint32_t is an unsigned 32\-bit integer */
-\&
 struct dqinfo {         /* Defined since Linux 2.4.22 */
     uint64_t dqi_bgrace;  /* Time before block soft limit
                              becomes hard limit */
