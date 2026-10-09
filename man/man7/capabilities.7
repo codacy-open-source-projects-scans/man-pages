@@ -210,8 +210,16 @@ inode flags (see
 .BR FS_IOC_SETFLAGS (2const)).
 .TP
 .BR CAP_MAC_ADMIN " (since Linux 2.6.25)"
-Allow MAC configuration or state changes.
-Implemented for the Smack Linux Security Module (LSM).
+.RS
+.IP \[bu] 3
+.PD 0
+For the Smack Linux Security Module (LSM),
+allow MAC configuration or state changes;
+.IP \[bu]
+For the SELinux LSM,
+allow setting undefined security contexts on inodes (since Linux 2.6.27).
+.RE
+.PD
 .TP
 .BR CAP_MAC_OVERRIDE " (since Linux 2.6.25)"
 Override Mandatory Access Control (MAC).
@@ -283,7 +291,14 @@ Employ various performance-monitoring mechanisms, including:
 call
 .BR perf_event_open (2);
 .IP \[bu]
-employ various BPF operations that have performance implications.
+employ various BPF operations that have performance implications;
+.IP \[bu]
+read the contents of
+.IR /proc/ pid /maps,
+.IR /proc/ pid /smaps,
+and
+.IR /proc/ pid /smaps_rollup
+for all processes.
 .RE
 .PD
 .IP

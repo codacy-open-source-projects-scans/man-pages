@@ -3,31 +3,41 @@
 
 
 ifndef MAKEFILE_CONFIGURE_BUILD_DEPENDS_BINUTILS_LD_INCLUDED
-MAKEFILE_CONFIGURE_BUILD_DEPENDS_BINUTILS_LD_INCLUDED := 1
+MAKEFILE_CONFIGURE_BUILD_DEPENDS_BINUTILS_LD_INCLUDED ::= 1
 
 
 include $(MAKEFILEDIR)/configure/build-depends/cpp/cpp.mk
 include $(MAKEFILEDIR)/configure/build-depends/gcc/cc.mk
 include $(MAKEFILEDIR)/configure/build-depends/coreutils/echo.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/mktemp.mk
+include $(MAKEFILEDIR)/configure/build-depends/coreutils/rm.mk
 include $(MAKEFILEDIR)/configure/build-depends/pkgconf/pkgconf.mk
 include $(MAKEFILEDIR)/configure/verbose.mk
 
 
 ifndef LD
-LD := $(CC) $(CFLAGS_) $(CPPFLAGS_)
+ifeq ($(CC_VENDOR),gcc)
+LD ::= $(CC) $(CFLAGS_) $(CPPFLAGS_)
+else ifeq ($(CC_VENDOR),clang)
+LD ::= $(CC) $(CFLAGS_) $(CPPFLAGS_)
+else
+LD ::= ld
+endif
 endif
 
 
-LD_HAS_FUSE_LINKER_PLUGIN := \
+LD_HAS_FUSE_LINKER_PLUGIN ::= \
 	$(shell \
+		tmp=$$($(MKTEMP) --suffix=.o); \
 		$(ECHO) 'int main(void) {}' \
-		| $(LD) -fuse-linker-plugin -x c -o /dev/null /dev/stdin $(HIDE_ERR) \
+		| $(CC) -x c -c -o $$tmp /dev/stdin $(HIDE_ERR); \
+		$(LD) -fuse-linker-plugin -o /dev/null $$tmp $(HIDE_ERR) \
 		&& $(ECHO) yes \
 		|| $(ECHO) no; \
 	)
 
 
-DEFAULT_LDFLAGS := \
+DEFAULT_LDFLAGS ::= \
 	-Wl,--as-needed \
 	-Wl,--no-allow-shlib-undefined \
 	-Wl,--no-copy-dt-needed-entries \
@@ -40,21 +50,21 @@ DEFAULT_LDFLAGS += -fuse-linker-plugin
 endif
 
 ifndef LDFLAGS
-LDFLAGS         :=
+LDFLAGS         ::=
 endif
 ifndef LDFLAGS_
-LDFLAGS_        := $(DEFAULT_LDFLAGS) $(LDFLAGS)
+LDFLAGS_        ::= $(DEFAULT_LDFLAGS) $(LDFLAGS)
 endif
 
 
-DEFAULT_LDLIBS := \
+DEFAULT_LDLIBS ::= \
 	-lc \
 	$(shell $(PKGCONF_CMD) --libs-only-l $(PKGCONF_LIBS) $(HIDE_ERR))
 ifndef LDLIBS
-LDLIBS         :=
+LDLIBS         ::=
 endif
 ifndef LDLIBS_
-LDLIBS_        := $(DEFAULT_LDLIBS) $(LDLIBS)
+LDLIBS_        ::= $(DEFAULT_LDLIBS) $(LDLIBS)
 endif
 
 

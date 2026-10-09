@@ -6,14 +6,14 @@
 .\"
 .TH memmem 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-memmem \- locate a substring
+memmem \- memory search submemory
 .SH LIBRARY
 Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
 .BR "#define _GNU_SOURCE" "         /* See feature_test_macros(7) */"
-.B #include <string.h>
+.BR #include\~<string.h> "  // see memory.h(3head)"
 .P
 .BR "void *memmem(" "size_t hsize, size_t nsize;"
 .BI "             const void " haystack [ hsize "], size_t " hsize ,
@@ -82,5 +82,4 @@ returns a pointer to the last byte of
 .IR haystack .
 This is fixed in glibc 2.1.
 .SH SEE ALSO
-.BR bstring (3),
-.BR strstr (3)
+.BR memory.h (3head)

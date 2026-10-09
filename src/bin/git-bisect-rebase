@@ -1,0 +1,157 @@
+#!/bin/bash
+# Copyright 2026, Alejandro Colomar <alx@kernel.org>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+set -Eeufo pipefail;
+shopt -s lastpipe;
+
+err()
+{
+	>&2 printf '%s\n' "$(basename "$0"): error: $*";
+	exit 1;
+}
+
+git rev-parse --git-dir | read -r git_dir;
+git rev-parse --git-path bisect-rebase | read -r dir;
+
+while test $# -ge 1; do
+	case "$1" in
+	--abort)
+		test -d "$dir/" || err 'Not in a bisect-rebase operation?';
+		set +e;
+		git rebase --abort >/dev/null 2>/dev/null;
+		git bisect reset >/dev/null 2>/dev/null;
+		xargs git checkout <"$dir/head-name";
+		xargs git reset --hard <"$dir/orig-head";
+		rm -rf "$dir";
+		exit 0;
+		;;
+	--continue)
+		test -d "$dir/" || err 'Not in a bisect-rebase operation?';
+		if test -d "$git_dir/rebase-merge"; then
+			err 'You must finish the current rebase operation.';
+		fi;
+		git-bisect-rebase--continue;
+		exit 0;
+		;;
+	--quit)
+		test -d "$dir/" || err 'Not in a bisect-rebase operation?';
+		if test -d "$git_dir/rebase-merge"; then
+			err 'You must finish the current rebase operation.';
+		fi;
+		rm -rf "$dir";
+		exit 0;
+		;;
+	*)
+		break;
+		;;
+	esac;
+done;
+
+mkdir "$dir";
+# shellcheck disable=SC2064  # we want expansion now
+trap "rm -rf '$dir'" EXIT;
+
+# shellcheck disable=SC2312  # False positive: <https://github.com/koalaman/shellcheck/issues/3554>
+cat <<-'__EOF__' |
+	git bisect-rebase [<option> ...] [<upstream> [<branch>]]
+
+	Rebase <branch> on top of the first conflicting commit from <upstream>.
+	--
+	 Mode options
+	abort!		Abort the bisect-rebase operation and reset HEAD to the original <branch>.
+	continue!	Restart the bisect-rebase process after having resolved a particular rebase.
+	quit!		Abort the bisect-rebase operation but HEAD is not reset.
+
+	 Options
+	pre-exec!=cmd	Run <cmd> before every git-rebase(1) operation.
+	post-exec!=cmd	Run <cmd> after every git-rebase(1) operation.
+
+	 git-rebase(1) options
+	x,exec=cmd		See git-rebase(1).
+	r,rebase-merges?	^
+	apply!*			^
+	empty!*=		^
+	keep-empty*		^
+	reapply-cherry-picks*	^
+	allow-empty-message*	^
+	m,merge!*		^
+	s,strategy!*=		^
+	X,strategy-option!*=	^
+	rerere-autoupdate*	^
+	S,gpg-sign*?		^
+	q,quiet!*		^
+	v,verbose!*		^
+	stat!*			^
+	n,no-stat!*		^
+	verify*			^
+	C!*=			^
+	no-ff!*			^
+	f,force-rebase!*	^
+	ignore-whitespace*	^
+	update-refs*		^
+
+	 git-bisect(1) options
+	first-parent!		See git-bisect(1).
+__EOF__
+eval "$(git rev-parse --parseopt --stuck-long --keep-dashdash -- "$@" || echo exit $?)";
+
+touch "$dir/git-bisect-options";
+touch "$dir/git-rebase-options";
+while test $# -ge 1; do
+	case "$1" in
+	--abort | --continue | --quit)
+		err "$1 is incompatible with other arguments.";
+		;;
+	--)
+		shift;
+		break;
+		;;
+	--pre-exec=*)
+		printf '%s\n' "$1" | sed 's/--pre-exec=//' >"$dir/pre-exec";
+		;;
+	--post-exec=*)
+		printf '%s\n' "$1" | sed 's/--post-exec=//' >"$dir/post-exec";
+		;;
+	--first-parent)
+		printf '%s\n' "$1" >>"$dir/git-bisect-options";
+		;;
+	-*)
+		printf '%s\n' "$1" >>"$dir/git-rebase-options";
+		;;
+	*)
+		exit 1;  # Unreachable
+		;;
+	esac;
+	shift;
+done;
+
+if test $# -lt 1; then
+	git rev-parse '@{u}';
+else
+	git rev-parse --verify "$1";
+fi >"$dir/onto";
+test $# -lt 1 || shift;
+
+if test $# -lt 1; then
+	git rev-parse --abbrev-ref HEAD;
+	git rev-parse HEAD;
+else
+	git rev-parse --verify --symbolic "$1";
+	git rev-parse --verify "$1";
+fi \
+| sed '/^HEAD$/d' \
+| sed '1!d' \
+>"$dir/head-name";
+test $# -lt 1 || shift;
+
+if test $# -gt 0; then
+	err 'Too many arguments.';
+fi;
+
+git rev-parse HEAD >"$dir/orig-head";
+
+trap - EXIT;
+
+git-bisect-rebase--continue;
+exit 0;

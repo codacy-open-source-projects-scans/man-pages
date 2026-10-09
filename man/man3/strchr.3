@@ -6,7 +6,7 @@
 .\"
 .TH strchr 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-strchr, strrchr \- locate character in string
+strchr \- string search character
 .SH LIBRARY
 Standard C library
 .RI ( libc ,\~ \-lc )
@@ -15,56 +15,34 @@ Standard C library
 .B #include <string.h>
 .P
 .BI "char *strchr(const char *" s ", int " c );
-.BI "char *strrchr(const char *" s ", int " c );
 .fi
 .SH DESCRIPTION
-.TP
 .BR strchr ()
-The
-.BR strchr ()
-function returns a pointer to the first occurrence
+returns a pointer to the first occurrence
 of the character
 .I c
 in the string
 .IR s .
-.IP
+.P
 It is equivalent to both of the following expressions:
-.IP
+.P
 .in +4n
 .EX
 memchr(s, c, strlen(s) + 1)
 strpbrk(s, (char [2]){c, \[aq]\[rs]0\[aq]})
 .EE
 .in
-.TP
-.BR strrchr ()
-The
-.BR strrchr ()
-function returns a pointer to the last occurrence
-of the character
-.I c
-in the string
-.IR s .
-.IP
-It is equivalent to
-.IP
-.in +4n
-.EX
-memrchr(s, c, strlen(s) + 1)
-.EE
-.in
 .SH RETURN VALUE
-The
 .BR strchr ()
-and
-.BR strrchr ()
-functions return a pointer to
+returns a pointer to
 the matched character or NULL if the character is not found.
+.P
 The terminating null byte is considered part of the string,
 so that if
 .I c
 is specified as \[aq]\[rs]0\[aq],
-these functions return a pointer to the terminator.
+.BR strchr ()
+returns a pointer to the terminator.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
@@ -76,8 +54,7 @@ Interface	Attribute	Value
 T{
 .na
 .nh
-.BR strchr (),
-.BR strrchr ()
+.BR strchr ()
 T}	Thread safety	MT-Safe
 .TE
 .SH STANDARDS
@@ -88,12 +65,10 @@ POSIX.1-2001, C89, SVr4, 4.3BSD.
 .BR memchr (3),
 .BR string (3),
 .BR strchrnul (3),
-.BR strlen (3),
 .BR strnul (3),
 .BR strpbrk (3),
+.BR strrchr (3),
 .BR strsep (3),
 .BR strspn (3),
 .BR strstr (3),
-.BR strtok (3),
 .BR wcschr (3),
-.BR wcsrchr (3)

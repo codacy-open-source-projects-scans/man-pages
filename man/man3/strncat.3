@@ -5,16 +5,13 @@
 .\"
 .TH strncat 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-strncat
-\-
-append non-null bytes from a source array to a string,
-and null-terminate the result
+strncat \- nonstring catenate
 .SH LIBRARY
 Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
-.B #include <string.h>
+.BR #include\~<string.h> "  // see memory.h(3head)"
 .P
 .BR "char *strncat(" "size_t ssize;"
 .BI "              char *restrict " dst ", const char " src "[restrict " ssize ],
@@ -63,9 +60,12 @@ C11, POSIX.1-2008.
 .SH HISTORY
 POSIX.1-2001, C89, SVr4, 4.3BSD.
 .SH CAVEATS
-The name of this function is confusing;
-it has no relation to
+The name of this function is confusing:
+.IP \[bu] 3
+It has no relation to
 .BR strncpy (3).
+.IP \[bu]
+It doesn't truncate the input nonstring.
 .P
 If the destination buffer does not already contain a string,
 or is not large enough,
@@ -74,12 +74,6 @@ See
 .B _FORTIFY_SOURCE
 in
 .BR feature_test_macros (7).
-.SH BUGS
-This function can be very inefficient.
-Read about
-.UR https:\://www.joelonsoftware.com/\:2001/12/11/\:back\-to\-basics/
-Shlemiel the painter
-.UE .
 .SH EXAMPLES
 .\" SRC BEGIN (strncat.c)
 .EX
@@ -103,5 +97,5 @@ print_ut_user(struct utmp *ut)
 .\" SRC END
 .in
 .SH SEE ALSO
-.BR string (3),
+.BR memory.h (3head),
 .BR string_copying (7)

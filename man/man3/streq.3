@@ -20,22 +20,21 @@ determines whether the strings
 .I s1
 and
 .I s2
-are equal.
+are equal,
+as if by calling
+.BR memeq (3).
 .P
-It is equivalent to
+It is equivalent to both of the following expressions:
 .P
 .in +4n
 .EX
 strcmp(s1, s2) == 0
+memeq(s1, s2, MIN(strlen(s1),strlen(s2))+1)
 .EE
 .in
 .SH RETURN VALUE
-.BR streq ()
-returns true if and only if the strings
-.I s1
-and
-.I s2
-are equal.
+See
+.BR memeq (3).
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
@@ -55,6 +54,4 @@ GNU.
 .SH HISTORY
 gnulib 202601.
 .SH SEE ALSO
-.BR memeq (3),
-.BR strcmp (3),
 .BR string (3)

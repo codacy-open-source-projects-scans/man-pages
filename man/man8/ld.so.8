@@ -259,6 +259,7 @@ and the environment variables.
 On some architectures,
 the command might print additional information
 (like the cpu features used in GNU indirect function selection on x86).
+.TP
 .BR \-\-list\-tunables " (since glibc 2.33)"
 Print the names and values of all tunables,
 along with the minimum and maximum allowed values.
@@ -792,7 +793,8 @@ ELF dynamic linker/loader
 .TP
 .I /etc/ld.so.cache
 File containing a compiled list of directories in which to search for
-shared objects and an ordered list of candidate shared objects.
+shared objects and an ordered list of candidate shared objects,
+and any tunables to be applied.
 See
 .BR ldconfig (8).
 .TP
@@ -922,6 +924,7 @@ glibc 2.37 removed support for the legacy hardware capabilities.
 .BR dlopen (3),
 .BR getauxval (3),
 .BR elf (5),
+.BR ld.so.conf (8),
 .BR capabilities (7),
 .BR rtld\-audit (7),
 .BR ldconfig (8),

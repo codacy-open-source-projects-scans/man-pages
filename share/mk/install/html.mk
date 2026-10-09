@@ -3,7 +3,7 @@
 
 
 ifndef MAKEFILE_INSTALL_HTML_INCLUDED
-MAKEFILE_INSTALL_HTML_INCLUDED := 1
+MAKEFILE_INSTALL_HTML_INCLUDED ::= 1
 
 
 include $(MAKEFILEDIR)/build/_.mk
@@ -13,11 +13,10 @@ include $(MAKEFILEDIR)/configure/directory_variables/install.mk
 include $(MAKEFILEDIR)/install/_.mk
 
 
-_htmldir := $(DESTDIR)$(htmldir)
+_htmldir ::= $(DESTDIR)$(htmldir)
 
 
-_htmlpages    := $(patsubst $(_MANDIR)/%, $(_htmldir)/%, $(_HTMLMAN))
-_htmlpages_rm := $(addsuffix -rm, $(wildcard $(_htmlpages)))
+_htmlpages    ::= $(patsubst $(_MANDIR)/%, $(_htmldir)/%, $(_HTMLMAN))
 
 
 $(_htmlpages): $(_htmldir)/%: $(_MANDIR)/% $(MK) | $$(@D)/
@@ -27,9 +26,6 @@ $(_htmlpages): $(_htmldir)/%: $(_MANDIR)/% $(MK) | $$(@D)/
 
 .PHONY: install-html
 install-html: $(_htmlpages);
-
-.PHONY: uninstall-html
-uninstall-html: $(_htmlpages_rm);
 
 
 endif  # include guard

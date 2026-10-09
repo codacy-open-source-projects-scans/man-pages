@@ -46,7 +46,7 @@ values:
 The only system calls that the calling thread is permitted to make are
 .BR read (2),
 .BR write (2),
-.BR _exit (2)
+.BR _exit (3)
 (but not
 .BR exit_group (2)),
 and
@@ -241,6 +241,29 @@ Synchronization will fail if another thread in the same process is in
 .B SECCOMP_MODE_STRICT
 or if it has attached new seccomp filters to itself,
 diverging from the calling thread's filter tree.
+.TP
+.BR SECCOMP_FILTER_FLAG_TSYNC_ESRCH " (since Linux 5.7)"
+.\" commit 51891498f2da78ee64dfad88fa53c9e85fb50abf
+Fail with
+.B ESRCH
+instead of returning the thread ID on synchronization failure if
+.B SECCOMP_FILTER_FLAG_TSYNC
+was specified.
+.IP
+If this flag is not set, using
+.B SECCOMP_FILTER_FLAG_NEW_LISTENER
+and
+.B SECCOMP_FILTER_FLAG_TSYNC
+together results in
+.BR EINVAL .
+.TP
+.BR SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV " (since Linux 5.19)"
+.\" commit c2aa2dfef243efe213a480a1ee8566507a5152f4
+Ignore non-fatal signals until the supervisor sends a response.
+.IP
+The
+.B SECCOMP_FILTER_FLAG_NEW_LISTENER
+flag must be set.
 .RE
 .TP
 .BR SECCOMP_GET_ACTION_AVAIL " (since Linux 4.14)"
@@ -947,7 +970,7 @@ Consequently, one must be aware of the following:
 The glibc wrappers for some traditional system calls may actually
 employ system calls with different names in the kernel.
 For example, the
-.BR exit (2)
+.BR exit (3)
 wrapper function actually employs the
 .BR exit_group (2)
 system call, and the

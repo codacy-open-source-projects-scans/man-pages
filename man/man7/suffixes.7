@@ -46,7 +46,7 @@ Suffix	File type
 \&.am	\f[B]automake\f[](1) input file
 \&.arc	\f[B]arc\f[](1) archive
 \&.arj	\f[B]arj\f[](1) archive
-\&.asc	PGP ASCII-armored data
+\&.asc	OpenPGP ASCII-armored data
 \&.asm	(GNU) assembler source file
 \&.au	Audio sound file
 \&.aux	LaTeX auxiliary file
@@ -79,7 +79,7 @@ Suffix	File type
 \&.csh	\f[B]csh\f[](1) shell script
 \&.cxx	equivalent to \f[I].cc\f[]
 \&.dat	data file
-\&.deb	Debian software package
+\&.deb	Debian binary package (\f[B]deb\f[](5))
 \&.def	Modula-2 source for definition modules
 \&.def	other definition files
 \&.desc	initial part of mail message unpacked with
@@ -91,7 +91,7 @@ command output)
 T}
 \&.dir	dbm data base directory file
 \&.doc	documentation file
-\&.dsc	Debian Source Control (source package)
+\&.dsc	Debian source package control file (\f[B]dsc\f[](5))
 \&.dtx	LaTeX package source file
 \&.dvi	TeX's device independent output
 \&.el	Emacs-Lisp source
@@ -177,7 +177,7 @@ T}
 \&.pfa	PostScript font definition files, ASCII format
 \&.pfb	PostScript font definition files, binary format
 \&.pgm	portable greymap format
-\&.pgp	PGP binary data
+\&.pgp	OpenPGP binary data
 \&.ph	Perl header file
 \&.php	PHP program file
 \&.php3	PHP3 program file
@@ -216,6 +216,7 @@ T}
 \&.tar.Z	\f[B]tar\f[](1) archive compressed with \f[B]compress\f[](1)
 \&.tar.bz2	\f[B]tar\f[](1) archive compressed with \f[B]bzip2\f[](1)
 \&.tar.gz	\f[B]tar\f[](1) archive compressed with \f[B]gzip\f[](1)
+\&.tar.xz	\f[B]tar\f[](1) archive compressed with \f[B]xz\f[](1)
 \&.taz	\f[B]tar\f[](1) archive compressed with \f[B]compress\f[](1)
 \&.tcl	tcl source code
 \&.tex	TeX or LaTeX source
@@ -246,6 +247,7 @@ T}
 \&.xpm	X11 pixmap source
 \&.xs	Perl xsub file produced by h2xs
 \&.xsl	XSL stylesheet
+\&.xz	file compressed with \f[B]xz\f[](1)
 \&.y	\f[B]yacc\f[](1) or \f[B]bison\f[](1) (parser generator) files
 \&.z	T{
 File compressed using
@@ -255,6 +257,11 @@ File compressed using
 T}
 \&.zip	\f[B]zip\f[](1) archive
 \&.zoo	\f[B]zoo\f[](1) archive
+\&.zst	T{
+File compressed using
+.BR zstd (1)
+format
+T}
 \&\[ti]	Emacs or \f[B]patch\f[](1) backup file
 \&rc	startup (`run control') file, e.g., \f[I].newsrc\f[]
 .TE

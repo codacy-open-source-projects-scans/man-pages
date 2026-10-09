@@ -6,40 +6,24 @@
 .\"
 .TH memmove 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-memmove \- copy memory area
+memmove \- memory move
 .SH LIBRARY
 Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
-.B #include <string.h>
+.BR #include\~<string.h> "  // see memory.h(3head)"
 .P
 .BR "void *memmove(" "size_t n;"
 .BI "              void " dest [ n "], const void " src [ n "], size_t " n );
 .fi
 .SH DESCRIPTION
-The
-.BR memmove ()
-function copies
-.I n
-bytes from memory area
-.I src
-to memory area
-.IR dest .
-The memory areas may overlap: copying takes place as though
-the bytes in
-.I src
-are first copied into a temporary array that does not overlap
-.I src
-or
-.IR dest ,
-and the bytes are then copied from the temporary array to
-.IR dest .
+This function is similar to
+.BR memcpy (3),
+but the memory areas may overlap.
 .SH RETURN VALUE
-The
-.BR memmove ()
-function returns a pointer to
-.IR dest .
+See
+.BR memcpy (3).
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
@@ -59,10 +43,6 @@ C11, POSIX.1-2008.
 .SH HISTORY
 POSIX.1-2001, C89, SVr4, 4.3BSD.
 .SH SEE ALSO
-.BR bcopy (3),
-.BR bstring (3),
-.BR memccpy (3),
+.BR memory.h (3head),
 .BR memcpy (3),
-.BR strcpy (3),
-.BR strncpy (3),
 .BR wmemmove (3)

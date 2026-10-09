@@ -1,1 +1,53 @@
-.so man3/memchr.3
+'\" t
+.\" Copyright 1993, David Metcalfe <david@prism.demon.co.uk>
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH memrchr 3 (date) "Linux man-pages (unreleased)"
+.SH NAME
+memrchr \- memory rear-search character
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.BR #define\~_GNU_SOURCE "  // See feature_test_macros(7)"
+.BR #include\~<string.h> "  // see memory.h(3head)"
+.P
+.BR void\~*memrchr( size_t\~n;
+.BI "              const void " s [ n "], int " c ", size_t " n );
+.fi
+.SH DESCRIPTION
+.BR memrchr ()
+is like
+.BR memchr (3),
+except that it searches backward from the end of the
+.I n
+bytes pointed to by
+.I s
+instead of forward from the beginning.
+.SH RETURN VALUE
+See
+.BR memchr (3).
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR memrchr ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+GNU.
+.SH HISTORY
+glibc 2.2.
+.SH SEE ALSO
+.BR memory.h (3head),
+.BR memchr (3)

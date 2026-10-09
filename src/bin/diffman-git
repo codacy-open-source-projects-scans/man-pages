@@ -11,20 +11,61 @@ s='';
 u='-u';
 w='';
 
-while getopts "sU:w" opt; do
-	case "$opt" in
-	s)	s='-s';		;;
-	U)	u="-U$OPTARG";	;;
-	w)	w='-w';		;;
-	\?)	exit 1;		;;
-	*)	exit 1;		;;
-	esac;
-done;
-shift $((OPTIND-1));
-
-if test $# -gt 2; then
-	>&2 echo "$(basename "$0"): error: Too many arguments.";
+err()
+{
+	>&2 echo "$(basename "$0"): error: $*";
 	exit 1;
+}
+
+while test $# -ge 1; do
+	case "$1" in
+	-s)
+		s='-s';
+		;;
+	-U)
+		if test $# -lt 2; then
+			err "-U: Missing argument.";
+		fi;
+		u="-U$2";
+		shift;
+		;;
+	-U*)
+		u="$1";
+		;;
+	-w)
+		w='-w';
+		;;
+	--)
+		break;
+		;;
+	-*)
+		err "$1: Unknown option.";
+		;;
+	*)
+		break;
+		;;
+	esac;
+	shift;
+done;
+
+n=0;
+if test $# -ge 1 && test "$1" != '--'; then
+	commit1="$1^";
+	commit2="$1";
+	n=1;
+	shift;
+fi;
+if test $# -ge 1 && test "$1" != '--'; then
+	commit1="$commit2";
+	commit2="$1";
+	n=2;
+	shift;
+fi;
+if test $# -ge 1; then
+	if test "$1" != '--'; then
+		err "Too many arguments.";
+	fi;
+	shift;
 fi;
 
 git rev-parse --show-toplevel | read -r dir;
@@ -36,21 +77,19 @@ test -v MANROFFOPT          || export MANROFFOPT='-d AD=l';
 # shellcheck disable=SC2206  # We want only non-empty variables in the array.
 opts=($s $w $u);
 
-case $# in
-0)  git diff --name-only;		;;
-1)  git diff --name-only "$1^..$1";	;;
-*)  git diff --name-only "$1..$2";	;;
+case $n in
+0)  git diff --name-only -- "$@";			;;
+*)  git diff --name-only "$commit1..$commit2" -- "$@";	;;
 esac \
 | grep -E '(\.[[:digit:]]([[:alpha:]][[:alnum:]]*)?\>|\.man)+(\.man|\.in)*$' \
 | sortman \
 | while read -r f; do \
-	case $# in
-	0)  old="HEAD:$f";  new="./$f";   ;;
-	1)  old="$1^:$f";   new="$1:$f";  ;;
-	*)  old="$1:$f";    new="$2:$f";  ;;
+	case $n in
+	0)  old="HEAD:$f";      new="./$f";         ;;
+	*)  old="$commit1:$f";  new="$commit2:$f";  ;;
 	esac;
 
-	case $# in
+	case $n in
 	0)  cat "$new";       ;;
 	*)  git show "$new";  ;;
 	esac \

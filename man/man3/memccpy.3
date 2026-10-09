@@ -6,13 +6,13 @@
 .\"
 .TH memccpy 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-memccpy \- copy memory area
+memccpy \- memory until-and-including-character copy
 .SH LIBRARY
 Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
-.B #include <string.h>
+.BR #include\~<string.h> "  // see memory.h(3head)"
 .P
 .BR "void *memccpy(" "size_t n;"
 .BI "              void " dest "[restrict " n "], const void " src "[restrict " n ],
@@ -69,10 +69,13 @@ T}	Thread safety	MT-Safe
 POSIX.1-2008.
 .SH HISTORY
 POSIX.1-2001, SVr4, 4.3BSD.
+.SH CAVEATS
+This function has recently (since C23)
+started being misused for copying strings with truncation.
+That's not its intended use,
+and is most likely to result in bugs if used for that.
+This function was designed for
+the quite different (and niche) task of implementing
+.BR fgets (3).
 .SH SEE ALSO
-.BR bcopy (3),
-.BR bstring (3),
-.BR memcpy (3),
-.BR memmove (3),
-.BR strcpy (3),
-.BR strncpy (3)
+.BR memory.h (3head)

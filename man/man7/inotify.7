@@ -137,7 +137,7 @@ including the null bytes;
 the size of each
 .I inotify_event
 structure is thus
-.IR "sizeof(struct inotify_event)+size" .
+.IR sizeof(struct\~inotify_event)\~+\~event.len .
 .P
 The behavior when the buffer given to
 .BR read (2)
@@ -558,36 +558,31 @@ and an
 event for
 .IR dir .
 .RE
+.SH FILES
 .SS /proc interfaces
-The following interfaces can be used to limit the amount of
-kernel memory consumed by inotify:
-.TP
-.I /proc/sys/fs/inotify/max_queued_events
-The value in this file is used when an application calls
-.BR inotify_init (2)
-to set an upper limit on the number of events that can be
-queued to the corresponding inotify instance.
-Events in excess of this limit are dropped, but an
-.B IN_Q_OVERFLOW
-event is always generated.
-.TP
-.I /proc/sys/fs/inotify/max_user_instances
-This specifies an upper limit on the number of inotify instances
-that can be created per real user ID.
-.TP
-.I /proc/sys/fs/inotify/max_user_watches
-This specifies an upper limit on the number of watches
-that can be created per real user ID.
+See
+.BR proc_sys_fs_inotify (5).
+.P
+The set of watch descriptors that is being monitored via
+an inotify file descriptor can be viewed via the entry for
+the inotify file descriptor in the process's
+.IR /proc/ pid /fdinfo
+directory.
+See
+.BR proc_pid_fdinfo (5)
+for further details.
 .SH STANDARDS
 Linux.
 .SH HISTORY
-Inotify was merged into Linux 2.6.13.
-The required library interfaces were added in glibc 2.4.
-.RB ( IN_DONT_FOLLOW ,
-.BR IN_MASK_ADD ,
-and
+Linux 2.6.13,
+glibc 2.4.
+.TP
+.B IN_DONT_FOLLOW
+.TQ
+.B IN_MASK_ADD
+.TQ
 .B IN_ONLYDIR
-were added in glibc 2.5.)
+glibc 2.5.
 .SH NOTES
 Inotify file descriptors can be monitored using
 .BR select (2),
@@ -644,20 +639,12 @@ Thus, for example, it is guaranteed that when renaming from
 one directory to another, events will be produced in the
 correct order on the inotify file descriptor.
 .P
-The set of watch descriptors that is being monitored via
-an inotify file descriptor can be viewed via the entry for
-the inotify file descriptor in the process's
-.IR /proc/ pid /fdinfo
-directory.
-See
-.BR proc (5)
-for further details.
 The
 .B FIONREAD
 .BR ioctl (2)
 returns the number of bytes available to read from an
 inotify file descriptor.
-.SS Limitations and caveats
+.SH CAVEATS
 The inotify API provides no information about the user or process that
 triggered the inotify event.
 In particular, there is no easy

@@ -6,64 +6,37 @@
 .\"
 .TH memchr 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-memchr, memrchr \- scan memory for a character
+memchr \- memory search character
 .SH LIBRARY
 Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
-.B #include <string.h>
+.BR #include\~<string.h> "  // see memory.h(3head)"
 .P
 .BR "void *memchr(" "size_t n;"
 .BI "             const void " s [ n "], int " c ", size_t " n );
-.BR "void *memrchr(" "size_t n;"
-.BI "             const void " s [ n "], int " c ", size_t " n );
-.fi
-.P
-.RS -4
-Feature Test Macro Requirements for glibc (see
-.BR feature_test_macros (7)):
-.RE
-.P
-.BR memrchr ():
-.nf
-    _GNU_SOURCE
 .fi
 .SH DESCRIPTION
-The
 .BR memchr ()
-function scans the initial
+scans the initial
 .I n
 bytes of the memory
 area pointed to by
 .I s
 for the first instance of
 .IR c .
+.P
 Both
 .I c
 and the bytes of the memory area pointed to by
 .I s
 are interpreted as
 .IR "unsigned char" .
-.P
-The
-.BR memrchr ()
-function is like the
-.BR memchr ()
-function,
-except that it searches backward from the end of the
-.I n
-bytes pointed to by
-.I s
-instead of forward from the beginning.
 .SH RETURN VALUE
-The
 .BR memchr ()
-and
-.BR memrchr ()
-functions return a pointer
-to the matching byte or NULL if the character does not occur in
-the given memory area.
+returns a pointer to the matching byte
+or NULL if the character does not occur in the given memory area.
 .SH ATTRIBUTES
 For an explanation of the terms used in this section, see
 .BR attributes (7).
@@ -75,32 +48,14 @@ Interface	Attribute	Value
 T{
 .na
 .nh
-.BR memchr (),
-.BR memrchr ()
+.BR memchr ()
 T}	Thread safety	MT-Safe
 .TE
 .SH STANDARDS
-.TP
-.BR memchr ()
 C11, POSIX.1-2008.
-.TP
-.BR memrchr ()
-GNU.
 .SH HISTORY
-.TP
-.BR memchr ()
 POSIX.1-2001, C89, SVr4, 4.3BSD.
-.TP
-.BR memrchr ()
-glibc 2.2.
 .SH SEE ALSO
-.BR bstring (3),
-.BR ffs (3),
-.BR memmem (3),
-.BR strchr (3),
-.BR strpbrk (3),
-.BR strrchr (3),
-.BR strsep (3),
-.BR strspn (3),
-.BR strstr (3),
+.BR memory.h (3head),
+.BR memrchr (3),
 .BR wmemchr (3)

@@ -3,7 +3,7 @@
 
 
 ifndef MAKEFILE_INSTALL_MAN_INCLUDED
-MAKEFILE_INSTALL_MAN_INCLUDED := 1
+MAKEFILE_INSTALL_MAN_INCLUDED ::= 1
 
 
 include $(MAKEFILEDIR)/configure/build-depends/coreutils/cat.mk
@@ -21,27 +21,20 @@ include $(MAKEFILEDIR)/install/_.mk
 include $(MAKEFILEDIR)/src/man.mk
 
 
-_mandir := $(DESTDIR)$(mandir)
+_mandir ::= $(DESTDIR)$(mandir)
 $(foreach s, $(MANSECTIONS),                                                  \
-	$(eval _man$(s)dir := $(DESTDIR)$(man$(s)dir)))
+	$(eval _man$(s)dir ::= $(DESTDIR)$(man$(s)dir)))
 
 $(foreach s, $(MANSECTIONS),                                                  \
-	$(eval _man$(s)pages :=                                               \
+	$(eval _man$(s)pages ::=                                               \
 		$(patsubst $(MAN$(s)DIR)/%.$(s), $(_man$(s)dir)/%$(man$(s)ext), \
 			$(MAN$(s)PAGES))))
 $(foreach s, $(MANSECTIONS),                                                  \
-	$(eval _man$(s)intropage :=                                           \
+	$(eval _man$(s)intropage ::=                                           \
 		$(patsubst $(MAN$(s)DIR)/%.$(s), $(_man$(s)dir)/%$(man$(s)ext), \
 			$(MAN$(s)INTROPAGE))))
-_manintropages := $(foreach s, $(MANSECTIONS), $(_man$(s)intropage))
-_manpages := $(_manintropages) $(foreach s, $(MANSECTIONS), $(_man$(s)pages))
-
-_manintropages_rm := $(addsuffix -rm, $(wildcard $(_manintropages)))
-$(foreach s, $(MANSECTIONS),                                                  \
-	$(eval _man$(s)pages_rm :=                                            \
-		$(addsuffix -rm,                                              \
-			$(subst :,\:,                                         \
-				$(wildcard $(_man$(s)pages))))))
+_manintropages ::= $(foreach s, $(MANSECTIONS), $(_man$(s)intropage))
+_manpages ::= $(_manintropages) $(foreach s, $(MANSECTIONS), $(_man$(s)pages))
 
 
 $(foreach s, $(MANSECTIONS),                                                  \
@@ -74,15 +67,6 @@ $(foreach s, $(MANSECTIONS),                                                  \
 	$(eval install-man$(s): $(_man$(s)pages);))
 .PHONY: install-man
 install-man: install-manintro $(foreach s, $(MANSECTIONS), install-man$(s));
-
-.PHONY: uninstall-manintro
-uninstall-manintro: $(_manintropages_rm);
-$(foreach s, $(MANSECTIONS),                                                  \
-	$(eval .PHONY: uninstall-man$(s)))
-$(foreach s, $(MANSECTIONS),                                                  \
-	$(eval uninstall-man$(s): $(_man$(s)pages_rm);))
-.PHONY: uninstall-man
-uninstall-man: uninstall-manintro $(foreach s, $(MANSECTIONS), uninstall-man$(s));
 
 
 endif  # include guard

@@ -3,12 +3,11 @@
 
 
 ifndef MAKEFILE_LINT_C_INCLUDED
-MAKEFILE_LINT_C_INCLUDED := 1
+MAKEFILE_LINT_C_INCLUDED ::= 1
 
 
 .PHONY: lint-c
 lint-c: \
-	lint-c-checkpatch \
 	lint-c-clang-tidy \
 	lint-c-cppcheck \
 	lint-c-cpplint \

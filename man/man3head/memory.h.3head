@@ -1,0 +1,116 @@
+.\" Copyright 1993, David Metcalfe <david@prism.demon.co.uk>
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH memory.h 3head (date) "Linux man-pages (unreleased)"
+.SH NAME
+memory.h \- memory operations
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <memory.h>
+.fi
+.SH DESCRIPTION
+.SS Write
+.TP
+.BR bzero (3)
+.TQ
+.BR explicit_bzero (3)
+.TQ
+.BR memset (3)
+.TQ
+.BR memset_explicit (3)
+.SS Copy
+.TP
+.BR memmove (3)
+.TQ
+.BR memcpy (3)
+.TQ
+.BR mempcpy (3)
+.TQ
+.BR memccpy (3)
+.TQ
+.BR strncpy (3)
+.TQ
+.BR stpncpy (3)
+.SS Catenate
+.TP
+.BR strncat (3)
+.SS Duplicate
+.TP
+.BR strndup (3)
+.TQ
+.BR strndupa (3)
+.SS Compare
+.TP
+.BR memeq (3)
+.TQ
+.BR memcmp (3)
+.TQ
+.BR strncmp (3)
+.TQ
+.BR strncasecmp (3)
+.SS Search
+.TP
+.BR memchr (3)
+.TQ
+.BR memrchr (3)
+.TQ
+.BR memmem (3)
+.SH VERSIONS
+In some systems (Illumos),
+.I <memory.h>
+contains only a few of these functions,
+and thus
+.I <string.h>
+is needed.
+.SH STANDARDS
+BSD.
+.P
+These functions are also provided in
+.IR <string.h> ,
+as specified by ISO C.
+This is a historic mistake maintained for compatibility reasons;
+these functions aren't string APIs.
+.SH HISTORY
+SVr1, 4.3BSD.
+.P
+System V (1983)
+introduced an initial set of mem* functions
+in a
+.I <memory.h>
+header file.
+4.3BSD (1986)
+adopted them.
+.P
+SVID Issue 1 (1985) standardized this header file,
+but stated that the functions would be moved to
+.IR <string.h> .
+.P
+XPG Issue 3 (1989) listed
+.I <memory.h>
+as WITHDRAWN,
+and stated that the functions had been moved to
+.IR <string.h> .
+.P
+C89 didn't standardize this header file
+and instead specified all these functions in
+.IR <string.h> .
+.P
+This merge of header files
+has historically confused programmers
+about the real purpose of these functions.
+.P
+Most C libraries, including the BSDs, glibc, musl, Bionic, and Illumos
+continue to provide
+.I <memory.h>.
+.P
+gnulib doesn't provide it, though,
+and instead uses
+.IR <string.h> .
+.SH SEE ALSO
+.BR string (3),
+.BR string_copying (7)

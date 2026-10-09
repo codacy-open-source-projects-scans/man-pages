@@ -1,3 +1,6 @@
+disable=SC2001
+disable=SC2002
+disable=SC2003
 disable=SC2016
 disable=SC2028
 disable=SC2038

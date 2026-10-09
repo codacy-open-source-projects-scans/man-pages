@@ -6,13 +6,13 @@
 .\"
 .TH memcmp 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-memcmp \- compare memory areas
+memcmp \- memory compare
 .SH LIBRARY
 Standard C library
 .RI ( libc ,\~ \-lc )
 .SH SYNOPSIS
 .nf
-.B #include <string.h>
+.BR #include\~<string.h> "  // see memory.h(3head)"
 .P
 .BR "int memcmp(" "size_t n;"
 .BI "           const void " s1 [ n "], const void " s2 [ n "], size_t " n );
@@ -68,6 +68,24 @@ T{
 .BR memcmp ()
 T}	Thread safety	MT-Safe
 .TE
+.SH VERSIONS
+POSIX.1 specifies only that:
+.RS
+.P
+The sign of a nonzero return value shall be determined by the sign
+of the difference between the values of the first pair of bytes
+(both interpreted as type
+.IR "unsigned char" )
+that differ in the strings being compared.
+.RE
+.P
+In glibc, as in most other implementations,
+the return value is the arithmetic result of subtracting
+the last compared byte in
+.I s2
+from the last compared byte in
+.IR s1 .
+(If the two characters are equal, this difference is 0.)
 .SH STANDARDS
 C11, POSIX.1-2008.
 .SH HISTORY
@@ -91,10 +109,6 @@ Some operating systems provide such a function (e.g., NetBSD's
 but no such function is specified in POSIX.
 On Linux, you may need to implement such a function yourself.
 .SH SEE ALSO
-.BR bstring (3),
-.BR strcasecmp (3),
-.BR strcmp (3),
-.BR strcoll (3),
-.BR strncasecmp (3),
-.BR strncmp (3),
+.BR memory.h (3head),
+.BR memeq (3),
 .BR wmemcmp (3)
