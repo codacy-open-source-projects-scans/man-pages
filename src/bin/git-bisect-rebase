@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2026, Alejandro Colomar <alx@kernel.org>
+# Copyright, the authors of the Linux man-pages project
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 set -Eeufo pipefail;
@@ -31,8 +31,7 @@ while test $# -ge 1; do
 		if test -d "$git_dir/rebase-merge"; then
 			err 'You must finish the current rebase operation.';
 		fi;
-		git-bisect-rebase--continue;
-		exit 0;
+		exec git-bisect-rebase--continue;
 		;;
 	--quit)
 		test -d "$dir/" || err 'Not in a bisect-rebase operation?';
@@ -49,8 +48,7 @@ while test $# -ge 1; do
 done;
 
 mkdir "$dir";
-# shellcheck disable=SC2064  # we want expansion now
-trap "rm -rf '$dir'" EXIT;
+trap 'rm -rf "$dir";' EXIT;
 
 # shellcheck disable=SC2312  # False positive: <https://github.com/koalaman/shellcheck/issues/3554>
 cat <<-'__EOF__' |
@@ -63,13 +61,11 @@ cat <<-'__EOF__' |
 	continue!	Restart the bisect-rebase process after having resolved a particular rebase.
 	quit!		Abort the bisect-rebase operation but HEAD is not reset.
 
-	 Options
-	pre-exec!=cmd	Run <cmd> before every git-rebase(1) operation.
-	post-exec!=cmd	Run <cmd> after every git-rebase(1) operation.
+	 git-bisect(1) options
+	first-parent!		See git-bisect(1).
 
 	 git-rebase(1) options
-	x,exec=cmd		See git-rebase(1).
-	r,rebase-merges?	^
+	r,rebase-merges?	See git-rebase(1).
 	apply!*			^
 	empty!*=		^
 	keep-empty*		^
@@ -90,9 +86,11 @@ cat <<-'__EOF__' |
 	f,force-rebase!*	^
 	ignore-whitespace*	^
 	update-refs*		^
+	x,exec=cmd		See git-rebase(1).
 
-	 git-bisect(1) options
-	first-parent!		See git-bisect(1).
+	 Other options
+	pre-exec!=cmd	Run <cmd> before every git-rebase(1) operation.
+	post-exec!=cmd	Run <cmd> after every git-rebase(1) operation.
 __EOF__
 eval "$(git rev-parse --parseopt --stuck-long --keep-dashdash -- "$@" || echo exit $?)";
 
@@ -109,9 +107,13 @@ while test $# -ge 1; do
 		;;
 	--pre-exec=*)
 		printf '%s\n' "$1" | sed 's/--pre-exec=//' >"$dir/pre-exec";
+		printf '%s\n' "$1" | wc -l | xargs test 1 -eq \
+		|| err '--pre-exec: commands cannot contain newlines.';
 		;;
 	--post-exec=*)
 		printf '%s\n' "$1" | sed 's/--post-exec=//' >"$dir/post-exec";
+		printf '%s\n' "$1" | wc -l | xargs test 1 -eq \
+		|| err '--post-exec: commands cannot contain newlines.';
 		;;
 	--first-parent)
 		printf '%s\n' "$1" >>"$dir/git-bisect-options";
@@ -126,14 +128,14 @@ while test $# -ge 1; do
 	shift;
 done;
 
-if test $# -lt 1; then
+if test $# -eq 0; then
 	git rev-parse '@{u}';
 else
 	git rev-parse --verify "$1";
 fi >"$dir/onto";
-test $# -lt 1 || shift;
+test $# -eq 0 || shift;
 
-if test $# -lt 1; then
+if test $# -eq 0; then
 	git rev-parse --abbrev-ref HEAD;
 	git rev-parse HEAD;
 else
@@ -143,15 +145,9 @@ fi \
 | sed '/^HEAD$/d' \
 | sed '1!d' \
 >"$dir/head-name";
-test $# -lt 1 || shift;
+test $# -eq 0 || shift;
 
-if test $# -gt 0; then
-	err 'Too many arguments.';
-fi;
+test $# -eq 0 || err 'Too many arguments.';
 
 git rev-parse HEAD >"$dir/orig-head";
-
-trap - EXIT;
-
-git-bisect-rebase--continue;
-exit 0;
+exec git-bisect-rebase--continue;
